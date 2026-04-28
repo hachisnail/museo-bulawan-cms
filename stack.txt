@@ -1,0 +1,49 @@
+technology stack:
+Express backend
+Pocketbase backend as a service
+MariaDB.
+Appointments Pocketbase backend
+payload cms
+umami js analytics
+
+
+
+Features:
+
+(Louis)
+Appointments Feedback and Management System
+-Appointments
+-Scheduling
+-Feedback
+
+
+
+(Collaborative Prio)
+Collection Management System
+-intake (of artifacts either from donation, lending, or acquisition process)
+-accession (proper tagging and filling missing information about the aritfact and setting its accession number [three-part accession number])
+
+
+-inventory (location tagging of artifacts, stores the related records documents, etc.)
+-Management (of artifacts maitenance records, preservation records tracking)
+
+(Russel)
+Content Management System
+-publish (articles complete with crud and editability)
+-to be discussed
+
+(Misc)
+Analytics
+-track analytics from Appointments Feedbacks schedules articles collection (intakes, donation, inventory) logs.
+
+(Prio+ Jeff)
+Core Services
+-integrate all of the systems into one System
+-implement RBAC perms and roles
+-implement authetincation, authorization.
+-implement connectors for the Pocketbase internal service
+-logging
+
+Frontend
+-derived from old UI but adjusted for better user experience
+

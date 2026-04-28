@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { acquisitionService } from '../services/acquisitionService.js';
+import { validateRequest } from '../utils/validateRequest.js';
 
 // ==========================================
 // JOI VALIDATION SCHEMAS
@@ -57,10 +58,10 @@ const schemas = {
 export const processExternalIntake = async (req, res, next) => {
     try {
         const { submissionId } = req.params;
-        const { error, value } = schemas.externalIntake.validate(req.body);
-        if (error) return res.status(400).json({ error: error.details[0].message });
+        const { isValid, value } = validateRequest(schemas.externalIntake, req, res);
+        if (!isValid) return; // Halt execution if invalid
         
-        const intake = await acquisitionService.processExternalIntake(submissionId, value);
+        const intake = await acquisitionService.processExternalIntake(submissionId, value)
         res.status(200).json({ message: "External submission processed into Intake.", intake });
     } catch (error) { next(error); }
 };

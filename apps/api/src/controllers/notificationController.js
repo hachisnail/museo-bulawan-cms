@@ -1,5 +1,11 @@
 import { db } from '../config/db.js';
 
+const TARGET_CONDITION = `
+    (target_type = 'user' AND target_id = ?)
+    OR (target_type = 'role' AND target_id = ?)
+    OR (target_type = 'global' AND target_id = 'all')
+`;
+
 export const getUserNotifications = async (req, res, next) => {
     try {
         const userId = req.user.id;
@@ -14,9 +20,7 @@ export const getUserNotifications = async (req, res, next) => {
             FROM notifications n
             LEFT JOIN user_notification_reads unr 
                 ON n.id = unr.notification_id AND unr.user_id = ?
-            WHERE (n.target_type = 'user' AND n.target_id = ?)
-               OR (n.target_type = 'role' AND n.target_id = ?)
-               OR (n.target_type = 'global' AND n.target_id = 'all')
+            WHERE ${TARGET_CONDITION}
             ORDER BY n.created_at DESC
             LIMIT 50
         `;
@@ -42,8 +46,9 @@ export const markAsRead = async (req, res, next) => {
 
         // Use INSERT IGNORE in case they spam the read button
         const sql = `
-            INSERT IGNORE INTO user_notification_reads (user_id, notification_id) 
-            VALUES (?, ?)
+            INSERT IGNORE INTO user_notification_reads (user_id, notification_id)
+            SELECT ?, id FROM notifications
+            WHERE ${TARGET_CONDITION}
         `;
         
         await db.query(sql, [userId, notificationId]);

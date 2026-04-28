@@ -3,6 +3,8 @@ import Joi from 'joi';
 
 dotenv.config();
 
+const minioRequiredStr = Joi.string().when('MINIO_ENABLED', { is: true, then: Joi.required() });
+
 const envSchema = Joi.object({
     NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
     PORT: Joi.number().default(3000),
@@ -37,10 +39,10 @@ const envSchema = Joi.object({
     // NEW: MinIO / S3 Config
     // ==========================================
     MINIO_ENABLED: Joi.boolean().default(false),
-    MINIO_ENDPOINT: Joi.string().when('MINIO_ENABLED', { is: true, then: Joi.required() }),
-    MINIO_BUCKET: Joi.string().when('MINIO_ENABLED', { is: true, then: Joi.required() }),
-    MINIO_ACCESS_KEY: Joi.string().when('MINIO_ENABLED', { is: true, then: Joi.required() }),
-    MINIO_SECRET_KEY: Joi.string().when('MINIO_ENABLED', { is: true, then: Joi.required() }),
+    MINIO_ENDPOINT: minioRequiredStr,
+    MINIO_BUCKET: minioRequiredStr,
+    MINIO_ACCESS_KEY: minioRequiredStr,
+    MINIO_SECRET_KEY: minioRequiredStr,
     MINIO_REGION: Joi.string().default('us-east-1'),
 
 }).unknown().required();

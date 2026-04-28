@@ -121,11 +121,9 @@ class PocketBaseService {
     }
   }
 
-  async startBridging() {
-    await this.wrapCollection("inventory");
-    await this.wrapCollection("accessions");
-    await this.wrapCollection("intakes");
-    await this.wrapCollection("appointments");
+async startBridging() {
+    const collections = ["inventory", "accessions", "intakes", "appointments"];
+    await Promise.all(collections.map(collection => this.wrapCollection(collection)));
   }
 
   async syncSuperuser(email, password) {
@@ -198,24 +196,26 @@ class PocketBaseService {
     });
   }
 
-  async uploadInternal(collectionName, fileInfo, additionalData) {
+async uploadInternal(collectionName, fileInfo, additionalData) {
     try {
-      // 1. Create a native FormData object
       const formData = new FormData();
 
-      // 2. Append all other metadata fields
+      // Append all other metadata fields
       for (const key in additionalData) {
-        formData.append(key, additionalData[key]);
+        // PocketBase expects JSON data to be stringified when sent via FormData
+        const value = typeof additionalData[key] === 'object' ? JSON.stringify(additionalData[key]) : additionalData[key];
+        formData.append(key, value);
       }
 
-      // 3. Stream the file directly instead of buffering it into RAM
-      // Note: If you encounter native fetch "parameter 2 is not of type Blob" errors on Node 20+,
-      // replace the line below with: const fileStream = await fs.promises.openAsBlob(fileInfo.path);
-      const fileStream = fs.createReadStream(fileInfo.path);
+      // Handle both single file (req.file) and multiple files (req.files array)
+      const files = Array.isArray(fileInfo) ? fileInfo : [fileInfo];
 
-      formData.append("file", fileStream, fileInfo.originalname);
+      for (const file of files) {
+        const fileStream = fs.createReadStream(file.path);
+        // Ensure the field name matches what PocketBase expects (e.g., 'attachments' or 'file')
+        formData.append("attachments", fileStream, file.originalname);
+      }
 
-      // 4. Pass the FormData object directly to the create method
       const record = await this.pb.collection(collectionName).create(formData);
       return record;
     } catch (error) {

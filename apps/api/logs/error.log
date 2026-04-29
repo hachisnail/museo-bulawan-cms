@@ -46,3 +46,567 @@ sql: INSERT INTO users (fname, lname, email, username, password, role, status)
 2026-04-28 11:23:50 [error]: ReferenceError: ulid is not defined
     at Object.onboardFirstAdmin (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/userService.js:41:28)
     at async onboardAdmin (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/userController.js:13:9) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-04-29 00:21:10 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Missing or invalid collection context."}
+2026-04-29 00:33:35 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Missing or invalid collection context."}
+2026-04-29 00:33:39 [error]: Failed to list users | Meta: {"action":"READ","resource":"User","error":"(conn:1166, no: 1054, SQLState: 42S22) Unknown column 'last_login' in 'SELECT'\nsql: SELECT id, username, email, role, fname, lname, status, last_login, created_at FROM users - parameters:[]"}
+2026-04-29 00:33:39 [error]: SqlError: (conn:1166, no: 1054, SQLState: 42S22) Unknown column 'last_login' in 'SELECT'
+sql: SELECT id, username, email, role, fname, lname, status, last_login, created_at FROM users - parameters:[]
+    at Module.createError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) | Meta: {"method":"GET","url":"/api/v1/user","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 00:33:39 [error]: Failed to list users | Meta: {"action":"READ","resource":"User","error":"(conn:1162, no: 1054, SQLState: 42S22) Unknown column 'last_login' in 'SELECT'\nsql: SELECT id, username, email, role, fname, lname, status, last_login, created_at FROM users - parameters:[]"}
+2026-04-29 00:33:39 [error]: SqlError: (conn:1162, no: 1054, SQLState: 42S22) Unknown column 'last_login' in 'SELECT'
+sql: SELECT id, username, email, role, fname, lname, status, last_login, created_at FROM users - parameters:[]
+    at Module.createError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) | Meta: {"method":"GET","url":"/api/v1/user","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 01:09:47 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 12:00:24 [error]: Failed to initialize sequences | Meta: {"error":"(conn:1424, no: 1054, SQLState: 42S22) Unknown column 'name' in 'INSERT INTO'\nsql: INSERT IGNORE INTO sequences (name, current_value, reset_year) VALUES ('accession', 0, 0) - parameters:[]"}
+2026-04-29 12:29:18 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 12:29:43 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 12:30:13 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 12:32:25 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 12:39:06 [error]: Form definition not found: undefined
+2026-04-29 12:39:06 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:17:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:16:28) | Meta: {"method":"GET","url":"/api/v1/forms/undefined","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 12:39:06 [error]: Form definition not found: undefined
+2026-04-29 12:39:06 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:17:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:16:28) | Meta: {"method":"GET","url":"/api/v1/forms/undefined","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 13:01:48 [error]: Error: unknown format "textarea" is used in schema at path "#/properties/item_description"
+    at Object.generate_format [as code] (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\dotjs\format.js:69:15)
+    at Object.generate_validate [as validate] (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\dotjs\validate.js:374:35)
+    at Object.generate_properties [as code] (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\dotjs\properties.js:201:26)
+    at generate_validate (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\dotjs\validate.js:374:35)
+    at localCompile (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\compile\index.js:93:22)
+    at Ajv.compile (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\compile\index.js:60:13)
+    at Ajv._compile (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\ajv.js:348:27)
+    at Ajv.compile (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\ajv.js:114:37)
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:63:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-29 13:02:33 [error]: TypeError: formats.textarea.test is not a function
+    at validate (eval at localCompile (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\compile\index.js:125:26), <anonymous>:3:3403)
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:68:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:67:24) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-29 13:02:34 [error]: TypeError: formats.textarea.test is not a function
+    at validate (eval at localCompile (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\compile\index.js:125:26), <anonymous>:3:3403)
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:68:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:67:24) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-29 13:03:03 [error]: Error: VALIDATION_FAILED: data.loan_end_date should match format "date"
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:70:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:67:24) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-29 13:03:05 [error]: Error: VALIDATION_FAILED: data.loan_end_date should match format "date"
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:70:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:67:24) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-29 13:04:19 [error]: Error: VALIDATION_FAILED: data.loan_end_date should match format "date"
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:70:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:67:24) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-29 13:05:54 [error]: PB SDK Upload Error | Meta: {"error":"Failed to execute 'append' on 'FormData': parameter 2 is not of type 'Blob'"}
+2026-04-29 13:05:54 [error]: TypeError: Failed to execute 'append' on 'FormData': parameter 2 is not of type 'Blob'
+    at _FormData.append (node:internal/deps/undici/undici:5055:17)
+    at PocketBaseService.uploadInternal (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/pocketbaseService.js:247:18)
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:106:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:67:24) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-29 13:07:28 [error]: PB SDK Upload Error | Meta: {"error":"Failed to create record."}
+2026-04-29 13:07:28 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PocketBaseService.uploadInternal (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/pocketbaseService.js:251:22)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:106:22)
+    at async submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:67:24) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-29 13:08:49 [error]: PB SDK Upload Error Failed to create record. | Meta: {"data":{"data":{"id":{"code":"validation_required","message":"Cannot be blank."}},"message":"Failed to create record.","status":400},"status":400}
+2026-04-29 13:08:49 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PocketBaseService.uploadInternal (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/pocketbaseService.js:251:22)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:106:22)
+    at async submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:67:24) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-29 13:11:13 [error]: PB SDK Upload Error Failed to create record. | Meta: {"data":{"data":{"id":{"code":"validation_required","message":"Cannot be blank."}},"message":"Failed to create record.","status":400},"status":400}
+2026-04-29 13:11:13 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PocketBaseService.uploadInternal (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/pocketbaseService.js:258:22)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:106:22)
+    at async submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:67:24) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-29 13:12:32 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:12:42 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:15:39 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:15:45 [error]: Failed to provision donor | Meta: {"action":"CREATE","resource":"User","error":"(conn:1528, no: 1062, SQLState: 23000) Duplicate entry 'jeffersontalagtag06@gmail.com' for key 'email'\nsql: INSERT INTO users (id, fname, lname, email, username, password, role, status) \n                 VALUES (?, ?, ?, ?, ?, ?, 'visitor', 'active') - parameters:['01KQBTM9C0GJX1E3C69KBMMXAJ','Anonymous','','jeffersontalagtag06@gmail.com','jeffersontalagtag06_93..."}
+2026-04-29 13:15:45 [error]: Error provisioning donor account: (conn:1528, no: 1062, SQLState: 23000) Duplicate entry 'jeffersontalagtag06@gmail.com' for key 'email'
+sql: INSERT INTO users (id, fname, lname, email, username, password, role, status) 
+                 VALUES (?, ?, ?, ?, ?, ?, 'visitor', 'active') - parameters:['01KQBTM9C0GJX1E3C69KBMMXAJ','Anonymous','','jeffersontalagtag06@gmail.com','jeffersontalagtag06_93...
+2026-04-29 13:15:45 [error]: Error processing external intake: Failed to create record.
+2026-04-29 13:15:45 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._decomposeSubmissionItems (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:143:28)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:231:35
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:179:16)
+    at async processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:102:24) | Meta: {"method":"POST","url":"/api/v1/acquisitions/external/e0497fc088841dd","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 13:16:08 [error]: Failed to provision donor | Meta: {"action":"CREATE","resource":"User","error":"(conn:1528, no: 1062, SQLState: 23000) Duplicate entry 'jeffersontalagtag06@gmail.com' for key 'email'\nsql: INSERT INTO users (id, fname, lname, email, username, password, role, status) \n                 VALUES (?, ?, ?, ?, ?, ?, 'visitor', 'active') - parameters:['01KQBTMZVQXW4RTE7KPPWFZ3HM','Anonymous','','jeffersontalagtag06@gmail.com','jeffersontalagtag06_65..."}
+2026-04-29 13:16:08 [error]: Error provisioning donor account: (conn:1528, no: 1062, SQLState: 23000) Duplicate entry 'jeffersontalagtag06@gmail.com' for key 'email'
+sql: INSERT INTO users (id, fname, lname, email, username, password, role, status) 
+                 VALUES (?, ?, ?, ?, ?, ?, 'visitor', 'active') - parameters:['01KQBTMZVQXW4RTE7KPPWFZ3HM','Anonymous','','jeffersontalagtag06@gmail.com','jeffersontalagtag06_65...
+2026-04-29 13:16:08 [error]: Error processing external intake: Failed to create record.
+2026-04-29 13:16:08 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._decomposeSubmissionItems (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:143:28)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:231:35
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:179:16)
+    at async processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:102:24) | Meta: {"method":"POST","url":"/api/v1/acquisitions/external/e0497fc088841dd","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 13:16:23 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:16:29 [error]: Failed to provision donor | Meta: {"action":"CREATE","resource":"User","error":"(conn:1537, no: 1062, SQLState: 23000) Duplicate entry 'jeffersontalagtag06@gmail.com' for key 'email'\nsql: INSERT INTO users (id, fname, lname, email, username, password, role, status) \n                 VALUES (?, ?, ?, ?, ?, ?, 'visitor', 'active') - parameters:['01KQBTNMGM44NDXV3YRHC7RXND','Anonymous','','jeffersontalagtag06@gmail.com','jeffersontalagtag06_f2..."}
+2026-04-29 13:16:29 [error]: Error provisioning donor account: (conn:1537, no: 1062, SQLState: 23000) Duplicate entry 'jeffersontalagtag06@gmail.com' for key 'email'
+sql: INSERT INTO users (id, fname, lname, email, username, password, role, status) 
+                 VALUES (?, ?, ?, ?, ?, ?, 'visitor', 'active') - parameters:['01KQBTNMGM44NDXV3YRHC7RXND','Anonymous','','jeffersontalagtag06@gmail.com','jeffersontalagtag06_f2...
+2026-04-29 13:16:29 [error]: Error processing external intake: Failed to create record.
+2026-04-29 13:16:29 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._decomposeSubmissionItems (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:143:28)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:231:35
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:179:16)
+    at async processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:102:24) | Meta: {"method":"POST","url":"/api/v1/acquisitions/external/e0497fc088841dd","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 13:17:38 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:17:42 [error]: Error processing external intake: Failed to create record.
+2026-04-29 13:17:42 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._createRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:34:24)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:243:32
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:186:16)
+    at async processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:102:24) | Meta: {"method":"POST","url":"/api/v1/acquisitions/external/e0497fc088841dd","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 13:17:57 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:18:02 [error]: Error processing external intake: Failed to create record.
+2026-04-29 13:18:02 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._createRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:34:24)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:243:32
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:186:16)
+    at async processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:102:24) | Meta: {"method":"POST","url":"/api/v1/acquisitions/external/e0497fc088841dd","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 13:19:19 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:19:27 [error]: Failed to sync user to PB | Meta: {"error":"Failed to create record."}
+2026-04-29 13:19:27 [error]: Error processing external intake: FAILED_PB_SYNC: User 01KQ91VTA5A1RGM1SS01DWBQVK could not be mapped to a PocketBase ID. Creation aborted.
+2026-04-29 13:19:27 [error]: Error: FAILED_PB_SYNC: User 01KQ91VTA5A1RGM1SS01DWBQVK could not be mapped to a PocketBase ID. Creation aborted.
+    at Object._createRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:46:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:258:32
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:201:16)
+    at async processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:102:24) | Meta: {"method":"POST","url":"/api/v1/acquisitions/external/e0497fc088841dd","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 13:20:58 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:21:02 [error]: Failed to sync user to PB | Meta: {"error":"crypto.randomBytes is not a function"}
+2026-04-29 13:21:02 [error]: Error processing external intake: FAILED_PB_SYNC: User 01KQ91VTA5A1RGM1SS01DWBQVK could not be mapped to a PocketBase ID. Creation aborted.
+2026-04-29 13:21:02 [error]: Error: FAILED_PB_SYNC: User 01KQ91VTA5A1RGM1SS01DWBQVK could not be mapped to a PocketBase ID. Creation aborted.
+    at Object._createRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:46:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:258:32
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:201:16)
+    at async processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:102:24) | Meta: {"method":"POST","url":"/api/v1/acquisitions/external/e0497fc088841dd","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 13:22:32 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:22:37 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:25:18 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:27:38 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:27:48 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:27:53 [error]: Error processing external intake: mapping is not defined
+2026-04-29 13:27:53 [error]: ReferenceError: mapping is not defined
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:208:47
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:201:16)
+    at async processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:102:24) | Meta: {"method":"POST","url":"/api/v1/acquisitions/external/aac55e65aa6cd80","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 13:28:34 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:28:38 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:31:03 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:31:11 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:31:14 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:31:17 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:32:38 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:32:46 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:39:30 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:40:08 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:40:22 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:40:31 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:57:44 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 13:57:48 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Failed to create record."}
+2026-04-29 14:06:42 [error]: Error confirming delivery: Invalid QR Token.
+2026-04-29 14:06:42 [error]: Error: Invalid QR Token.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:523:23
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.confirmPhysicalDelivery (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:512:16)
+    at async confirmDelivery (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:159:24) | Meta: {"method":"POST","url":"/api/v1/acquisitions/4a232882523dcaf/delivery","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:18:06 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:637:13
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.approveAccession (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:633:16)
+    at async approveAccession (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:190:27) | Meta: {"method":"POST","url":"/api/v1/acquisitions/accessions/9aee0aea031439b/approve","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:20:11 [error]: Error finalizing to inventory: Failed to create record.
+2026-04-29 14:20:11 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:708:13
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.finalizeToInventory (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:671:16)
+    at async finalizeInventory (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:209:27) | Meta: {"method":"POST","url":"/api/v1/acquisitions/accessions/9aee0aea031439b/finalize","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:36 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/134f3b9b584fc8f?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:37 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/cd60cebbb65e5cd?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:37 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/fb165459184f485?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:45 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/134f3b9b584fc8f?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:45 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/fb165459184f485?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:46 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/fb165459184f485?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:46 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/fb165459184f485?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:46 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/fb165459184f485?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:48 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/fb165459184f485?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:48 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/fb165459184f485?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:48 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/fb165459184f485?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:48 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/134f3b9b584fc8f?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:51:49 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/cd60cebbb65e5cd?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 14:52:26 [error]: TypeError: acquisitionService.getInventoryItem is not a function
+    at getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:99:47)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:41:9
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/134f3b9b584fc8f?expand=accession_id,accession_id.media_attachments_via_entity_id,accession_id.intake_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:13:27 [error]: Form definition not found: artifact-movement
+2026-04-29 15:13:27 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:16:28) | Meta: {"method":"GET","url":"/api/v1/forms/artifact-movement","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:13:27 [error]: Form definition not found: artifact-movement
+2026-04-29 15:13:27 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:16:28) | Meta: {"method":"GET","url":"/api/v1/forms/artifact-movement","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:13:35 [error]: Form definition not found: artifact-movement
+2026-04-29 15:13:35 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:16:28) | Meta: {"method":"GET","url":"/api/v1/forms/artifact-movement","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:13:35 [error]: Form definition not found: artifact-movement
+2026-04-29 15:13:35 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:16:28) | Meta: {"method":"GET","url":"/api/v1/forms/artifact-movement","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:13:37 [error]: Form definition not found: artifact-health
+2026-04-29 15:13:37 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:16:28) | Meta: {"method":"GET","url":"/api/v1/forms/artifact-health","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:13:37 [error]: Form definition not found: artifact-health
+2026-04-29 15:13:37 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:16:28) | Meta: {"method":"GET","url":"/api/v1/forms/artifact-health","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:13:40 [error]: Form definition not found: artifact-movement
+2026-04-29 15:13:40 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:16:28) | Meta: {"method":"GET","url":"/api/v1/forms/artifact-movement","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:13:40 [error]: Form definition not found: artifact-movement
+2026-04-29 15:13:40 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:16:28) | Meta: {"method":"GET","url":"/api/v1/forms/artifact-movement","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:26:35 [error]: Form definition not found: artifact-health
+2026-04-29 15:26:35 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:16:28) | Meta: {"method":"GET","url":"/api/v1/forms/artifact-health","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:26:35 [error]: Form definition not found: artifact-health
+2026-04-29 15:26:35 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:16:28) | Meta: {"method":"GET","url":"/api/v1/forms/artifact-health","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:36:25 [error]: CRITICAL: PocketBase did not come online after 10 seconds.
+2026-04-29 15:37:15 [error]: Failed to write to audit log in PocketBase | Meta: {"error":"Something went wrong."}
+2026-04-29 15:37:15 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:82:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:15 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:82:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:16 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listInventory (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:97:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory?expand=accession_id,accession_id.media_attachments_via_entity_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:16 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listInventory (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:97:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory?expand=accession_id,accession_id.media_attachments_via_entity_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:18 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listAccessions (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:89:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/accessions?expand=intake_id,media_attachments_via_entity_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:18 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listAccessions (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:89:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/accessions?expand=intake_id,media_attachments_via_entity_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:19 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listInventory (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:97:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory?expand=accession_id,accession_id.media_attachments_via_entity_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:19 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listInventory (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:97:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory?expand=accession_id,accession_id.media_attachments_via_entity_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:20 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listAccessions (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:89:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/accessions?expand=intake_id,media_attachments_via_entity_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:20 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listAccessions (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:89:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/accessions?expand=intake_id,media_attachments_via_entity_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:21 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listInventory (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:97:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory?expand=accession_id,accession_id.media_attachments_via_entity_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:21 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listInventory (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:97:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory?expand=accession_id,accession_id.media_attachments_via_entity_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:22 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listAccessions (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:89:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/accessions?expand=intake_id,media_attachments_via_entity_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:22 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listAccessions (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:89:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/accessions?expand=intake_id,media_attachments_via_entity_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:23 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:82:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes?expand=donation_item_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:23 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.listAllSubmissions (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:226:16)
+    at async listAllSubmissions (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:98:24) | Meta: {"method":"GET","url":"/api/v1/forms/admin/submissions?status=pending","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:23 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object._listRecords (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:43:16)
+    at async listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:82:24) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes?expand=donation_item_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:23 [error]: ClientResponseError 0: Something went wrong.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.listAllSubmissions (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formService.js:226:16)
+    at async listAllSubmissions (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/formController.js:98:24) | Meta: {"method":"GET","url":"/api/v1/forms/admin/submissions?status=pending","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 15:37:45 [error]: CRITICAL: PocketBase did not come online after 10 seconds.
+2026-04-29 15:44:25 [error]: Post-submission hook failed for artifact-movement: Failed to create record.
+2026-04-29 15:44:47 [error]: Post-submission hook failed for artifact-health: FAILED_PB_SYNC: User system could not be mapped to a PocketBase ID. Creation aborted.
+2026-04-29 15:49:04 [error]: Post-submission hook failed for artifact-movement: Failed to create record.
+2026-04-29 15:49:19 [error]: Post-submission hook failed for artifact-health: Failed to create record.
+2026-04-29 15:53:29 [error]: Error in processMovementTrailForm: Failed to create record. | Meta: {"data":{"data":{"id":{"code":"validation_required","message":"Cannot be blank."}},"message":"Failed to create record.","status":400}}
+2026-04-29 15:53:29 [error]: Post-submission hook failed for artifact-movement: Failed to create record.
+2026-04-29 15:54:37 [error]: Error in processHealthReportForm: Failed to create record. | Meta: {"data":{"data":{"reported_by":{"code":"validation_required","message":"Cannot be blank."}},"message":"Failed to create record.","status":400}}
+2026-04-29 15:54:37 [error]: Post-submission hook failed for artifact-health: Failed to create record.
+2026-04-29 15:55:37 [error]: Error in processHealthReportForm: Failed to create record. | Meta: {"data":{"data":{"reported_by":{"code":"validation_required","message":"Cannot be blank."}},"message":"Failed to create record.","status":400}}
+2026-04-29 15:55:37 [error]: Post-submission hook failed for artifact-health: Failed to create record.
+2026-04-29 15:58:18 [error]: Error in processHealthReportForm: Failed to create record. | Meta: {"data":{"data":{"reported_by":{"code":"validation_required","message":"Cannot be blank."}},"message":"Failed to create record.","status":400}}
+2026-04-29 15:58:18 [error]: Post-submission hook failed for artifact-health: Failed to create record.
+2026-04-29 15:59:52 [error]: Error in processHealthReportForm: Failed to create record. | Meta: {"data":{"data":{"reported_by":{"code":"validation_missing_rel_records","message":"Failed to find all relation records with the provided ids."}},"message":"Failed to create record.","status":400}}
+2026-04-29 15:59:52 [error]: Post-submission hook failed for artifact-health: Failed to create record.
+2026-04-29 16:03:38 [error]: Auto-derivation failed for fb165459184f485: Failed to update record.
+2026-04-29 16:20:26 [error]: PB SDK Upload Error Failed to create record. | Meta: {"data":{"data":{"id":{"code":"validation_required","message":"Cannot be blank."}},"message":"Failed to create record.","status":400},"status":400}
+2026-04-29 16:20:26 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PocketBaseService.uploadInternal (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/pocketbaseService.js:267:22)
+    at async Object.attachMedia (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/mediaService.js:17:24)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/routes/mediaRoutes.js:42:24 | Meta: {"method":"POST","url":"/api/v1/media/upload","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 16:21:56 [error]: CRITICAL: Failed to auto-provision PocketBase service account. | Meta: {"error":"Cannot read properties of undefined (reading 'collection')"}
+2026-04-29 17:26:05 [error]: Error processing external intake: Failed to create record.
+2026-04-29 17:26:05 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formPipelineService.js:105:36
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formPipelineService.js:28:16)
+    at async processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:126:24) | Meta: {"method":"POST","url":"/api/v1/acquisitions/external/ef3e03cbf3e9053","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}

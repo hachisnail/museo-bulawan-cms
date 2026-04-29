@@ -39,7 +39,7 @@ export const login = async (req, res, next) => {
 
             res.status(200).json({ 
                 message: "Logged in successfully",
-                user: { id: user.id, username: user.username, role: user.role }
+                user: { id: user.id, username: user.username, role: user.role, fname: user.fname, lname: user.lname, email: user.email }
             });
         });
     })(req, res, next);
@@ -78,7 +78,8 @@ export const logout = (req, res, next) => {
 
 export const check = async (req, res) => {
     if (req.isAuthenticated() && req.session.loginInstanceId === req.user.current_session_id) {
-        res.status(200).json({ valid: true, user: req.user });
+        const { id, username, role, fname, lname, email } = req.user;
+        res.status(200).json({ valid: true, user: { id, username, role, fname, lname, email } });
     } else {
         res.status(401).json({ error: "No active session" });
     }

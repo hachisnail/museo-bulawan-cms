@@ -1,6 +1,7 @@
 import PocketBase from "pocketbase";
 import { EventSource } from "eventsource";
 import fs from "fs";
+import crypto from "crypto";
 import { notificationService } from "./notificationService.js";
 
 // Attach it to the global scope so the PocketBase SDK can find it
@@ -10,10 +11,36 @@ import { env } from "../config/env.js";
 import { logger } from "../utils/logger.js";
 import { sseManager } from "../utils/sseFactory.js";
 
+function sanitize(collection, record) {
+  const map = {
+    intakes: (r) => ({
+      id: r.id,
+      proposed_item_name: r.proposed_item_name,
+      status: r.status
+    }),
+    accessions: (r) => ({
+      id: r.id,
+      accession_number: r.accession_number,
+      status: r.status
+    }),
+    inventory: (r) => ({
+      id: r.id,
+      catalog_number: r.catalog_number,
+      current_location: r.current_location
+    })
+  };
+
+  return map[collection] ? map[collection](record) : { id: record.id };
+}
+
 class PocketBaseService {
   constructor() {
     this.pb = new PocketBase(env.pb.url);
     this.pb.autoCancellation(false);
+  }
+
+  _genId() {
+    return crypto.randomBytes(8).toString('hex').substring(0, 15);
   }
 
   async initialize(retries = 5) {
@@ -149,34 +176,48 @@ async startBridging() {
     }
   }
 
-  async syncUser({ username, email, password, fname, lname }) {
+  async syncUser(user) {
     try {
+      const externalId = user.id || user.external_id;
       const users = await this.pb
-        .collection("users")
-        .getFullList({ filter: `email="${email}"` });
+        .collection("app_users")
+        .getFullList({ filter: `external_id="${externalId}"` });
 
       const pbPayload = {
-        username,
-        email,
-        emailVisibility: true,
-        name: `${fname} ${lname}`.trim(),
+        external_id: externalId,
+        email: user.email,
+        role: user.role || 'guest',
+        name: user.name || `${user.fname || ''} ${user.lname || ''}`.trim(),
+        title: user.title || '',
+        phone: user.phone || '',
+        address: user.address || '',
       };
 
-      if (password) {
-        pbPayload.password = password;
-        pbPayload.passwordConfirm = password;
-      }
-
       if (users.length > 0) {
-        await this.pb.collection("users").update(users[0].id, pbPayload);
-        logger.info(`PocketBase User updated: ${email}`);
+        await this.pb.collection("app_users").update(users[0].id, pbPayload);
+        logger.info(`App User updated in PB: ${user.email}`);
       } else {
-        await this.pb.collection("users").create(pbPayload);
-        logger.info(`PocketBase User created: ${email}`);
+        // Manual ID generation to fix "id cannot be blank" error
+        const manualId = crypto.randomBytes(8).toString('hex').substring(0, 15);
+        await this.pb.collection("app_users").create({
+            id: manualId,
+            ...pbPayload
+        });
+        logger.info(`App User created in PB: ${user.email} with ID ${manualId}`);
       }
     } catch (error) {
-      logger.error(`Failed to sync user to PB`, { error: error.message });
-      throw new Error("PB_SYNC_FAILED");
+      logger.error(`Failed to sync user to PB`, { error: error.message, data: error.data });
+      // Non-blocking error
+    }
+  }
+
+  async getAppUserId(externalId) {
+    if (!externalId) return null;
+    try {
+      const user = await this.pb.collection("app_users").getFirstListItem(`external_id="${externalId}"`);
+      return user.id;
+    } catch {
+      return null;
     }
   }
 
@@ -191,14 +232,22 @@ async startBridging() {
           `A new entry was added to ${collectionName}: ${e.record.title || e.record.id}`,
         );
       }
-      // Keep the existing SSE broadcast for UI updates
-      sseManager.broadcast(collectionName, e.action, e.record);
+      // Sanitize the record before broadcasting it to clients
+      const safeRecord = sanitize(collectionName, e.record);
+      if (safeRecord) {
+        sseManager.broadcast(collectionName, e.action, safeRecord);
+      }
     });
   }
 
-async uploadInternal(collectionName, fileInfo, additionalData) {
+  async uploadInternal(collectionName, fileInfo, additionalData, fieldName = "attachments") {
     try {
       const formData = new FormData();
+
+      // Ensure we have an ID if not provided (PocketBase validation sometimes requires this for custom schemas)
+      if (!additionalData.id) {
+        formData.append('id', this._genId());
+      }
 
       // Append all other metadata fields
       for (const key in additionalData) {
@@ -211,15 +260,54 @@ async uploadInternal(collectionName, fileInfo, additionalData) {
       const files = Array.isArray(fileInfo) ? fileInfo : [fileInfo];
 
       for (const file of files) {
-        const fileStream = fs.createReadStream(file.path);
-        // Ensure the field name matches what PocketBase expects (e.g., 'attachments' or 'file')
-        formData.append("attachments", fileStream, file.originalname);
+        // READ: Use Blob for modern undici/fetch FormData compatibility in Node
+        const buffer = fs.readFileSync(file.path);
+        const blob = new Blob([buffer], { type: file.mimetype });
+        formData.append(fieldName, blob, file.originalname);
       }
+
+      // DEBUG: Log the final FormData keys to identify what's being sent
+      const entries = {};
+      for (const [key, value] of formData.entries()) {
+          entries[key] = value instanceof Blob ? `[Blob: ${value.type}]` : value;
+      }
+      logger.info(`PB Upload Attempt: ${collectionName}`, { entries });
 
       const record = await this.pb.collection(collectionName).create(formData);
       return record;
     } catch (error) {
-      logger.error(`PB SDK Upload Error`, { error: error.message });
+      logger.error(`PB SDK Upload Error`, { 
+        message: error.message, 
+        data: error.data, // This contains the specific validation errors from PB
+        status: error.status 
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Upload file(s) to a specific field on an existing record.
+   * Unlike uploadInternal (which creates), this UPDATES an existing record.
+   */
+  async uploadToField(collectionName, recordId, fieldName, fileInfo) {
+    try {
+      const formData = new FormData();
+      const files = Array.isArray(fileInfo) ? fileInfo : [fileInfo];
+
+      for (const file of files) {
+        const buffer = fs.readFileSync(file.path);
+        const blob = new Blob([buffer], { type: file.mimetype });
+        formData.append(fieldName, blob, file.originalname);
+      }
+
+      const record = await this.pb.collection(collectionName).update(recordId, formData);
+      return record;
+    } catch (error) {
+      logger.error(`PB SDK Field Upload Error`, { 
+        message: error.message, 
+        data: error.data,
+        status: error.status
+      });
       throw error;
     }
   }

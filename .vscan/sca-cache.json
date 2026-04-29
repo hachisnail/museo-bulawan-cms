@@ -4746,6 +4746,55 @@
       "version": "2.0.4",
       "vulnerabilities": [],
       "queriedAt": "2026-04-28T08:27:51.144Z"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@redis/bloom",
+      "version": "5.12.1",
+      "vulnerabilities": [],
+      "queriedAt": "2026-04-28T16:17:07.049Z"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@redis/client",
+      "version": "5.12.1",
+      "vulnerabilities": [],
+      "queriedAt": "2026-04-28T16:17:07.049Z"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@redis/json",
+      "version": "5.12.1",
+      "vulnerabilities": [],
+      "queriedAt": "2026-04-28T16:17:07.049Z"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@redis/search",
+      "version": "5.12.1",
+      "vulnerabilities": [],
+      "queriedAt": "2026-04-28T16:17:07.049Z"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@redis/time-series",
+      "version": "5.12.1",
+      "vulnerabilities": [],
+      "queriedAt": "2026-04-28T16:17:07.049Z"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "cluster-key-slot",
+      "version": "1.1.2",
+      "vulnerabilities": [],
+      "queriedAt": "2026-04-28T16:17:07.049Z"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "redis",
+      "version": "5.12.1",
+      "vulnerabilities": [],
+      "queriedAt": "2026-04-28T16:17:07.049Z"
     }
   ]
 }

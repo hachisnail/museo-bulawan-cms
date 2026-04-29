@@ -7,23 +7,30 @@ import passport from './config/passport.js';
 import routes from './routes/index.js';
 import { logger } from './utils/logger.js';
 import { errorHandler } from './middlewares/errorHandler.js'; 
+import { csrfProtection } from './middlewares/csrfHandler.js';
 import { env } from './config/env.js'; // <-- Missing in your file
 import { corsOptions } from './config/cors.js'; // <-- Missing in your file
+import { globalLimiter } from './middlewares/rateLimiter.js';
 
 const app = express();
 
 app.set('trust proxy', 1);
 
-app.use(helmet());
+app.use(helmet({
+    crossOriginResourcePolicy: false,
+}));
 
 // Apply CORS options BEFORE routes
 app.use(cors(corsOptions));
+
+// Apply global rate limiting
+app.use(globalLimiter);
 
 app.use(morgan('dev', {
     stream: { write: (message) => logger.info(message.trim()) }
 }));
 
-app.use(express.json()); 
+app.use(express.json({ limit: '64kb' }))
 app.use(express.urlencoded({ extended: true })); 
 
 app.use(session({
@@ -39,6 +46,9 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 8 
     }
 }));
+
+// Apply CSRF protection immediately after session is established
+app.use(csrfProtection);
 
 app.use(passport.initialize());
 app.use(passport.session());

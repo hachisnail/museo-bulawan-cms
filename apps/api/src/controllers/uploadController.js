@@ -45,21 +45,27 @@ export const handleDonationUpload = (req, res, next) => {
 
         const taskId = crypto.randomBytes(8).toString('hex');
         
-        // Extract form data (e.g., donor name, message)
-        const recordData = req.body;
+        // Extract metadata
+        const { formId, ...data } = req.body;
+
+        if (!formId) {
+            return res.status(400).json({ error: "formId is required for donation submissions." });
+        }
 
         uploadQueue.add({
             taskId,
-            // Tag it as a guest user
             userId: req.user?.id || 'guest_donation', 
-            // Hardcode the destination collection so guests can't upload to 'artifacts'
-            collection: 'donations', 
+            collection: 'form_submissions', // Consolidated
             fileData: req.file,
-            recordData: recordData
+            recordData: {
+                form_id: formId,
+                data: data,
+                status: 'pending'
+            }
         });
 
         res.status(202).json({ 
-            message: "Donation received and file queued for processing.",
+            message: "Donation received and queued for processing.",
             taskId: taskId
         });
 

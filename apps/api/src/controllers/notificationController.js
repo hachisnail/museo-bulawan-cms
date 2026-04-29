@@ -44,14 +44,11 @@ export const markAsRead = async (req, res, next) => {
         const userId = req.user.id;
         const { id: notificationId } = req.params;
 
-        // Use INSERT IGNORE in case they spam the read button
-        const sql = `
-            INSERT IGNORE INTO user_notification_reads (user_id, notification_id)
-            SELECT ?, id FROM notifications
-            WHERE ${TARGET_CONDITION}
-        `;
-        
-        await db.query(sql, [userId, notificationId]);
+        // Simple direct insert — mark this specific notification as read for this user
+        await db.query(
+            'INSERT IGNORE INTO user_notification_reads (user_id, notification_id) VALUES (?, ?)',
+            [userId, notificationId]
+        );
         
         res.json({ message: "Notification marked as read." });
     } catch (error) {

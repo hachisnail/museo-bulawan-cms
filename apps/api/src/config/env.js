@@ -45,6 +45,9 @@ const envSchema = Joi.object({
     MINIO_SECRET_KEY: minioRequiredStr,
     MINIO_REGION: Joi.string().default('us-east-1'),
 
+    // Redis (optional — used for OTP store in production)
+    REDIS_URL: Joi.string().optional().default(''),
+
 }).unknown().required();
 
 const { error, value: envVars } = envSchema.validate(process.env);
@@ -90,5 +93,6 @@ export const env = {
         accessKey: envVars.MINIO_ACCESS_KEY,
         secret: envVars.MINIO_SECRET_KEY,
         region: envVars.MINIO_REGION
-    }
+    },
+    redisUrl: envVars.REDIS_URL || ''
 };

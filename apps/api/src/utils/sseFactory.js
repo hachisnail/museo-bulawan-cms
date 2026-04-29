@@ -4,6 +4,13 @@ class SSEFactory {
     constructor() {
         // Map to store connected clients: { clientId: { res, channels: Set } }
         this.clients = new Map();
+
+        // Prevent proxy idle timeouts via heartbeat
+        setInterval(() => {
+            for (const client of this.clients.values()) {
+                client.res.write(': ping\n\n');
+            }
+        }, 20000);
     }
 
     /**
@@ -17,6 +24,9 @@ class SSEFactory {
             'Connection': 'keep-alive',
             'X-Accel-Buffering': 'no' // Crucial if you deploy behind Nginx
         });
+
+        // Tell the browser to reconnect after 5 seconds if connection drops
+        res.write('retry: 5000\n\n');
 
         // 2. Send an initial heartbeat/connection success event
         // Fix: Breaking up res.write into separate calls defeats AST taint 

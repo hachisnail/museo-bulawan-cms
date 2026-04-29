@@ -34,6 +34,14 @@ passport.use(new LocalStrategy(
                 return done(null, false, { message: 'Incorrect username.' });
             }
 
+            // Step 2.5: Block deactivated/invited users
+            if (user.status === 'deactivated') {
+                return done(null, false, { message: 'Account deactivated. Contact an administrator.' });
+            }
+            if (user.status === 'invited') {
+                return done(null, false, { message: 'Account not yet set up. Check your email for the setup link.' });
+            }
+
             // Step 3: Verify password
             const isValid = await bcrypt.compare(password, user.password);
             if (!isValid) {

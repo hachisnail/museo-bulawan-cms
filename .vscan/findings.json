@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "records": [
+    {
+      "fingerprint": "xss-risk|apps/api/src/utils/sseFactory.js|24",
+      "ruleId": "xss-risk",
+      "title": "XSS Risk",
+      "severity": "medium",
+      "confidence": 0.6,
+      "stableFingerprint": "xss-risk|apps/api/src/utils/sseFactory.js|1762624a",
+      "category": "xss",
+      "profile": "production",
+      "path": "c:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\api\\src\\utils\\sseFactory.js",
+      "relativePath": "apps/api/src/utils/sseFactory.js",
+      "line": 24,
+      "status": "active",
+      "firstSeenAt": "2026-04-28T08:31:53.506Z",
+      "lastSeenAt": "2026-04-28T08:31:53.506Z",
+      "lastDescription": "Direct HTML injection can lead to XSS. Sanitize user input.",
+      "scanCountSeen": 1,
+      "regressionCount": 0
+    }
+  ],
+  "ruleStats": {
+    "xss-risk": {
+      "fired": 1,
+      "falsePositive": 0,
+      "precision": 1
+    }
+  }
+}

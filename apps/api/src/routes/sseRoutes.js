@@ -1,18 +1,15 @@
 import { Router } from 'express';
 import crypto from 'crypto'; 
 import { sseManager } from '../utils/sseFactory.js';
-import { buildAbility } from '../middlewares/authorizationHandler.js';
+import { requireAuth, buildAbility } from '../middlewares/authorizationHandler.js';
 
 const router = Router();
 
+router.use(requireAuth);
 router.use(buildAbility);
 
 router.get('/stream', (req, res) => {
-    if (!req.user || req.user.role === 'guest') {
-        return res.status(401).json({ error: "Unauthorized. You must be logged in to access real-time streams." });
-    }
-
-    // 1. Initialize with Global and Role-based channels
+    // Channels determined by authenticated user's RBAC abilities
     const allowedChannels = [
         'global', 
         `role_${req.user.role}`

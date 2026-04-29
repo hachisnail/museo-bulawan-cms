@@ -13,6 +13,10 @@ import ResetPassword from './pages/ResetPassword';
 import MainLayout from './components/MainLayout';
 import Management from './pages/Management';
 import Profile from './pages/Profile';
+import Intakes from './pages/Intakes';
+import Accessions from './pages/Accessions';
+import Inventory from './pages/Inventory';
+import Home from './pages/Home';
 
 function App() {
     const navigate = useNavigate();
@@ -36,6 +40,7 @@ function App() {
     return (
 <Routes>
             {/* Public Routes */}
+            <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/onboard" element={<Onboard />} />
             <Route path="/setup" element={<SetupAccount />} />
@@ -46,6 +51,9 @@ function App() {
             <Route element={<ProtectedRoute />}>
                 <Route element={<MainLayout />}>
                     <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/intakes" element={<Intakes />} />
+                    <Route path="/accessions" element={<Accessions />} />
+                    <Route path="/inventory" element={<Inventory />} />
                     <Route path="/management" element={<Management />} />
                     <Route path="/settings" element={<Profile />} />
                     {/* <Route path="/audit-logs" element={<AuditLogs />} /> */}

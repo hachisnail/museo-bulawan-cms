@@ -5,8 +5,23 @@ import { ulid } from "ulid";
 import { logger } from "../utils/logger.js";
 import { sendEmail } from "../utils/mailer.js";
 import { env } from "../config/env.js";  
+import { pbService } from "./pocketbaseService.js";
+import { sseManager } from "../utils/sseFactory.js";
+import { auditService } from "./auditService.js";
 
 const generateToken = () => crypto.randomBytes(32).toString('hex');
+
+// Centralized password policy
+const PASSWORD_MIN_LENGTH = 8;
+const validatePasswordStrength = (password) => {
+    if (!password || password.length < PASSWORD_MIN_LENGTH) {
+        throw new Error(`PASSWORD_TOO_WEAK: Password must be at least ${PASSWORD_MIN_LENGTH} characters.`);
+    }
+    // At least one uppercase, one lowercase, one digit
+    if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password)) {
+        throw new Error('PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.');
+    }
+};
 
 export const userService = {
 
@@ -36,12 +51,11 @@ async onboardFirstAdmin({ fname, lname, email, username, password }) {
             const hasUsers = await this.hasAnyUsers();
             if (hasUsers) throw new Error('ALREADY_ONBOARDED');
 
+            validatePasswordStrength(password);
             const hashedPassword = await bcrypt.hash(password, 10);
             
-            // 2. Generate the ULID
             const userId = ulid(); 
 
-            // 3. Include the 'id' in the INSERT statement
             await db.query(
                 `INSERT INTO users (id, fname, lname, email, username, password, role, status) 
                  VALUES (?, ?, ?, ?, ?, ?, 'admin', 'active')`,
@@ -51,15 +65,22 @@ async onboardFirstAdmin({ fname, lname, email, username, password }) {
             logger.info('First admin onboarded', {
                 action: 'CREATE',
                 resource: 'User',
-                userId, // <-- Use the generated ULID
+                userId,
                 username,
                 email,
                 role: 'admin'
             });
 
+            // FIX: Pass the generated userId so PB can link via external_id
+            await pbService.syncUser({ id: userId, email, role: 'admin', fname, lname });
+
             return true;
         } catch (error) {
-            // ... error handling ...
+            logger.error('Failed to onboard first admin', {
+                action: 'CREATE',
+                resource: 'User',
+                error: error.message
+            });
             throw error;
         }
     },
@@ -93,7 +114,7 @@ async onboardFirstAdmin({ fname, lname, email, username, password }) {
     async getUserById(id) {
         try {
             const [user] = await db.query(
-                'SELECT id, username, role, fname, lname, email, current_session_id FROM users WHERE id = ?',
+                'SELECT id, username, role, fname, lname, email, status, current_session_id FROM users WHERE id = ?',
                 [id]
             );
 
@@ -132,26 +153,28 @@ async onboardFirstAdmin({ fname, lname, email, username, password }) {
                 throw new Error('EMAIL_EXISTS');
             }
 
- const actionToken = generateToken();
+            const actionToken = generateToken();
             const expires = new Date(Date.now() + 48 * 60 * 60 * 1000);
-            
-            // 4. Generate the ULID for the invited user
             const userId = ulid();
 
-            // 5. Include the 'id' in the INSERT statement
             await db.query(
                 `INSERT INTO users (id, fname, lname, email, role, action_token, action_token_expires, status) 
                  VALUES (?, ?, ?, ?, ?, ?, ?, 'invited')`,
                 [userId, fname, lname, email, role || 'guest', actionToken, expires]
             );
 
+            // Send invite email (single source of truth)
             const setupLink = `${env.frontendUrl}/setup?token=${actionToken}`;
-            await sendEmail({ /* ... */ });
+            await sendEmail({
+                to: email,
+                subject: 'You have been invited to Museo Bulawan',
+                html: `<p>Hello ${fname},</p><p>You've been invited to join the museum system as <strong>${role || 'guest'}</strong>.</p><p><a href="${setupLink}">Click here to set up your account</a></p><p>This link expires in 48 hours.</p>`
+            });
 
             logger.info('User invited successfully', {
                 action: 'CREATE',
                 resource: 'User',
-                newUserId: userId, // <-- Use the generated ULID
+                newUserId: userId,
                 email,
                 role: role || 'guest'
             });
@@ -169,10 +192,66 @@ async onboardFirstAdmin({ fname, lname, email, username, password }) {
         }
     },
 
+    /**
+     * PROVISION DONOR: Specifically for automatic visitor/donor account creation
+     * during the intake process. Creates a real MariaDB account with a temp password.
+     */
+    async provisionDonor({ fname, lname, email, title, phone, address }) {
+        try {
+            // Check if user already exists in MariaDB
+            const [existing] = await db.query('SELECT id, username FROM users WHERE email = ?', [email]);
+            if (existing) {
+                logger.info('Using existing MariaDB account for donor', { email, userId: existing.id });
+                // Resync to ensure PB has latest info
+                await pbService.syncUser({ id: existing.id, email, role: 'visitor', fname, lname, title, phone, address });
+                return { userId: existing.id, isNew: false, username: existing.username };
+            }
+
+            const userId = ulid();
+            const tempPassword = crypto.randomBytes(6).toString('hex');
+            const hashedPassword = await bcrypt.hash(tempPassword, 10);
+            const username = email.split('@')[0] + '_' + crypto.randomBytes(2).toString('hex');
+
+            await db.query(
+                `INSERT INTO users (id, fname, lname, email, username, password, role, status) 
+                 VALUES (?, ?, ?, ?, ?, ?, 'visitor', 'active')`,
+                [userId, fname, lname, email, username, hashedPassword]
+            );
+
+            // Sync to PB
+            await pbService.syncUser({ 
+                id: userId, 
+                email, 
+                role: 'visitor', 
+                fname, 
+                lname,
+                title,
+                phone,
+                address
+            });
+
+            logger.info('Donor provisioned successfully', {
+                action: 'CREATE',
+                resource: 'User',
+                userId,
+                email
+            });
+
+            return { userId, tempPassword, username, isNew: true };
+        } catch (error) {
+            logger.error('Failed to provision donor', {
+                action: 'CREATE',
+                resource: 'User',
+                error: error.message
+            });
+            throw error;
+        }
+    },
+
     async completeSetup({ token, username, password }) {
         try {
             const [user] = await db.query(
-                'SELECT id FROM users WHERE action_token = ? AND action_token_expires > NOW()',
+                'SELECT id, fname, lname, email, role FROM users WHERE action_token = ? AND action_token_expires > NOW()',
                 [token]
             );
 
@@ -190,14 +269,10 @@ async onboardFirstAdmin({ fname, lname, email, username, password }) {
             );
 
             if (usernameCheck) {
-                logger.warn('Username already taken during setup', {
-                    action: 'UPDATE',
-                    resource: 'User',
-                    username
-                });
                 throw new Error('USERNAME_TAKEN');
             }
 
+            validatePasswordStrength(password);
             const hashedPassword = await bcrypt.hash(password, 10);
 
             await db.query(
@@ -214,6 +289,9 @@ async onboardFirstAdmin({ fname, lname, email, username, password }) {
                 userId: user.id,
                 username
             });
+
+            // FIX: Pass the user's ULID id so PB can link via external_id
+            await pbService.syncUser({ id: user.id, email: user.email, role: user.role, fname: user.fname, lname: user.lname });
 
             return true;
 
@@ -289,13 +367,10 @@ async onboardFirstAdmin({ fname, lname, email, username, password }) {
             );
 
             if (!user) {
-                logger.warn('Invalid password reset token', {
-                    action: 'UPDATE',
-                    resource: 'User'
-                });
                 throw new Error('INVALID_TOKEN');
             }
 
+            validatePasswordStrength(newPassword);
             const hashedPassword = await bcrypt.hash(newPassword, 10);
 
             await db.query(
@@ -317,6 +392,224 @@ async onboardFirstAdmin({ fname, lname, email, username, password }) {
                 resource: 'User',
                 error: error.message
             });
+            throw error;
+        }
+    },
+
+    async listUsers() {
+        try {
+            // FIX: db.query returns rows directly from MariaDB pool; do NOT destructure
+            const rows = await db.query(
+                'SELECT id, username, email, role, fname, lname, status, created_at FROM users ORDER BY created_at DESC'
+            );
+            return Array.isArray(rows) ? rows : [];
+        } catch (error) {
+            logger.error('Failed to list users', {
+                action: 'READ',
+                resource: 'User',
+                error: error.message
+            });
+            throw error;
+        }
+    },
+
+    // ==========================================
+    // SELF-EDIT: Any authenticated user
+    // ==========================================
+
+    async updateProfile(userId, { fname, lname }) {
+        try {
+            await db.query(
+                'UPDATE users SET fname = ?, lname = ? WHERE id = ?',
+                [fname, lname, userId]
+            );
+
+            // Sync name change to PocketBase
+            const [user] = await db.query('SELECT id, email, role, fname, lname FROM users WHERE id = ?', [userId]);
+            if (user) {
+                await pbService.syncUser({ id: user.id, email: user.email, role: user.role, fname: user.fname, lname: user.lname });
+            }
+
+            await auditService.log({
+                userId,
+                action: 'UPDATE',
+                resource: 'User',
+                details: { message: 'Profile updated', fields: { fname, lname } }
+            });
+
+            logger.info('Profile updated', { action: 'UPDATE', resource: 'User', userId });
+            return user;
+        } catch (error) {
+            logger.error('Failed to update profile', { action: 'UPDATE', resource: 'User', userId, error: error.message });
+            throw error;
+        }
+    },
+
+    async changePassword(userId, { currentPassword, newPassword }) {
+        try {
+            const [user] = await db.query('SELECT id, password FROM users WHERE id = ?', [userId]);
+            if (!user) throw new Error('USER_NOT_FOUND');
+
+            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            if (!isMatch) throw new Error('INCORRECT_PASSWORD');
+
+            validatePasswordStrength(newPassword);
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+            await db.query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, userId]);
+
+            await auditService.log({
+                userId,
+                action: 'UPDATE',
+                resource: 'User',
+                details: { message: 'Password changed by user' }
+            });
+
+            logger.info('Password changed', { action: 'UPDATE', resource: 'User', userId });
+            return true;
+        } catch (error) {
+            logger.error('Failed to change password', { action: 'UPDATE', resource: 'User', userId, error: error.message });
+            throw error;
+        }
+    },
+
+    // ==========================================
+    // ADMIN MANAGEMENT
+    // ==========================================
+
+    async updateUserById(adminId, targetId, { fname, lname, role, email }) {
+        try {
+            const [target] = await db.query('SELECT id, role FROM users WHERE id = ?', [targetId]);
+            if (!target) throw new Error('USER_NOT_FOUND');
+
+            // Prevent demoting yourself
+            if (adminId === targetId && role && role !== target.role) {
+                throw new Error('CANNOT_CHANGE_OWN_ROLE');
+            }
+
+            const fields = [];
+            const values = [];
+            if (fname !== undefined) { fields.push('fname = ?'); values.push(fname); }
+            if (lname !== undefined) { fields.push('lname = ?'); values.push(lname); }
+            if (role !== undefined)  { fields.push('role = ?');  values.push(role);  }
+            if (email !== undefined) { fields.push('email = ?'); values.push(email); }
+
+            if (fields.length === 0) throw new Error('NO_FIELDS_TO_UPDATE');
+
+            values.push(targetId);
+            await db.query(`UPDATE users SET ${fields.join(', ')} WHERE id = ?`, values);
+
+            // Sync role/name change to PocketBase
+            const [updated] = await db.query('SELECT id, email, role, fname, lname FROM users WHERE id = ?', [targetId]);
+            if (updated) {
+                await pbService.syncUser({ id: updated.id, email: updated.email, role: updated.role, fname: updated.fname, lname: updated.lname });
+            }
+
+            await auditService.log({
+                userId: adminId,
+                action: 'UPDATE',
+                resource: 'User',
+                details: { message: `Admin updated user ${targetId}`, changes: { fname, lname, role, email } }
+            });
+
+            logger.info('User updated by admin', { action: 'UPDATE', resource: 'User', adminId, targetId });
+            return updated;
+        } catch (error) {
+            logger.error('Failed to update user', { action: 'UPDATE', resource: 'User', targetId, error: error.message });
+            throw error;
+        }
+    },
+
+    async deactivateUser(adminId, targetId) {
+        try {
+            const [target] = await db.query('SELECT id, status FROM users WHERE id = ?', [targetId]);
+            if (!target) throw new Error('USER_NOT_FOUND');
+            if (adminId === targetId) throw new Error('CANNOT_DEACTIVATE_SELF');
+
+            await db.query(
+                "UPDATE users SET status = 'deactivated', current_session_id = NULL WHERE id = ?",
+                [targetId]
+            );
+
+            // Force logout via SSE
+            sseManager.broadcast(`user_${targetId}`, 'force_logout', {
+                message: 'Your account has been deactivated by an administrator.'
+            });
+
+            await auditService.log({
+                userId: adminId,
+                action: 'DEACTIVATE',
+                resource: 'User',
+                details: { message: `Admin deactivated user ${targetId}` }
+            });
+
+            logger.info('User deactivated', { action: 'DEACTIVATE', resource: 'User', adminId, targetId });
+            return true;
+        } catch (error) {
+            logger.error('Failed to deactivate user', { action: 'DEACTIVATE', resource: 'User', targetId, error: error.message });
+            throw error;
+        }
+    },
+
+    async forceLogoutUser(adminId, targetId) {
+        try {
+            if (adminId === targetId) throw new Error('CANNOT_FORCE_LOGOUT_SELF');
+
+            await db.query('UPDATE users SET current_session_id = NULL WHERE id = ?', [targetId]);
+
+            sseManager.broadcast(`user_${targetId}`, 'force_logout', {
+                message: 'Your session has been terminated by an administrator.'
+            });
+
+            await auditService.log({
+                userId: adminId,
+                action: 'FORCE_LOGOUT',
+                resource: 'User',
+                details: { message: `Admin force-logged-out user ${targetId}` }
+            });
+
+            logger.info('User force-logged-out', { action: 'FORCE_LOGOUT', resource: 'User', adminId, targetId });
+            return true;
+        } catch (error) {
+            logger.error('Failed to force logout user', { action: 'FORCE_LOGOUT', resource: 'User', targetId, error: error.message });
+            throw error;
+        }
+    },
+
+    async resendInvite(adminId, targetId) {
+        try {
+            const [user] = await db.query(
+                "SELECT id, fname, email, role FROM users WHERE id = ? AND status = 'invited'",
+                [targetId]
+            );
+            if (!user) throw new Error('NOT_AN_INVITED_USER');
+
+            const actionToken = generateToken();
+            const expires = new Date(Date.now() + 48 * 60 * 60 * 1000);
+
+            await db.query(
+                'UPDATE users SET action_token = ?, action_token_expires = ? WHERE id = ?',
+                [actionToken, expires, targetId]
+            );
+
+            const setupLink = `${env.frontendUrl}/setup?token=${actionToken}`;
+            await sendEmail({
+                to: user.email,
+                subject: 'Reminder: Set up your Museo Bulawan account',
+                html: `<p>Hello ${user.fname},</p><p>This is a reminder to set up your account as <strong>${user.role}</strong>.</p><p><a href="${setupLink}">Click here to set up your account</a></p><p>This link expires in 48 hours.</p>`
+            });
+
+            await auditService.log({
+                userId: adminId,
+                action: 'RESEND_INVITE',
+                resource: 'User',
+                details: { message: `Admin resent invite to ${user.email}` }
+            });
+
+            logger.info('Invite resent', { action: 'RESEND_INVITE', resource: 'User', adminId, targetId });
+            return true;
+        } catch (error) {
+            logger.error('Failed to resend invite', { action: 'RESEND_INVITE', resource: 'User', targetId, error: error.message });
             throw error;
         }
     }

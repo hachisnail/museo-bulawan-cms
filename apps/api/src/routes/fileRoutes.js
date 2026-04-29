@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { getPrivateFile } from '../controllers/fileController.js';
-import { buildAbility } from '../middlewares/authorizationHandler.js';
+import { requireAuth, buildAbility } from '../middlewares/authorizationHandler.js';
 
 const router = Router();
 
+router.use(requireAuth);
 router.use(buildAbility);
 
 router.get('/:collection/:recordId/:filename', getPrivateFile);

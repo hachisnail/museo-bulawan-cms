@@ -610,3 +610,21 @@ sql: INSERT INTO users (id, fname, lname, email, username, password, role, statu
     at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
     at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formPipelineService.js:28:16)
     at async processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:126:24) | Meta: {"method":"POST","url":"/api/v1/acquisitions/external/ef3e03cbf3e9053","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 17:31:12 [error]: Error processing external intake: Failed to create record. | Meta: {"details":{"data":{"created_by":{"code":"validation_required","message":"Cannot be blank."},"updated_by":{"code":"validation_required","message":"Cannot be blank."},"version":{"code":"validation_required","message":"Cannot be blank."}},"message":"Failed to create record.","status":400}}
+2026-04-29 17:31:12 [error]: ClientResponseError 400: Failed to create record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formPipelineService.js:127:36
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formPipelineService.js:28:16)
+    at async processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:126:24) | Meta: {"method":"POST","url":"/api/v1/acquisitions/external/ef3e03cbf3e9053","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-29 17:37:24 [error]: PB SDK Field Upload Error Failed to update record. | Meta: {"data":{"data":{"signed_moa":{"code":"validation_invalid_mime_type","message":"\"chest_logs_55651nmovn.csv\" mime type must be one of: application/pdf, image/jpeg, image/png."}},"message":"Failed to update record.","status":400},"status":400}
+2026-04-29 17:37:24 [error]: Error uploading MOA: Failed to update record.
+2026-04-29 17:37:24 [error]: ClientResponseError 400: Failed to update record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/pocketbase/dist/pocketbase.es.mjs:1:37329
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async PocketBaseService.uploadToField (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/pocketbaseService.js:303:22)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:503:33
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.uploadMOA (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:495:16)
+    at async uploadMOA (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:197:27) | Meta: {"method":"POST","url":"/api/v1/acquisitions/accessions/3a9048209d2da49/moa","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}

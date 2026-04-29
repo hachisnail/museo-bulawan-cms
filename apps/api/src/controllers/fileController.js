@@ -62,18 +62,16 @@ export const getPrivateFile = async (req, res, next) => {
             });
             
             if (!response.ok) {
+                // Log the sensitive details to the SERVER console only
                 const errorBody = await response.text().catch(() => 'No body');
-                logger.error(`File fetch from PocketBase failed with status ${response.status}`, { fileUrl, errorBody });
+                logger.error(`File fetch from PocketBase failed with status ${response.status}`, { 
+                    fileUrl, 
+                    errorBody 
+                });
+                
+                // Return a safe, generic error to the CLIENT
                 return res.status(response.status).json({ 
-                    error: "File not found in storage.", 
-                    details: errorBody,
-                    debug: {
-                        resolvedUrl: fileUrl,
-                        collection,
-                        recordId,
-                        filename,
-                        hasToken: !!token
-                    }
+                    error: "File not found in storage or is inaccessible." 
                 });
             }
 

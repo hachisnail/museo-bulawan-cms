@@ -185,6 +185,37 @@ export const acquisitionService = {
 
 
     // ==========================================
+    // PHASE 1A: Register External Intake (Called by Pipeline)
+    // ==========================================
+    async registerExternalIntake(staffId, submissionId, donorAccountId, donorName, acquisitionMethod, itemDetails) {
+        return await globalMutex.runExclusive(`external_intake_${submissionId}_${itemDetails.itemName}`, async () => {
+            // 1. Create the donation item using the unified _createRecord (gets audited automatically)
+            const donationItem = await this._createRecord(staffId, 'donation_items', {
+                submission_id: submissionId,
+                item_name: itemDetails.itemName,
+                description: itemDetails.description,
+                quantity: itemDetails.quantity,
+                status: 'accepted'
+            });
+
+            // 2. Create the intake using the unified _createRecord
+            const intake = await this._createRecord(staffId, 'intakes', {
+                submission_id: submissionId,
+                donation_item_id: donationItem.id,
+                donor_account_id: donorAccountId,
+                proposed_item_name: itemDetails.itemName,
+                donor_info: donorName,
+                acquisition_method: acquisitionMethod,
+                status: 'under_review',
+                moa_status: 'pending'
+            });
+
+            return { intake, donationItem };
+        });
+    },
+
+
+    // ==========================================
     // PHASE 1B: Create Internal Intake (Item Decomposition - Step 27)
     // ==========================================
     async createInternalIntake(staffId, itemDetails, method, loanEndDate = null) {

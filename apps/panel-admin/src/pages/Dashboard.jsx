@@ -21,66 +21,105 @@ export default function Dashboard() {
         .slice(0, 50);
 
     return (
-        <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <header className="flex justify-between items-end">
+        <div className="max-w-6xl mx-auto space-y-10">
+            
+            {/* --- Header --- */}
+            <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-zinc-200 pb-6">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-                    <p className="text-[var(--text-secondary)] mt-1">
-                        Welcome back, <strong>{user?.username}</strong>. 
+                    <h1 className="text-2xl font-serif text-black uppercase tracking-widest">
+                        Archive Overview
+                    </h1>
+                    <p className="text-sm text-zinc-500 mt-1 font-light">
+                        Curator access granted for <span className="font-medium text-black">{user?.username}</span>.
                     </p>
                 </div>
-                <div className="flex items-center gap-2">
-                    <span className="text-xs uppercase tracking-wider font-semibold text-[var(--text-secondary)]">Live Status</span>
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel text-sm">
-                        <span className={`w-2 h-2 rounded-full ${status === 'open' ? 'bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)] animate-pulse' : 'bg-red-500'}`}></span>
-                        <span className="capitalize">{status}</span>
+                
+                <div className="flex items-center gap-3">
+                    <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-zinc-400">
+                        SSE Stream
+                    </span>
+                    <div className="flex items-center gap-2 px-3 py-1.5 border border-zinc-200 bg-white rounded-sm text-xs font-medium uppercase tracking-wider text-zinc-600 shadow-sm">
+                        <span className={`w-1.5 h-1.5 rounded-full ${status === 'open' ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                        {status}
                     </div>
                 </div>
             </header>
 
+            {/* --- Key Metrics --- */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="glass-panel p-6 rounded-2xl">
-                    <div className="text-[var(--text-secondary)] text-sm mb-2">Pending Reviews</div>
-                    <div className="text-4xl font-light">12</div>
+                <div className="border border-zinc-200 bg-white p-6 rounded-sm shadow-sm flex flex-col justify-between">
+                    <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400 mb-4">
+                        Pending Reviews
+                    </div>
+                    <div className="text-4xl font-serif text-black">
+                        12
+                    </div>
                 </div>
-                <div className="glass-panel p-6 rounded-2xl">
-                    <div className="text-[var(--text-secondary)] text-sm mb-2">Active Accessions</div>
-                    <div className="text-4xl font-light">4</div>
+                
+                <div className="border border-zinc-200 bg-white p-6 rounded-sm shadow-sm flex flex-col justify-between">
+                    <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400 mb-4">
+                        Active Accessions
+                    </div>
+                    <div className="text-4xl font-serif text-black">
+                        4
+                    </div>
                 </div>
-                <div className="glass-panel p-6 rounded-2xl relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-brand-600)] to-purple-600 opacity-20 group-hover:opacity-30 transition-opacity"></div>
-                    <div className="relative z-10">
-                        <div className="text-[var(--text-secondary)] text-sm mb-2 group-hover:text-white transition-colors">Cataloged Items</div>
-                        <div className="text-4xl font-light text-white">1,204</div>
+                
+                {/* Highlighted Metric Card */}
+                <div className="border border-zinc-900 bg-zinc-950 p-6 rounded-sm shadow-sm flex flex-col justify-between relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-1 h-full bg-[#D4AF37]"></div>
+                    <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400 mb-4 ml-2">
+                        Cataloged Items
+                    </div>
+                    <div className="text-4xl font-serif text-white ml-2">
+                        1,204
                     </div>
                 </div>
             </div>
 
-            <section>
-                <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-semibold tracking-tight">Real-time Intake Activity</h2>
-                    <button className="text-sm text-[var(--color-brand-500)] hover:text-white transition-colors">View All →</button>
+            {/* --- Real-time Activity Feed --- */}
+            <section className="space-y-4">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-sm font-serif font-bold uppercase tracking-widest text-black">
+                        Intake Activity Ledger
+                    </h2>
+                    <button className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4AF37] hover:text-black transition-colors">
+                        View Complete Log →
+                    </button>
                 </div>
-                <div className="glass-panel rounded-2xl overflow-hidden">
+                
+                <div className="border border-zinc-200 bg-white rounded-sm shadow-sm">
                     {displayList.length === 0 ? (
-                        <div className="p-12 text-center text-[var(--text-secondary)]">
-                            <div className="text-4xl mb-3 opacity-20">📡</div>
-                            Waiting for live events...
+                        <div className="p-16 text-center flex flex-col items-center justify-center">
+                            <svg className="w-8 h-8 text-zinc-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                            <span className="text-xs font-semibold uppercase tracking-widest text-zinc-400">
+                                No active imports
+                            </span>
+                            <span className="text-xs text-zinc-400 mt-1 font-light">
+                                Waiting for incoming artifact data...
+                            </span>
                         </div>
                     ) : (
-                        <div className="divide-y divide-[var(--color-glass-border)]">
+                        <div className="divide-y divide-zinc-200">
                             {displayList.map((item, idx) => (
-                                <div key={idx} className="p-4 hover:bg-[var(--color-glass)] transition-colors flex justify-between items-center animate-in fade-in slide-in-from-top-2">
-                                    <div>
-                                        <div className="font-medium text-white">{item?.proposed_item_name || 'Unknown Item'}</div>
-                                        <div className="text-xs text-[var(--text-secondary)]">ID: {item?.id}</div>
+                                <div key={idx} className="p-4 hover:bg-zinc-50 transition-colors flex justify-between items-center group">
+                                    <div className="flex flex-col gap-1">
+                                        <div className="font-semibold text-sm text-black group-hover:text-[#D4AF37] transition-colors">
+                                            {item?.proposed_item_name || 'Unnamed Artifact'}
+                                        </div>
+                                        <div className="text-[10px] uppercase tracking-[0.15em] text-zinc-500 font-medium">
+                                            Ref: {item?.id || 'PENDING'}
+                                        </div>
                                     </div>
                                     <div className="flex items-center gap-4">
-                                        <span className={`px-2.5 py-1 rounded-full text-xs font-medium border ${
-                                            item?.status === 'under_review' ? 'border-yellow-500/20 text-yellow-400 bg-yellow-500/10' : 
-                                            'border-blue-500/20 text-blue-400 bg-blue-500/10'
+                                        <span className={`px-2 py-1 rounded-sm text-[9px] font-bold uppercase tracking-widest border ${
+                                            item?.status === 'under_review' 
+                                                ? 'border-[#D4AF37]/30 text-[#A68A27] bg-[#D4AF37]/10' 
+                                                : 'border-zinc-200 text-zinc-600 bg-zinc-50'
                                         }`}>
-                                            {item?.status?.toUpperCase() || 'UNKNOWN'}
+                                            {item?.status?.replace('_', ' ') || 'UNKNOWN'}
                                         </span>
                                     </div>
                                 </div>

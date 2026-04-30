@@ -1,4 +1,4 @@
-import { pbService } from "../../pocketbaseService.js";
+import { mediaService } from "../../mediaService.js";
 import { acquisitionService } from "../../acquisitionService.js";
 import { logger } from "../../../utils/logger.js";
 
@@ -16,16 +16,17 @@ export const compliancePipeline = {
             submissionId,
             "processHealthReportForm",
             async (data) => {
-                const { artifact_id, condition, detailed_notes, reporter } = data;
+                const { artifact_id, condition, detailed_notes, reporter, stability, hazards, immediate_action_required } = data;
 
                 let reporterName = reporter?.trim() || (await helpers._resolveReporterName(staffId)) || "System";
 
                 const report = await acquisitionService.createConditionReport(
-                    staffId, "inventory", artifact_id, condition, detailed_notes, submissionId, reporterName
+                    staffId, "inventory", artifact_id, condition, detailed_notes, submissionId, reporterName,
+                    { stability, hazards, immediate_action_required }
                 );
 
                 if (files?.length > 0) {
-                    await pbService.uploadToField("condition_reports", report.id, "attachments", files);
+                    await mediaService.attachMedia(staffId, "condition_reports", report.id, files, "Health Report Evidence");
                 }
 
                 return report;
@@ -41,11 +42,30 @@ export const compliancePipeline = {
             submissionId,
             "processMovementTrailForm",
             async (data) => {
-                const { artifact_id, to_location, reason, moved_by } = data;
+                const { artifact_id, to_location, reason, moved_by, movement_type, handling_notes } = data;
                 const compiledReason = `${reason}\n\nMoved by: ${moved_by || "Unknown"}`;
 
                 return await acquisitionService.transferLocation(
-                    staffId, artifact_id, to_location, compiledReason, submissionId
+                    staffId, artifact_id, to_location, compiledReason, submissionId,
+                    { movement_type, handling_notes }
+                );
+            }
+        );
+    },
+
+    /**
+     * Processes an Artifact Conservation Log Form submission.
+     */
+    async processConservationLogForm(staffId, submissionId, files, helpers) {
+        return helpers._executeFormWorkflow(
+            submissionId,
+            "processConservationLogForm",
+            async (data) => {
+                const { artifact_id, treatment, findings, recommendations, conservator_name, treatment_objective, next_review_date } = data;
+
+                return await acquisitionService.createConservationLog(
+                    staffId, artifact_id, treatment, findings, recommendations, submissionId,
+                    { conservator_name, treatment_objective, next_review_date }
                 );
             }
         );

@@ -1,44 +1,38 @@
-import { pbService } from '../pocketbaseService.js';
+import { db } from '../../config/db.js';
 import { logger } from '../../utils/logger.js';
 import { definitionService } from './definitionService.js';
+import { baseService } from '../acquisition/baseService.js';
 
-/**
- * QueryService
- * 
- * Handles staff-facing queries for form submissions and linked donation items.
- */
 export const queryService = {
     async listSubmissions(slug, query = {}) {
         try {
             const definition = await definitionService.getFormDefinition(slug);
             const page = query.page || 1;
             const perPage = query.perPage || 50;
-
-            // Build filter chain
-            let filterParts = [`form_id="${definition.id}"`];
-
+            const offset = (page - 1) * perPage;
+            
+            let sql = `SELECT * FROM form_submissions WHERE form_id = ?`;
+            const params = [definition.id];
+            
             if (query.status) {
-                filterParts.push(`status="${query.status}"`);
+                sql += ` AND status = ?`;
+                params.push(query.status);
             }
-
-            if (query.dateFrom) {
-                filterParts.push(`created>="${query.dateFrom}"`);
-            }
-            if (query.dateTo) {
-                filterParts.push(`created<="${query.dateTo}"`);
-            }
-
             if (query.search) {
-                // Search in submitted_by (email) field
-                filterParts.push(`submitted_by~"${query.search}"`);
+                sql += ` AND submitted_by LIKE ?`;
+                params.push(`%${query.search}%`);
+            }
+            
+            sql += ` ORDER BY created_at DESC LIMIT ? OFFSET ?`;
+            params.push(perPage, offset);
+            
+            const rows = await db.query(sql, params);
+            
+            if (query.expand && rows.length > 0) {
+                await baseService._expandRecords(rows, query.expand);
             }
 
-            const options = {
-                filter: filterParts.join(' && '),
-                sort: query.sort || '-created',
-            };
-
-            return await pbService.pb.collection('form_submissions').getList(page, perPage, options);
+            return { page, perPage, items: rows };
         } catch (error) {
             logger.error(`Failed to list submissions for ${slug}: ${error.message}`);
             throw error;
@@ -49,29 +43,34 @@ export const queryService = {
         try {
             const page = query.page || 1;
             const perPage = query.perPage || 50;
-
-            let filterParts = [];
-
+            const offset = (page - 1) * perPage;
+            
+            let sql = `
+                SELECT s.*, f.slug as form_slug, f.title as form_title 
+                FROM form_submissions s 
+                JOIN form_definitions f ON s.form_id = f.id WHERE 1=1
+            `;
+            const params = [];
+            
             if (query.status) {
-                filterParts.push(`status="${query.status}"`);
-            }
-            if (query.dateFrom) {
-                filterParts.push(`created>="${query.dateFrom}"`);
-            }
-            if (query.dateTo) {
-                filterParts.push(`created<="${query.dateTo}"`);
+                sql += ` AND s.status = ?`;
+                params.push(query.status);
             }
             if (query.search) {
-                filterParts.push(`submitted_by~"${query.search}"`);
+                sql += ` AND s.submitted_by LIKE ?`;
+                params.push(`%${query.search}%`);
+            }
+            
+            sql += ` ORDER BY s.created_at DESC LIMIT ? OFFSET ?`;
+            params.push(perPage, offset);
+            
+            const rows = await db.query(sql, params);
+            
+            if (query.expand && rows.length > 0) {
+                await baseService._expandRecords(rows, query.expand);
             }
 
-            const options = {
-                filter: filterParts.length > 0 ? filterParts.join(' && ') : '',
-                sort: query.sort || '-created',
-                expand: 'form_id'
-            };
-
-            return await pbService.pb.collection('form_submissions').getList(page, perPage, options);
+            return { page, perPage, items: rows };
         } catch (error) {
             logger.error(`Failed to list all submissions: ${error.message}`);
             throw error;
@@ -80,21 +79,37 @@ export const queryService = {
 
     async getSubmission(submissionId) {
         try {
-            return await pbService.pb.collection('form_submissions').getOne(submissionId, {
-                expand: 'form_id'
-            });
+            const rows = await db.query(`
+                SELECT s.*, f.slug as form_slug, f.title as form_title 
+                FROM form_submissions s 
+                JOIN form_definitions f ON s.form_id = f.id 
+                WHERE s.id = ?
+            `, [submissionId]);
+            
+            if (!rows || rows.length === 0) throw new Error('SUBMISSION_NOT_FOUND');
+            
+            const submission = rows[0];
+            // We can still expand if requested, e.g. for form_id
+            // Note: form_slug/form_title are already joined, but frontend might want full form_id object in expand
+            return submission;
         } catch (error) {
             logger.error(`Submission not found: ${submissionId}`);
             throw new Error('SUBMISSION_NOT_FOUND');
         }
     },
 
-    async getSubmissionItems(submissionId) {
+    async getSubmissionItems(submissionId, query = {}) {
         try {
-            return await pbService.pb.collection('donation_items').getFullList({
-                filter: `submission_id="${submissionId}"`,
-                sort: '-created'
-            });
+            const page = query.page || 1;
+            const perPage = query.perPage || 50;
+            const offset = (page - 1) * perPage;
+            const rows = await db.query(`
+                SELECT * FROM donation_items 
+                WHERE submission_id = ? 
+                ORDER BY created_at DESC 
+                LIMIT ? OFFSET ?`, 
+                [submissionId, perPage, offset]);
+            return rows;
         } catch (error) {
             logger.error(`Failed to fetch submission items for ${submissionId}: ${error.message}`);
             throw error;

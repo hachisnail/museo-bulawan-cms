@@ -10,6 +10,7 @@ import acquisitionRoutes from './acquisition/index.js'
 import formRoutes from './form/index.js'
 import auditRoutes from './auditRoutes.js'
 import mediaRoutes from './mediaRoutes.js'
+import analyticsRoutes from './analyticsRoutes.js'
 
 const router = Router();
 
@@ -26,5 +27,6 @@ router.use('/acquisitions', acquisitionRoutes);
 router.use('/forms', formRoutes);
 router.use('/audit-logs', auditRoutes);
 router.use('/media', mediaRoutes);
+router.use('/analytics', analyticsRoutes);
 
 export default router;

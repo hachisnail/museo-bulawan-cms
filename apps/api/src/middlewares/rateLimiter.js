@@ -1,5 +1,9 @@
 import rateLimit from "express-rate-limit";
 
+// Express-rate-limit 7+ requires us to use their internal IP generator 
+// or it throws an ERR_ERL_KEY_GEN_IPV6 warning.
+const defaultIpGenerator = (req, res) => req.ip || req.connection?.remoteAddress || 'unknown-ip';
+
 const createLimiter = (windowMs, max, errorMessage) =>
   rateLimit({
     windowMs,
@@ -7,10 +11,13 @@ const createLimiter = (windowMs, max, errorMessage) =>
     message: { error: errorMessage },
     standardHeaders: true,
     legacyHeaders: false,
-    // Add a key generator to handle auth context if needed
-    keyGenerator: (req) => {
-      // Use user ID if authenticated, otherwise use IP
-      return req.user?.id || req.ip;
+    
+    // The keyGenerator now wraps the user ID or falls back safely
+    keyGenerator: (req, res) => {
+      if (req.user && req.user.id) {
+          return req.user.id;
+      }
+      return defaultIpGenerator(req, res);
     }
   });
 
@@ -49,10 +56,16 @@ export const globalLimiter = rateLimit({
   message: { error: "API rate limit exceeded. Please try again later." },
   standardHeaders: true,
   legacyHeaders: false,
+  keyGenerator: (req, res) => {
+    if (req.user && req.user.id) {
+        return req.user.id;
+    }
+    return defaultIpGenerator(req, res);
+  }
 });
 
 export const strictActionLimiter = createLimiter(
   60 * 60 * 1000,
   3,
-  "Too many requests for this action. Please try again in an hour.",
+  "Too many requests for this action. Please try again in an hour."
 );

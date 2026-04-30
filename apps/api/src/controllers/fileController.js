@@ -1,27 +1,24 @@
-import { pbService } from '../services/pocketbaseService.js';
+import { db } from '../config/db.js';
+import { minioClient } from '../services/minioService.js';
 import { logger } from '../utils/logger.js';
-import { Readable } from 'stream';
+import { env } from '../config/env.js';
 
-// Map PocketBase collection names to your CASL Resource names
 const resourceMap = {
-    'artifacts': 'Artifact',
     'inventory': 'Inventory',
+    'accession': 'Accession',
     'accessions': 'Accession',
+    'intake': 'Intake',
     'intakes': 'Intake',
+    'submission': 'Submission',
+    'form_submissions': 'Submission',
     'articles': 'Article',
-    'form_submissions': 'Intake',
     'users': 'User',
     'media_attachments': 'Inventory',
     'condition_reports': 'Inventory'
 };
 
-// Resolve collection name/ID to CASL resource
 const getCaslResource = (collection) => {
     if (resourceMap[collection]) return resourceMap[collection];
-    // Handle system-prefixed IDs
-    if (collection.startsWith('pbc_media_attachments')) return 'Inventory';
-    if (collection.startsWith('pbc_condition_reports')) return 'Inventory';
-    if (collection.startsWith('pbc_accessions')) return 'Accession';
     return null;
 };
 
@@ -29,82 +26,38 @@ export const getPrivateFile = async (req, res, next) => {
     try {
         const { collection, recordId, filename } = req.params;
 
-        // 1. Check CASL RBAC
+        // 1. Enforce RBAC mapping
         const caslResource = getCaslResource(collection);
-        
-        // Admins can bypass resource mapping if it's a known system collection
-        if (!caslResource && req.user?.role !== 'admin') {
-            return res.status(400).json({ error: "Invalid collection requested." });
-        }
-
-        // Only enforce RBAC if we found a resource mapping
         if (caslResource && req.ability.cannot('read', caslResource)) {
             logger.warn(`Unauthorized file access attempt`, { user: req.user?.id, collection, filename });
             return res.status(403).json({ error: "Forbidden: You do not have permission to view this file." });
         }
 
-        // 2. Request the file from PocketBase using the official SDK method
-        // This handles MinIO/S3 vs Local storage automatically
-        try {
-            const record = await pbService.pb.collection(collection).getOne(recordId);
-            
-            let targetRecord = record;
-            let targetCollection = collection;
+        // 2. Fetch File Metadata via Junction Link
+        const rows = await db.query(
+            `SELECT m.* 
+             FROM media_metadata m
+             JOIN media_links l ON m.id = l.media_id
+             WHERE l.entity_type = ? AND l.entity_id = ? AND m.file_name = ?`,
+            [collection, recordId, filename]
+        );
 
-            // Handle Promoted Media from Submission
-            // If this is a media attachment record pointing to a submission source
-            if (collection === 'media_attachments' && record.metadata?.source_collection) {
-                try {
-                    targetCollection = record.metadata.source_collection;
-                    targetRecord = await pbService.pb.collection(targetCollection).getOne(record.metadata.source_id);
-                } catch (sourceErr) {
-                    logger.warn(`Could not resolve promoted source record`, { sourceId: record.metadata.source_id });
-                    // Fall back to the original record (it might still have the files if they were re-uploaded)
-                }
-            }
-            
-            // Generate a file token for the specific record
-            // This is the most reliable way to access protected files in PB
-            const fileToken = await pbService.pb.files.getToken();
-            const fileUrl = pbService.pb.files.getURL(targetRecord, filename, { token: fileToken });
-            
-            logger.info(`Proxying file from PB`, { fileUrl, isPromoted: targetCollection !== collection });
+        const fileData = rows[0];
 
-            const response = await fetch(fileUrl, {
-                headers: {
-                    'Authorization': `Admin ${pbService.pb.authStore.token}`
-                }
-            });
-            
-            if (!response.ok) {
-                // Log the sensitive details to the SERVER console only
-                const errorBody = await response.text().catch(() => 'No body');
-                logger.error(`File fetch from PocketBase failed with status ${response.status}`, { 
-                    fileUrl, 
-                    errorBody 
-                });
-                
-                // Return a safe, generic error to the CLIENT
-                return res.status(response.status).json({ 
-                    error: "File not found in storage or is inaccessible." 
-                });
-            }
-
-            // 3. Forward headers and stream
-            res.setHeader('Content-Type', response.headers.get('Content-Type'));
-            res.setHeader('Content-Length', response.headers.get('Content-Length'));
-            res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-
-            const nodeStream = Readable.fromWeb(response.body);
-            nodeStream.pipe(res);
-            
-        } catch (pbError) {
-            logger.error(`PB Record Fetch Failed`, { collection, recordId, error: pbError.message });
-            return res.status(404).json({ error: "Record not found or inaccessible." });
+        if (!fileData) {
+            return res.status(404).json({ error: "File not found." });
         }
+
+        // 3. Stream from MinIO
+        res.setHeader('Content-Type', fileData.mime_type);
+        res.setHeader('Content-Length', fileData.size_bytes);
+        res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+
+        const dataStream = await minioClient.getObject(env.minio.bucket, fileData.storage_key);
+        dataStream.pipe(res);
 
     } catch (error) {
         logger.error('File Proxy Error', { error: error.message });
-        next(error);
+        res.status(500).json({ error: "Error retrieving file." });
     }
 };

@@ -2,6 +2,10 @@ import { baseService } from './acquisition/baseService.js';
 import { intakeService } from './acquisition/intakeService.js';
 import { accessionService } from './acquisition/accessionService.js';
 import { inventoryService } from './acquisition/inventoryService.js';
+import { constituentService } from './acquisition/constituentService.js';
+import { valuationService } from './acquisition/valuationService.js';
+import { exhibitionService } from './acquisition/exhibitionService.js';
+import { loanService } from './acquisition/loanService.js';
 
 /**
  * AcquisitionService Facade
@@ -34,6 +38,7 @@ export const acquisitionService = {
     rejectIntake: intakeService.rejectIntake.bind(intakeService),
     reopenIntake: intakeService.reopenIntake.bind(intakeService),
     generateDynamicMOA: intakeService.generateDynamicMOA.bind(intakeService),
+    exportMOA: intakeService.exportMOA.bind(intakeService),
     rollbackToReview: intakeService.rollbackToReview.bind(intakeService),
     verifyDeliveryToken: intakeService.verifyDeliveryToken.bind(intakeService),
     confirmPhysicalDelivery: intakeService.confirmPhysicalDelivery.bind(intakeService),
@@ -47,6 +52,7 @@ export const acquisitionService = {
     approveAccession: accessionService.approveAccession.bind(accessionService),
     updateAccessionResearch: accessionService.updateAccessionResearch.bind(accessionService),
     generateFormalReport: accessionService.generateFormalReport.bind(accessionService),
+    exportFormalReport: accessionService.exportFormalReport.bind(accessionService),
 
     // ==========================================
     // INVENTORY DOMAIN (Phase 4 & Beyond)
@@ -60,5 +66,35 @@ export const acquisitionService = {
     getConservationLogs: inventoryService.getConservationLogs.bind(inventoryService),
     getFullChain: inventoryService.getFullChain.bind(inventoryService),
     updateArtifactStatus: inventoryService.updateArtifactStatus.bind(inventoryService),
-    autoDeriveArtifactStatus: inventoryService.autoDeriveArtifactStatus.bind(inventoryService)
+    batchTransfer: inventoryService.batchTransfer.bind(inventoryService),
+    autoDeriveArtifactStatus: inventoryService.autoDeriveArtifactStatus.bind(inventoryService),
+    generateInventoryReport: inventoryService.generateReport.bind(inventoryService),
+    exportInventoryReport: inventoryService.exportReport.bind(inventoryService),
+
+    // Authority Control (Constituents)
+    createConstituent: constituentService.createConstituent.bind(constituentService),
+    updateConstituent: constituentService.updateConstituent.bind(constituentService),
+    getConstituent: constituentService.getConstituent.bind(constituentService),
+    listConstituents: constituentService.listConstituents.bind(constituentService),
+    searchConstituents: constituentService.search.bind(constituentService),
+
+    // Financials (Valuations)
+    addValuation: valuationService.addValuation.bind(valuationService),
+    getValuationHistory: valuationService.getHistory.bind(valuationService),
+    getLatestValuation: valuationService.getLatest.bind(valuationService),
+
+    // Exhibitions & Usage
+    createExhibition: exhibitionService.createExhibition.bind(exhibitionService),
+    updateExhibition: exhibitionService.updateExhibition.bind(exhibitionService),
+    listExhibitions: exhibitionService.listExhibitions.bind(exhibitionService),
+    getExhibitionDetails: exhibitionService.getExhibitionDetails.bind(exhibitionService),
+    addArtifactToExhibition: exhibitionService.addArtifactToExhibition.bind(exhibitionService),
+    getArtifactExhibitionHistory: exhibitionService.getArtifactHistory.bind(exhibitionService),
+
+    // ==========================================
+    // LOANS & EXTERNAL MOVEMENT
+    // ==========================================
+    listLoans: loanService.listLoans.bind(loanService),
+    createLoan: loanService.createLoan.bind(loanService),
+    activateLoan: loanService.activateLoan.bind(loanService)
 };

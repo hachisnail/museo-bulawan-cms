@@ -1,10 +1,12 @@
+import { db } from '../../config/db.js';
 import crypto from 'crypto';
 import { baseService } from './baseService.js';
-import { pbService } from '../pocketbaseService.js';
 import { globalMutex } from '../../utils/mutex.js';
 import { logger } from '../../utils/logger.js';
 import { sendEmail } from '../../utils/mailer.js';
 import { assertTransition } from '../../utils/stateMachine.js';
+import { documentService } from '../documentService.js';
+import { notificationService } from '../notificationService.js';
 
 export const intakeService = {
     // ==========================================
@@ -41,8 +43,7 @@ export const intakeService = {
     async createInternalIntake(staffId, itemDetails, method, loanEndDate = null) {
         return await globalMutex.runExclusive(`internal_intake_${staffId}`, async () => {
             try {
-                const donationItem = await pbService.pb.collection('donation_items').create({
-                    id: baseService._genId(),
+                const donationItem = await baseService._createRecord(staffId, 'donation_items', {
                     item_name: itemDetails.itemName,
                     description: itemDetails.description || 'Internal Intake Item',
                     quantity: itemDetails.quantity || 1,
@@ -71,7 +72,11 @@ export const intakeService = {
     // ==========================================
     async approveIntake(staffId, intakeId) {
         return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
-            return await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'approved');
+            const result = await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'approved');
+            const intake = await baseService._getRecord('intakes', intakeId);
+            notificationService.sendToRole('curator', 'Intake Approved', 
+                `Intake for "${intake.proposed_item_name}" has been approved. Please generate delivery documents.`, 'success', { actionUrl: `/intakes?id=${intakeId}` });
+            return result;
         });
     },
 
@@ -80,9 +85,9 @@ export const intakeService = {
     // ==========================================
     async rejectIntake(staffId, intakeId, reason) {
         return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
-            const intake = await pbService.pb.collection('intakes').getOne(intakeId);
+            const intake = await baseService._getRecord('intakes', intakeId);
             if (intake.donation_item_id) {
-                await pbService.pb.collection('donation_items').update(intake.donation_item_id, { status: 'rejected' });
+                await baseService._updateRecord(staffId, 'donation_items', intake.donation_item_id, { status: 'rejected' });
             }
             return await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'rejected', {
                 rejection_reason: reason
@@ -95,9 +100,9 @@ export const intakeService = {
     // ==========================================
     async reopenIntake(staffId, intakeId) {
         return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
-            const intake = await pbService.pb.collection('intakes').getOne(intakeId);
+            const intake = await baseService._getRecord('intakes', intakeId);
             if (intake.donation_item_id) {
-                await pbService.pb.collection('donation_items').update(intake.donation_item_id, { status: 'accepted' });
+                await baseService._updateRecord(staffId, 'donation_items', intake.donation_item_id, { status: 'accepted' });
             }
             return await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'under_review', {
                 rejection_reason: null
@@ -111,7 +116,7 @@ export const intakeService = {
     async generateDynamicMOA(staffId, intakeId, overrides = {}) {
         return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
             try {
-                const intake = await pbService.pb.collection('intakes').getOne(intakeId, { expand: 'donor_account_id' });
+                const intake = await baseService._getRecord('intakes', intakeId);
                 assertTransition('intake', intake.status, 'awaiting_delivery');
 
                 const finalDonorName = overrides.donorName || intake.donor_info;
@@ -131,17 +136,13 @@ export const intakeService = {
                 const contractType = contractTypes[intake.acquisition_method];
                 if (!contractType) throw new Error('Unknown acquisition method.');
 
-                const moaTemplates = {
-                    'deed_of_gift': `MOA - DEED OF GIFT\nDonor: ${finalDonorName}\nTerms: Permanent transfer of ownership of the object to the museum collection.`,
-                    'loan_agreement': `MOA - INCOMING LOAN AGREEMENT\nLender: ${finalDonorName}\nDuration: ${finalLoanDuration}\nTerms: Temporary custody for exhibition or research purposes.`,
-                    'bill_of_sale': `MOA - BILL OF SALE\nVendor: ${finalDonorName}\nTerms: Transfer of title via purchase and full payment.`,
-                    'internal_memo': `INTERNAL REGISTRATION MEMO\nOrigin: Found in Collection / Existing Backlog. Documentation for internal audit.`
-                };
+                const doc = await documentService.generateMOA(intake, 'html', overrides);
+                const moaDraft = doc;
 
                 const deliverySlipId = `DS-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
                 const rawToken = crypto.randomBytes(4).toString('hex').toUpperCase(); 
                 const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
-                const tokenExpires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+                const tokenExpires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
                 const updatedIntake = await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'awaiting_delivery', {
                     donor_name_override: finalDonorName,
@@ -163,7 +164,7 @@ export const intakeService = {
                                 <p>Hello ${finalDonorName},</p>
                                 <p>An official <strong>${contractType.replace(/_/g, ' ')}</strong> has been generated for your artifact: <strong>${intake.proposed_item_name}</strong>.</p>
                                 <div style="background: #f9fafb; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 13px; border: 1px solid #e5e7eb; margin: 20px 0;">
-                                    ${moaTemplates[contractType].replace(/\n/g, '<br/>')}
+                                    ${moaDraft}
                                 </div>
                                 <h3 style="color: #111827;">Step 2: Physical Delivery</h3>
                                 <p>To complete the intake, please deliver the artifact to the museum. During the handover, provide this verification token to the staff:</p>
@@ -185,7 +186,7 @@ export const intakeService = {
                     message: "MOA and Delivery Slip generated. Email sent to donor.",
                     deliverySlipId,
                     contractType,
-                    moaDraft: moaTemplates[contractType],
+                    moaDraft,
                     qrPayload: { type: "delivery_confirmation", intakeId, token: rawToken },
                     intake: updatedIntake
                 };
@@ -194,6 +195,11 @@ export const intakeService = {
                 throw error;
             }
         });
+    },
+
+    async exportMOA(intakeId) {
+        const intake = await baseService._getRecord('intakes', intakeId);
+        return await documentService.generateMOA(intake, 'docx');
     },
 
     // ==========================================
@@ -216,9 +222,9 @@ export const intakeService = {
     async verifyDeliveryToken(token) {
         const submittedHash = crypto.createHash('sha256').update(token.toUpperCase()).digest('hex');
         try {
-            const intake = await pbService.pb.collection('intakes').getFirstListItem(`qr_token_hash="${submittedHash}"`, {
-                expand: 'donor_account_id,donation_item_id'
-            });
+            const rows = await db.query(`SELECT * FROM intakes WHERE qr_token_hash = ?`, [submittedHash]);
+            const intake = rows[0];
+            if (!intake) throw new Error('Not found');
 
             const isExpired = new Date() > new Date(intake.qr_token_expires);
             
@@ -238,7 +244,7 @@ export const intakeService = {
     async confirmPhysicalDelivery(staffId, intakeId, submittedToken) {
         return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
             try {
-                const intake = await pbService.pb.collection('intakes').getOne(intakeId);
+                const intake = await baseService._getRecord('intakes', intakeId);
                 assertTransition('intake', intake.status, 'in_custody');
 
                 if (!intake.qr_token_hash || new Date() > new Date(intake.qr_token_expires)) {
@@ -250,11 +256,16 @@ export const intakeService = {
                     throw new Error('Invalid QR Token.');
                 }
 
-                return await baseService._updateRecord(staffId, 'intakes', intakeId, {
+                const updated = await baseService._updateRecord(staffId, 'intakes', intakeId, {
                     status: 'in_custody',
                     qr_token_hash: null,
                     qr_token_expires: null
                 });
+
+                notificationService.sendToRole('curator', 'Artifact in Custody', 
+                    `Physical delivery confirmed for "${intake.proposed_item_name}". It is now ready for formal accessioning.`, 'success', { actionUrl: `/accessions?id=${intake.accession_id || ''}` });
+
+                return updated;
             } catch (error) {
                 logger.error(`Error confirming delivery: ${error.message}`);
                 throw error;

@@ -1,9 +1,10 @@
 import crypto from "crypto";
-import { pbService } from "./pocketbaseService.js";
+import { db } from "../config/db.js";
 import { userService } from "./userService.js";
 import { logger } from "../utils/logger.js";
 import { donationPipeline } from "./form/pipeline/donationPipeline.js";
 import { compliancePipeline } from "./form/pipeline/compliancePipeline.js";
+import { globalMutex } from "../utils/mutex.js";
 
 /**
  * FormPipelineService Facade
@@ -44,19 +45,24 @@ export const formPipelineService = {
     return await compliancePipeline.processMovementTrailForm(staffId, submissionId, files, this);
   },
 
+  /**
+   * COMPLIANCE: Conservation Log
+   */
+  async processConservationLogForm(staffId, submissionId, files = null) {
+    return await compliancePipeline.processConservationLogForm(staffId, submissionId, files, this);
+  },
+
   // ==========================================
   // INTERNAL LOGIC HELPERS (Shared across pipelines)
   // ==========================================
 
   async _resolveReporterName(staffId) {
     try {
-      const pbUserId = await pbService.getAppUserId(staffId);
-      if (pbUserId) {
-        const user = await pbService.pb
-          .collection("app_users")
-          .getOne(pbUserId);
-        return user.name;
+      const [user] = await db.query('SELECT fname, lname FROM users WHERE id = ?', [staffId]);
+      if (user) {
+        return `${user.fname} ${user.lname}`.trim();
       }
+      return null;
     } catch (err) {
       return null;
     }
@@ -67,19 +73,19 @@ export const formPipelineService = {
    */
   async _executeFormWorkflow(submissionId, workflowName, processorFn) {
     try {
-      const submission = await pbService.pb
-        .collection("form_submissions")
-        .getOne(submissionId);
+      const [submission] = await db.query('SELECT * FROM form_submissions WHERE id = ?', [submissionId]);
 
-      if (!submission.data.artifact_id) {
+      if (!submission) throw new Error("SUBMISSION_NOT_FOUND");
+      
+      const data = typeof submission.data === 'string' ? JSON.parse(submission.data) : submission.data;
+
+      if (!data.artifact_id) {
         throw new Error("MISSING_ARTIFACT_ID");
       }
 
-      const result = await processorFn(submission.data);
+      const result = await processorFn(data);
 
-      await pbService.pb
-        .collection("form_submissions")
-        .update(submissionId, { status: "processed" });
+      await db.query('UPDATE form_submissions SET status = "processed" WHERE id = ?', [submissionId]);
 
       return result;
     } catch (error) {
@@ -89,33 +95,31 @@ export const formPipelineService = {
   },
 
   async _provisionDonorAccount(email, name, extras = {}) {
-    try {
-      const existingUser = await pbService.pb
-        .collection("app_users")
-        .getFirstListItem(`email="${email}"`)
-        .catch(() => null);
+    const lockKey = `provision_user_${email.toLowerCase()}`;
+    return await globalMutex.runExclusive(lockKey, async () => {
+      try {
+        const [existingUser] = await db.query('SELECT id, username FROM users WHERE email = ?', [email]);
 
-      if (existingUser) {
-        return { userId: existingUser.id, isNew: false, password: null };
+        if (existingUser) {
+          return { userId: existingUser.id, isNew: false, password: null, username: existingUser.username };
+        }
+
+        const [fname, ...rest] = (name || "Valued Donor").split(" ");
+        const lname = rest.join(" ") || "";
+
+        const result = await userService.provisionDonor({ fname, lname, email, ...extras });
+
+        return {
+          userId: result.userId,
+          isNew: true,
+          password: result.tempPassword,
+          username: result.username,
+        };
+      } catch (error) {
+        logger.error(`Error provisioning donor account: ${error.message}`);
+        return null;
       }
-
-      const [fname, ...rest] = (name || "Valued Donor").split(" ");
-      const lname = rest.join(" ") || "";
-
-      const { userId, tempPassword, username } =
-        await userService.provisionDonor({ fname, lname, email, ...extras });
-      const pbUserId = await pbService.getAppUserId(userId);
-
-      return {
-        userId: pbUserId,
-        isNew: true,
-        password: tempPassword,
-        username,
-      };
-    } catch (error) {
-      logger.error(`Error provisioning donor account: ${error.message}`);
-      return null;
-    }
+    });
   },
 
   _extractSubmissionItems(submissionData, mapping) {

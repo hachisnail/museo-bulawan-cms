@@ -12,6 +12,9 @@ import { env } from './config/env.js'; // <-- Missing in your file
 import { corsOptions } from './config/cors.js'; // <-- Missing in your file
 import { globalLimiter } from './middlewares/rateLimiter.js';
 
+// 0. GLOBAL FIX: Enable BigInt serialization for JSON responses (MariaDB BIGINT support)
+BigInt.prototype.toJSON = function() { return this.toString() };
+
 const app = express();
 
 app.set('trust proxy', 1);

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useSSE } from '../hooks/useSSE';
 import { useAuth } from '../context/authContext';
 import FormRenderer from '../components/FormRenderer';
@@ -17,6 +18,7 @@ const ITEM_STATUS_COLORS = {
 
 export default function Inventory() {
     const { apiFetch } = useAuth();
+    const [searchParams, setSearchParams] = useSearchParams();
     const { events } = useSSE('inventory');
 
     const [initialData, setInitialData] = useState([]);
@@ -66,19 +68,6 @@ export default function Inventory() {
         }
     }, [apiFetch]);
 
-    useEffect(() => { fetchInventory(); }, [fetchInventory]);
-
-    // Real-time synchronization
-    useEffect(() => {
-        if (events.length > 0) {
-            console.log("Inventory update received, refreshing catalog...");
-            fetchInventory();
-        }
-    }, [events, fetchInventory]);
-
-    const displayList = [...initialData]
-        .sort((a, b) => new Date(b.created) - new Date(a.created));
-
     const fetchDetails = async (item) => {
         setDetailLoading(true);
         setActiveTab('general');
@@ -116,6 +105,30 @@ export default function Inventory() {
             setDetailLoading(false);
         }
     };
+
+    useEffect(() => { fetchInventory(); }, [fetchInventory]);
+
+    // Real-time synchronization
+    useEffect(() => {
+        if (events.length > 0) {
+            console.log("Inventory update received, refreshing catalog...");
+            fetchInventory();
+        }
+    }, [events, fetchInventory]);
+
+    // Handle initial selection from URL params
+    useEffect(() => {
+        const id = searchParams.get('id');
+        if (id && initialData.length > 0) {
+            const item = initialData.find(i => i.id === id);
+            if (item) {
+                fetchDetails(item);
+            }
+        }
+    }, [searchParams, initialData]);
+
+    const displayList = [...initialData]
+        .sort((a, b) => new Date(b.created) - new Date(a.created));
 
     // Form States
     const [moveForm, setMoveForm] = useState({ toLocation: '', reason: '', condition: '' });

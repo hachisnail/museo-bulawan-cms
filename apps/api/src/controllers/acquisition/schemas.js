@@ -71,5 +71,11 @@ export const schemas = {
     conditionReport: Joi.object({
         condition: Joi.string().required(),
         notes: Joi.string().allow('', null).default('')
+    }),
+
+    conservationLog: Joi.object({
+        treatment: Joi.string().required(),
+        findings: Joi.string().required(),
+        recommendations: Joi.string().allow('', null).default('')
     })
 };

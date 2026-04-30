@@ -79,6 +79,16 @@ export const intakeController = {
         } catch (error) { next(error); }
     },
 
+    async exportMOA(req, res, next) {
+        try {
+            const { intakeId } = req.params;
+            const buffer = await acquisitionService.exportMOA(intakeId);
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            res.setHeader('Content-Disposition', `attachment; filename=MOA_${intakeId}.docx`);
+            res.status(200).send(buffer);
+        } catch (error) { next(error); }
+    },
+
     async rollbackIntake(req, res, next) {
         try {
             const { intakeId } = req.params;

@@ -21,6 +21,7 @@ export const csrfProtection = (req, res, next) => {
     }
 
     // 4. Exempt certain public entry points that might not have a session/cookie yet
+    const path = req.originalUrl.split('?')[0];
     const exemptPaths = [
         '/api/v1/auth/login',
         '/api/v1/user/onboard',
@@ -29,7 +30,10 @@ export const csrfProtection = (req, res, next) => {
         '/api/v1/user/reset-password'
     ];
 
-    if (exemptPaths.includes(req.originalUrl.split('?')[0])) {
+    // Public Form Regex: /api/v1/forms/:slug/(request-otp|verify-otp|submit)
+    const publicFormRegex = /^\/api\/v1\/forms\/[^/]+\/(request-otp|verify-otp|submit)$/;
+
+    if (exemptPaths.includes(path) || publicFormRegex.test(path)) {
         return next();
     }
 

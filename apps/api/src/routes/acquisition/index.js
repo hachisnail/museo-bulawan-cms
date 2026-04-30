@@ -114,7 +114,9 @@ router.patch('/accessions/:accessionId/research',
     acquisitionController.updateResearch
 );
 
+router.get('/intakes/:intakeId/export-moa', requireAuth, acquisitionController.exportMOA);
 router.get('/accessions/:accessionId/report', requireAuth, acquisitionController.generateReport);
+router.get('/accessions/:accessionId/export', requireAuth, acquisitionController.exportReport);
 
 // ==========================================
 // INVENTORY ACTIONS
@@ -140,6 +142,12 @@ router.post('/inventory/:inventoryId/deaccession',
     acquisitionController.deaccessionItem
 );
 
+router.post('/inventory/batch-transfer', 
+    requireAuth, 
+    checkPermission('update', 'Inventory'),
+    acquisitionController.batchTransfer
+);
+
 router.patch('/inventory/:inventoryId/status', 
     requireAuth, 
     checkPermission('update', 'Inventory'),
@@ -147,14 +155,19 @@ router.patch('/inventory/:inventoryId/status',
     acquisitionController.updateArtifactStatus
 );
 
+router.get('/inventory/:inventoryId/report', requireAuth, acquisitionController.generateInventoryReport);
+router.get('/inventory/:inventoryId/export', requireAuth, acquisitionController.exportInventoryReport);
+
 // ==========================================
 // COMPLIANCE & HISTORY
 // ==========================================
 router.get('/inventory/:inventoryId/movement', requireAuth, acquisitionController.getMovementHistory);
+router.get('/inventory/:inventoryId/exhibitions', requireAuth, acquisitionController.getArtifactExhibitionHistory);
 router.get('/inventory/:inventoryId/conservation', requireAuth, acquisitionController.getConservationLogs);
 router.post('/inventory/:inventoryId/conservation', 
     requireAuth, 
     checkPermission('create', 'ConservationLog'),
+    validate(schemas.conservationLog),
     acquisitionController.addConservationLog
 );
 
@@ -169,5 +182,28 @@ router.post('/:entityType/:entityId/condition-reports',
 // METADATA
 // ==========================================
 router.get('/actions/:entityType/:status', requireAuth, acquisitionController.getAvailableActions);
+router.get('/tags', requireAuth, acquisitionController.getUniqueTags);
+
+// ==========================================
+// PROFESSIONAL COMPLIANCE (SPECTRUM)
+// ==========================================
+router.get('/constituents', requireAuth, acquisitionController.listConstituents);
+router.post('/constituents', requireAuth, acquisitionController.createConstituent);
+router.get('/constituents/search', requireAuth, acquisitionController.searchConstituents);
+
+router.get('/inventory/:inventoryId/valuations', requireAuth, acquisitionController.getValuationHistory);
+router.post('/inventory/:inventoryId/valuations', requireAuth, checkPermission('update', 'Inventory'), acquisitionController.addValuation);
+
+router.get('/exhibitions', requireAuth, acquisitionController.listExhibitions);
+router.post('/exhibitions', requireAuth, checkPermission('create', 'Exhibition'), acquisitionController.createExhibition);
+router.get('/exhibitions/:exhibitionId', requireAuth, acquisitionController.getExhibitionDetails);
+router.post('/exhibitions/:exhibitionId/artifacts', requireAuth, checkPermission('update', 'Exhibition'), acquisitionController.addArtifactToExhibition);
+
+// ==========================================
+// OUTBOUND LOANS
+// ==========================================
+router.get('/loans', requireAuth, acquisitionController.listLoans);
+router.post('/loans', requireAuth, checkPermission('create', 'Loan'), acquisitionController.createLoan);
+router.post('/loans/:id/activate', requireAuth, checkPermission('update', 'Loan'), acquisitionController.activateLoan);
 
 export default router;

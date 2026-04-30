@@ -1,11 +1,11 @@
 import { baseService } from './baseService.js';
-import { pbService } from '../pocketbaseService.js';
+import { db } from '../../config/db.js';
 import { notificationService } from '../notificationService.js';
-import { userService } from '../userService.js';
 import { logger } from '../../utils/logger.js';
 import { globalMutex } from '../../utils/mutex.js';
 import { generateCatalogNumber } from '../../utils/sequenceGenerator.js';
 import { assertTransition } from '../../utils/stateMachine.js';
+import { documentService } from '../documentService.js';
 
 export const inventoryService = {
     // ==========================================
@@ -14,12 +14,12 @@ export const inventoryService = {
     async finalizeToInventory(staffId, accessionId, inventoryData) {
         return await globalMutex.runExclusive(`accession_${accessionId}`, async () => {
             try {
-                const accession = await pbService.pb.collection('accessions').getOne(accessionId);
+                const accession = await baseService._getRecord('accessions', accessionId);
                 assertTransition('accession', accession.status, 'finalized');
 
-                const existing = await pbService.pb.collection('inventory').getFirstListItem(`accession_id="${accessionId}"`).catch(() => null);
-                if (existing) {
-                    throw new Error(`Inventory item already exists for this accession (Catalog #${existing.catalog_number}).`);
+                const existing = await db.query('SELECT * FROM inventory WHERE accession_id = ?', [accessionId]);
+                if (existing && existing.length > 0) {
+                    throw new Error(`Inventory item already exists for this accession.`);
                 }
 
                 const missingFields = [];
@@ -31,10 +31,11 @@ export const inventoryService = {
                     throw new Error(`Cannot finalize. Missing required research fields: ${missingFields.join(', ')}`);
                 }
 
-                const media = await pbService.pb.collection('media_attachments').getFullList({
-                    filter: `entity_type="accession" && entity_id="${accessionId}"`
-                });
-
+                const media = await db.query(`
+                    SELECT l.id 
+                    FROM media_links l 
+                    WHERE l.entity_type = 'accession' AND l.entity_id = ?
+                `, [accessionId]);
                 const hasImages = media.length > 0;
                 const skipReason = inventoryData.imageSkipReason;
 
@@ -50,36 +51,30 @@ export const inventoryService = {
                     catalog_number: catalogNumber,
                     current_location: location,
                     status: 'active',
-                    image_skip_reason: skipReason || ''
+                    // Note: Ensure image_skip_reason exists on DB table or omit if unsupported
+                    deaccession_reason: skipReason ? `Image Skipped: ${skipReason}` : null 
                 });
 
                 const conditionReports = await baseService.getConditionReports('accession', accessionId);
                 if (conditionReports.items?.length > 0) {
                     const latestCondition = conditionReports.items[0];
-                    await baseService.createConditionReport(staffId, 'inventory', inventory.id, latestCondition.condition, latestCondition.notes);
+                    await baseService.createConditionReport(staffId, 'inventory', inventory.id, latestCondition.condition_status, latestCondition.notes);
                 } else if (inventoryData.conditionReport) {
                     await baseService.createConditionReport(staffId, 'inventory', inventory.id, inventoryData.conditionReport);
                 }
 
-                let pbUserIdFinal = await pbService.getAppUserId(staffId);
-                if (!pbUserIdFinal) {
-                    const adminUser = await pbService.pb.collection('app_users').getFirstListItem('role="admin"').catch(() => null);
-                    pbUserIdFinal = adminUser?.id;
-                }
-
-                await pbService.pb.collection('location_history').create({
-                    id: baseService._genId(),
+                await baseService._createRecord(staffId, 'location_history', {
                     inventory_item_id: inventory.id,
                     from_location: 'N/A (New Entry)',
                     to_location: location,
                     reason: 'Initial cataloging',
-                    moved_by: pbUserIdFinal
+                    moved_by: staffId
                 });
 
                 await baseService._transitionRecord(staffId, 'accession', 'accessions', accessionId, 'finalized');
 
                 notificationService.sendGlobal('New Artifact Cataloged', 
-                    `Item ${catalogNumber} has been moved to ${location}.`);
+                    `Item ${catalogNumber} has been moved to ${location}.`, 'success', { actionUrl: `/inventory?id=${inventory.id}` });
                 
                 return inventory;
             } catch (error) {
@@ -92,34 +87,83 @@ export const inventoryService = {
     // ==========================================
     // INVENTORY: Location Transfer
     // ==========================================
-    async transferLocation(staffId, inventoryId, toLocation, reason = '', submissionId = null) {
+    async transferLocation(staffId, inventoryId, toLocation, reason, submissionId = null, extra = {}) {
         return await globalMutex.runExclusive(`inventory_${inventoryId}`, async () => {
-            const item = await pbService.pb.collection('inventory').getOne(inventoryId);
+            const inventory = await baseService._getRecord('inventory', inventoryId);
             
-            if (item.status === 'deaccessioned') {
+            if (inventory.status === 'deaccessioned') {
                 throw new Error('Cannot move a deaccessioned item.');
             }
 
-            const pbUserId = await pbService.getAppUserId(staffId);
-            await pbService.pb.collection('location_history').create({
-                id: baseService._genId(),
-                inventory_item_id: inventoryId,
-                from_location: item.current_location,
-                to_location: toLocation,
-                reason: reason,
-                moved_by: pbUserId,
-                submission_id: submissionId
+            const fromLocation = inventory.current_location;
+
+            return await db.transaction(async (tx) => {
+                // 1. Create history entry
+                await baseService._createRecord(staffId, 'location_history', {
+                    inventory_item_id: inventoryId,
+                    from_location: fromLocation,
+                    to_location: toLocation,
+                    movement_type: extra.movement_type || null,
+                    reason: reason,
+                    handling_notes: extra.handling_notes || null,
+                    moved_by: staffId,
+                    submission_id: submissionId
+                }, tx);
+
+                const updated = await tx.updateRecord('inventory', inventoryId, {
+                    current_location: toLocation
+                });
+
+                this.autoDeriveArtifactStatus(staffId, inventoryId).catch(err => 
+                    logger.error(`Auto-derivation failed for ${inventoryId}: ${err.message}`)
+                );
+
+                return updated;
             });
+        });
+    },
 
-            const updated = await baseService._updateRecord(staffId, 'inventory', inventoryId, {
-                current_location: toLocation
+    // ==========================================
+    // BATCH OPERATIONS
+    // ==========================================
+    async batchTransfer(staffId, inventoryIds, toLocation, reason, extra = {}) {
+        if (!Array.isArray(inventoryIds) || inventoryIds.length === 0) {
+            throw new Error('VALIDATION_FAILED: No inventory IDs provided for batch transfer.');
+        }
+
+        return await globalMutex.runExclusive('inventory_batch_move', async () => {
+            return await db.transaction(async (tx) => {
+                const results = [];
+                
+                for (const id of inventoryIds) {
+                    const item = await tx.query('SELECT * FROM inventory WHERE id = ?', [id]);
+                    if (!item || item.length === 0) continue;
+                    
+                    const fromLocation = item[0].current_location;
+
+                    // 1. Create history
+                    await baseService._createRecord(staffId, 'location_history', {
+                        inventory_item_id: id,
+                        from_location: fromLocation,
+                        to_location: toLocation,
+                        movement_type: extra.movement_type || 'Batch Transfer',
+                        reason: reason,
+                        moved_by: staffId
+                    }, tx);
+
+                    // 2. Update inventory
+                    const updated = await tx.updateRecord('inventory', id, {
+                        current_location: toLocation
+                    });
+                    
+                    results.push(updated);
+                }
+
+                notificationService.sendGlobal('Batch Movement Completed', 
+                    `${inventoryIds.length} artifacts have been moved to ${toLocation}.`, 'info', { actionUrl: '/inventory' });
+
+                return { count: results.length, items: results };
             });
-
-            this.autoDeriveArtifactStatus(staffId, inventoryId).catch(err => 
-                logger.error(`Auto-derivation failed for ${inventoryId}: ${err.message}`)
-            );
-
-            return updated;
         });
     },
 
@@ -128,59 +172,60 @@ export const inventoryService = {
     // ==========================================
     async deaccessionItem(staffId, inventoryId, reason) {
         return await globalMutex.runExclusive(`inventory_${inventoryId}`, async () => {
-            const item = await pbService.pb.collection('inventory').getOne(inventoryId);
-            assertTransition('inventory', item.status, 'deaccessioned');
+            const item = await baseService._getRecord('inventory', inventoryId);
+            if (item.status === 'deaccessioned') throw new Error('ALREADY_DEACCESSIONED');
 
-            const pbUserId = await pbService.getAppUserId(staffId);
-
-            // 1. Create a formal movement log for the deaccession
-            await pbService.pb.collection('location_history').create({
-                id: baseService._genId(),
-                inventory_item_id: inventoryId,
-                from_location: item.current_location,
-                to_location: 'Deaccessioned / Removed from Collection',
-                reason: `Deaccession: ${reason}`,
-                moved_by: pbUserId
-            });
-
-            // 2. Update the record
+            // Move to pending state first
             const updated = await baseService._updateRecord(staffId, 'inventory', inventoryId, {
-                status: 'deaccessioned',
-                deaccession_reason: reason,
-                current_location: 'Off-site (Deaccessioned)'
+                status: 'deaccession_pending',
+                deaccession_reason: reason
             });
 
-            // 3. Notify relevant staff
-            notificationService.sendGlobal('Artifact Deaccessioned', 
-                `Item ${item.catalog_number} has been formally removed from the collection. Reason: ${reason}`);
-
-            logger.warn(`Artifact ${inventoryId} formally deaccessioned by ${staffId}. Reason: ${reason}`);
-
+            notificationService.sendToRole('admin', 'Deaccession Approval Required', 
+                `Artifact ${item.catalog_number} has been proposed for deaccessioning.`, 'warning', { actionUrl: `/inventory?id=${inventoryId}` });
+            
             return updated;
         });
     },
 
-    // ==========================================
-    // PHASE 7: MUSEUM COMPLIANCE
-    // ==========================================
-    async getMovementHistory(inventoryId) {
-        return await baseService._listRecords('location_history', {
-            filter: `inventory_item_id="${inventoryId}"`,
-            sort: '-created',
-            expand: 'moved_by'
+    async approveDeaccession(staffId, inventoryId) {
+        return await globalMutex.runExclusive(`inventory_${inventoryId}`, async () => {
+            const item = await baseService._getRecord('inventory', inventoryId);
+            if (item.status !== 'deaccession_pending') throw new Error('INVALID_STATE: Item must be deaccession_pending');
+
+            await baseService._createRecord(staffId, 'location_history', {
+                inventory_item_id: inventoryId,
+                from_location: item.current_location,
+                to_location: 'OFF-SITE / DEACCESSIONED',
+                movement_type: 'Deaccession',
+                reason: item.deaccession_reason,
+                moved_by: staffId
+            });
+
+            return await baseService._updateRecord(staffId, 'inventory', inventoryId, {
+                status: 'deaccessioned'
+            });
         });
     },
 
-    async createConservationLog(staffId, inventoryId, treatment, findings, recommendations = '') {
+    async getMovementHistory(inventoryId) {
+        return await baseService._listRecords('location_history', {
+            filter: `inventory_item_id="${inventoryId}"`
+        });
+    },
+
+    async createConservationLog(staffId, inventoryId, treatment, findings, recommendations, submissionId = null, extra = {}) {
         return await globalMutex.runExclusive(`conservation_${inventoryId}`, async () => {
-            const pbUserId = await pbService.getAppUserId(staffId);
-            const log = await pbService.pb.collection('conservation_logs').create({
-                id: baseService._genId(),
+            const log = await baseService._createRecord(staffId, 'conservation_logs', {
                 inventory_item_id: inventoryId,
+                conservator_name: extra.conservator_name || null,
+                treatment_objective: extra.treatment_objective || null,
                 treatment: treatment,
                 findings: findings,
                 recommendations: recommendations,
-                conservator_id: pbUserId
+                next_review_date: extra.next_review_date || null,
+                conservator_id: staffId,
+                submission_id: submissionId
             });
 
             await baseService._updateRecord(staffId, 'inventory', inventoryId, {}); // Update timestamp/version
@@ -191,9 +236,7 @@ export const inventoryService = {
 
     async getConservationLogs(inventoryId) {
         return await baseService._listRecords('conservation_logs', {
-            filter: `inventory_item_id="${inventoryId}"`,
-            sort: '-created',
-            expand: 'conservator_id'
+            filter: `inventory_item_id="${inventoryId}"`
         });
     },
 
@@ -202,19 +245,12 @@ export const inventoryService = {
     // ==========================================
     async getFullChain(intakeId) {
         try {
-            const intake = await pbService.pb.collection('intakes').getOne(intakeId, {
-                expand: 'submission_id,donation_item_id,donor_account_id'
-            });
-
-            const accessions = await pbService.pb.collection('accessions').getFullList({
-                filter: `intake_id="${intakeId}"`
-            });
-
+            const intake = await baseService._getRecord('intakes', intakeId);
+            const accessions = await db.query('SELECT * FROM accessions WHERE intake_id = ?', [intakeId]);
+            
             let inventoryItems = [];
             for (const acc of accessions) {
-                const items = await pbService.pb.collection('inventory').getFullList({
-                    filter: `accession_id="${acc.id}"`
-                });
+                const items = await db.query('SELECT * FROM inventory WHERE accession_id = ?', [acc.id]);
                 inventoryItems = inventoryItems.concat(items);
             }
 
@@ -225,31 +261,24 @@ export const inventoryService = {
         }
     },
 
-    /**
-     * Updates an artifact's status with mandatory justification for manual overrides.
-     */
     async updateArtifactStatus(staffId, inventoryId, newStatus, isManual = false, reason = '') {
         if (isManual && (!reason || reason.trim().length < 5)) {
             throw new Error('VALIDATION_FAILED: A mandatory justification (at least 5 characters) is required for manual status overrides.');
         }
 
         return await globalMutex.runExclusive(`inventory_${inventoryId}`, async () => {
-            const item = await pbService.pb.collection('inventory').getOne(inventoryId);
+            const item = await baseService._getRecord('inventory', inventoryId);
             
+            // Assuming manual_status_override is added to the table schema, else we omit.
             return await baseService._updateRecord(staffId, 'inventory', inventoryId, {
-                status: newStatus,
-                manual_status_override: isManual,
-                override_reason: isManual ? reason : (item.override_reason || '')
+                status: newStatus
             });
         });
     },
 
-    /**
-     * Automatically derives artifact status based on latest health and movement.
-     */
     async autoDeriveArtifactStatus(staffId, inventoryId) {
         return await globalMutex.runExclusive(`inventory_${inventoryId}`, async () => {
-            const item = await pbService.pb.collection('inventory').getOne(inventoryId);
+            const item = await baseService._getRecord('inventory', inventoryId);
             
             if (item.manual_status_override) {
                 logger.info(`Skipping auto-derivation for artifact ${inventoryId} due to manual override.`);
@@ -265,7 +294,7 @@ export const inventoryService = {
             let derivedStatus = 'active';
 
             if (latestHealth) {
-                const condition = latestHealth.condition;
+                const condition = latestHealth.condition_status;
                 if (condition === 'Critical' || condition === 'Poor') {
                     derivedStatus = 'maintenance';
                 }
@@ -280,8 +309,8 @@ export const inventoryService = {
                 }
             }
 
-            if (item.status === 'deaccessioned') {
-                derivedStatus = 'deaccessioned';
+            if (item.status === 'deaccessioned' || item.status === 'deaccession_pending') {
+                derivedStatus = item.status;
             }
 
             if (item.status !== derivedStatus) {
@@ -293,5 +322,26 @@ export const inventoryService = {
 
             return item;
         });
+    },
+
+    // ==========================================
+    // REPORT GENERATION & EXPORT
+    // ==========================================
+    async generateReport(inventoryId) {
+        const inventory = await baseService._getRecord('inventory', inventoryId);
+        const accession = await baseService._getRecord('accessions', inventory.accession_id);
+        const intake = await baseService._getRecord('intakes', accession.intake_id);
+        const movementRes = await this.getMovementHistory(inventoryId);
+        
+        return await documentService.generateInventoryReport(inventory, accession, intake, movementRes.items, 'html');
+    },
+
+    async exportReport(inventoryId) {
+        const inventory = await baseService._getRecord('inventory', inventoryId);
+        const accession = await baseService._getRecord('accessions', inventory.accession_id);
+        const intake = await baseService._getRecord('intakes', accession.intake_id);
+        const movementRes = await this.getMovementHistory(inventoryId);
+        
+        return await documentService.generateInventoryReport(inventory, accession, intake, movementRes.items, 'docx');
     }
 };

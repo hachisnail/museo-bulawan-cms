@@ -1,73 +1,79 @@
-import crypto from "crypto";
-import { pbService } from './pocketbaseService.js';
+import { ulid } from 'ulidx';
+import { db } from '../config/db.js';
 import { logger } from "../utils/logger.js";
 
-const genId = () => crypto.randomBytes(8).toString('hex').substring(0, 15);
-
 export const auditService = {
-    async log({ userId, anonymousFingerprint, action, resource, details = {}, ipAddress = null, collection, recordId, before, after }) {
+    async log({ userId, anonymousFingerprint, action, resource, details = {}, ipAddress = null, collection, recordId, before, after }, connection = null) {
         try {
-            // Map the external MySQL userId to the internal PocketBase app_user ID
-            let performedByPbId = null;
-            if (userId) {
-                const user = await pbService.pb.collection('app_users').getFirstListItem(`external_id="${userId}"`).catch(() => null);
-                if (user) {
-                    performedByPbId = user.id;
-                }
-            }
-
-            await pbService.pb.collection('audit_logs').create({
-                id: genId(),
-                collection: collection || resource || 'system',
-                record_id: recordId || 'N/A',
-                action: action.toLowerCase(),
-                performed_by: performedByPbId,
-                anonymous_fingerprint: anonymousFingerprint || null,
-                before: before || null,
-                after: after || details || null
-            });
+            // Write directly to MariaDB instead of PocketBase
+            await db.query(`
+                INSERT INTO audit_logs (id, user_id, action, resource, details, ip_address, before_state, after_state)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            `, [
+                ulid(),
+                userId || null,
+                action.toUpperCase(),
+                collection || resource || 'system',
+                JSON.stringify(details),
+                ipAddress || anonymousFingerprint || null,
+                before ? JSON.stringify(before) : null,
+                after ? JSON.stringify(after) : null
+            ], connection);
         } catch (error) {
-            logger.error("Failed to write to audit log in PocketBase", { error: error.message });
+            logger.error("Failed to write to audit log in MariaDB", { error: error.message });
         }
     },
 
     async fetchAll(query = {}) {
         const page = query.page || 1;
         const perPage = query.perPage || 50;
-        return await pbService.pb.collection('audit_logs').getList(page, perPage, { 
-            sort: query.sort || '-created',
-            expand: 'performed_by'
-        });
+        const offset = (page - 1) * perPage;
+        
+        const rows = await db.query(`
+            SELECT a.*, u.email as user_email, u.fname, u.lname 
+            FROM audit_logs a 
+            LEFT JOIN users u ON a.user_id = u.id 
+            ORDER BY a.created_at DESC 
+            LIMIT ? OFFSET ?
+        `, [perPage, offset]);
+        
+        return { page, perPage, items: rows };
     },
 
-    /**
-     * Export audit logs in JSON or CSV format
-     */
     async exportAuditLogs(format = 'json', dateFrom, dateTo) {
-        let filterParts = [];
-        if (dateFrom) filterParts.push(`created>="${dateFrom}"`);
-        if (dateTo) filterParts.push(`created<="${dateTo}"`);
-
-        const records = await pbService.pb.collection('audit_logs').getFullList({
-            filter: filterParts.length > 0 ? filterParts.join(' && ') : '',
-            sort: '-created',
-            expand: 'performed_by'
-        });
+        let sql = `
+            SELECT a.*, u.email as user_email, u.fname, u.lname 
+            FROM audit_logs a 
+            LEFT JOIN users u ON a.user_id = u.id 
+            WHERE 1=1
+        `;
+        const params = [];
+        
+        if (dateFrom) {
+            sql += ` AND a.created_at >= ?`;
+            params.push(dateFrom);
+        }
+        if (dateTo) {
+            sql += ` AND a.created_at <= ?`;
+            params.push(dateTo);
+        }
+        
+        sql += ` ORDER BY a.created_at DESC`;
+        const records = await db.query(sql, params);
 
         if (format === 'json') {
             return JSON.stringify(records, null, 2);
         }
 
         if (format === 'csv') {
-            const headers = ['ID', 'Date', 'Collection', 'Record ID', 'Action', 'Performed By', 'Fingerprint'];
+            const headers = ['ID', 'Date', 'Resource', 'Action', 'Performed By', 'IP/Fingerprint'];
             const rows = records.map(r => [
                 r.id,
-                r.created,
-                r.collection,
-                r.record_id,
+                r.created_at,
+                r.resource,
                 r.action,
-                r.expand?.performed_by?.email || r.expand?.performed_by?.name || 'System/Anonymous',
-                r.anonymous_fingerprint || ''
+                r.user_email || 'System/Anonymous',
+                r.ip_address || ''
             ]);
 
             const csvContent = [

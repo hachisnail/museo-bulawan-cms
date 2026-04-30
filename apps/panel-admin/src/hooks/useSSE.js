@@ -1,68 +1,39 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useSSEGlobal } from '../context/sseContext';
 
-export function useSSE(topic = '*') {
-    const [events, setEvents] = useState([]);
-    const [status, setStatus] = useState('connecting'); // connecting, open, closed, error
-    const evtSource = useRef(null);
-    const reconnectTimeout = useRef(null);
+/**
+ * useSSE Hook
+ * 
+ * Now consumes a global singleton connection from SSEContext.
+ * Usage 1: const { events, status } = useSSE('topic'); // Filters for 'db_change' on a specific resource
+ * Usage 2: useSSE({ 'event_name': (data) => { ... } }); // Specific named event listeners
+ */
+export function useSSE(topicOrHandlers = '*') {
+    const { lastEvent, status, subscribe } = useSSEGlobal();
+    const [localEvents, setLocalEvents] = useState([]);
+
+    const handleIncoming = useCallback(({ event, data }) => {
+        // Mode 1: Named Handlers Object
+        if (typeof topicOrHandlers === 'object' && topicOrHandlers !== null) {
+            if (topicOrHandlers[event]) {
+                topicOrHandlers[event](data);
+            }
+        } 
+        // Mode 2: Resource Filtering (db_change)
+        else if (event === 'db_change') {
+            if (topicOrHandlers === '*' || data.resource === topicOrHandlers) {
+                setLocalEvents(prev => [data, ...prev].slice(0, 50));
+            }
+        }
+        // Mode 3: Anonymous messages
+        else if (event === 'message') {
+            setLocalEvents(prev => [data, ...prev].slice(0, 50));
+        }
+    }, [topicOrHandlers]);
 
     useEffect(() => {
-        const connect = () => {
-            const baseURL = import.meta.env.DEV ? '' : import.meta.env.VITE_API_BASE_URL;
-            // Connect to the backend stream endpoint. 
-            // withCredentials ensures the HttpOnly JWT cookie is sent automatically.
-            evtSource.current = new EventSource(`${baseURL}/api/v1/realtime/stream`, {
-                withCredentials: true,
-            });
+        return subscribe(handleIncoming);
+    }, [subscribe, handleIncoming]);
 
-            evtSource.current.onopen = () => {
-                setStatus('open');
-                // Reset reconnect timeout on successful connection
-                if (reconnectTimeout.current) {
-                    clearTimeout(reconnectTimeout.current);
-                    reconnectTimeout.current = null;
-                }
-            };
-
-            evtSource.current.onmessage = (e) => {
-                try {
-                    const parsed = JSON.parse(e.data);
-                    
-                    if (typeof topic === 'object' && topic !== null) {
-                        const eventName = parsed.event || 'message';
-                        if (topic[eventName]) {
-                            topic[eventName](parsed.data || parsed);
-                        }
-                    } else {
-                        setEvents(prev => [parsed, ...prev].slice(0, 50));
-                    }
-                } catch (err) {
-                    console.error('Failed to parse SSE message', err);
-                }
-            };
-
-            evtSource.current.onerror = (err) => {
-                setStatus('error');
-                evtSource.current.close();
-                // Avoid multiple reconnect timeouts
-                if (!reconnectTimeout.current) {
-                    reconnectTimeout.current = setTimeout(connect, 5000);
-                }
-            };
-        };
-
-        connect();
-
-        return () => {
-            if (evtSource.current) {
-                evtSource.current.close();
-            }
-            if (reconnectTimeout.current) {
-                clearTimeout(reconnectTimeout.current);
-            }
-        };
-    }, [topic]);
-
-    return { events, status };
+    return { events: localEvents, status };
 }
-

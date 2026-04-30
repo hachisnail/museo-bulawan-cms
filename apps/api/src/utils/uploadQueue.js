@@ -1,6 +1,7 @@
 import fs from 'fs';
-import { createClient } from 'redis';
-import { pbService } from '../services/pocketbaseService.js';
+import { ulid } from 'ulidx';
+import { db } from '../config/db.js';
+import { mediaService } from '../services/mediaService.js';
 import { sseManager } from './sseFactory.js';
 import { logger } from './logger.js';
 import { env } from '../config/env.js';
@@ -16,13 +17,38 @@ const processTask = async (task) => {
             status: 'processing' 
         });
 
-        const record = await pbService.uploadInternal(task.collection, task.fileData, task.recordData);
+        const files = Array.isArray(task.fileData) ? task.fileData : [task.fileData];
+        let record = { id: task.recordData?.id };
+
+        // 1. Create the Database Record (if recordData has fields to save)
+        if (task.recordData && Object.keys(task.recordData).length > 0) {
+            // Generate ID if missing
+            if (!task.recordData.id) {
+                task.recordData.id = ulid();
+            }
+            record = await db.insertRecord(task.collection, task.recordData);
+        } else if (!record.id) {
+             // If no recordData and no ID, we must assume we just need a generic ULID for the attachments
+             record.id = ulid();
+        }
+
+        // 2. Attach Files to the new Record ID via the Media Service (MinIO + media_attachments table)
+        if (files && files.length > 0) {
+            await mediaService.attachMedia(
+                task.userId, 
+                task.collection, 
+                record.id, 
+                files, 
+                'Uploaded via queue'
+            );
+        }
 
         sseManager.broadcast(`user_${task.userId}`, 'upload_status', { 
             taskId: task.taskId, 
             status: 'completed',
             record: record 
         });
+
     } catch (error) {
         logger.error(`Internal upload failed for task ${task.taskId}`, { error: error.message });
         sseManager.broadcast(`user_${task.userId}`, 'upload_status', { 
@@ -31,9 +57,13 @@ const processTask = async (task) => {
             error: "Failed to process file internally." 
         });
     } finally {
-        if (fs.existsSync(task.fileData.path)) {
-            fs.unlinkSync(task.fileData.path);
-        }
+        // Cleanup local multer files
+        const filesToClean = Array.isArray(task.fileData) ? task.fileData : [task.fileData];
+        filesToClean.forEach(file => {
+            if (file && file.path && fs.existsSync(file.path)) {
+                fs.unlinkSync(file.path);
+            }
+        });
     }
 };
 
@@ -91,9 +121,7 @@ class NativeRedisQueueAdapter {
 
     async init() {
         try {
-            // Fetch the reusable singleton client
             this.client = await redisManager.getClient();
-            // Fetch a dedicated worker client for blocking pops
             this.workerClient = await redisManager.getWorkerClient();
             
             logger.info('Initialized Native Redis Upload Queue.');
@@ -132,7 +160,6 @@ class NativeRedisQueueAdapter {
                     continue;
                 }
 
-                // BRPOP blocks indefinitely (0) until a task arrives
                 const result = await this.workerClient.brPop(this.queueKey, 0);
                 
                 if (result && result.element) {

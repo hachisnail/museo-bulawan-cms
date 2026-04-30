@@ -15,12 +15,11 @@ router.get('/stream', (req, res) => {
         `role_${req.user.role}`
     ];
     
-    // 2. Resource-based channels (via CASL RBAC)
-    if (req.ability.can('read', 'Inventory')) allowedChannels.push('inventory');
+    // MariaDB Resource channels
+    if (req.ability.can('read', 'Inventory')) allowedChannels.push('inventory', 'media_attachments');
     if (req.ability.can('read', 'Accession')) allowedChannels.push('accessions');
-    if (req.ability.can('read', 'Intake')) allowedChannels.push('intakes');
-    if (req.ability.can('read', 'Appointment')) allowedChannels.push('appointments');
-
+    if (req.ability.can('read', 'Intake')) allowedChannels.push('intakes', 'form_submissions');
+    
     // 3. User-specific private channel
     allowedChannels.push(`user_${req.user.id}`);
 

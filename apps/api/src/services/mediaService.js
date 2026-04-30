@@ -1,104 +1,164 @@
-import { pbService } from '../services/pocketbaseService.js';
+import { db } from '../config/db.js';
+import { minioClient } from '../services/minioService.js';
 import { auditService } from '../services/auditService.js';
 import { logger } from '../utils/logger.js';
+import { env } from '../config/env.js';
+import { ulid } from 'ulidx';
 
-/**
- * Central media attachments service.
- * Uses polymorphic entity_type + entity_id pattern to link media
- * to any entity: inventory items, accessions, intakes, etc.
- */
 export const mediaService = {
     /**
-     * Upload media files and attach them to an entity.
+     * Upload media files directly to MinIO and attach them to a DB entity using a junction link.
      */
-    async attachMedia(userId, entityType, entityId, files, caption = '') {
-        const pbUserId = await pbService.getAppUserId(userId);
+    async attachMedia(userId, entityType, entityId, files, context = 'attachment', connection = null) {
+        const uploadedLinks = [];
 
-        const record = await pbService.uploadInternal('media_attachments', files, {
-            entity_type: entityType,
-            entity_id: entityId,
-            caption: caption,
-            uploaded_by: pbUserId
-        }, 'files');
-
-        await auditService.log({
-            collection: 'media_attachments',
-            recordId: record.id,
-            action: 'create',
-            userId: userId,
-            before: null,
-            after: record
-        });
-
-        return record;
-    },
-
-    /**
-     * List all media for an entity.
-     */
-    async listMedia(entityType, entityId, query = {}) {
-        const page = query.page || 1;
-        const perPage = query.perPage || 50;
-
-        return await pbService.pb.collection('media_attachments').getList(page, perPage, {
-            filter: `entity_type="${entityType}" && entity_id="${entityId}"`,
-            sort: query.sort || '-created'
-        });
-    },
-
-    /**
-     * Promote files from a form submission directly to the media_attachments collection.
-     * This is used when a submission is processed into a formal intake/accession.
-     */
-    async promoteSubmissionMedia(userId, submissionId, entityType, entityId) {
-        try {
-            const submission = await pbService.pb.collection('form_submissions').getOne(submissionId);
-            const files = submission.supporting_documents || [];
+        for (const file of files) {
+            const mediaId = ulid();
+            const linkId = ulid();
             
-            if (files.length === 0) return [];
+            const extension = file.originalname.split('.').pop();
+            const storageKey = `media/${mediaId}.${extension}`; // Normalized storage path
 
-            const pbUserId = await pbService.getAppUserId(userId);
-            
-            // Create a formal attachment record pointing to the same files
-            // Note: In PocketBase, moving files between collections usually requires re-uploading,
-            // but we can create the record and staff can re-upload or we can handle it via proxy.
-            // For now, we formally register the event.
-            const record = await pbService.pb.collection('media_attachments').create({
+            // 1. Stream to MinIO
+            if (file.buffer) {
+                await minioClient.putObject(env.minio.bucket, storageKey, file.buffer, file.size, {
+                    'Content-Type': file.mimetype
+                });
+            } else {
+                await minioClient.fPutObject(env.minio.bucket, storageKey, file.path, {
+                    'Content-Type': file.mimetype
+                });
+            }
+
+            // 2. Write to Media Metadata (Single Source of Truth)
+            await db.executeAndBroadcast(`
+                INSERT INTO media_metadata 
+                (id, file_name, storage_key, mime_type, size_bytes, uploaded_by)
+                VALUES (?, ?, ?, ?, ?, ?)
+            `, [mediaId, file.originalname, storageKey, file.mimetype, file.size, userId], 
+            'create', 'media_metadata', mediaId, connection);
+
+            // 3. Create the Junction Link
+            await db.executeAndBroadcast(`
+                INSERT INTO media_links 
+                (id, media_id, entity_type, entity_id, context)
+                VALUES (?, ?, ?, ?, ?)
+            `, [linkId, mediaId, entityType, entityId, context], 
+            'create', 'media_links', linkId, connection);
+
+            uploadedLinks.push({
+                link_id: linkId,
+                media_id: mediaId,
                 entity_type: entityType,
                 entity_id: entityId,
-                caption: 'Original Donor Documentation (Promoted)',
-                uploaded_by: pbUserId,
-                // We store the source info to help the proxy find the original file
-                metadata: {
-                    source_collection: 'form_submissions',
-                    source_id: submissionId,
-                    original_field: 'supporting_documents'
-                }
+                storage_key: storageKey
             });
 
-            return record;
-        } catch (error) {
-            logger.error(`Error promoting submission media: ${error.message}`);
-            return null;
+            // Log Audit
+            await auditService.log({
+                collection: 'media_links',
+                recordId: linkId,
+                action: 'create',
+                userId: userId,
+                after: { mediaId, entityType, entityId, context }
+            });
         }
+
+        return uploadedLinks;
     },
 
     /**
-     * Delete a media attachment.
+     * List all media for an entity via the junction table.
      */
-    async deleteMedia(userId, mediaId) {
-        const existing = await pbService.pb.collection('media_attachments').getOne(mediaId);
-        await pbService.pb.collection('media_attachments').delete(mediaId);
+    async listMedia(entityType, entityId, query = {}, connection = null) {
+        const page = query.page || 1;
+        const perPage = query.perPage || 50;
+        const offset = (page - 1) * perPage;
+
+        const rows = await db.query(
+            `SELECT m.*, l.id as link_id, l.context 
+             FROM media_metadata m
+             JOIN media_links l ON m.id = l.media_id
+             WHERE l.entity_type = ? AND l.entity_id = ? 
+             ORDER BY l.created_at DESC LIMIT ? OFFSET ?`,
+            [entityType, entityId, perPage, offset],
+            connection
+        );
+        
+        return { items: rows, page, perPage };
+    },
+
+    /**
+     * Delete a media link (and optionally the metadata if no other links exist).
+     */
+    async deleteMedia(userId, linkId, connection = null) {
+        // 1. Fetch the link to find the media_id
+        const links = await db.query(`SELECT * FROM media_links WHERE id = ?`, [linkId], connection);
+        const link = links[0];
+        if (!link) return { deleted: false };
+
+        const mediaId = link.media_id;
+
+        // 2. Remove the junction link
+        await db.executeAndBroadcast(`DELETE FROM media_links WHERE id = ?`, [linkId], 'delete', 'media_links', linkId, connection);
+
+        // 3. Check if any other links exist for this media
+        const otherLinks = await db.query(`SELECT COUNT(*) as count FROM media_links WHERE media_id = ?`, [mediaId], connection);
+        
+        if (otherLinks[0].count === 0) {
+            // No more references, safe to delete physical file and metadata
+            const metadata = await db.query(`SELECT storage_key FROM media_metadata WHERE id = ?`, [mediaId], connection);
+            if (metadata[0]) {
+                await minioClient.removeObject(env.minio.bucket, metadata[0].storage_key);
+            }
+            await db.executeAndBroadcast(`DELETE FROM media_metadata WHERE id = ?`, [mediaId], 'delete', 'media_metadata', mediaId, connection);
+            logger.info(`Purged unreferenced media metadata: ${mediaId}`);
+        }
 
         await auditService.log({
-            collection: 'media_attachments',
-            recordId: mediaId,
+            collection: 'media_links',
+            recordId: linkId,
             action: 'delete',
             userId: userId,
-            before: existing,
+            before: link,
             after: null
         });
 
         return { deleted: true };
+    },
+
+    /**
+     * Promotes media from a submission to a formal entity (e.g., Accession).
+     * Creates new junction links pointing to the same media metadata.
+     */
+    async promoteSubmissionMedia(userId, submissionId, targetType, targetId, connection = null) {
+        const submissionMedia = await this.listMedia('form_submissions', submissionId, {}, connection);
+        const promoted = [];
+
+        for (const item of submissionMedia.items) {
+            const linkId = ulid();
+            await db.executeAndBroadcast(`
+                INSERT INTO media_links 
+                (id, media_id, entity_type, entity_id, context)
+                VALUES (?, ?, ?, ?, ?)
+            `, [linkId, item.id, targetType, targetId, 'Promoted from Submission'], 
+            'create', 'media_links', linkId, connection);
+
+            promoted.push(linkId);
+
+            await auditService.log({
+                collection: 'media_links',
+                recordId: linkId,
+                action: 'promote',
+                userId: userId,
+                after: { mediaId: item.id, targetType, targetId }
+            });
+        }
+
+        if (promoted.length > 0) {
+            logger.info(`Promoted ${promoted.length} media items from submission ${submissionId} to ${targetType} ${targetId}`);
+        }
+
+        return promoted;
     }
 };

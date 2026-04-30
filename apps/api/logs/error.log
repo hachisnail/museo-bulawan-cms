@@ -675,3 +675,288 @@ sql: INSERT INTO users (id, fname, lname, email, username, password, role, statu
     at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
     at async Object.uploadMOA (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:75:16)
     at async Object.uploadMOA (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/accessionController.js:31:31) | Meta: {"method":"POST","url":"/api/v1/acquisitions/accessions/3a9048209d2da49/upload-moa","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 10:14:59 [error]: Failed to initialize MariaDB tables | Meta: {"error":"Cannot read properties of undefined (reading 'getConnection')"}
+2026-04-30 10:16:18 [error]: Failed to initialize MariaDB tables | Meta: {"error":"Cannot read properties of undefined (reading 'getConnection')"}
+2026-04-30 11:32:02 [error]: Failed to cleanup duplicate links | Meta: {"error":"(intermediate value) is not iterable"}
+2026-04-30 11:34:45 [error]: Form definition not found: donation-form
+2026-04-30 11:36:36 [error]: Error provisioning donor account: db is not defined
+2026-04-30 11:36:36 [error]: Error processing external intake: (conn:2756, no: 1054, SQLState: 42S22) Unknown column 'version' in 'INSERT INTO'
+sql: INSERT INTO donation_items (id, submission_id, item_name, description, quantity, status, version, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) - parameters:['01KQE7BEQ980Q7KY3W3F6S0M2Y','01KQE7BEPESW6RZZGFD1PSDVVW','Test Artifact 01KQE7BEP9C9...
+2026-04-30 11:37:31 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:37:31 [error]: Error processing accession: Invalid transition: 'intake' cannot move from 'under_review' → 'accessioned'. Allowed: [approved, rejected]
+2026-04-30 11:38:23 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:38:23 [error]: Error generating MOA: (conn:2794, no: 1292, SQLState: 22007) Incorrect date value: '2026-05-30T03:38:23.525Z' for column `scratch`.`intakes`.`qr_token_expires` at row 1
+sql: UPDATE intakes SET donor_name_override = ?, loan_duration_override = ?, delivery_slip_id = ?, moa_status = ?, qr_token_hash = ?, qr_token_expires = ?, status = ?, version = ?, updated_by = ? WHERE id = ? - parameters:['Test Donor',null,'DS-94A7B453','gener...
+2026-04-30 11:38:38 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:38:39 [error]: Error generating MOA: (conn:2806, no: 1292, SQLState: 22007) Incorrect date value: '"2026-05-30T03:38:39.026Z"' for column `scratch`.`intakes`.`qr_token_expires` at row 1
+sql: UPDATE intakes SET donor_name_override = ?, loan_duration_override = ?, delivery_slip_id = ?, moa_status = ?, qr_token_hash = ?, qr_token_expires = ?, status = ?, version = ?, updated_by = ? WHERE id = ? - parameters:['Test Donor',null,'DS-A7B2D80D','gener...
+2026-04-30 11:39:18 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:39:18 [error]: Error processing accession: Cannot read properties of undefined (reading 'length')
+2026-04-30 11:41:35 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:41:35 [error]: Failed to send email to test_1777520495520@example.com | Meta: {"error":"Cannot read properties of null (reading 'sendMail')"}
+2026-04-30 11:41:35 [error]: Error processing external intake: EMAIL_SEND_FAILED
+2026-04-30 11:41:35 [error]: Error processing accession: Record not found in intakes with id undefined
+2026-04-30 11:42:45 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:42:45 [error]: Error processing accession: (conn:2881, no: 1054, SQLState: 42S22) Unknown column 'created_by' in 'INSERT INTO'
+sql: INSERT INTO condition_reports (id, entity_type, entity_id, condition_status, notes, submission_id, reported_by, reporter_name, version, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) - parameters:['01KQE7PQ2EMZH4BZFEZPTJ5HAR','accession',...
+2026-04-30 11:43:05 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:43:06 [error]: Error processing accession: (conn:2893, no: 1054, SQLState: 42S22) Unknown column 'created_by' in 'INSERT INTO'
+sql: INSERT INTO condition_reports (id, entity_type, entity_id, condition_status, notes, submission_id, reported_by, reporter_name, version, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) - parameters:['01KQE7QB9DS5C6DD8DGJ2M0TY1','accession',...
+2026-04-30 11:43:39 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:43:40 [error]: Error processing accession: (conn:2904, no: 1054, SQLState: 42S22) Unknown column 'created_by' in 'INSERT INTO'
+sql: INSERT INTO condition_reports (id, entity_type, entity_id, condition_status, notes, submission_id, reported_by, reporter_name, version, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) - parameters:['01KQE7RCHMVBTK4G7B2SXYYYYB','accession',...
+2026-04-30 11:44:35 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:44:35 [error]: Non-blocking error promoting media: mediaService.promoteSubmissionMedia is not a function
+2026-04-30 11:44:35 [error]: Error finalizing to inventory: Invalid transition: 'accession' cannot move from 'pending_approval' → 'finalized'. Allowed: [in_research, rejected]
+2026-04-30 11:46:02 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:46:02 [error]: Error finalizing to inventory: Mandatory Imaging Requirement: You must either upload artifact images or provide a formal curatorial fallback reason.
+2026-04-30 11:47:11 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:47:12 [error]: Error finalizing to inventory: Cannot mix BigInt and other types, use explicit conversions
+2026-04-30 11:47:37 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:47:38 [error]: Error finalizing to inventory: (conn:2968, no: 1054, SQLState: 42S22) Unknown column 'version' in 'INSERT INTO'
+sql: INSERT INTO location_history (id, inventory_item_id, from_location, to_location, reason, moved_by, version, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) - parameters:['01KQE7ZMZWHG7F7XY9EPHWC7NT','01KQE7ZMZ6178DGWA3EDHAC0E0','N/A (New Entry)'...
+2026-04-30 11:48:13 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 11:48:35 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 12:02:52 [error]: TypeError: minioClient.fputObject is not a function
+    at Object.attachMedia (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/mediaService.js:28:35)
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:69:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-30 12:09:32 [error]: S3Error: Storage backend has reached its minimum free drive threshold. Please delete a few objects to proceed.
+    at parseError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/xml-parser.mjs:30:13)
+    at Module.parseResponseError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/xml-parser.mjs:85:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Client.makeRequestStreamAsync (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/client.mjs:519:19)
+    at async Client.uploadBuffer (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/client.mjs:1420:17)
+    at async Client.fPutObject (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/client.mjs:1345:12)
+    at async Object.attachMedia (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/mediaService.js:28:17)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:69:13)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-30 12:10:18 [error]: S3Error: Storage backend has reached its minimum free drive threshold. Please delete a few objects to proceed.
+    at parseError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/xml-parser.mjs:30:13)
+    at Module.parseResponseError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/xml-parser.mjs:85:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Client.makeRequestStreamAsync (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/client.mjs:519:19)
+    at async Client.uploadBuffer (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/client.mjs:1420:17)
+    at async Client.fPutObject (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/client.mjs:1345:12)
+    at async Object.attachMedia (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/mediaService.js:28:17)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:69:13)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-30 12:10:54 [error]: S3Error: Storage backend has reached its minimum free drive threshold. Please delete a few objects to proceed.
+    at parseError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/xml-parser.mjs:30:13)
+    at Module.parseResponseError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/xml-parser.mjs:85:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Client.makeRequestStreamAsync (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/client.mjs:519:19)
+    at async Client.uploadBuffer (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/client.mjs:1420:17)
+    at async Client.fPutObject (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/minio/dist/esm/internal/client.mjs:1345:12)
+    at async Object.attachMedia (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/mediaService.js:28:17)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:69:13)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-04-30 12:18:31 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:18:31 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:18:36 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes?expand=donation_item_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:18:36 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes?expand=donation_item_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:24:17 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:24:17 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:24:19 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes?expand=donation_item_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:24:19 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes?expand=donation_item_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:24:22 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/routes/mediaRoutes.js:100:25
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/media/form_submissions/01KQE9QXH56FWYKX25P7D4CTTE","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:24:29 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes?expand=donation_item_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:24:29 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes?expand=donation_item_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:24:34 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/routes/mediaRoutes.js:100:25
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/media/form_submissions/01KQE9QXH56FWYKX25P7D4CTTE","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:26:18 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:26:18 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:26:49 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes?expand=donation_item_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:26:49 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at Object.listIntakes (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/intakes?expand=donation_item_id","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:26:53 [error]: TypeError: Do not know how to serialize a BigInt
+    at JSON.stringify (<anonymous>)
+    at stringify (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:1034:12)
+    at ServerResponse.json (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\express\lib\response.js:245:14)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/routes/mediaRoutes.js:100:25
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/media/form_submissions/01KQE9QXH56FWYKX25P7D4CTTE","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:30:08 [error]: Error finalizing to inventory: Cannot finalize. Missing required research fields: Dimensions, Materials
+2026-04-30 12:30:25 [error]: Error finalizing to inventory: Cannot finalize. Missing required research fields: Dimensions, Materials
+2026-04-30 12:33:42 [error]: Error uploading MOA: updatedFiles is not defined
+2026-04-30 12:33:42 [error]: ReferenceError: updatedFiles is not defined
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:105:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.uploadMOA (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:75:16)
+    at async Object.uploadMOA (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/accessionController.js:31:31) | Meta: {"method":"POST","url":"/api/v1/acquisitions/accessions/01KQEAAX7RAE9CEYNBV2VF512N/upload-moa","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:34:01 [error]: Error finalizing to inventory: Cannot finalize. Missing required research fields: Dimensions, Materials
+2026-04-30 12:35:52 [error]: Error finalizing to inventory: Cannot finalize. Missing required research fields: Dimensions, Materials
+2026-04-30 12:37:22 [error]: Form definition not found: artifact-movement
+2026-04-30 12:37:22 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:22:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/artifact-movement","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 12:37:22 [error]: Form definition not found: artifact-movement
+2026-04-30 12:37:22 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:22:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/artifact-movement","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 17:14:09 [error]: ReferenceError: acquisitionService is not defined
+    at listExhibitions (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:123:28)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at requireAuth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:55:5)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/exhibitions","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 17:14:09 [error]: ReferenceError: acquisitionService is not defined
+    at listExhibitions (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:123:28)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at requireAuth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:55:5)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/exhibitions","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 17:14:14 [error]: ReferenceError: acquisitionService is not defined
+    at listConstituents (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:83:28)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at requireAuth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:55:5)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/constituents","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 17:14:18 [error]: ReferenceError: acquisitionService is not defined
+    at getValuationHistory (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:113:28)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at requireAuth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:55:5)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KQEARXBB9AKNDKJ34YRJECZP/valuations","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 17:24:02 [error]: SqlError: (conn:3458, no: 1054, SQLState: 42S22) Unknown column 'version' in 'INSERT INTO'
+sql: INSERT INTO constituents (id, name, type, contact_info, biography, external_id, version, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) - parameters:['01KQEV7MNQ0532CXEBAHWBSB08','asdasd','Individual','{}','adsadsad',null,1,'01KQ91VTA5A1RGM1SS0...
+    at Module.createError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) | Meta: {"method":"POST","url":"/api/v1/acquisitions/constituents","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 17:24:09 [error]: SqlError: (conn:3460, no: 1054, SQLState: 42S22) Unknown column 'version' in 'INSERT INTO'
+sql: INSERT INTO constituents (id, name, type, contact_info, biography, external_id, version, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) - parameters:['01KQEV7V6GY95A4VMYSWAB2R3C','asdasd','Individual','{}','adsadsad',null,1,'01KQ91VTA5A1RGM1SS0...
+    at Module.createError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) | Meta: {"method":"POST","url":"/api/v1/acquisitions/constituents","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 17:48:49 [error]: Error processing external intake: globalMutex is not defined
+2026-04-30 17:49:22 [error]: Error processing external intake: globalMutex is not defined
+2026-04-30 17:49:57 [error]: Error processing external intake: globalMutex is not defined
+2026-04-30 17:50:18 [error]: Error processing external intake: globalMutex is not defined
+2026-04-30 17:50:45 [error]: Error processing external intake: globalMutex is not defined
+2026-04-30 17:51:41 [error]: Error processing external intake: globalMutex is not defined
+2026-04-30 17:52:13 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 17:52:13 [error]: Error generating MOA: moaTemplates is not defined
+2026-04-30 17:53:08 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 17:53:09 [error]: Error generating MOA: moaTemplates is not defined
+2026-04-30 17:53:52 [error]: Failed to sync user to PB | Meta: {"error":"Only superusers can perform this action.","data":{"data":{},"message":"Only superusers can perform this action.","status":403}}
+2026-04-30 22:20:39 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at getCollectionHealth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/analyticsController.js:107:126)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/analytics/collection-health","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 22:20:39 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at getCollectionHealth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/analyticsController.js:107:126)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/analytics/collection-health","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}

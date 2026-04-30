@@ -1,6 +1,8 @@
 import crypto from 'crypto';
 import Ajv from 'ajv';
-import { pbService } from '../pocketbaseService.js';
+import { ulid } from 'ulidx';
+import { db } from '../../config/db.js';
+import { mediaService } from '../mediaService.js';
 import { logger } from '../../utils/logger.js';
 import { otpStore } from '../../utils/otpStore.js';
 import { auditService } from '../auditService.js';
@@ -9,16 +11,9 @@ import { definitionService } from './definitionService.js';
 
 const ajv = new Ajv({ strict: false });
 
-// Register custom UI formats so they don't break Ajv validation
 ajv.addFormat('textarea', { validate: () => true });
 ajv.addFormat('file', { validate: () => true });
 
-/**
- * SubmissionService
- * 
- * Handles the processing of incoming form submissions, including validation,
- * OTP consumption, fingerprinting, and post-submission automation triggers.
- */
 export const submissionService = {
     async submitForm(slug, payload, otp, files = null, requestMeta = {}, actingStaffId = null) {
         const definition = await definitionService.getFormDefinition(slug);
@@ -47,51 +42,57 @@ export const submissionService = {
             const hash = crypto.createHash('sha256').update(otp).digest('hex');
             if (hash !== cached.otpHash) throw new Error('Invalid OTP.');
             
-            // Consume OTP
             await otpStore.delete(userEmail);
         }
 
         // 3. Build anonymous fingerprint
         const fingerprint = this._buildFingerprint(requestMeta);
 
-        // 4. Generate unique ID for PB
-        const id = crypto.randomBytes(12).toString('hex').substring(0, 15);
+        const id = ulid();
 
         const submission = {
             id,
             form_id: definition.id,
             data: payload,
             status: 'pending',
-            submitted_by: userEmail || 'anonymous',
+            submitted_by: actingStaffId || null,
+            submitted_email: userEmail || null,
             anonymous_fingerprint: fingerprint
         };
 
-        let record;
-        if (files && files.length > 0) {
-            record = await pbService.uploadInternal('form_submissions', files, submission);
-        } else {
-            record = await pbService.pb.collection('form_submissions').create(submission);
-        }
+        // 4. Create the submission record in MariaDB with Transaction
+        const record = await db.transaction(async (tx) => {
+            const submissionRecord = await tx.insertRecord('form_submissions', submission);
 
-        // 5. Audit Log
-        await auditService.log({
-            collection: 'form_submissions',
-            recordId: record.id,
-            action: 'submit',
-            anonymousFingerprint: fingerprint,
-            after: record
+            // 5. Attach files to the submission record if any
+            if (files && files.length > 0) {
+                // we assume actingStaffId is the uploader, or null
+                await mediaService.attachMedia(actingStaffId, 'form_submissions', submissionRecord.id, files, 'Form Submission Upload', tx);
+            }
+
+            // 6. Audit Log
+            await auditService.log({
+                collection: 'form_submissions',
+                recordId: submissionRecord.id,
+                action: 'submit',
+                anonymousFingerprint: fingerprint,
+                after: submissionRecord
+            }, tx);
+
+            return submissionRecord;
         });
 
-        // 6. Post-submission automation triggers
+        // 7. Post-submission automation triggers
         try {
             if (definition.type === 'artifact_health') {
                 await formPipelineService.processHealthReportForm(actingStaffId, record.id, files);
             } else if (definition.type === 'artifact_movement') {
                 await formPipelineService.processMovementTrailForm(actingStaffId, record.id, files);
+            } else if (definition.type === 'artifact_conservation') {
+                await formPipelineService.processConservationLogForm(actingStaffId, record.id, files);
             }
         } catch (postError) {
             logger.error(`Post-submission hook failed for ${slug}: ${postError.message}`);
-            // We don't fail the submission itself as the record is already saved
         }
 
         return record;

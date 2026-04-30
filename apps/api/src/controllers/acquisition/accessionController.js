@@ -66,11 +66,41 @@ export const accessionController = {
         } catch (error) { next(error); }
     },
 
+    async exportReport(req, res, next) {
+        try {
+            const { accessionId } = req.params;
+            const buffer = await acquisitionService.exportFormalReport(accessionId);
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            res.setHeader('Content-Disposition', `attachment; filename=Accession_Report_${accessionId}.docx`);
+            res.status(200).send(buffer);
+        } catch (error) { next(error); }
+    },
+
     async getFullChain(req, res, next) {
         try {
             const { intakeId } = req.params;
             const chain = await acquisitionService.getFullChain(intakeId);
             res.status(200).json({ status: 'success', data: mapDTO(chain) });
+        } catch (error) { next(error); }
+    },
+    
+    async getUniqueTags(req, res, next) {
+        try {
+            const { db } = await import('../../config/db.js');
+            const accTags = await db.query('SELECT tags FROM accessions WHERE tags IS NOT NULL');
+            const invTags = await db.query('SELECT tags FROM inventory WHERE tags IS NOT NULL');
+            
+            const allTags = new Set();
+            [...accTags, ...invTags].forEach(row => {
+                try {
+                    const parsed = typeof row.tags === 'string' ? JSON.parse(row.tags) : row.tags;
+                    if (Array.isArray(parsed)) {
+                        parsed.forEach(t => allTags.add(t));
+                    }
+                } catch (e) {}
+            });
+            
+            res.status(200).json({ status: 'success', data: Array.from(allTags).sort() });
         } catch (error) { next(error); }
     }
 };

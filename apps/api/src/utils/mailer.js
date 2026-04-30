@@ -27,11 +27,11 @@ export const sendEmail = async ({ to, subject, text, html }) => {
     // ==========================================
     // DEVELOPMENT MODE: Console Mailer
     // ==========================================
-    if (env.isDev) {
+    if (!env.isProd) {
         logger.info(`[CONSOLE MAILER] Ready to send...`);
         logger.info(`TO: ${to}`);
         logger.info(`SUBJECT: ${subject}`);
-        logger.debug(`BODY:\n${text}`); // Use logger.debug for the full body content
+        logger.debug(`BODY:\n${html || text}`); 
         return true;
     }
 

@@ -1,4 +1,4 @@
-import FormRenderer from "../components/FormRenderer";
+import FormRenderer from "../components/FormRenderer/index";
 
 export default function Home() {
     return (

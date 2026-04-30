@@ -50,7 +50,7 @@ async function nextSequenceValue(name) {
  */
 export async function generateAccessionNumber(batch = 1) {
     const { year, seq } = await nextSequenceValue('accession');
-    const seqPadded = String(seq).padStart(3, '0');
+    const seqPadded = String(seq).padStart(2, '0');
     const batchPadded = String(batch).padStart(2, '0');
     return `${year}.${seqPadded}.${batchPadded}`;
 }

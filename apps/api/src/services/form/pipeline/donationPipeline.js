@@ -1,4 +1,4 @@
-import { pbService } from "../../pocketbaseService.js";
+import { db } from "../../../config/db.js";
 import { acquisitionService } from "../../acquisitionService.js";
 import { userService } from "../../userService.js";
 import { notificationService } from "../../notificationService.js";
@@ -18,30 +18,35 @@ export const donationPipeline = {
     async processExternalIntake(staffId, submissionId, helpers) {
         return await globalMutex.runExclusive(`sub_${submissionId}`, async () => {
             try {
-                const submission = await pbService.pb
-                    .collection("form_submissions")
-                    .getOne(submissionId, { expand: "form_id" });
+                const [submission] = await db.query(`
+                    SELECT s.*, f.id as form_def_id, f.type as form_type, f.settings as form_settings
+                    FROM form_submissions s
+                    JOIN form_definitions f ON s.form_id = f.id
+                    WHERE s.id = ?
+                `, [submissionId]);
                 
-                const definition = submission.expand?.form_id;
-                if (!definition || definition.type !== "donation") {
+                if (!submission || submission.form_type !== "donation") {
                     throw new Error("UNAUTHORIZED_PIPELINE_ACTION: Only donation submissions can be processed into the acquisition system.");
                 }
 
                 assertTransition("submission", submission.status, "processed");
 
-                const mapping = definition.settings?.field_mapping || {};
+                // Parse JSON fields
+                const data = typeof submission.data === 'string' ? JSON.parse(submission.data) : submission.data;
+                const settings = typeof submission.form_settings === 'string' ? JSON.parse(submission.form_settings) : submission.form_settings;
+                const mapping = settings?.field_mapping || {};
 
                 // Extract donor info
-                const firstName = submission.data[mapping.firstName] || submission.data.donor_first_name || submission.data.firstName || "Anonymous";
-                const lastName = submission.data[mapping.lastName] || submission.data.donor_last_name || submission.data.lastName || "";
-                const donorName = (submission.data[mapping.donorName] || `${firstName} ${lastName}`).trim();
-                const donorEmail = submission.data[mapping.donorEmail] || submission.data.donor_email || submission.data.email;
-                const acquisitionMethod = submission.data[mapping.acquisitionType] || submission.data.acquisition_type || "gift";
+                const firstName = data[mapping.firstName] || data.donor_first_name || data.firstName || "Anonymous";
+                const lastName = data[mapping.lastName] || data.donor_last_name || data.lastName || "";
+                const donorName = (data[mapping.donorName] || `${firstName} ${lastName}`).trim();
+                const donorEmail = data[mapping.donorEmail] || data.donor_email || data.email;
+                const acquisitionMethod = data[mapping.acquisitionType] || data.acquisition_type || "gift";
 
                 const donorExtras = {
-                    title: submission.data.donor_title || "",
-                    phone: submission.data.donor_phone || "",
-                    address: submission.data.donor_address || ""
+                    title: data.donor_title || "",
+                    phone: data.donor_phone || "",
+                    address: data.donor_address || ""
                 };
 
                 // Provision donor account
@@ -81,7 +86,7 @@ export const donationPipeline = {
                     }
                 }
 
-                const parsedItems = helpers._extractSubmissionItems(submission.data, mapping);
+                const parsedItems = helpers._extractSubmissionItems(data, mapping);
                 const intakes = [];
                 const donationItems = [];
 
@@ -97,10 +102,10 @@ export const donationPipeline = {
                     donationItems.push(result.donationItem);
                 }
 
-                await pbService.pb.collection("form_submissions").update(submissionId, { status: "processed" });
+                await db.query('UPDATE form_submissions SET status = "processed" WHERE id = ?', [submissionId]);
 
                 notificationService.sendToRole("admin", "New Intake Created", 
-                    `External submission processed into ${intakes.length} intake(s).`);
+                    `External submission processed into ${intakes.length} intake(s).`, "info", { actionUrl: intakes.length === 1 ? `/intakes?id=${intakes[0].id}` : "/intakes" });
 
                 return { intakes, donationItems };
             } catch (error) {

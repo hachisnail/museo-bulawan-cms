@@ -82,5 +82,24 @@ export const inventoryController = {
             const item = await acquisitionService.updateArtifactStatus(req.user.id, inventoryId, status, isManual, reason);
             res.status(200).json({ message: "Artifact status updated successfully.", item: mapDTO(item) });
         } catch (error) { next(error); }
+    },
+
+    async generateReport(req, res, next) {
+        try {
+            const { inventoryId } = req.params;
+            const html = await acquisitionService.generateInventoryReport(inventoryId);
+            res.setHeader('Content-Type', 'text/html');
+            res.status(200).send(html);
+        } catch (error) { next(error); }
+    },
+
+    async exportReport(req, res, next) {
+        try {
+            const { inventoryId } = req.params;
+            const buffer = await acquisitionService.exportInventoryReport(inventoryId);
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            res.setHeader('Content-Disposition', `attachment; filename=Inventory_Report_${inventoryId}.docx`);
+            res.status(200).send(buffer);
+        } catch (error) { next(error); }
     }
 };

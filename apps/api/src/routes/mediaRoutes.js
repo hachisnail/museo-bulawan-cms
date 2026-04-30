@@ -17,7 +17,8 @@ const mediaUpload = multer({
 const entityPermissionMap = {
     'inventory': 'Inventory',
     'accession': 'Accession',
-    'intake': 'Intake'
+    'intake': 'Intake',
+    'submission': 'Submission'
 };
 
 router.use(requireAuth);

@@ -12,6 +12,15 @@ export const login = async (req, res, next) => {
             return res.status(401).json({error: info.message || "Authentication failed" })
         }
 
+        // BLOCK DONORS/VISITORS FROM ADMIN PANEL
+        // They will have their own dedicated portal later.
+        if (user.role === 'donor' || user.role === 'visitor') {
+            return res.status(403).json({ 
+                error: "ACCESS_DENIED", 
+                message: "Donors/Visitors cannot access the management panel. Please use the Visitor Portal." 
+            });
+        }
+
         req.logIn(user, async (err) => {
             if(err) return next(err);
 

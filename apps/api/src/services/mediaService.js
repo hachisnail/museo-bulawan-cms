@@ -47,6 +47,43 @@ export const mediaService = {
     },
 
     /**
+     * Promote files from a form submission directly to the media_attachments collection.
+     * This is used when a submission is processed into a formal intake/accession.
+     */
+    async promoteSubmissionMedia(userId, submissionId, entityType, entityId) {
+        try {
+            const submission = await pbService.pb.collection('form_submissions').getOne(submissionId);
+            const files = submission.supporting_documents || [];
+            
+            if (files.length === 0) return [];
+
+            const pbUserId = await pbService.getAppUserId(userId);
+            
+            // Create a formal attachment record pointing to the same files
+            // Note: In PocketBase, moving files between collections usually requires re-uploading,
+            // but we can create the record and staff can re-upload or we can handle it via proxy.
+            // For now, we formally register the event.
+            const record = await pbService.pb.collection('media_attachments').create({
+                entity_type: entityType,
+                entity_id: entityId,
+                caption: 'Original Donor Documentation (Promoted)',
+                uploaded_by: pbUserId,
+                // We store the source info to help the proxy find the original file
+                metadata: {
+                    source_collection: 'form_submissions',
+                    source_id: submissionId,
+                    original_field: 'supporting_documents'
+                }
+            });
+
+            return record;
+        } catch (error) {
+            logger.error(`Error promoting submission media: ${error.message}`);
+            return null;
+        }
+    },
+
+    /**
      * Delete a media attachment.
      */
     async deleteMedia(userId, mediaId) {

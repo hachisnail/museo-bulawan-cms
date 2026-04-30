@@ -628,3 +628,50 @@ sql: INSERT INTO users (id, fname, lname, email, username, password, role, statu
     at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
     at async Object.uploadMOA (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisitionService.js:495:16)
     at async uploadMOA (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisitionController.js:197:27) | Meta: {"method":"POST","url":"/api/v1/acquisitions/accessions/3a9048209d2da49/moa","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 08:56:07 [error]: TypeError: Cannot read properties of undefined (reading 'cannot')
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:36:25
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at requireAuth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:55:5)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/user","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 08:56:07 [error]: TypeError: Cannot read properties of undefined (reading 'cannot')
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:36:25
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at requireAuth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:55:5)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/user","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 08:56:15 [error]: TypeError: Cannot read properties of undefined (reading 'cannot')
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:36:25
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at requireAuth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:55:5)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"POST","url":"/api/v1/acquisitions/inventory/cd60cebbb65e5cd/deaccession","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 08:58:48 [error]: Error: Invalid transition: 'inventory' cannot move from 'deaccessioned' → 'deaccessioned'. Allowed: []
+    at assertTransition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/stateMachine.js:98:15)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/inventoryService.js:132:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.deaccessionItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/inventoryService.js:130:16)
+    at async Object.deaccessionItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/inventoryController.js:53:26) | Meta: {"method":"POST","url":"/api/v1/acquisitions/inventory/cd60cebbb65e5cd/deaccession","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-04-30 10:02:51 [error]: Error uploading MOA: Cannot upload MOA for a finalized accession.
+2026-04-30 10:02:51 [error]: Error: Cannot upload MOA for a finalized accession.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:79:27
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.uploadMOA (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:75:16)
+    at async Object.uploadMOA (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/accessionController.js:31:31) | Meta: {"method":"POST","url":"/api/v1/acquisitions/accessions/3a9048209d2da49/upload-moa","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}

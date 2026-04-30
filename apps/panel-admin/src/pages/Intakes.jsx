@@ -68,16 +68,22 @@ export default function Intakes() {
 
     useEffect(() => { fetchData(); }, [fetchData]);
 
-    // Merge live SSE events with initial data
-    const displayIntakes = [...events.map(e => e.data), ...intakes]
-        .filter((v, i, a) => a.findIndex(t => t.id === v.id) === i)
+    // Real-time synchronization
+    useEffect(() => {
+        if (events.length > 0) {
+            console.log("Real-time update received, refreshing data...");
+            fetchData();
+        }
+    }, [events, fetchData]);
+
+    const displayIntakes = [...intakes]
         .sort((a, b) => new Date(b.created) - new Date(a.created));
 
     const handleInternalRegister = async (e) => {
         e.preventDefault();
         setActionLoading(true);
         try {
-            const res = await apiFetch('/api/v1/acquisitions/internal', {
+            const res = await apiFetch('/api/v1/acquisitions/intakes/internal', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ itemName, sourceInfo, method })
@@ -93,21 +99,66 @@ export default function Intakes() {
     };
 
     const handleSelectRecord = async (type, item) => {
-        if (type === 'submission') {
-            setActionLoading(true);
-            try {
-                const res = await apiFetch(`/api/v1/forms/admin/submissions/${item.id}`);
-                const json = await res.json();
-                if (json.status === 'success') {
-                    setSelected({ type, data: json.data.submission, items: json.data.items });
-                }
-            } catch (err) {
-                console.error("Failed to fetch submission details", err);
-            } finally {
-                setActionLoading(false);
+        setActionLoading(true);
+        try {
+            let endpoint = '';
+            let mediaType = '';
+            
+            if (type === 'submission') {
+                endpoint = `/api/v1/forms/admin/submissions/${item.id}`;
+                mediaType = 'submission';
+            } else {
+                endpoint = `/api/v1/acquisitions/intakes/${item.id}?expand=donation_item_id`;
+                mediaType = 'intake';
             }
-        } else {
-            setSelected({ type, data: item });
+
+            const res = await apiFetch(endpoint);
+            const json = await res.json();
+            
+            if (json.status === 'success') {
+                // Fetch media for this record
+                try {
+                    const mRes = await apiFetch(`/api/v1/media/${mediaType}/${item.id}`);
+                    const mData = await mRes.json();
+                    
+                    if (type === 'submission') {
+                        const submissionMedia = [];
+                        const rawFiles = json.data.submission.attachments || json.data.submission.supporting_documents || [];
+                        
+                        if (rawFiles.length > 0) {
+                            submissionMedia.push({
+                                collectionId: json.data.submission.collectionId,
+                                id: json.data.submission.id,
+                                files: rawFiles,
+                                caption: 'Donor Provided Documentation'
+                            });
+                        }
+
+                        setSelected({ 
+                            type, 
+                            data: json.data.submission, 
+                            items: json.data.items,
+                            media: [...submissionMedia, ...(mData.data?.items || [])]
+                        });
+                    } else {
+                        setSelected({ 
+                            type, 
+                            data: json.data, 
+                            media: mData.data?.items || []
+                        });
+                    }
+                } catch (e) {
+                    if (type === 'submission') {
+                        setSelected({ type, data: json.data.submission, items: json.data.items, media: [] });
+                    } else {
+                        setSelected({ type, data: json.data, media: [] });
+                    }
+                }
+            }
+        } catch (err) {
+            console.error("Failed to fetch record details", err);
+        } finally {
+            setActionLoading(false);
         }
     };
 
@@ -115,9 +166,18 @@ export default function Intakes() {
         if (action !== 'moa' && !confirm(`Are you sure you want to ${action.replace(/-/g, ' ')} this?`)) return;
         setActionLoading(true);
         try {
-            const endpoint = selected.type === 'submission' 
-                ? `/api/v1/acquisitions/external/${id}` 
-                : `/api/v1/acquisitions/${id}/${action}`;
+            let endpoint = '';
+            if (selected.type === 'submission') {
+                endpoint = `/api/v1/acquisitions/intakes/external/${id}`;
+            } else {
+                // Determine sub-domain based on action
+                if (['approve', 'reject', 'reopen', 'moa', 'delivery', 'generate-moa', 'rollback', 'confirm-delivery'].includes(action)) {
+                    const actionName = action === 'moa' ? 'generate-moa' : (action === 'delivery' ? 'confirm-delivery' : action);
+                    endpoint = `/api/v1/acquisitions/intakes/${id}/${actionName}`;
+                } else if (action === 'accession') {
+                    endpoint = `/api/v1/acquisitions/accessions/from-intake/${id}`;
+                }
+            }
             
             const res = await apiFetch(endpoint, {
                 method: 'POST',
@@ -149,7 +209,7 @@ export default function Intakes() {
         setIsVerifying(true);
         setVerifyResult(null);
         try {
-            const res = await apiFetch(`/api/v1/acquisitions/verify-delivery/${verifyToken}`);
+            const res = await apiFetch(`/api/v1/acquisitions/delivery/verify/${verifyToken}`);
             const json = await res.json();
             if (res.ok) {
                 setVerifyResult(json.data);
@@ -167,7 +227,7 @@ export default function Intakes() {
         if (!verifyResult) return;
         setActionLoading(true);
         try {
-            const res = await apiFetch(`/api/v1/acquisitions/${verifyResult.id}/delivery`, {
+            const res = await apiFetch(`/api/v1/acquisitions/intakes/${verifyResult.id}/confirm-delivery`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ token: verifyToken })
@@ -335,17 +395,81 @@ export default function Intakes() {
                                 <div className="p-6 space-y-6">
                                     {selected.type === 'submission' ? (
                                         <div className="space-y-6">
-                                            <div>
-                                                <h4 className="text-[10px] uppercase font-bold text-zinc-500 mb-3">Submitted Data</h4>
-                                                <div className="bg-black/20 rounded-xl p-4 space-y-2 max-h-64 overflow-y-auto">
-                                                    {Object.entries(selected.data.data || {}).map(([k, v]) => (
-                                                        <div key={k} className="flex flex-col mb-2">
-                                                            <span className="text-[10px] text-zinc-500 capitalize">{k.replace(/_/g, ' ')}</span>
-                                                            <span className="text-sm text-zinc-200">{String(v)}</span>
-                                                        </div>
-                                                    ))}
+                                            {/* Top Level Identity */}
+                                            <div className="bg-indigo-600/10 border border-indigo-500/20 rounded-2xl p-5">
+                                                <label className="text-[9px] uppercase font-bold text-indigo-400 block mb-1">Proposed Artifact</label>
+                                                <div className="text-xl font-black text-white tracking-tight">
+                                                    {selected.data.data.artifact_name || selected.data.data.item_name || 'Unnamed Submission'}
                                                 </div>
                                             </div>
+
+                                            {/* Donor Profile */}
+                                            <div>
+                                                <h4 className="text-[10px] uppercase font-bold text-zinc-500 mb-3 flex items-center gap-2">
+                                                    <span>👤</span> Donor Profile
+                                                </h4>
+                                                <div className="bg-black/20 rounded-2xl p-4 space-y-3 border border-white/5">
+                                                    <DetailRow 
+                                                        label="Full Name" 
+                                                        value={selected.data.data.donor_first_name 
+                                                            ? `${selected.data.data.donor_first_name} ${selected.data.data.donor_last_name || ''}` 
+                                                            : (selected.data.submitted_by || 'Anonymous')} 
+                                                    />
+                                                    <DetailRow 
+                                                        label="Email" 
+                                                        value={selected.data.data.donor_email || selected.data.email || 'N/A'} 
+                                                    />
+                                                    <DetailRow label="Phone" value={selected.data.data.donor_phone || 'N/A'} />
+                                                    <DetailRow label="Method" value={selected.data.data.acquisition_type || 'GIFT'} caps />
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <h4 className="text-[10px] uppercase font-bold text-zinc-500 mb-3">Item Specification</h4>
+                                                <div className="space-y-4">
+                                                    <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
+                                                        <label className="text-[9px] uppercase font-bold text-zinc-600 block mb-2">Physical Description</label>
+                                                        <div className="text-sm text-zinc-200 leading-relaxed italic">
+                                                            "{selected.data.data.artifact_description || 'No description provided.'}"
+                                                        </div>
+                                                    </div>
+                                                    <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
+                                                        <label className="text-[9px] uppercase font-bold text-zinc-600 block mb-2">Provenance & History</label>
+                                                        <div className="text-sm text-zinc-400 leading-relaxed">
+                                                            {selected.data.data.artifact_provenance || 'No provenance history.'}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {selected.media?.length > 0 && (
+                                                <div className="pt-4">
+                                                    <h4 className="text-[10px] uppercase font-bold text-indigo-400 mb-3">Supporting Documents</h4>
+                                                    <div className="grid grid-cols-2 gap-3">
+                                                        {selected.media.map((m) => (
+                                                            (m.files || []).map((file, idx) => (
+                                                                <div key={`${m.id}-${idx}`} className="group relative aspect-video rounded-xl overflow-hidden border border-white/10 bg-black shadow-2xl">
+                                                                    <img 
+                                                                        src={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/${m.collectionId}/${m.id}/${file}`}
+                                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                                                    />
+                                                                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4">
+                                                                        <p className="text-[9px] text-white/50 mb-2 font-mono truncate w-full text-center">{file}</p>
+                                                                        <a 
+                                                                            href={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/${m.collectionId}/${m.id}/${file}`}
+                                                                            target="_blank" 
+                                                                            rel="noreferrer"
+                                                                            className="px-4 py-2 bg-white text-black rounded-lg text-[9px] font-black uppercase tracking-widest shadow-xl"
+                                                                        >
+                                                                            View Original
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            ))
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
 
                                             {selected.items?.length > 0 && (
                                                 <div>
@@ -386,6 +510,26 @@ export default function Intakes() {
                                                             <div>QTY: {selected.data.expand.donation_item_id.quantity}</div>
                                                             <div>Initial Status: {selected.data.expand.donation_item_id.status}</div>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {selected.media?.length > 0 && (
+                                                <div>
+                                                    <h4 className="text-[10px] uppercase font-bold text-indigo-400 mb-3">Attached Visuals</h4>
+                                                    <div className="grid grid-cols-3 gap-2">
+                                                        {selected.media.map((m) => (
+                                                            (m.files || []).map((file, idx) => (
+                                                                <a 
+                                                                    key={`${m.id}-${idx}`} 
+                                                                    href={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/${m.collectionId}/${m.id}/${file}`}
+                                                                    target="_blank" rel="noreferrer"
+                                                                    className="aspect-square rounded-lg bg-black/40 border border-white/10 overflow-hidden hover:border-indigo-500 transition-colors"
+                                                                >
+                                                                    <img src={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/${m.collectionId}/${m.id}/${file}`} className="w-full h-full object-cover" />
+                                                                </a>
+                                                            ))
+                                                        ))}
                                                     </div>
                                                 </div>
                                             )}
@@ -466,6 +610,179 @@ export default function Intakes() {
                     </div>
                 </div>
             </div>
+
+            {/* Submission Detail Modal (Window) */}
+            {selected?.type === 'submission' && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/90 backdrop-blur-md animate-in fade-in duration-500">
+                    <div className="glass-panel w-full max-w-6xl max-h-[90vh] rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col animate-in zoom-in-95 duration-500">
+                        {/* Modal Header */}
+                        <header className="p-8 border-b border-white/5 bg-white/[0.02] flex justify-between items-center">
+                            <div>
+                                <div className="flex items-center gap-3 mb-1">
+                                    <span className="px-2 py-0.5 bg-amber-500/10 border border-amber-500/20 rounded text-[9px] font-black text-amber-500 uppercase tracking-widest">External Submission</span>
+                                    <span className="text-[10px] text-zinc-500 font-mono">ID: {selected.data.id}</span>
+                                </div>
+                                <h2 className="text-3xl font-black text-white tracking-tight">
+                                    {selected.data.data.artifact_name || selected.data.data.item_name || 'Unnamed Submission'}
+                                </h2>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <button 
+                                    onClick={() => setSelected(null)}
+                                    className="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-xs font-bold transition-all"
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    onClick={() => handleAction(selected.data.id, 'process')}
+                                    className="px-10 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl text-xs font-black uppercase tracking-widest shadow-2xl shadow-indigo-500/40 transition-all active:scale-95"
+                                >
+                                    Process into Intake Pipeline
+                                </button>
+                            </div>
+                        </header>
+
+                        {/* Modal Content */}
+                        <div className="flex-1 overflow-y-auto p-10">
+                            <div className="grid grid-cols-12 gap-12">
+                                {/* Left Side: Details */}
+                                <div className="col-span-12 lg:col-span-7 space-y-12">
+                                    {/* Artifact Specification */}
+                                    <section className="space-y-8">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-xl">📦</div>
+                                            <h3 className="text-lg font-black uppercase tracking-widest text-zinc-400">Artifact Specification</h3>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-8">
+                                            <div className="bg-white/[0.02] p-6 rounded-3xl border border-white/5">
+                                                <label className="text-[10px] uppercase font-black text-zinc-600 block mb-3">Proposed Acquisition</label>
+                                                <div className="text-sm font-bold text-indigo-400 uppercase tracking-wider">
+                                                    {selected.data.data.acquisition_type || 'Gift'}
+                                                </div>
+                                            </div>
+                                            <div className="bg-white/[0.02] p-6 rounded-3xl border border-white/5">
+                                                <label className="text-[10px] uppercase font-black text-zinc-600 block mb-3">Submission Date</label>
+                                                <div className="text-sm font-bold text-zinc-300">
+                                                    {new Date(selected.data.created).toLocaleDateString(undefined, { dateStyle: 'long' })}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-6">
+                                            <div>
+                                                <label className="text-[10px] uppercase font-black text-zinc-600 block mb-3">Physical Description</label>
+                                                <div className="bg-white/[0.03] p-8 rounded-[32px] border border-white/5 text-lg text-zinc-200 leading-relaxed font-serif italic">
+                                                    "{selected.data.data.artifact_description || 'No physical description provided.'}"
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label className="text-[10px] uppercase font-black text-zinc-600 block mb-3">Provenance & Historical Background</label>
+                                                <div className="text-base text-zinc-400 leading-relaxed whitespace-pre-wrap pl-4 border-l-2 border-indigo-500/30">
+                                                    {selected.data.data.artifact_provenance || 'No historical provenance provided by donor.'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                    {/* Linked Items (if any) */}
+                                    {selected.items?.length > 0 && (
+                                        <section className="space-y-6">
+                                            <h4 className="text-[10px] font-black uppercase text-zinc-600 tracking-widest">Inventory Pre-registration</h4>
+                                            <div className="space-y-3">
+                                                {selected.items.map(item => (
+                                                    <div key={item.id} className="bg-white/5 border border-white/10 p-4 rounded-2xl flex justify-between items-center">
+                                                        <div>
+                                                            <div className="font-bold text-sm text-white">{item.item_name}</div>
+                                                            <div className="text-[10px] text-zinc-500">Qty: {item.quantity}</div>
+                                                        </div>
+                                                        <span className="text-[9px] font-black uppercase px-2 py-1 bg-zinc-800 rounded border border-white/5">{item.status}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </section>
+                                    )}
+                                </div>
+
+                                {/* Right Side: Media & Profile */}
+                                <div className="col-span-12 lg:col-span-5 space-y-12">
+                                    {/* Media Gallery */}
+                                    <section className="space-y-6">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 flex items-center justify-center text-xl">🖼️</div>
+                                            <h3 className="text-lg font-black uppercase tracking-widest text-zinc-400">Donor Attachments</h3>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-4">
+                                            {selected.media.length > 0 ? (
+                                                selected.media.map((m) => (
+                                                    (m.files || []).map((file, idx) => (
+                                                        <div key={`${m.id}-${idx}`} className="group relative aspect-video rounded-3xl overflow-hidden border border-white/10 bg-black shadow-2xl">
+                                                            <img 
+                                                                src={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/${m.collectionId}/${m.id}/${file}`}
+                                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                            />
+                                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all flex flex-col items-center justify-center p-4">
+                                                                <p className="text-[9px] text-white/50 mb-3 font-mono truncate w-full text-center">{file}</p>
+                                                                <a 
+                                                                    href={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/${m.collectionId}/${m.id}/${file}`}
+                                                                    target="_blank" rel="noreferrer"
+                                                                    className="px-6 py-2 bg-white text-black rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:scale-105 transition-transform"
+                                                                >
+                                                                    Open Full Res
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                ))
+                                            ) : (
+                                                <div className="col-span-2 py-20 text-center border-2 border-dashed border-white/5 rounded-[40px] opacity-20">
+                                                    No media attached.
+                                                </div>
+                                            )}
+                                        </div>
+                                    </section>
+
+                                    {/* Donor Profile Card */}
+                                    <section className="bg-indigo-600/5 rounded-[40px] p-8 border border-indigo-500/10 space-y-8">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-xl">👤</div>
+                                            <h3 className="text-xs font-black uppercase tracking-widest text-indigo-300">Donor Profile</h3>
+                                        </div>
+                                        
+                                        <div className="space-y-6">
+                                            <div>
+                                                <label className="text-[9px] uppercase font-black text-zinc-600 block mb-1">Full Legal Name</label>
+                                                <div className="text-xl font-bold text-white tracking-tight">
+                                                    {selected.data.data.donor_title || ''} {selected.data.data.donor_first_name} {selected.data.data.donor_last_name}
+                                                </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-6">
+                                                <div>
+                                                    <label className="text-[9px] uppercase font-black text-zinc-600 block mb-1">Email Address</label>
+                                                    <div className="text-sm text-indigo-400 font-medium truncate">{selected.data.data.donor_email || selected.data.email}</div>
+                                                </div>
+                                                <div>
+                                                    <label className="text-[9px] uppercase font-black text-zinc-600 block mb-1">Phone Number</label>
+                                                    <div className="text-sm text-zinc-300">{selected.data.data.donor_phone || 'N/A'}</div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label className="text-[9px] uppercase font-black text-zinc-600 block mb-1">Mailing Address</label>
+                                                <div className="text-[11px] text-zinc-400 leading-relaxed italic">
+                                                    {selected.data.data.donor_address || 'Address not provided.'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Verification / MOA Modal */}
             {moaDraft && (

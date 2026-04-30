@@ -4,7 +4,7 @@ import { subject } from '@casl/ability';
 export const buildAbility = async (req, res, next) => {
     try {
         if (!req.user) {
-            req.ability = defineAbilityFor({ role: 'guest' });
+            req.ability = defineAbilityFor({ role: 'visitor' });
             return next();
         } 
 
@@ -44,10 +44,10 @@ export const checkPermission = (action, resource) => {
 
 export const requireAuth = (req, res, next) => {
     // Check if the user object exists and isn't a guest
-    if (!req.user || req.user.role === 'guest') {
+    if (!req.user || req.user.role === 'visitor') {
         return res.status(401).json({ 
             error: "Unauthorized", 
-            message: "You must be logged in to access this resource." 
+            message: "You must be logged in as staff to access this resource." 
         });
     }
 

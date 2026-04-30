@@ -23,8 +23,7 @@ app.use(helmet({
 // Apply CORS options BEFORE routes
 app.use(cors(corsOptions));
 
-// Apply global rate limiting
-app.use(globalLimiter);
+// Middleware setup...
 
 app.use(morgan('dev', {
     stream: { write: (message) => logger.info(message.trim()) }
@@ -52,6 +51,9 @@ app.use(csrfProtection);
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Apply dynamic global rate limiting (lax for logged in users)
+app.use(globalLimiter);
 
 app.use('/api/v1/', routes);
 

@@ -68,9 +68,15 @@ export default function Inventory() {
 
     useEffect(() => { fetchInventory(); }, [fetchInventory]);
 
-    // Live Sync
-    const displayList = [...events.map(e => e.data), ...initialData]
-        .filter((v, i, a) => a.findIndex(t => t.id === v.id) === i)
+    // Real-time synchronization
+    useEffect(() => {
+        if (events.length > 0) {
+            console.log("Inventory update received, refreshing catalog...");
+            fetchInventory();
+        }
+    }, [events, fetchInventory]);
+
+    const displayList = [...initialData]
         .sort((a, b) => new Date(b.created) - new Date(a.created));
 
     const fetchDetails = async (item) => {
@@ -97,7 +103,7 @@ export default function Inventory() {
 
             const [moveRes, healthRes] = await Promise.all([
                 apiFetch(`/api/v1/acquisitions/inventory/${item.id}/movement`),
-                apiFetch(`/api/v1/acquisitions/condition/inventory/${item.id}`)
+                apiFetch(`/api/v1/acquisitions/inventory/${item.id}/condition-reports`)
             ]);
             const moveJson = await moveRes.json();
             const healthJson = await healthRes.json();
@@ -173,7 +179,7 @@ export default function Inventory() {
         setActionLoading(true);
         try {
             const res = await apiFetch(`/api/v1/acquisitions/inventory/${selected.id}/status`, {
-                method: 'POST',
+                method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus, isManual: true, reason })
             });
@@ -321,16 +327,18 @@ export default function Inventory() {
                                 </div>
                                 <div className="p-8">
                                     <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-                                        {(selected.expand?.accession_id?.expand?.media_attachments_via_entity_id || []).map((m, i) => (
-                                            <div key={i} className="min-w-[300px] h-64 rounded-2xl overflow-hidden border border-white/10 bg-black shadow-xl group relative">
-                                                <img 
-                                                    src={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/${m.collectionId}/${m.id}/${m.files[0]}`} 
-                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                                                />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                                                    <p className="text-[10px] text-white/80 italic">{m.caption || 'Artifact documentation capture'}</p>
+                                        {(selected.expand?.accession_id?.expand?.media_attachments_via_entity_id || []).map((m) => (
+                                            (m.files || []).map((file, idx) => (
+                                                <div key={`${m.id}-${idx}`} className="min-w-[300px] h-64 rounded-2xl overflow-hidden border border-white/10 bg-black shadow-xl group relative">
+                                                    <img 
+                                                        src={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/${m.collectionId}/${m.id}/${file}`} 
+                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                                                    />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                                                        <p className="text-[10px] text-white/80 italic">{m.caption || 'Artifact documentation capture'}</p>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            ))
                                         ))}
                                         {(!selected.expand?.accession_id?.expand?.media_attachments_via_entity_id || selected.expand?.accession_id?.expand?.media_attachments_via_entity_id.length === 0) && (
                                             <div className="w-full h-64 flex flex-col items-center justify-center bg-white/5 rounded-2xl border border-dashed border-white/10 opacity-30">

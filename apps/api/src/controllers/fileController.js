@@ -48,12 +48,27 @@ export const getPrivateFile = async (req, res, next) => {
         try {
             const record = await pbService.pb.collection(collection).getOne(recordId);
             
+            let targetRecord = record;
+            let targetCollection = collection;
+
+            // Handle Promoted Media from Submission
+            // If this is a media attachment record pointing to a submission source
+            if (collection === 'media_attachments' && record.metadata?.source_collection) {
+                try {
+                    targetCollection = record.metadata.source_collection;
+                    targetRecord = await pbService.pb.collection(targetCollection).getOne(record.metadata.source_id);
+                } catch (sourceErr) {
+                    logger.warn(`Could not resolve promoted source record`, { sourceId: record.metadata.source_id });
+                    // Fall back to the original record (it might still have the files if they were re-uploaded)
+                }
+            }
+            
             // Generate a file token for the specific record
             // This is the most reliable way to access protected files in PB
             const fileToken = await pbService.pb.files.getToken();
-            const fileUrl = pbService.pb.files.getUrl(record, filename, { token: fileToken });
+            const fileUrl = pbService.pb.files.getURL(targetRecord, filename, { token: fileToken });
             
-            logger.info(`Proxying file from PB`, { fileUrl });
+            logger.info(`Proxying file from PB`, { fileUrl, isPromoted: targetCollection !== collection });
 
             const response = await fetch(fileUrl, {
                 headers: {

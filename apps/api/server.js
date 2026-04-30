@@ -4,6 +4,7 @@ import { env } from './src/config/env.js';
 import { pbService } from './src/services/pocketbaseService.js'; 
 import { minioService } from './src/services/minioService.js';
 import { initMariaDB } from './src/config/dbInit.js';
+import { maintenanceService } from './src/services/maintenanceService.js';
 
 const startServer = async () => {
     const PORT = env.port;
@@ -20,6 +21,9 @@ const startServer = async () => {
 
     // 3. Initialize all MariaDB tables (users, sequences)
     await initMariaDB();
+
+    // 4. Start maintenance cron jobs
+    maintenanceService.init();
 
     const httpServer = createServer(app);
 

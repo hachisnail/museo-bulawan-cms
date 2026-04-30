@@ -1,16 +1,20 @@
 import { Router } from 'express';
+import { buildAbility } from '../middlewares/authorizationHandler.js';
 import authRoutes from './authRoutes.js'
-import userRoutes from './userRoutes.js'
+import userRoutes from './user/index.js'
 import sseRoutes from './sseRoutes.js'
 import fileRoutes from './fileRoutes.js'
 import uploadRoutes from './uploadRoutes.js'
 import notificationRoutes from './notificationRoutes.js'
-import acquisitionRoutes from './acquisitionRoutes.js' 
-import formRoutes from './formRoutes.js'
+import acquisitionRoutes from './acquisition/index.js' 
+import formRoutes from './form/index.js'
 import auditRoutes from './auditRoutes.js'
 import mediaRoutes from './mediaRoutes.js'
 
 const router = Router();
+
+// Apply ability builder globally for all API routes to ensure RBAC is initialized
+router.use(buildAbility);
 
 router.use('/auth', authRoutes); 
 router.use('/user', userRoutes);

@@ -15,7 +15,7 @@ export async function initMariaDB() {
                 email VARCHAR(255) UNIQUE NOT NULL,
                 username VARCHAR(100) UNIQUE,
                 password VARCHAR(255),
-                role VARCHAR(50) DEFAULT 'guest',
+                role VARCHAR(50) DEFAULT 'visitor',
                 status VARCHAR(20) DEFAULT 'active',
                 current_session_id VARCHAR(255) NULL,
                 action_token VARCHAR(255) NULL,

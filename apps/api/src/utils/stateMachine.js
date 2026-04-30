@@ -31,9 +31,10 @@ const ACCESSION_TRANSITIONS = {
 // INVENTORY STATUS TRANSITIONS
 // ==========================================
 const INVENTORY_TRANSITIONS = {
-    'active':           ['on_loan', 'in_conservation', 'deaccessioned'],
-    'on_loan':          ['active'],
-    'in_conservation':  ['active'],
+    'active':           ['loan', 'maintenance', 'storage', 'deaccessioned'],
+    'loan':             ['active', 'storage', 'maintenance', 'deaccessioned'],
+    'maintenance':      ['active', 'storage', 'deaccessioned'],
+    'storage':          ['active', 'loan', 'maintenance', 'deaccessioned'],
     'deaccessioned':    []                                // terminal
 };
 

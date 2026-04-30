@@ -5,16 +5,16 @@ const HIERARCHY = {
     admin: ['registrar', 'conservator', 'content_editor', 'appointment_coordinator'], 
     
     registrar: ['inventory_staff'],
-    conservator: ['guest'],
-    inventory_staff: ['guest'],
+    conservator: ['visitor'],
+    inventory_staff: ['visitor'],
     
     content_editor: ['content_writer'],
-    content_writer: ['guest'],
+    content_writer: ['visitor'],
 
-    appointment_coordinator: ['guest'], 
+    appointment_coordinator: ['visitor'], 
 
-    visitor: ['guest'], 
-    guest: []
+    donor: ['visitor'], 
+    visitor: []
 };
 
 const ROLE_RULES = {
@@ -25,6 +25,7 @@ const ROLE_RULES = {
     registrar: (can) => {
         can('manage', 'Intake');
         can('manage', 'Accession');
+        can('manage', 'Submission');
         can('update', 'Artifact'); 
     },
     conservator: (can, user) => {
@@ -38,6 +39,7 @@ const ROLE_RULES = {
         can('read', 'Intake');
         can('read', 'Accession');
         can('read', 'Artifact');
+        can('read', 'Submission');
     },
 
     content_editor: (can) => {
@@ -53,18 +55,18 @@ const ROLE_RULES = {
         can('manage', 'Appointment'); 
     },
 
-    visitor: (can, user) => {
-        // Visitors can ONLY read records where their user.id matches the donor_account_id
+    donor: (can, user) => {
+        // Donors can ONLY read records where their user.id matches the donor_account_id
         can('read', 'Intake', { donor_account_id: user.id });
         
         // (Optional) If you want them to see their signed contracts later:
         can('read', 'Accession', { 'intake.donor_account_id': user.id }); 
     },
 
-    guest: (can) => {
+    visitor: (can) => {
         can('read', 'Article', { status: 'published' });
         can('create', 'Appointment');
-        // Let guests submit the initial unauthenticated donation form
+        // Let visitors submit the initial unauthenticated donation form
         can('create', 'FormSubmission'); 
     }
 };
@@ -80,7 +82,7 @@ const getEffectiveRoles = (role) => {
 
 export const defineAbilityFor = (user) => {
     const { can, cannot, build } = new AbilityBuilder(createMongoAbility);
-    const primaryRole = user?.role || 'guest';
+    const primaryRole = user?.role || 'visitor';
     
     getEffectiveRoles(primaryRole).forEach(role => {
         if (ROLE_RULES[role]) ROLE_RULES[role](can, user);

@@ -186,7 +186,7 @@ async startBridging() {
       const pbPayload = {
         external_id: externalId,
         email: user.email,
-        role: user.role || 'guest',
+        role: user.role || 'visitor',
         name: user.name || `${user.fname || ''} ${user.lname || ''}`.trim(),
         title: user.title || '',
         phone: user.phone || '',

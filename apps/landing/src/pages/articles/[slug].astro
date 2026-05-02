@@ -1,0 +1,130 @@
+---
+// src/pages/articles/[slug].astro
+
+// In Astro's default Static Site Generation (SSG) mode, we must declare all dynamic routes at build time.
+export async function getStaticPaths() {
+  // Fetch all published articles from Payload CMS
+  const response = await fetch('http://127.0.0.1:3001/api/articles?where[_status][equals]=published&depth=1&limit=100');
+  const data = await response.json();
+
+  // Return an array of objects containing the params (slug) and props (the full article data)
+  // We use the slug if it exists, otherwise we fallback to the numeric ID as the URL parameter.
+  return data.docs.map((article: any) => ({
+    params: { slug: article.slug || article.id.toString() },
+    props: { article },
+  }));
+}
+
+// Access the article passed as a prop from getStaticPaths
+const { article } = Astro.props;
+
+// If no article is found (shouldn't happen with getStaticPaths, but safe to check)
+if (!article) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  });
+}
+
+// 2. Simple recursive function to render Lexical AST to HTML
+// Payload CMS sends rich text as a JSON object (Abstract Syntax Tree)
+function renderLexicalNode(node: any): any {
+  if (!node) return null;
+
+  if (node.type === 'text') {
+    let text = node.text;
+    if (node.format & 1) text = `<strong>${text}</strong>`;
+    if (node.format & 2) text = `<em>${text}</em>`;
+    if (node.format & 8) text = `<u>${text}</u>`;
+    return text;
+  }
+
+  if (node.type === 'paragraph') {
+    const children = node.children?.map(renderLexicalNode).join('') || '';
+    return `<p>${children}</p>`;
+  }
+
+  if (node.type === 'heading') {
+    const children = node.children?.map(renderLexicalNode).join('') || '';
+    return `<${node.tag}>${children}</${node.tag}>`;
+  }
+  
+  if (node.type === 'list') {
+    const tag = node.listType === 'number' ? 'ol' : 'ul';
+    const children = node.children?.map(renderLexicalNode).join('') || '';
+    return `<${tag}>${children}</${tag}>`;
+  }
+  
+  if (node.type === 'listitem') {
+    const children = node.children?.map(renderLexicalNode).join('') || '';
+    return `<li>${children}</li>`;
+  }
+  
+  if (node.type === 'quote') {
+    const children = node.children?.map(renderLexicalNode).join('') || '';
+    return `<blockquote>${children}</blockquote>`;
+  }
+
+  // Handle custom blocks (like Columns or Image Gallery)
+  if (node.type === 'block') {
+    if (node.fields?.blockType === 'columns') {
+      const col1 = renderLexicalNode(node.fields.columnOne?.root);
+      const col2 = renderLexicalNode(node.fields.columnTwo?.root);
+      return `<div style="display:flex; gap: 2rem;">
+                <div style="flex:1">${col1}</div>
+                <div style="flex:1">${col2}</div>
+              </div>`;
+    }
+  }
+
+  if (node.children) {
+    return node.children.map(renderLexicalNode).join('');
+  }
+
+  return '';
+}
+
+const htmlContent = renderLexicalNode(article.content?.root);
+
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{article.title}</title>
+    <style>
+      body { font-family: system-ui, sans-serif; background: #f4f4f5; padding: 2rem; max-width: 800px; margin: 0 auto; line-height: 1.6; }
+      .header-img { width: 100%; height: 400px; object-fit: cover; border-radius: 8px; margin-bottom: 2rem; }
+      .meta { color: #71717a; margin-bottom: 2rem; border-bottom: 1px solid #e4e4e7; padding-bottom: 1rem; }
+      .content { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+      blockquote { border-left: 4px solid #d4d4d8; padding-left: 1rem; color: #52525b; font-style: italic; }
+      a { color: #3b82f6; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <a href="/articles" style="display: inline-block; margin-bottom: 1rem;">&larr; Back to News</a>
+    
+    {article.coverImage && article.coverImage.url && (
+      <img 
+        class="header-img"
+        src={`http://127.0.0.1:3001${article.coverImage.url}`} 
+        alt={article.coverImage.alt || article.title} 
+      />
+    )}
+    
+    <h1>{article.title}</h1>
+    
+    <div class="meta">
+      <strong>Category:</strong> {article.category?.title || 'Uncategorized'} <br/>
+      <strong>Author:</strong> {article.author?.name || 'Museum Staff'} <br/>
+      <strong>Published:</strong> {new Date(article.publishedAt || article.createdAt).toLocaleDateString()}
+    </div>
+    
+    <div class="content">
+      {/* We use set:html to render the generated HTML string safely */}
+      <div set:html={htmlContent} />
+    </div>
+  </body>
+</html>

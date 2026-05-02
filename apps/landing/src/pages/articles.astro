@@ -1,0 +1,74 @@
+---
+// src/pages/articles.astro
+
+// 1. Fetch published articles from Payload CMS (Port 3001)
+// We filter by _status=published to ensure drafts aren't shown, 
+// and filter out any articles that don't have a valid slug string.
+const response = await fetch('http://127.0.0.1:3001/api/articles?where[_status][equals]=published&depth=1');
+const data = await response.json();
+
+// Remove the strict filter so we can see all published articles. 
+// We will fallback to using the article ID for the URL if the slug is null.
+const articles = data.docs;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Museum News & Articles</title>
+    <style>
+      body { font-family: system-ui, sans-serif; background: #f4f4f5; padding: 2rem; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+      .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+      .card img { width: 100%; height: 200px; object-fit: cover; }
+      .card-content { padding: 1.5rem; }
+      .tag { background: #e4e4e7; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.8rem; }
+      .meta { font-size: 0.85rem; color: #71717a; margin-top: 1rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Latest Museum News</h1>
+    <p>This page demonstrates how Astro fetches data from the headless Payload CMS.</p>
+    
+    <div class="grid">
+      {articles.map((article: any) => (
+        <article class="card">
+          {/* Fallback to article.id if slug is null */}
+          <a href={`/articles/${article.slug || article.id}`}>
+            {/* Render the Cover Image if it exists */}
+            {article.coverImage && article.coverImage.url && (
+              <img 
+                src={`http://127.0.0.1:3001${article.coverImage.url}`} 
+                alt={article.coverImage.alt || article.title} 
+              />
+            )}
+            
+            <div class="card-content">
+              {/* Category Tag */}
+              {article.category && (
+                <span class="tag">{article.category.title}</span>
+              )}
+              
+              <h2>{article.title}</h2>
+              
+              {/* Excerpt */}
+              {article.excerpt && <p>{article.excerpt}</p>}
+              
+              <div class="meta">
+                <span>By: {article.author?.name || 'Museum Staff'}</span> &bull; 
+                <span>
+                  {new Date(article.publishedAt || article.createdAt).toLocaleDateString()}
+                </span>
+              </div>
+            </div>
+          </a>
+        </article>
+      ))}
+
+      {articles.length === 0 && (
+        <p>No published articles found. Go to the CMS (http://localhost:3001/admin) and publish an article!</p>
+      )}
+    </div>
+  </body>
+</html>

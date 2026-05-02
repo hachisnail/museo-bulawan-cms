@@ -185,6 +185,30 @@ export async function initMariaDB() {
         try {
             await conn.query(`ALTER TABLE intakes MODIFY COLUMN qr_token_expires DATETIME NULL`);
         } catch(e) {}
+        // 8.5 Constituents (SPECTRUM: Authority Control for People/Organizations)
+        await conn.query(`
+            CREATE TABLE IF NOT EXISTS constituents (
+                id VARCHAR(26) PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                type ENUM('individual', 'organization', 'group') NOT NULL,
+                contact_info JSON NULL,
+                biography TEXT NULL,
+                external_id VARCHAR(255) NULL, -- e.g. LCNAF or Getty ULAN
+                version INT DEFAULT 1,
+                created_by VARCHAR(26) NOT NULL,
+                updated_by VARCHAR(26) NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                CONSTRAINT fk_const_creator FOREIGN KEY (created_by) REFERENCES users(id),
+                CONSTRAINT fk_const_updater FOREIGN KEY (updated_by) REFERENCES users(id)
+            )
+        `);
+
+        // Migration: Add version to constituents if missing
+        try {
+            await conn.query(`ALTER TABLE constituents ADD COLUMN version INT DEFAULT 1 AFTER external_id`);
+        } catch(e) {}
+
         await conn.query(`
             CREATE TABLE IF NOT EXISTS accessions (
                 id VARCHAR(26) PRIMARY KEY,
@@ -232,30 +256,6 @@ export async function initMariaDB() {
             await conn.query(`ALTER TABLE accessions ADD COLUMN license_type VARCHAR(100) NULL AFTER copyright_holder_id`);
             await conn.query(`ALTER TABLE accessions ADD COLUMN usage_restrictions TEXT NULL AFTER license_type`);
             await conn.query(`ALTER TABLE accessions ADD COLUMN credit_line TEXT NULL AFTER usage_restrictions`);
-        } catch(e) {}
-
-        // 8.5 Constituents (SPECTRUM: Authority Control for People/Organizations)
-        await conn.query(`
-            CREATE TABLE IF NOT EXISTS constituents (
-                id VARCHAR(26) PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                type ENUM('individual', 'organization', 'group') NOT NULL,
-                contact_info JSON NULL,
-                biography TEXT NULL,
-                external_id VARCHAR(255) NULL, -- e.g. LCNAF or Getty ULAN
-                version INT DEFAULT 1,
-                created_by VARCHAR(26) NOT NULL,
-                updated_by VARCHAR(26) NOT NULL,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                CONSTRAINT fk_const_creator FOREIGN KEY (created_by) REFERENCES users(id),
-                CONSTRAINT fk_const_updater FOREIGN KEY (updated_by) REFERENCES users(id)
-            )
-        `);
-
-        // Migration: Add version to constituents if missing
-        try {
-            await conn.query(`ALTER TABLE constituents ADD COLUMN version INT DEFAULT 1 AFTER external_id`);
         } catch(e) {}
 
         // 9. Inventory

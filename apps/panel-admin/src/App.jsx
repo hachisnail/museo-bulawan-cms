@@ -21,6 +21,11 @@ import Analytics from './pages/Analytics';
 import SubmissionViewer from './pages/SubmissionViewer';
 import Constituents from './pages/Constituents';
 import Exhibitions from './pages/Exhibitions';
+import Schedule from './pages/Schedule';
+import ScheduleAdd from './pages/ScheduleAdd';
+import Appointments from './pages/Appointments';
+import AppointmentDetail from './pages/AppointmentDetail';
+import WalkInAdd from './pages/WalkInAdd';
 
 function App() {
     const navigate = useNavigate();
@@ -63,6 +68,11 @@ function App() {
                     <Route path="/exhibitions" element={<Exhibitions />} />
                     <Route path="/settings" element={<Profile />} />
                     <Route path="/analytics" element={<Analytics />} />
+                    <Route path="/schedule" element={<Schedule />} />
+                    <Route path="/schedule/add" element={<ScheduleAdd />} />
+                    <Route path="/appointments" element={<Appointments />} />
+                    <Route path="/appointments/walk-in" element={<WalkInAdd />} />
+                    <Route path="/appointments/:id" element={<AppointmentDetail />} />
                     <Route path="/admin/forms/submissions/:id" element={<SubmissionViewer />} />
                     <Route path="/forms/proof/:id" element={<SubmissionViewer />} />
                     {/* <Route path="/audit-logs" element={<AuditLogs />} /> */}

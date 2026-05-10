@@ -32,7 +32,7 @@ export default function ResetPassword() {
             });
 
             const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Failed to reset password.');
+            if (!res.ok) throw new Error(data.message || data.error || 'Failed to reset password.');
             
             setStatus({ type: 'success', message: "Access restored. Redirecting to login..." });
             setTimeout(() => navigate('/login'), 2500);

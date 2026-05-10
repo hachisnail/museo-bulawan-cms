@@ -960,3 +960,789 @@ sql: INSERT INTO constituents (id, name, type, contact_info, biography, external
 2026-04-30 22:20:39 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
     at getCollectionHealth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/analyticsController.js:107:126)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/analytics/collection-health","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-05-09 20:47:56 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:4, no: 1005, SQLState: HY000) Can't create table `scratch`.`accessions` (errno: 150 \"Foreign key constraint is incorrectly formed\")\nsql: \n            CREATE TABLE IF NOT EXISTS accessions (\n                id VARCHAR(26) PRIMARY KEY,\n                intake_id VARCHAR(26) NOT NULL,\n                accession_number VARCHAR(100) UNIQUE NOT NULL,\n                handling_instructions TEXT NULL,... - parameters:[]"}
+2026-05-09 20:48:17 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:9, no: 1005, SQLState: HY000) Can't create table `scratch`.`accessions` (errno: 150 \"Foreign key constraint is incorrectly formed\")\nsql: \n            CREATE TABLE IF NOT EXISTS accessions (\n                id VARCHAR(26) PRIMARY KEY,\n                intake_id VARCHAR(26) NOT NULL,\n                accession_number VARCHAR(100) UNIQUE NOT NULL,\n                handling_instructions TEXT NULL,... - parameters:[]"}
+2026-05-09 20:48:20 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:14, no: 1005, SQLState: HY000) Can't create table `scratch`.`accessions` (errno: 150 \"Foreign key constraint is incorrectly formed\")\nsql: \n            CREATE TABLE IF NOT EXISTS accessions (\n                id VARCHAR(26) PRIMARY KEY,\n                intake_id VARCHAR(26) NOT NULL,\n                accession_number VARCHAR(100) UNIQUE NOT NULL,\n                handling_instructions TEXT NULL,... - parameters:[]"}
+2026-05-09 21:22:18 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:22:18 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:22:18 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:22:18 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:22:18 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:22:18 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:22:39 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:22:39 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:22:40 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:22:40 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:22:40 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:22:40 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:22:40 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:22:40 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:25:56 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:25:56 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:25:57 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:25:57 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:25:57 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:25:57 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:25:57 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:25:57 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:25:57 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:25:57 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:25:58 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:25:58 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:25:58 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:25:58 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:25:58 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:25:58 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:25:58 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:25:58 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:25:59 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-09 21:25:59 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.onboardFirstAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:35:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.onboardAdmin (file:///C:/Vscode/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"Guest"}
+2026-05-09 21:26:11 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-09 21:26:18 [error]: SqlError: (conn:50, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 21:26:18 [error]: SqlError: (conn:49, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 21:26:24 [error]: SqlError: (conn:53, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 21:26:24 [error]: SqlError: (conn:49, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:39:45 [error]: SqlError: (conn:51, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:39:45 [error]: SqlError: (conn:50, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:50:02 [error]: SqlError: (conn:49, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:50:02 [error]: SqlError: (conn:53, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:50:14 [error]: SqlError: (conn:51, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:50:29 [error]: SqlError: (conn:49, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:52:02 [error]: SqlError: (conn:50, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:52:02 [error]: SqlError: (conn:53, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:54:47 [error]: SqlError: (conn:52, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:54:47 [error]: SqlError: (conn:52, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:55:56 [error]: SqlError: (conn:52, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:55:56 [error]: SqlError: (conn:50, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:57:11 [error]: SqlError: (conn:51, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 22:57:11 [error]: SqlError: (conn:53, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:02:30 [error]: SqlError: (conn:52, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:02:30 [error]: SqlError: (conn:49, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:04:49 [error]: SqlError: (conn:52, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:04:49 [error]: SqlError: (conn:50, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:05:18 [error]: SqlError: (conn:53, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:05:18 [error]: SqlError: (conn:51, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:05:31 [error]: SqlError: (conn:49, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:05:31 [error]: SqlError: (conn:51, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:06:03 [error]: SqlError: (conn:50, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:06:03 [error]: SqlError: (conn:53, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:06:21 [error]: SqlError: (conn:49, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:06:21 [error]: SqlError: (conn:51, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:10:21 [error]: SqlError: (conn:50, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:10:21 [error]: SqlError: (conn:52, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:31:20 [error]: SqlError: (conn:51, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:31:20 [error]: SqlError: (conn:52, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:48:32 [error]: SqlError: (conn:53, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-09 23:48:32 [error]: SqlError: (conn:51, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-10 00:33:53 [error]: SqlError: (conn:53, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-10 00:33:53 [error]: SqlError: (conn:50, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-10 00:38:03 [error]: SqlError: (conn:53, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}
+2026-05-10 00:38:03 [error]: SqlError: (conn:51, no: 1146, SQLState: 42S02) Table 'scratch.user_notification_reads' doesn't exist
+sql: 
+            SELECT 
+                n.id, n.title, n.message, n.type, n.action_url, n.created_at,
+                CASE WHEN unr.notification_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_read
+            FROM notifications n
+            LEFT JOIN user_not...
+    at Module.createError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Vscode/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:563:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:514:3)
+    at Readable.push (node:internal/streams/readable:394:5) | Meta: {"method":"GET","url":"/api/v1/notifications","ip":"::1","user":"01KR6ENFJX7NRGV2NTDDA0R16A"}

@@ -66,7 +66,7 @@ export default function Management() {
                 fetchUsers();
                 setInviteForm({ email: '', role: 'curator', fname: '', lname: '' });
             } else {
-                alert(data.error || 'Failed to send invitation');
+                alert(data.message || data.error || 'Failed to send invitation');
             }
         } catch (err) {
             alert('An error occurred');

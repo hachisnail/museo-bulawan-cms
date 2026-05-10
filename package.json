@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-   "dev": "concurrently -n ADMIN,API,PB,MINIO -c blue,green,magenta,yellow \"npm run dev:admin\" \"npm run dev:api\" \"npm run dev:pb\" \"npm run dev:minio\"",
+    "dev": "concurrently -n ADMIN,API,PB,MINIO -c blue,green,magenta,yellow \"npm run dev:admin\" \"npm run dev:api\" \"npm run dev:pb\" \"npm run dev:minio\"",
     "dev:admin": "npm run dev -w panel-admin",
     "dev:api": "npm run dev -w api",
     "dev:pb": "apps\\service-collections\\pocketbase.exe serve",
@@ -20,5 +20,8 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "recharts": "^3.8.1"
   }
 }

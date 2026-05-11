@@ -46,5 +46,24 @@ export const constituentService = {
             logger.error(`Error searching constituents: ${error.message}`);
             throw error;
         }
+    },
+
+    /**
+     * Find all artifacts (accessions) linked to this constituent
+     */
+    async getLinkedArtifacts(constituentId) {
+        try {
+            const results = await db.query(
+                `SELECT id, accession_number, object_type, classification, status 
+                 FROM accessions 
+                 WHERE maker_id = ? OR copyright_holder_id = ? 
+                 ORDER BY created_at DESC`,
+                [constituentId, constituentId]
+            );
+            return results;
+        } catch (error) {
+            logger.error(`Error fetching linked artifacts for constituent ${constituentId}: ${error.message}`);
+            throw error;
+        }
     }
 };

@@ -32,6 +32,9 @@ export const acquisitionController = {
     rollbackIntake: intakeController.rollbackIntake.bind(intakeController),
     verifyDeliveryToken: intakeController.verifyDeliveryToken.bind(intakeController),
     confirmDelivery: intakeController.confirmDelivery.bind(intakeController),
+    rejectSubmission: intakeController.rejectSubmission.bind(intakeController),
+    reopenSubmission: intakeController.reopenSubmission.bind(intakeController),
+    updateLocation: intakeController.updateLocation.bind(intakeController),
 
     // ==========================================
     // ACCESSION ACTIONS
@@ -46,6 +49,7 @@ export const acquisitionController = {
     exportReport: accessionController.exportReport.bind(accessionController),
     getFullChain: accessionController.getFullChain.bind(accessionController),
     getUniqueTags: accessionController.getUniqueTags.bind(accessionController),
+    rollbackAccession: accessionController.rollbackAccession.bind(accessionController),
     exportMOA: intakeController.exportMOA.bind(intakeController),
 
     // ==========================================
@@ -57,9 +61,17 @@ export const acquisitionController = {
     finalizeInventory: inventoryController.finalizeInventory.bind(inventoryController),
     transferLocation: inventoryController.transferLocation.bind(inventoryController),
     deaccessionItem: inventoryController.deaccessionItem.bind(inventoryController),
+    approveDeaccession: inventoryController.approveDeaccession.bind(inventoryController),
+    cancelDeaccession: inventoryController.cancelDeaccession.bind(inventoryController),
     updateArtifactStatus: inventoryController.updateArtifactStatus.bind(inventoryController),
     generateInventoryReport: inventoryController.generateReport.bind(inventoryController),
     exportInventoryReport: inventoryController.exportReport.bind(inventoryController),
+    exportConditionReport: inventoryController.exportConditionReport.bind(inventoryController),
+    exportDeaccessionReport: inventoryController.exportDeaccessionReport.bind(inventoryController),
+    recordAuditCheck: inventoryController.recordAuditCheck.bind(inventoryController),
+    getAuditHistory: inventoryController.getAuditHistory.bind(inventoryController),
+    getOverdueAudits: inventoryController.getOverdueAudits.bind(inventoryController),
+    getObjectSummary: inventoryController.getObjectSummary.bind(inventoryController),
     batchTransfer: async (req, res, next) => {
         try {
             const { inventoryIds, toLocation, reason, extra } = req.body;
@@ -96,6 +108,12 @@ export const acquisitionController = {
     searchConstituents: async (req, res, next) => {
         try {
             const result = await acquisitionService.searchConstituents(req.query.q);
+            res.status(200).json({ status: 'success', data: result });
+        } catch (error) { next(error); }
+    },
+    getConstituentArtifacts: async (req, res, next) => {
+        try {
+            const result = await acquisitionService.getConstituentArtifacts(req.params.id);
             res.status(200).json({ status: 'success', data: result });
         } catch (error) { next(error); }
     },
@@ -156,9 +174,27 @@ export const acquisitionController = {
     },
 
     // ==========================================
+    // PHYSICAL LOCATIONS
+    // ==========================================
+    listLocations: async (req, res, next) => {
+        try {
+            const result = await acquisitionService.listLocations();
+            res.status(200).json({ status: 'success', data: result });
+        } catch (error) { next(error); }
+    },
+    createLocation: async (req, res, next) => {
+        try {
+            const result = await acquisitionService.createLocation(req.user.id, req.body);
+            res.status(201).json({ status: 'success', data: result });
+        } catch (error) { next(error); }
+    },
+
+    // ==========================================
     // LOAN ACTIONS (Outbound)
     // ==========================================
     listLoans: (req, res) => loansController.listLoans(req, res),
     createLoan: (req, res) => loansController.createLoan(req, res),
-    activateLoan: (req, res) => loansController.activateLoan(req, res)
+    activateLoan: (req, res) => loansController.activateLoan(req, res),
+    returnLoan: (req, res) => loansController.returnLoan(req, res),
+    exportLoanAgreement: (req, res) => loansController.exportLoanAgreement(req, res)
 };

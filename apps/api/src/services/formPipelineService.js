@@ -1,10 +1,10 @@
-import crypto from "crypto";
 import { db } from "../config/db.js";
 import { userService } from "./userService.js";
 import { logger } from "../utils/logger.js";
 import { donationPipeline } from "./form/pipeline/donationPipeline.js";
 import { compliancePipeline } from "./form/pipeline/compliancePipeline.js";
 import { globalMutex } from "../utils/mutex.js";
+import { assertTransition } from "../utils/stateMachine.js";
 
 /**
  * FormPipelineService Facade
@@ -13,12 +13,6 @@ import { globalMutex } from "../utils/mutex.js";
  * from core domain logic.
  */
 export const formPipelineService = {
-  // ==========================================
-  // SHARED HELPERS
-  // ==========================================
-  _genId() {
-    return crypto.randomBytes(8).toString("hex").substring(0, 15);
-  },
 
   // ==========================================
   // PIPELINE DELEGATION
@@ -50,6 +44,30 @@ export const formPipelineService = {
    */
   async processConservationLogForm(staffId, submissionId, files = null) {
     return await compliancePipeline.processConservationLogForm(staffId, submissionId, files, this);
+  },
+
+  /**
+   * ADMIN: Reject/Archive Submission
+   */
+  async rejectSubmission(submissionId) {
+    const [submission] = await db.query('SELECT status FROM form_submissions WHERE id = ?', [submissionId]);
+    if (!submission) throw new Error("SUBMISSION_NOT_FOUND");
+
+    assertTransition('submission', submission.status, 'archived');
+    await db.query('UPDATE form_submissions SET status = "archived" WHERE id = ?', [submissionId]);
+    return { id: submissionId, status: 'archived' };
+  },
+
+  /**
+   * ADMIN: Reopen/Restore Submission
+   */
+  async reopenSubmission(submissionId) {
+    const [submission] = await db.query('SELECT status FROM form_submissions WHERE id = ?', [submissionId]);
+    if (!submission) throw new Error("SUBMISSION_NOT_FOUND");
+
+    assertTransition('submission', submission.status, 'pending');
+    await db.query('UPDATE form_submissions SET status = "pending" WHERE id = ?', [submissionId]);
+    return { id: submissionId, status: 'pending' };
   },
 
   // ==========================================

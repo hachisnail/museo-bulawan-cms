@@ -16,6 +16,7 @@ export default function Constituents() {
         biography: '',
         external_id: ''
     });
+    const [linkedArtifacts, setLinkedArtifacts] = useState([]);
 
     const fetchData = useCallback(async () => {
         setLoading(true);
@@ -105,10 +106,16 @@ export default function Constituents() {
                                 constituents.map(c => (
                                     <button 
                                         key={c.id}
-                                        onClick={() => {
+                                        onClick={async () => {
                                             setSelected(c);
                                             setFormData(c);
                                             setIsEditing(false);
+                                            // Fetch artifacts
+                                            try {
+                                                const res = await apiFetch(`/api/v1/acquisitions/constituents/${c.id}/artifacts`);
+                                                const json = await res.json();
+                                                if (json.status === 'success') setLinkedArtifacts(json.data);
+                                            } catch (err) { console.error(err); }
                                         }}
                                         className={`w-full p-6 text-left hover:bg-white/5 transition-all group ${selected?.id === c.id ? 'bg-indigo-500/5 border-l-4 border-indigo-500' : 'border-l-4 border-transparent'}`}
                                     >
@@ -237,13 +244,35 @@ export default function Constituents() {
                                     </section>
 
                                     <section className="bg-white/5 rounded-[32px] p-8 border border-white/5">
-                                        <div className="flex items-center gap-4 mb-6">
-                                            <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-xl">🏛️</div>
-                                            <h3 className="text-xs font-black uppercase tracking-widest text-zinc-400">Linked Collection Artifacts</h3>
+                                        <div className="flex items-center justify-between mb-6">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-xl">🏛️</div>
+                                                <h3 className="text-xs font-black uppercase tracking-widest text-zinc-400">Linked Collection Artifacts</h3>
+                                            </div>
+                                            <span className="text-[10px] font-black bg-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full uppercase">
+                                                {linkedArtifacts.length} Matches
+                                            </span>
                                         </div>
-                                        <div className="text-center py-10 opacity-20 italic text-sm">
-                                            Scanning cross-reference table...
-                                        </div>
+                                        
+                                        {linkedArtifacts.length > 0 ? (
+                                            <div className="space-y-3">
+                                                {linkedArtifacts.map(art => (
+                                                    <div key={art.id} className="flex items-center justify-between p-4 bg-white/[0.02] border border-white/5 rounded-2xl hover:bg-white/[0.05] transition-all group">
+                                                        <div>
+                                                            <div className="text-[10px] font-black text-indigo-500 uppercase tracking-tighter">{art.accession_number}</div>
+                                                            <div className="text-sm font-bold text-white group-hover:text-indigo-400 transition-colors">{art.object_type || 'Unspecified Object'}</div>
+                                                        </div>
+                                                        <div className="text-[9px] font-black uppercase tracking-widest text-zinc-600 border border-white/10 px-3 py-1 rounded-lg group-hover:border-indigo-500/30 transition-all">
+                                                            {art.status.replace('_', ' ')}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="text-center py-10 opacity-40 italic text-sm text-zinc-500">
+                                                No artifacts currently linked to this record.
+                                            </div>
+                                        )}
                                     </section>
                                 </div>
                             )}

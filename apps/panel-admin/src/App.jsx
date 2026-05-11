@@ -21,6 +21,9 @@ import Analytics from './pages/Analytics';
 import SubmissionViewer from './pages/SubmissionViewer';
 import Constituents from './pages/Constituents';
 import Exhibitions from './pages/Exhibitions';
+import Settings from './pages/Settings';
+import AuditLogs from './pages/AuditLogs';
+import Locations from './pages/Locations';
 
 function App() {
     const navigate = useNavigate();
@@ -61,11 +64,12 @@ function App() {
                     <Route path="/management" element={<Management />} />
                     <Route path="/constituents" element={<Constituents />} />
                     <Route path="/exhibitions" element={<Exhibitions />} />
-                    <Route path="/settings" element={<Profile />} />
+                    <Route path="/locations" element={<Locations />} />
+                    <Route path="/settings" element={<Settings />} />
                     <Route path="/analytics" element={<Analytics />} />
                     <Route path="/admin/forms/submissions/:id" element={<SubmissionViewer />} />
                     <Route path="/forms/proof/:id" element={<SubmissionViewer />} />
-                    {/* <Route path="/audit-logs" element={<AuditLogs />} /> */}
+                    <Route path="/audit-logs" element={<AuditLogs />} />
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />
                 </Route>
             </Route>

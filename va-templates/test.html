@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Video Template</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    /* ... (CSS remains identical to your previous version) ... */
+    body { font-family: 'Rubik', sans-serif; margin: 0; background-color: #f9f9f9; }
+    .video-section { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 50px; }
+    .video-container { position: relative; width: 100%; max-width: 1500px; border-radius: 8px; overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .video-container video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+    .video-thumbnail { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; cursor: pointer; z-index: 1; }
+    .video-description { margin-top: 20px; font-size: 24px; font-weight: bold; text-align: center; padding: 0 10px; color: #222; }
+    .download-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 30px; }
+    .download-buttons a { padding: 12px 24px; font-size: 16px; background-color: #0097a9; color: white; border-radius: 8px; text-decoration: none; transition: background-color 0.3s, transform 0.2s; display: inline-block; }
+    .download-buttons a:hover { background-color: #e57272; transform: translateY(-2px); }
+    .download-buttons a.disabled { background-color: #e0e0e0 !important; color: #a0a0a0 !important; cursor: not-allowed !important; pointer-events: none; opacity: 0.7; }
+    .bio-container { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; margin-top: 50px; width: 100%; max-width: 1000px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .bio-container img { width: 100%; max-width: 180px; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%; margin: 0 auto; border: 4px solid #0097a9; }
+    .bio-text { font-size: 15px; text-align: justify; line-height: 1.7; color: #444; }
+    .bio-text strong { color: #222; display: block; margin-bottom: 5px; }
+    .timestamps { margin-top: 30px; max-width: 1000px; width: 100%; text-align: left; font-size: 14px; line-height: 1.8; color: #333; padding: 0 10px; }
+    .timestamps a { color: #0097a9; text-decoration: none; display: block; margin-bottom: 5px; cursor: pointer; }
+    .timestamps a:hover { color: #e57272; }
+    .social-icons { margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; display: flex; justify-content: flex-start; gap: 20px; }
+    .social-icons a { color: #0097a9; font-size: 28px; text-decoration: none; transition: color 0.3s; }
+    .social-icons a:hover { color: #e57272; }
+    @media screen and (max-width: 768px) { .video-section { padding: 30px 15px; } .bio-container { grid-template-columns: 1fr; text-align: center; } .social-icons { justify-content: center; } }
+  </style>
+</head>
+<body>
+
+  <div class="video-section">
+    <div class="video-container">
+      <video id="video1" controls mute playsinline></video>
+      <img id="thumb1" src="" alt="Thumbnail" class="video-thumbnail" onclick="playVideo('video1', 'thumb1')">
+    </div>
+
+    <div id="displayTitle" class="video-description"></div>
+    
+    <div class="download-buttons">
+      <a id="btnVideo" href="">Download Video</a>
+      <a id="btnAudio" href="">Download Audio</a>
+      <a id="btnText" href="">Download Text</a>
+    </div>
+
+    <!-- Dynamic Timestamps Section -->
+    <div id="timestampList" class="timestamps"></div>
+
+    <div class="bio-container">
+      <img id="speakerImg" src="" alt="Speaker">
+      <div class="bio-text">
+        <strong id="speakerName" style="font-size: 18px;"></strong>
+        <span id="speakerBio"></span>
+
+        <div class="social-icons">
+          <a id="linkWebsite" href="" target="_blank"><i class="fas fa-globe"></i></a>
+          <a id="linkInstagram" href="" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a id="linkTikTok" href="" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a id="linkTwitter" href="" target="_blank"><i class="fab fa-x-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script>
+    /**
+     * CENTRAL CONFIGURATION
+     */
+    const PAGE_DATA = {
+      hlsSource: "https://vz-db59e9c1-2c2.b-cdn.net/c76e9667-9a52-4e5a-8e09-5cfa4696ff0b/playlist.m3u8",
+      thumbnail: "https://refluxsummit.b-cdn.net/Productdyno%20Thumbnails/Teddy%20Berkeley.png",
+      title: "Stop the Plaster: Moving from Symptom Management to Reflux Relief",
+      
+      speaker: {
+        name: "Teddy Berkeley",
+        bio: "is a nutritional therapist specialising in gut health and IBS. He helps people who feel stuck with bloating, reflux, and digestive issues uncover the root cause using a personalised, step-by-step approach combining nutrition, lifestyle, and functional testing. His focus is on building long-term resilience, not quick fixes.",
+        photo: "https://refluxsummit.b-cdn.net/SPEAKER%20IMAGES%20300x300/Eloise%20Garbutt.png"
+      },
+
+      downloads: {
+        video: "",
+        audio: "",
+        text: "" // Leave empty to disable
+      },
+
+      socials: {
+        website: "",
+        instagram: "",
+        tiktok: "", // Leave empty to hide
+        twitter: ""
+      },
+
+      timestamps: [
+     // { seconds: 20.7, label: "00:20 – Welcome & Introduction" }, sample template
+        
+      ]
+    };
+
+    /**
+     * INITIALIZATION LOGIC
+     */
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Basic Content
+      document.getElementById("displayTitle").textContent = PAGE_DATA.title;
+      document.getElementById("thumb1").src = PAGE_DATA.thumbnail;
+      document.getElementById("speakerImg").src = PAGE_DATA.speaker.photo;
+      document.getElementById("speakerName").textContent = PAGE_DATA.speaker.name;
+      document.getElementById("speakerBio").textContent = PAGE_DATA.speaker.bio;
+
+      // 2. Build Timestamps
+      const timestampContainer = document.getElementById("timestampList");
+      if (PAGE_DATA.timestamps.length > 0) {
+        const p = document.createElement("p");
+        PAGE_DATA.timestamps.forEach(item => {
+          const a = document.createElement("a");
+          a.textContent = item.label;
+          a.onclick = () => seekTo(item.seconds);
+          p.appendChild(a);
+        });
+        timestampContainer.appendChild(p);
+      }
+
+      // 3. Handle Downloads (Disable if empty)
+      const downloadMap = [
+        { id: "btnVideo", url: PAGE_DATA.downloads.video },
+        { id: "btnAudio", url: PAGE_DATA.downloads.audio },
+        { id: "btnText", url: PAGE_DATA.downloads.text }
+      ];
+      downloadMap.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (!item.url || item.url.trim() === "") {
+          el.removeAttribute("href");
+          el.classList.add("disabled");
+        } else {
+          el.href = item.url;
+        }
+      });
+
+      // 4. Handle Socials (Hide if empty)
+      const socialMap = [
+        { id: "linkWebsite", url: PAGE_DATA.socials.website },
+        { id: "linkInstagram", url: PAGE_DATA.socials.instagram },
+        { id: "linkTikTok", url: PAGE_DATA.socials.tiktok },
+        { id: "linkTwitter", url: PAGE_DATA.socials.twitter }
+      ];
+      socialMap.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (!item.url || item.url.trim() === "") el.style.display = "none";
+        else el.href = item.url;
+      });
+
+      initHLS();
+    });
+
+    /**
+     * PLAYER FUNCTIONS
+     */
+    function initHLS() {
+      const video = document.getElementById("video1");
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(PAGE_DATA.hlsSource);
+        hls.attachMedia(video);
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = PAGE_DATA.hlsSource;
+      }
+    }
+
+    function playVideo(videoId, thumbnailId) {
+      const video = document.getElementById(videoId);
+      document.getElementById(thumbnailId).style.display = 'none';
+      video.play();
+    }
+
+    function seekTo(timeInSeconds) {
+      const video = document.getElementById('video1');
+      document.getElementById('thumb1').style.display = 'none';
+      if (video.readyState < 1) {
+        video.addEventListener('loadedmetadata', () => {
+          video.currentTime = timeInSeconds;
+          video.play();
+        }, { once: true });
+      } else {
+        video.currentTime = timeInSeconds;
+        video.play();
+      }
+    }
+  </script>
+</body>
+</html>

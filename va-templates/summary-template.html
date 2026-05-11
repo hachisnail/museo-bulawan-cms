@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Rubik', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    /* Sorting Controls */
+    .controls {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+    }
+    .controls select {
+      padding: 8px 12px;
+      font-family: inherit;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    a.card {
+      text-decoration: none;
+      color: inherit;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease-in-out;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .card-content {
+      padding: 15px;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .card-subtitle {
+      font-size: 0.9rem;
+      color: #777;
+      margin-bottom: 10px;
+      min-height: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sorting Control -->
+  <div class="controls">
+    <label for="sort-speakers"><strong>Sort by:</strong></label>
+    <select id="sort-speakers">
+      <option value="asc">Last Name (A - Z)</option>
+      <option value="desc">Last Name (Z - A)</option>
+    </select>
+  </div>
+
+  <!-- Dynamic Container -->
+  <div class="grid-container" id="speaker-container">
+    <!-- Cards will be injected here by JavaScript -->
+  </div>
+
+  <script>
+    // 1. Data Structure (DRY)
+    const speakers = [
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/stephan-alexander-transformation-starts-with-you-636931",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Stephan.png",
+        name: "Stephan Alexander",
+        title: "Stephan Alexander | Transformation Starts with You!",
+        subtitle: "Transformational Health and Life Coach"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/teddy-berkeley-stop-the-plaster-moving-from-symptom-management-to-reflux-relief-643661",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Teddy%20B..png",
+        name: "Teddy Berkeley",
+        title: "Teddy Berkeley | Stop the Plaster: Moving from Symptom Management to Reflux Relief",
+        subtitle: "Gut Health Specialist Focused on Root-Cause Solutions"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/jayne-corner-gut-directed-hypnotherapy-the-mind-is-stronger-than-we-think-640157",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Jayne.png",
+        name: "Jayne Corner",
+        title: "Jayne Corner | Gut Directed Hypnotherapy: The Mind is Stronger Than We Think",
+        subtitle: "Psychotherapist & Wellness Coach Specializing in Gut Directed Hypnotherapy and CBT for IBS"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/josh-dech-640156",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Josh.png",
+        name: "Josh Dech",
+        title: "Josh Dech | Reflux Is Just a Symptom",
+        subtitle: "Holistic Nutritionist, Medical Lecturer, IBD Specialist, Physician’s Consultant & Podcast Host"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/raoul-dusterhus-voice-therapy-for-silent-reflux-related-voice-problems-638738",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Raoul%202.png",
+        name: "Räoul Düsterhus",
+        title: "Räoul Düsterhus | Voice Therapy for Silent Reflux-Related Voice Problems",
+        subtitle: "Voice Therapist (SLP), Consulting Patients with LPR - Silent Reflux"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/dr-paul-froomes-how-microbiome-changes-drive-reflux-638648",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Paul.png",
+        name: "Dr. Paul Froomes",
+        title: "Dr. Paul Froomes, MD | How Microbiome Changes Drive Reflux",
+        subtitle: "Microbiome Specialized Gastroenterologist"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/debbie-grayson-bile-and-gallbladder-issues-and-reflux-640158",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Debbie%202.png",
+        name: "Debbie Grayson",
+        title: "Debbie Grayson | Bile and Gallbladder Issues and Reflux",
+        subtitle: "Pharmacist of 30 Years | Nutritional Therapist and Educator"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/sarv-kannapiran-md-refluxter-and-the-power-of-alginates-636930",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Sarv.png",
+        name: "Sarv Kannapiran",
+        title: "Sarv Kannapiran, MD | Refluxter and the Power of Alginates",
+        subtitle: "MD, Founder and CEO of Refluxter by Nutritist"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/dr-david-kulla-self-adjusting-hiatal-hernias-non-invasively-with-the-reflux-shield-639727",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/David%202.png",
+        name: "Dr. David Kulla",
+        title: "Dr. David Kulla | Self-Adjusting Hiatal Hernias Non-Invasively with the Reflux Shield",
+        subtitle: "Hiatal Hernia Specialised Chiropractor, Inventor of the Reflux Shield"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/donna-monthei-why-functional-testing-matters-for-your-reflux-642488",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Donna.png",
+        name: "Donna Monthei",
+        title: "Donna Monthei | Why Functional Testing Matters for Your Reflux!",
+        subtitle: "Registered Dietitian & Gut Health Expert Specializing in Chronic Digestive Healing"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/dr-rajsree-nambudripad-holistic-medical-reflux-management-638737",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Dr.%20Rajsree.png",
+        name: "Dr. Rajsree Nambudripad",
+        title: "Dr. Rajsree Nambudripad | Holistic Medical Reflux Management",
+        subtitle: "Functional & Integrative Medicine Physician | Gut & Metabolic Health Expert | Wellness Educator"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/dr-mark-noar-barretts-esophagusseverities-and-expectations-632135",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Dr.%20Mark%202.png",
+        name: "Dr. Mark Noar",
+        title: "Dr. Mark Noar | Barrett's Esophagus/Severities and Expectations",
+        subtitle: "Gastroenterologist, Inventor & Reflux Expert"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/molly-pelletier-ms-rd-your-reflux-questions-answered-638739",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Molly%202.png",
+        name: "Molly Pelletier",
+        title: "Molly Pelletier, MS, RD | Your Reflux Questions Answered",
+        subtitle: "Founder of FLORA Nutrition, Leading voice in Nutrition for Acid Reflux / GERD"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/david-pemberton-the-effects-of-switching-from-mouth-to-nose-breathing-639737",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/David%20Pemberton%20-.png",
+        name: "David Pemberton",
+        title: "David Pemberton | The Effects of Switching from Mouth to Nose Breathing",
+        subtitle: "Breathing & Respiratory Retraining Specialist"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/shayna-powell-silent-reflux-and-hiatal-hernias-638640",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Shayna.png",
+        name: "Dr. Shayna L. Powell",
+        title: "Dr. Shayna L. Powell, ND | Silent Reflux and Hiatal Hernias",
+        subtitle: "Registered Naturopathic Doctor & Digestive Health Specialist"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/jurgen-schilling-schmauen-the-power-of-chewing-and-taste-632140",
+        img: "https://refluxsummit.b-cdn.net/THUMBNAILS/J%C3%BCrgen.png",
+        name: "Jürgen Schilling",
+        title: "Jürgen Schilling | \"Schmauen\" - The Power of Chewing and Taste",
+        subtitle: "Metabolism Coach, Actor, Director, Author"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/deborah-sharp-lcsw-s-cgp-agpa-f-dealing-with-chronic-and-catastrophic-conditions-as-a-group-632144",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Deborah%203.png",
+        name: "Deborah Sharp",
+        title: "Deborah Sharp, LCSW-S, CGP, AGPA-F | Dealing with Chronic and Catastrophic Conditions as a Group",
+        subtitle: "Experienced Therapist, Specialized in Chronic Health Conditions and Relationship Issues"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/rosana-silva-treating-celiac-disease-and-endometriosis-with-the-gaps-diet-632142",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Rosana%20Silva.png",
+        name: "Rosana Silva",
+        title: "Rosana Silva | Treating Celiac Disease and Endometriosis with the GAPS Diet",
+        subtitle: "GAPS - Diet Coach"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/sean-spoon-ma-pgce-reset-your-nervous-system-with-tre-640155",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Sean.png",
+        name: "Sean Spoon",
+        title: "Sean Spoon, MA, PGCE | Reset your Nervous System with TRE",
+        subtitle: "Certified TRE Provider, Drama Teacher, Bodyworker and Classically Trained Actor"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/tommy-stern-sleep-guard-sleeping-on-the-wedge-long-term-barretts-patient-632145",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Tommy%202.png",
+        name: "Tommy Stern",
+        title: "Tommy Stern | Sleep Guard | Sleeping on the (W)edge + Long-Term Barrett's Patient",
+        subtitle: "Inventor and Owner of Reflux Guard - 20 years Barrett´s Diagnosed"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/jane-tarrant-why-and-how-breathing-right-is-important-640128",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Jane.png",
+        name: "Jane Tarrant",
+        title: "Jane Tarrant | Why and How Breathing Right is Important",
+        subtitle: "TEDx Speaker & Founder of LiNK BREATHING, Olympic Breathing Expert"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/dr-belisa-vranich-how-horizontal-breathing-improves-digestion-and-deep-relaxation-632150",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Dr.%20Belisa.png",
+        name: "Dr. Belisa Vranich",
+        title: "Dr. Belisa Vranich | How Horizontal Breathing Improves Digestion and Deep Relaxation",
+        subtitle: "Psychologist and Breathing Expert"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/david-weinstock-4-step-non-invasive-hiatal-hernia-treatment-635145",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/David%20W..png",
+        name: "David Weinstock",
+        title: "David Weinstock | 4 Step Non-Invasive Hiatal Hernia Treatment",
+        subtitle: "Founder of Neurokinetics Therapy"
+      },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/evie-whitehead-north-to-south-a-holistic-approach-to-reflux-treatment-638639",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Evie.png",
+        name: "Evie Whitehead",
+        title: "Evie Whitehead | North to South, a Holistic Approach to Reflux Treatment",
+        subtitle: "Registered Nutritional Therapist specializing in IBS, IBD, and Acid Reflux"
+      },
+    //   {
+    //     url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/ashley-shields-640153",
+    //     img: "",
+    //     name: "Ashley Shields",
+    //     title: "Ashley Shields",
+    //     subtitle: "Functional Health Practitioner, EMT, &amp; Founder of Total Body Vitality"
+    //   },
+      {
+        url: "https://my.refluxsummit.com/p/41757/reflux-summit-2026/c/speaker-list-alphabetical-order-632120/eloise-garbutt-managing-sibo-and-imo-moving-beyond-antibiotics-to-root-causes-643802",
+        img: "https://refluxsummit.b-cdn.net/RS-05-25/360x200%20Images/Eloise%20G.png",
+        name: "Eloise Garbutt",
+        title: "Eloise Garbutt | Managing SIBO and IMO: Moving Beyond Antibiotics to Root Causes",
+        subtitle: "Specialist Gastroenterology Dietitian | IBS, Gut & Metabolic Health Expert"
+      },
+    //   {
+    //     url: "",
+    //     img: "",
+    //     name: "",
+    //     title: "",
+    //     subtitle: ""
+    //   },
+    ];
+
+    const container = document.getElementById('speaker-container');
+    const sortSelect = document.getElementById('sort-speakers');
+
+    // 2. Render Function
+    function renderCards(data) {
+      container.innerHTML = data.map(speaker => `
+        <a href="${speaker.url}" class="card">
+          <img src="${speaker.img}" alt="${speaker.name}">
+          <div class="card-content">
+            <div class="card-title">${speaker.title}</div>
+            <div class="card-subtitle">${speaker.subtitle}</div>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    // 3. Helper Function: Extract Last Name
+    function getLastName(fullName) {
+      // Remove prefixes like "Dr. " to keep it clean
+      const cleanName = fullName.replace(/^(Dr\.\s*)/i, '').trim();
+      // Split by spaces and grab the last item
+      const nameParts = cleanName.split(' ');
+      return nameParts[nameParts.length - 1].toLowerCase();
+    }
+
+    // 4. Sort Function
+    function sortAndRender() {
+      const order = sortSelect.value;
+      
+      const sortedSpeakers = [...speakers].sort((a, b) => {
+        const lastNameA = getLastName(a.name);
+        const lastNameB = getLastName(b.name);
+
+        if (order === 'asc') {
+          return lastNameA.localeCompare(lastNameB);
+        } else {
+          return lastNameB.localeCompare(lastNameA);
+        }
+      });
+      
+      renderCards(sortedSpeakers);
+    }
+
+    // 5. Event Listener and Initial Load
+    sortSelect.addEventListener('change', sortAndRender);
+    
+    // Sort on page load
+    sortAndRender();
+
+  </script>
+</body>
+</html>

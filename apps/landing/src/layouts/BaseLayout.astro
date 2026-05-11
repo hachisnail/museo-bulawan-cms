@@ -1,0 +1,57 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  theme?: 'light' | 'dark';
+  navTheme?: 'light' | 'dark';
+  isMinimalLayout?: boolean;
+  title?: string;
+}
+
+const { 
+  theme = 'dark', 
+  navTheme = 'dark', 
+  isMinimalLayout = false,
+  title = 'Museo Bulawan CMS'
+} = Astro.props;
+
+const containerBg = theme === 'dark' ? 'bg-[#1C1B19]' : 'bg-white';
+
+import Header from '../components/ui/Header.astro';
+import Footer from '../components/ui/Footer.astro';
+import Nav from '../components/ui/Nav.astro';
+---
+
+<!DOCTYPE html>
+<!-- scroll-smooth for animation, scroll-pt-[8rem] ensures anchors land perfectly below the fixed header -->
+<html lang="en" class="scroll-smooth scroll-pt-[8rem]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+</head>
+
+<body class={`${containerBg} flex flex-col min-h-screen w-full overflow-x-hidden relative m-0`}>
+
+  {!isMinimalLayout && (
+    <>
+      <Header theme={theme} /> 
+      <div class="w-full absolute top-10 left-0 z-30 flex justify-center">
+         <Nav theme={navTheme} />
+      </div>
+    </>
+  )}
+
+  <!-- Massively increased horizontal padding (lg:px-32) for that "roomier" side feel -->
+  <main class="flex-1 z-10 flex flex-col items-center h-auto min-h-fit w-full max-w-[140rem] mx-auto pt-28 pb-8 px-8 md:px-16 lg:px-32">
+    <slot /> 
+  </main>
+
+  {!isMinimalLayout && (
+    <footer class="flex items-center justify-center bg-[#1C1B19] h-fit w-full mt-auto">
+       <Footer />
+    </footer>
+  )}
+
+</body>
+</html>

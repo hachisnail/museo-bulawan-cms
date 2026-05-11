@@ -7,6 +7,7 @@ import { sendEmail } from '../../utils/mailer.js';
 import { assertTransition } from '../../utils/stateMachine.js';
 import { documentService } from '../documentService.js';
 import { notificationService } from '../notificationService.js';
+import { getContractType } from '../../utils/constants.js';
 
 export const intakeService = {
     // ==========================================
@@ -72,7 +73,9 @@ export const intakeService = {
     // ==========================================
     async approveIntake(staffId, intakeId) {
         return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
-            const result = await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'approved');
+            const result = await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'approved', {
+                current_location: 'Pending Documentation (With Donor)'
+            });
             const intake = await baseService._getRecord('intakes', intakeId);
             notificationService.sendToRole('curator', 'Intake Approved', 
                 `Intake for "${intake.proposed_item_name}" has been approved. Please generate delivery documents.`, 'success', { actionUrl: `/intakes?id=${intakeId}` });
@@ -116,7 +119,7 @@ export const intakeService = {
     async generateDynamicMOA(staffId, intakeId, overrides = {}) {
         return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
             try {
-                const intake = await baseService._getRecord('intakes', intakeId);
+                const intake = await baseService._getRecord('intakes', intakeId, { expand: 'donor_account_id,donation_item_id' });
                 assertTransition('intake', intake.status, 'awaiting_delivery');
 
                 const finalDonorName = overrides.donorName || intake.donor_info;
@@ -126,18 +129,13 @@ export const intakeService = {
                     finalLoanDuration = overrides.loanDuration || (intake.loan_end_date ? `Until ${intake.loan_end_date}` : 'Standard 6 Months');
                 }
 
-                const contractTypes = {
-                    'gift': 'deed_of_gift',
-                    'loan': 'loan_agreement',
-                    'purchase': 'bill_of_sale',
-                    'existing': 'internal_memo'
-                };
+                const contractType = getContractType(intake.acquisition_method);
 
-                const contractType = contractTypes[intake.acquisition_method];
-                if (!contractType) throw new Error('Unknown acquisition method.');
-
-                const doc = await documentService.generateMOA(intake, 'html', overrides);
-                const moaDraft = doc;
+                const docHtml = await documentService.generateMOA(intake, 'html', overrides);
+                const docDocx = await documentService.generateMOA(intake, 'docx', overrides);
+                
+                const moaDraft = docHtml;
+                const docxBase64 = docDocx.toString('base64');
 
                 const deliverySlipId = `DS-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
                 const rawToken = crypto.randomBytes(4).toString('hex').toUpperCase(); 
@@ -150,7 +148,8 @@ export const intakeService = {
                     delivery_slip_id: deliverySlipId,
                     moa_status: 'generated',
                     qr_token_hash: tokenHash,
-                    qr_token_expires: tokenExpires
+                    qr_token_expires: tokenExpires,
+                    current_location: 'With Donor (Awaiting Delivery)'
                 });
 
                 const donorEmail = intake.expand?.donor_account_id?.email || '';
@@ -187,6 +186,7 @@ export const intakeService = {
                     deliverySlipId,
                     contractType,
                     moaDraft,
+                    docxData: docxBase64,
                     qrPayload: { type: "delivery_confirmation", intakeId, token: rawToken },
                     intake: updatedIntake
                 };
@@ -198,7 +198,7 @@ export const intakeService = {
     },
 
     async exportMOA(intakeId) {
-        const intake = await baseService._getRecord('intakes', intakeId);
+        const intake = await baseService._getRecord('intakes', intakeId, { expand: 'donor_account_id,donation_item_id' });
         return await documentService.generateMOA(intake, 'docx');
     },
 
@@ -259,7 +259,8 @@ export const intakeService = {
                 const updated = await baseService._updateRecord(staffId, 'intakes', intakeId, {
                     status: 'in_custody',
                     qr_token_hash: null,
-                    qr_token_expires: null
+                    qr_token_expires: null,
+                    current_location: 'Receiving / Quarantine Room'
                 });
 
                 notificationService.sendToRole('curator', 'Artifact in Custody', 
@@ -270,6 +271,15 @@ export const intakeService = {
                 logger.error(`Error confirming delivery: ${error.message}`);
                 throw error;
             }
+        });
+    },
+
+    async updateIntakeLocation(staffId, intakeId, location) {
+        return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
+            const intake = await baseService._getRecord('intakes', intakeId);
+            return await baseService._updateRecord(staffId, 'intakes', intakeId, {
+                current_location: location
+            });
         });
     }
 };

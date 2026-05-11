@@ -1,65 +1,74 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useSSE } from '../hooks/useSSE';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/authContext';
+import { useSSE } from '../hooks/useSSE';
+import { 
+    Search, 
+    Filter, 
+    Box, 
+    MapPin, 
+    History, 
+    ShieldCheck, 
+    FileText, 
+    Image as ImageIcon,
+    MoreVertical,
+    Download,
+    X,
+    ExternalLink,
+    ChevronRight,
+    TrendingUp,
+    Clock,
+    Activity,
+    ClipboardList
+} from 'lucide-react';
+import Modal from '../components/Modal';
 import FormRenderer from '../components/FormRenderer';
 
 const ITEM_STATUS_COLORS = {
-    'active': 'text-green-400 bg-green-500/10 border-green-500/20',
-    'stable': 'text-green-400 bg-green-500/10 border-green-500/20', // Fallback
-    'maintenance': 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-    'needs_conservation': 'text-amber-400 bg-amber-500/10 border-amber-500/20', // Legacy
-    'loan': 'text-blue-400 bg-blue-500/10 border-blue-500/20',
-    'storage': 'text-zinc-400 bg-zinc-500/10 border-zinc-500/20',
-    'at_risk': 'text-rose-400 bg-rose-500/10 border-rose-500/20',
-    'lost': 'text-rose-600 bg-rose-500/10 border-rose-500/20',
-    'deaccessioned': 'text-zinc-600 bg-zinc-500/5 border-zinc-500/10'
+    active: 'bg-green-50 text-green-700 border-green-200',
+    deaccessioned: 'bg-zinc-50 text-zinc-500 border-zinc-300',
+    archived: 'bg-zinc-50 text-zinc-500 border-zinc-300',
+    loaned: 'bg-blue-50 text-blue-700 border-blue-200',
+    maintenance: 'bg-amber-50 text-amber-700 border-amber-200'
 };
 
 export default function Inventory() {
     const { apiFetch } = useAuth();
-    const [searchParams, setSearchParams] = useSearchParams();
     const { events } = useSSE('inventory');
-
-    const [initialData, setInitialData] = useState([]);
+    
+    const [inventory, setInventory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState(null);
-    const [activeTab, setActiveTab] = useState('general'); // 'general' | 'movement' | 'conservation'
-
-    const prefillData = useMemo(() => ({
-        artifact_id: selected?.id
-    }), [selected?.id]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [activeTab, setActiveTab] = useState('active'); // 'active' | 'archived'
     
-    // Detailed Data
-    const [movementHistory, setMovementHistory] = useState([]);
-    const [conservationLogs, setConservationLogs] = useState([]);
-    const [detailLoading, setDetailLoading] = useState(false);
+    // Detail View Sub-tabs
+    const [detailTab, setDetailTab] = useState('provenance'); // 'provenance' | 'trails' | 'reports' | 'valuations'
+    
+    // Action State
     const [actionLoading, setActionLoading] = useState(false);
+    const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'alert', variant: 'info', onConfirm: null, promptValue: '' });
+    
+    // Form States
+    const [showMovementForm, setShowMovementForm] = useState(false);
+    const [showHealthForm, setShowHealthForm] = useState(false);
+    
+    // Detail Data
+    const [movementTrails, setMovementTrails] = useState([]);
+    const [healthLogs, setHealthLogs] = useState([]);
+    const [valuations, setValuations] = useState([]);
+    const [auditLogs, setAuditLogs] = useState([]);
+    const [conservationLogs, setConservationLogs] = useState([]);
+    const [exhibitionHistory, setExhibitionHistory] = useState([]);
+    const [showAuditForm, setShowAuditForm] = useState(false);
+    const [showConservationForm, setShowConservationForm] = useState(false);
 
     const fetchInventory = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await apiFetch('/api/v1/acquisitions/inventory?expand=accession_id');
-            const data = await res.json();
-            if (data.status === 'success') {
-                const items = data.data.items;
-                
-                // Enriched expansion for polymorphic media
-                const enriched = await Promise.all(items.map(async (item) => {
-                    if (item.expand?.accession_id) {
-                        try {
-                            const mRes = await apiFetch(`/api/v1/media/accession/${item.expand.accession_id.id}`);
-                            const mData = await mRes.json();
-                            item.expand.accession_id.expand = {
-                                ...item.expand.accession_id.expand,
-                                media_attachments_via_entity_id: mData.data?.items || []
-                            };
-                        } catch (e) {}
-                    }
-                    return item;
-                }));
-                
-                setInitialData(enriched);
+            const res = await apiFetch('/api/v1/acquisitions/inventory?expand=accession_id.intake_id');
+            const json = await res.json();
+            if (json.status === 'success') {
+                setInventory(json.data.items);
             }
         } catch (err) {
             console.error("Failed to fetch inventory", err);
@@ -68,565 +77,596 @@ export default function Inventory() {
         }
     }, [apiFetch]);
 
-    const fetchDetails = async (item) => {
-        setDetailLoading(true);
-        setActiveTab('general');
-        try {
-            // Fetch the most up-to-date and fully expanded record for this item
-            const itemRes = await apiFetch(`/api/v1/acquisitions/inventory/${item.id}?expand=accession_id,accession_id.intake_id`);
-            const itemJson = await itemRes.json();
-            if (itemJson.status === 'success') {
-                const enrichedItem = itemJson.data;
-                if (enrichedItem.expand?.accession_id) {
-                    try {
-                        const mRes = await apiFetch(`/api/v1/media/accession/${enrichedItem.expand.accession_id.id}`);
-                        const mData = await mRes.json();
-                        enrichedItem.expand.accession_id.expand = {
-                            ...enrichedItem.expand.accession_id.expand,
-                            media_attachments_via_entity_id: mData.data?.items || []
-                        };
-                    } catch (e) {}
-                }
-                setSelected(enrichedItem);
-            }
-
-            const [moveRes, healthRes] = await Promise.all([
-                apiFetch(`/api/v1/acquisitions/inventory/${item.id}/movement`),
-                apiFetch(`/api/v1/acquisitions/inventory/${item.id}/condition-reports`)
-            ]);
-            const moveJson = await moveRes.json();
-            const healthJson = await healthRes.json();
-            
-            if (moveJson.status === 'success') setMovementHistory(moveJson.data.items);
-            if (healthJson.status === 'success') setConservationLogs(healthJson.data.items);
-        } catch (err) {
-            console.error("Failed to fetch details", err);
-        } finally {
-            setDetailLoading(false);
-        }
-    };
-
-    useEffect(() => { fetchInventory(); }, [fetchInventory]);
-
-    // Real-time synchronization
     useEffect(() => {
-        if (events.length > 0) {
-            console.log("Inventory update received, refreshing catalog...");
-            fetchInventory();
-        }
+        fetchInventory();
+    }, [fetchInventory]);
+
+    // Handle real-time updates
+    useEffect(() => {
+        if (events.length > 0) fetchInventory();
     }, [events, fetchInventory]);
 
-    // Handle initial selection from URL params
-    useEffect(() => {
-        const id = searchParams.get('id');
-        if (id && initialData.length > 0) {
-            const item = initialData.find(i => i.id === id);
-            if (item) {
-                fetchDetails(item);
-            }
+    const fetchDetails = async (item) => {
+        setSelected(item);
+        setDetailTab('provenance');
+        try {
+            const [mRes, hRes, vRes, aRes, cRes, eRes] = await Promise.all([
+                apiFetch(`/api/v1/acquisitions/inventory/${item.id}/movement`),
+                apiFetch(`/api/v1/acquisitions/inventory/${item.id}/condition-reports`),
+                apiFetch(`/api/v1/acquisitions/inventory/${item.id}/valuations`),
+                apiFetch(`/api/v1/acquisitions/inventory/${item.id}/audits`),
+                apiFetch(`/api/v1/acquisitions/inventory/${item.id}/conservation`),
+                apiFetch(`/api/v1/acquisitions/inventory/${item.id}/exhibitions`)
+            ]);
+            
+            const mData = await mRes.json();
+            const hData = await hRes.json();
+            const vData = await vRes.json();
+            const aData = await aRes.json();
+            const cData = await cRes.json();
+            const eData = await eRes.json();
+
+            if (mData.status === 'success') setMovementTrails(mData.data.items || []);
+            if (hData.status === 'success') setHealthLogs(hData.data.items || []);
+            if (vData.status === 'success') setValuations(vData.data.items || []);
+            if (aData.status === 'success') setAuditLogs(aData.data.items || []);
+            if (cData.status === 'success') setConservationLogs(cData.data.items || []);
+            if (eData.status === 'success') setExhibitionHistory(eData.data.items || []);
+        } catch (err) {
+            console.error("Failed to fetch detail data", err);
         }
-    }, [searchParams, initialData]);
-
-    const displayList = [...initialData]
-        .sort((a, b) => new Date(b.created) - new Date(a.created));
-
-    // Form States
-    const [moveForm, setMoveForm] = useState({ toLocation: '', reason: '', condition: '' });
-    const [consForm, setConsForm] = useState({ treatment: '', findings: '', recommendations: '' });
-    const [showMoveForm, setShowMoveForm] = useState(false);
-    const [showConsForm, setShowConsForm] = useState(false);
-
-    const handleTransfer = async (e) => {
-        e.preventDefault();
-        setActionLoading(true);
-        try {
-            const res = await apiFetch(`/api/v1/acquisitions/inventory/${selected.id}/transfer`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(moveForm)
-            });
-            if (res.ok) {
-                alert('Artifact moved successfully.');
-                setMoveForm({ toLocation: '', reason: '', condition: '' });
-                setShowMoveForm(false);
-                fetchInventory();
-                fetchDetails(selected);
-            }
-        } catch (err) { alert('Transfer failed'); }
-        finally { setActionLoading(false); }
     };
 
-    const handleAddConservationLog = async (e) => {
-        e.preventDefault();
-        setActionLoading(true);
-        try {
-            const res = await apiFetch(`/api/v1/acquisitions/inventory/${selected.id}/conservation`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(consForm)
-            });
-            if (res.ok) {
-                alert('Conservation log added.');
-                setConsForm({ treatment: '', findings: '', recommendations: '' });
-                setShowConsForm(false);
-                fetchDetails(selected);
+    const handleDeaccession = (id) => {
+        setModal({
+            isOpen: true,
+            title: 'Deaccession Artifact',
+            message: 'Provide a reason for removing this artifact from the permanent collection:',
+            type: 'prompt',
+            variant: 'warning',
+            onConfirm: async (reason) => {
+                if (!reason) return;
+                setActionLoading(true);
+                try {
+                    const res = await apiFetch(`/api/v1/acquisitions/inventory/${id}/deaccession`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ reason })
+                    });
+                    if (res.ok) {
+                        setModal({ isOpen: true, title: 'Success', message: 'Artifact deaccessioned.', type: 'alert', variant: 'success' });
+                        setSelected(null);
+                        fetchInventory();
+                    }
+                } catch (err) {}
+                finally { setActionLoading(false); }
             }
-        } catch (err) { alert('Failed to add log'); }
-        finally { setActionLoading(false); }
+        });
     };
 
-    const handleStatusUpdate = async () => {
-        const statuses = ['active', 'maintenance', 'loan', 'storage', 'lost'];
-        const newStatus = prompt(`Enter new status (${statuses.join(', ')}):`);
-        if (!newStatus || !statuses.includes(newStatus)) {
-            if (newStatus) alert('Invalid status.');
-            return;
-        }
-
-        const reason = prompt('Mandatory justification for manual override:');
-        if (!reason || reason.length < 5) {
-            alert('A justification (at least 5 chars) is required.');
-            return;
-        }
-
-        setActionLoading(true);
-        try {
-            const res = await apiFetch(`/api/v1/acquisitions/inventory/${selected.id}/status`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: newStatus, isManual: true, reason })
-            });
-            if (res.ok) {
-                alert('Status updated manually.');
-                fetchInventory();
-                fetchDetails(selected);
+    const handleValuation = () => {
+        setModal({
+            isOpen: true,
+            title: 'Add Market Valuation',
+            message: 'Enter appraised value (PHP):',
+            type: 'prompt',
+            onConfirm: (amount) => {
+                if (!amount) return;
+                setModal({
+                    isOpen: true,
+                    title: 'Appraisal Reason',
+                    message: 'Enter valuation reason (e.g. Insurance):',
+                    type: 'prompt',
+                    onConfirm: async (reason) => {
+                        if (!reason) return;
+                        setActionLoading(true);
+                        try {
+                            const res = await apiFetch(`/api/v1/acquisitions/inventory/${selected.id}/valuations`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ amount: parseFloat(amount), reason })
+                            });
+                            if (res.ok) {
+                                setModal({ isOpen: true, title: 'Success', message: 'Valuation added.', type: 'alert', variant: 'success' });
+                                fetchDetails(selected);
+                            }
+                        } catch (err) {}
+                        finally { setActionLoading(false); }
+                    }
+                });
             }
-        } catch (err) { alert('Failed to update status'); }
-        finally { setActionLoading(false); }
+        });
     };
 
-    const handleDeaccession = async () => {
-        if (!confirm('CAUTION: Deaccessioning is a formal removal from the collection. Continue?')) return;
-        const reason = prompt('Formal reason for deaccessioning:');
-        if (!reason) return;
-        
-        setActionLoading(true);
-        try {
-            const res = await apiFetch(`/api/v1/acquisitions/inventory/${selected.id}/deaccession`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ reason })
-            });
-            if (res.ok) {
-                alert('Artifact formally deaccessioned.');
-                fetchInventory();
-                setSelected(null);
-            }
-        } catch (err) { alert('Deaccessioning failed'); }
-        finally { setActionLoading(false); }
-    };
+    const filteredInventory = inventory.filter(item => {
+        const matchesSearch = 
+            item.catalog_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.expand?.accession_id?.expand?.intake_id?.proposed_item_name?.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesTab = activeTab === 'active' ? item.status !== 'deaccessioned' : item.status === 'deaccessioned';
+        return matchesSearch && matchesTab;
+    });
 
     return (
-        <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {/* Conditional Header: Only show if not in Detail View */}
-            {!selected && (
-                <header className="flex justify-between items-center">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Collection Inventory</h1>
-                        <p className="text-[var(--text-secondary)] mt-1">Cataloged artifacts in the museum's permanent custody.</p>
-                    </div>
-                    <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        <span className="text-zinc-400 uppercase tracking-widest font-bold">Live Catalog</span>
-                    </div>
-                </header>
-            )}
+        <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500 pb-20">
+            {/* Header Section */}
+            <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-zinc-300 pb-6">
+                <div>
+                    <h1 className="text-2xl font-serif text-black uppercase tracking-widest">Master Inventory</h1>
+                    <p className="text-sm text-zinc-500 mt-1 font-light italic">Permanent collection registry and archival tracking.</p>
+                </div>
+            </header>
 
-            {!selected ? (
-                /* GRID VIEW */
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in duration-500">
-                    {loading && initialData.length === 0 ? (
-                        <div className="col-span-full p-20 text-center text-zinc-500 bg-white/5 rounded-3xl border border-dashed border-white/10">
-                            Loading catalog...
-                        </div>
-                    ) : displayList.length === 0 ? (
-                        <div className="col-span-full p-20 text-center text-zinc-500 bg-white/5 rounded-3xl border border-dashed border-white/10">
-                            <div className="text-5xl mb-4 opacity-10">🏛️</div>
-                            No artifacts in inventory.
-                        </div>
-                    ) : (
-                        displayList.map((item) => {
-                            const acc = item.expand?.accession_id;
-                            const intake = acc?.expand?.intake_id;
-                            return (
+            <div className="flex flex-col lg:flex-row gap-8 items-start">
+                
+                {/* LEFT: Sidebar List */}
+                <div className="w-full lg:w-1/3 flex flex-col gap-4">
+                    <div className="flex border-b border-zinc-300">
+                        <button 
+                            onClick={() => { setActiveTab('active'); setSelected(null); }}
+                            className={`flex-1 pb-3 text-[10px] font-black uppercase tracking-widest transition-colors border-b-2 ${activeTab === 'active' ? 'border-[#D4AF37] text-black' : 'border-transparent text-zinc-400 hover:text-black'}`}
+                        >
+                            Collection
+                        </button>
+                        <button 
+                            onClick={() => { setActiveTab('archived'); setSelected(null); }}
+                            className={`flex-1 pb-3 text-[10px] font-black uppercase tracking-widest transition-colors border-b-2 ${activeTab === 'archived' ? 'border-[#D4AF37] text-black' : 'border-transparent text-zinc-400 hover:text-black'}`}
+                        >
+                            Deaccessioned
+                        </button>
+                    </div>
+
+                    <div className="relative group">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 group-focus-within:text-black transition-colors" />
+                        <input 
+                            type="text" 
+                            placeholder="Filter collection..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full bg-white border border-zinc-300 rounded-sm pl-10 pr-4 py-2.5 text-sm text-black focus:outline-none focus:border-[#D4AF37] transition-all"
+                        />
+                    </div>
+
+                    <div className="bg-white border border-zinc-300 rounded-sm divide-y divide-zinc-200 h-[700px] overflow-y-auto shadow-sm">
+                        {loading ? (
+                            <div className="p-12 text-center flex flex-col items-center gap-4">
+                                <div className="w-5 h-5 border-2 border-zinc-200 border-t-black rounded-full animate-spin" />
+                                <div className="text-[9px] font-black uppercase tracking-widest text-zinc-400">Verifying Ledger...</div>
+                            </div>
+                        ) : filteredInventory.length === 0 ? (
+                            <div className="p-12 text-center text-xs text-zinc-400 italic">No artifacts found.</div>
+                        ) : (
+                            filteredInventory.map(item => (
                                 <button 
                                     key={item.id}
                                     onClick={() => fetchDetails(item)}
-                                    className="glass-panel rounded-3xl border border-white/5 transition-all text-left group hover:scale-[1.02] active:scale-[0.98] overflow-hidden flex flex-col hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/10"
+                                    className={`w-full p-5 text-left transition-all border-l-4 flex flex-col gap-2 ${selected?.id === item.id ? 'bg-zinc-50 border-[#D4AF37]' : 'border-transparent hover:bg-zinc-50'}`}
                                 >
-                                    <div className="h-48 bg-black/40 relative overflow-hidden flex items-center justify-center border-b border-white/5">
-                                        {acc?.expand?.['media_attachments_via_entity_id']?.[0] ? (
-                                            <img 
-                                                src={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/${acc.expand['media_attachments_via_entity_id'][0].collectionId}/${acc.expand['media_attachments_via_entity_id'][0].id}/${acc.expand['media_attachments_via_entity_id'][0].files[0]}`} 
-                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                                            />
-                                        ) : (
-                                            <div className="p-6 text-center opacity-30 group-hover:opacity-60 transition-opacity">
-                                                <div className="text-3xl mb-2">📷</div>
-                                                <div className="text-[9px] uppercase font-bold tracking-widest leading-tight">
-                                                    {item.image_skip_reason ? item.image_skip_reason.replace(/_/g, ' ') : 'No Media'}
-                                                </div>
-                                            </div>
-                                        )}
-                                        <div className="absolute top-4 left-4 px-2.5 py-1 bg-black/60 backdrop-blur-md rounded-lg text-[10px] font-bold text-indigo-400 border border-white/10 font-mono">
-                                            #{item.catalog_number}
+                                    <div className="flex justify-between items-start">
+                                        <div className="font-bold text-sm text-black line-clamp-1 pr-4 uppercase">
+                                            {item.expand?.accession_id?.expand?.intake_id?.proposed_item_name || 'Unnamed Artifact'}
                                         </div>
+                                        <span className={`flex-shrink-0 px-2 py-0.5 rounded-sm text-[8px] font-black uppercase tracking-widest border ${ITEM_STATUS_COLORS[item.status] || ITEM_STATUS_COLORS.active}`}>
+                                            {item.status}
+                                        </span>
                                     </div>
-                                    <div className="p-6 flex-1 flex flex-col">
-                                        <div className="flex justify-between items-center mb-3">
-                                            <div className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${ITEM_STATUS_COLORS[item.status] || ITEM_STATUS_COLORS.active}`}>
-                                                {item.status.replace(/_/g, ' ')}
-                                            </div>
-                                            <span className="text-[10px] text-zinc-600 font-mono">{acc?.accession_number}</span>
-                                        </div>
-                                        <h3 className="font-bold text-lg text-zinc-100 mb-1 group-hover:text-indigo-400 transition-colors line-clamp-1">
-                                            {intake?.proposed_item_name || acc?.accession_number}
-                                        </h3>
-                                        <p className="text-xs text-zinc-500 line-clamp-2 italic mb-4">
-                                            {acc?.historical_significance || 'No historical documentation available.'}
-                                        </p>
-                                        <div className="flex items-center gap-2 text-[10px] text-zinc-400 mt-auto pt-4 border-t border-white/5">
-                                            <span>📍</span> {item.current_location || 'Receiving'}
-                                        </div>
+                                    <div className="flex items-center justify-between text-[9px] text-zinc-400 font-bold uppercase tracking-widest">
+                                        <span className="font-mono">#{item.catalog_number}</span>
+                                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-[#D4AF37]" /> {item.current_location || 'Receiving'}</span>
                                     </div>
                                 </button>
-                            );
-                        })
-                    )}
-                </div>
-            ) : (
-                /* FULL DETAIL VIEW */
-                <div className="animate-in slide-in-from-right-8 duration-500 space-y-8">
-                    {/* Detail Header / Nav */}
-                    <nav className="flex items-center justify-between pb-6 border-b border-white/5">
-                        <button 
-                            onClick={() => setSelected(null)}
-                            className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors group"
-                        >
-                            <span className="text-xl group-hover:-translate-x-1 transition-transform">←</span>
-                            <span className="text-sm font-bold">Back to Catalog</span>
-                        </button>
-                        <div className="flex gap-3">
-                            <button onClick={handleStatusUpdate} className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[11px] font-bold text-zinc-300 transition-all">
-                                ⚙️ Override Status
-                            </button>
-                            <button onClick={() => window.open(`${import.meta.env.VITE_API_BASE_URL}/api/v1/acquisitions/accessions/${selected.accession_id}/report`, '_blank')} className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[11px] font-bold text-zinc-300 transition-all">
-                                📄 Print Report
-                            </button>
-                            <button onClick={handleDeaccession} className="px-4 py-2 bg-rose-600/10 hover:bg-rose-600 border border-rose-500/20 text-rose-500 hover:text-white rounded-xl text-[11px] font-bold transition-all">
-                                🗑️ Deaccession
-                            </button>
-                        </div>
-                    </nav>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        {/* Primary Content (Left) */}
-                        <div className="lg:col-span-8 space-y-8">
-                            {/* Visual Documentation */}
-                            <section className="glass-panel rounded-3xl overflow-hidden border border-white/5">
-                                <div className="p-6 border-b border-white/5 bg-white/5 flex justify-between items-center">
-                                    <h3 className="text-sm font-bold uppercase tracking-widest text-indigo-400">Visual Documentation</h3>
-                                    <span className="text-[10px] text-zinc-500">{(selected.expand?.accession_id?.expand?.media_attachments_via_entity_id?.length || 0)} File(s) Attached</span>
-                                </div>
-                                <div className="p-8">
-                                    <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-                                        {(selected.expand?.accession_id?.expand?.media_attachments_via_entity_id || []).map((m) => (
-                                            (m.files || []).map((file, idx) => (
-                                                <div key={`${m.id}-${idx}`} className="min-w-[300px] h-64 rounded-2xl overflow-hidden border border-white/10 bg-black shadow-xl group relative">
-                                                    <img 
-                                                        src={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/${m.collectionId}/${m.id}/${file}`} 
-                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                                                    />
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                                                        <p className="text-[10px] text-white/80 italic">{m.caption || 'Artifact documentation capture'}</p>
-                                                    </div>
-                                                </div>
-                                            ))
-                                        ))}
-                                        {(!selected.expand?.accession_id?.expand?.media_attachments_via_entity_id || selected.expand?.accession_id?.expand?.media_attachments_via_entity_id.length === 0) && (
-                                            <div className="w-full h-64 flex flex-col items-center justify-center bg-white/5 rounded-2xl border border-dashed border-white/10 opacity-30">
-                                                <div className="text-4xl mb-3">📷</div>
-                                                <p className="text-xs uppercase tracking-widest font-bold">No documentation found</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </section>
-
-                            {/* Lifecycle Tabs */}
-                            <section className="glass-panel rounded-3xl overflow-hidden border border-white/5 min-h-[500px] flex flex-col">
-                                <div className="flex border-b border-white/5 bg-white/5">
-                                    <TabButton active={activeTab === 'general'} onClick={() => setActiveTab('general')} label="Historical Provenance" />
-                                    <TabButton active={activeTab === 'movement'} onClick={() => setActiveTab('movement')} label="Movement Trail" />
-                                    <TabButton active={activeTab === 'conservation'} onClick={() => setActiveTab('conservation')} label="Health & Conservation" />
-                                </div>
-                                
-                                <div className="p-8 flex-1">
-                                    {detailLoading ? (
-                                        <div className="h-full flex items-center justify-center py-20">
-                                            <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            {activeTab === 'general' && (
-                                                <div className="animate-in fade-in duration-300 space-y-8">
-                                                    <div className="prose prose-invert max-w-none">
-                                                        <h4 className="text-zinc-500 text-[10px] uppercase font-black tracking-widest mb-4">Historical Significance</h4>
-                                                        <p className="text-zinc-200 text-lg leading-relaxed italic font-serif">
-                                                            "{selected.expand?.accession_id?.historical_significance || 'No historical research data currently recorded for this artifact.'}"
-                                                        </p>
-                                                    </div>
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-white/5">
-                                                        <div>
-                                                            <h4 className="text-zinc-500 text-[10px] uppercase font-black tracking-widest mb-4">Curatorial Notes</h4>
-                                                            <div className="bg-black/20 p-6 rounded-2xl border border-white/5 text-sm text-zinc-400 leading-relaxed min-h-[150px]">
-                                                                {selected.expand?.accession_id?.research_notes || 'No curatorial notes recorded.'}
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            <h4 className="text-zinc-500 text-[10px] uppercase font-black tracking-widest mb-4">Technical Structured Data</h4>
-                                                            <div className="space-y-2">
-                                                                {Object.entries(selected.expand?.accession_id?.research_data || {}).map(([k, v]) => (
-                                                                    <DetailRow key={k} label={k} value={v} />
-                                                                ))}
-                                                                {Object.keys(selected.expand?.accession_id?.research_data || {}).length === 0 && (
-                                                                    <p className="text-xs text-zinc-600 italic">No supplemental structured data.</p>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            {activeTab === 'movement' && (
-                                                <div className="animate-in fade-in duration-300 space-y-8">
-                                                    <div className="flex justify-between items-center">
-                                                        <div>
-                                                            <h4 className="text-zinc-500 text-[10px] uppercase font-black tracking-widest">Audit History</h4>
-                                                            <p className="text-xs text-zinc-600 mt-1">Official internal movement log.</p>
-                                                        </div>
-                                                        <button 
-                                                            onClick={() => setShowMoveForm(true)}
-                                                            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-black uppercase rounded-xl transition-all shadow-lg shadow-indigo-500/20"
-                                                        >
-                                                            + Log New Move
-                                                        </button>
-                                                    </div>
-
-                                                    {showMoveForm && (
-                                                        <div className="bg-indigo-600/5 border border-indigo-500/20 rounded-3xl p-8 animate-in slide-in-from-top-4 duration-500 mb-8">
-                                                            <div className="flex justify-between items-center mb-6">
-                                                                <span className="text-xs font-black uppercase text-indigo-400">Movement Authorization Form</span>
-                                                                <button type="button" onClick={() => setShowMoveForm(false)} className="text-zinc-500 hover:text-white transition-colors">Cancel</button>
-                                                            </div>
-                                                            <FormRenderer 
-                                                                slug="artifact-movement"
-                                                                hideHeader={true}
-                                                                compact={true}
-                                                                customFetch={apiFetch}
-                                                                prefillData={prefillData}
-                                                                onSuccess={() => { setShowMoveForm(false); fetchDetails(selected); fetchInventory(); }}
-                                                                className="!p-0 !bg-transparent !border-none !shadow-none"
-                                                            />
-                                                        </div>
-                                                    )}
-
-                                                    <div className="space-y-6 relative">
-                                                        <div className="absolute left-3.5 top-2 bottom-2 w-px bg-white/5"></div>
-                                                        {movementHistory.map((move, i) => (
-                                                            <div key={i} className="relative pl-12">
-                                                                <div className={`absolute left-0 top-1 w-7 h-7 rounded-full flex items-center justify-center border-4 border-black z-10 ${i === 0 ? 'bg-indigo-500 ring-4 ring-indigo-500/20' : 'bg-zinc-800'}`}>
-                                                                    <span className="text-[10px]">{i === 0 ? '📍' : '•'}</span>
-                                                                </div>
-                                                                <div className="bg-white/5 border border-white/5 rounded-2xl p-5 hover:bg-white/10 transition-all group">
-                                                                    <div className="flex justify-between items-start mb-2">
-                                                                        <h5 className="font-bold text-zinc-100 group-hover:text-indigo-400 transition-colors">{move.to_location}</h5>
-                                                                        <span className="text-[10px] font-mono text-zinc-600">{new Date(move.created).toLocaleString()}</span>
-                                                                    </div>
-                                                                    <div className="text-[10px] text-zinc-400 leading-relaxed mb-4 italic">"{move.reason || 'Standard internal rotation'}"</div>
-                                                                    <div className="flex items-center gap-3 text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
-                                                                        <span>Actor: {move.expand?.moved_by?.name || move.moved_by || 'System Agent'}</span>
-                                                                        {move.submission_id && (
-                                                                            <>
-                                                                                <span>•</span>
-                                                                                <a href={`/admin/forms/submissions/${move.submission_id}`} className="text-indigo-500 hover:underline">Form Proof</a>
-                                                                            </>
-                                                                        )}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                        {movementHistory.length === 0 && (
-                                                            <div className="py-20 text-center opacity-20">No movement history recorded.</div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            {activeTab === 'conservation' && (
-                                                <div className="animate-in fade-in duration-300 space-y-8">
-                                                    <div className="flex justify-between items-center">
-                                                        <div>
-                                                            <h4 className="text-zinc-500 text-[10px] uppercase font-black tracking-widest">Health Evaluation</h4>
-                                                            <p className="text-xs text-zinc-600 mt-1">Official conservation and condition reports.</p>
-                                                        </div>
-                                                        <button 
-                                                            onClick={() => setShowConsForm(true)}
-                                                            className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-[10px] font-black uppercase rounded-xl transition-all shadow-lg shadow-amber-500/20"
-                                                        >
-                                                            + New Health Entry
-                                                        </button>
-                                                    </div>
-
-                                                    {showConsForm && (
-                                                        <div className="bg-amber-600/5 border border-amber-500/20 rounded-3xl p-8 animate-in slide-in-from-top-4 duration-500 mb-8">
-                                                            <div className="flex justify-between items-center mb-6">
-                                                                <span className="text-xs font-black uppercase text-amber-400">Condition Assessment Form</span>
-                                                                <button type="button" onClick={() => setShowConsForm(false)} className="text-zinc-500 hover:text-white transition-colors">Cancel</button>
-                                                            </div>
-                                                            <FormRenderer 
-                                                                slug="artifact-health"
-                                                                hideHeader={true}
-                                                                compact={true}
-                                                                customFetch={apiFetch}
-                                                                prefillData={prefillData}
-                                                                onSuccess={() => { setShowConsForm(false); fetchDetails(selected); }}
-                                                                className="!p-0 !bg-transparent !border-none !shadow-none"
-                                                            />
-                                                        </div>
-                                                    )}
-
-                                                    <div className="space-y-6">
-                                                        {conservationLogs.map((log, i) => (
-                                                            <div key={i} className="bg-white/5 border border-white/5 rounded-3xl p-6 hover:bg-white/10 transition-all border-l-4 border-l-indigo-500">
-                                                                <div className="flex justify-between items-start mb-4">
-                                                                    <div className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                                                                        log.condition === 'Excellent' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
-                                                                        log.condition === 'Good' ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' :
-                                                                        log.condition === 'Fair' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
-                                                                        'bg-rose-500/10 text-rose-400 border-rose-500/20'
-                                                                    }`}>
-                                                                        {log.condition || 'Observation'}
-                                                                    </div>
-                                                                    <span className="text-[10px] font-mono text-zinc-600">{new Date(log.created).toLocaleString()}</span>
-                                                                </div>
-
-                                                                <p className="text-sm text-zinc-300 leading-relaxed mb-6 whitespace-pre-wrap">{log.notes}</p>
-
-                                                                {log.attachments?.length > 0 && (
-                                                                    <div className="flex gap-3 mb-6 overflow-x-auto pb-2 scrollbar-hide">
-                                                                        {log.attachments.map((file, idx) => (
-                                                                            <a 
-                                                                                key={idx} 
-                                                                                href={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/${log.collectionId}/${log.id}/${file}`} 
-                                                                                target="_blank" rel="noreferrer" 
-                                                                                className="block w-24 h-24 rounded-2xl overflow-hidden border border-white/10 hover:border-indigo-500 transition-all shadow-lg shrink-0"
-                                                                            >
-                                                                                <img src={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/${log.collectionId}/${log.id}/${file}`} className="w-full h-full object-cover" />
-                                                                            </a>
-                                                                        ))}
-                                                                    </div>
-                                                                )}
-
-                                                                <div className="flex items-center justify-between pt-4 border-t border-white/5 text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
-                                                                    <span>Evaluated By: {log.reporter_name || log.expand?.reported_by?.name || 'Staff'}</span>
-                                                                    {log.submission_id && (
-                                                                        <a href={`/admin/forms/submissions/${log.submission_id}`} className="text-indigo-400 hover:underline">Reference Form</a>
-                                                                    )}
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                        {conservationLogs.length === 0 && (
-                                                            <div className="py-20 text-center opacity-20">No conservation reports found.</div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </>
-                                    )}
-                                </div>
-                            </section>
-                        </div>
-
-                        {/* Sidebar (Right) */}
-                        <div className="lg:col-span-4 space-y-6">
-                            <section className="glass-panel rounded-3xl p-8 border border-white/5 bg-indigo-600/5 relative overflow-hidden">
-                                <div className="absolute -top-20 -right-20 w-48 h-48 bg-indigo-500/10 blur-3xl rounded-full"></div>
-                                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 mb-6">Internal Identity</h4>
-                                <div className="space-y-6 relative z-10">
-                                    <div>
-                                        <div className="text-[10px] text-zinc-500 uppercase font-bold mb-1">Catalog Number</div>
-                                        <div className="text-2xl font-black text-white tracking-tight">#{selected.catalog_number}</div>
-                                    </div>
-                                    <div>
-                                        <div className="text-[10px] text-zinc-500 uppercase font-bold mb-1">Accession Proof</div>
-                                        <div className="text-sm font-mono text-zinc-300">{selected.expand?.accession_id?.accession_number}</div>
-                                    </div>
-                                    <div>
-                                        <div className="text-[10px] text-zinc-500 uppercase font-bold mb-1">Current Lifecycle</div>
-                                        <div className={`mt-2 inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${ITEM_STATUS_COLORS[selected.status] || ITEM_STATUS_COLORS.active}`}>
-                                            {selected.status.replace(/_/g, ' ')}
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-
-                            <section className="glass-panel rounded-3xl p-8 border border-white/5">
-                                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-6">Technical Specifications</h4>
-                                <div className="space-y-4">
-                                    <DetailRow label="Materials" value={selected.expand?.accession_id?.materials} />
-                                    <DetailRow label="Dimensions" value={selected.expand?.accession_id?.dimensions} />
-                                    <DetailRow label="Legal Framework" value={selected.expand?.accession_id?.legal_status} />
-                                    <DetailRow label="Contract Type" value={selected.expand?.accession_id?.contract_type?.replace(/_/g, ' ')} caps />
-                                </div>
-                            </section>
-
-                            <section className="glass-panel rounded-3xl p-8 border border-white/5">
-                                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-6">Location Summary</h4>
-                                <div className="space-y-4">
-                                    <DetailRow label="Zone" value={selected.current_location || 'Receiving Bay'} />
-                                    <DetailRow label="Last Update" value={new Date(selected.updated).toLocaleDateString()} />
-                                </div>
-                            </section>
-                        </div>
+                            ))
+                        )}
                     </div>
                 </div>
-            )}
-        </div>
-    );
-}
 
-function DetailRow({ label, value, caps }) {
-    return (
-        <div className="flex justify-between items-center py-2 border-b border-white/5">
-            <span className="text-[10px] uppercase font-bold text-zinc-600">{label}</span>
-            <span className={`text-xs text-zinc-300 text-right ${caps ? 'capitalize' : ''}`}>{value || '—'}</span>
-        </div>
-    );
-}
+                {/* RIGHT: Detail View */}
+                <div className="w-full lg:w-2/3">
+                    {!selected ? (
+                        <div className="h-[700px] bg-zinc-50 border border-zinc-300 rounded-sm flex flex-col items-center justify-center gap-4 text-center p-12">
+                            <Box className="w-12 h-12 text-zinc-200" />
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-300">Select an artifact to view complete archival manifest</p>
+                        </div>
+                    ) : (
+                        <div className="bg-white border border-zinc-300 rounded-sm shadow-xl flex flex-col h-[700px] overflow-hidden animate-in slide-in-from-right-4 duration-500">
+                            {/* Detail Header */}
+                            <div className="p-8 border-b border-zinc-300 bg-zinc-50 flex justify-between items-start">
+                                <div>
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <div className="px-3 py-1 bg-black text-[#D4AF37] text-[9px] font-black uppercase tracking-widest rounded-sm">
+                                            Artifact Record
+                                        </div>
+                                        <span className="text-[10px] font-mono text-zinc-400 font-bold">SHA: {selected.id.substring(0,8)}</span>
+                                    </div>
+                                    <h2 className="text-3xl font-serif text-black uppercase tracking-tight leading-tight">
+                                        {selected.expand?.accession_id?.expand?.intake_id?.proposed_item_name || 'Unnamed Artifact'}
+                                    </h2>
+                                </div>
+                                <button 
+                                    onClick={() => setSelected(null)}
+                                    className="p-3 bg-white border border-zinc-300 rounded-sm hover:bg-zinc-50 transition-all text-zinc-400 hover:text-black"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
 
-function TabButton({ active, onClick, label }) {
-    return (
-        <button 
-            onClick={onClick}
-            className={`px-8 py-5 text-[10px] font-black uppercase tracking-widest transition-all relative ${
-                active 
-                ? 'text-white' 
-                : 'text-zinc-600 hover:text-zinc-400'
-            }`}
-        >
-            {label}
-            {active && <div className="absolute bottom-0 left-0 right-0 h-1 bg-indigo-500 animate-in fade-in slide-in-from-bottom-1 duration-300"></div>}
-        </button>
+                            {/* Detail Body (Tabs) */}
+                            <div className="flex border-b border-zinc-300 bg-white px-8 flex-wrap">
+                                {[
+                                    { id: 'provenance', label: 'Provenance', icon: <FileText className="w-3.5 h-3.5" /> },
+                                    { id: 'trails', label: 'Movement Trails', icon: <History className="w-3.5 h-3.5" /> },
+                                    { id: 'reports', label: 'Condition Reports', icon: <ClipboardList className="w-3.5 h-3.5" /> },
+                                    { id: 'valuations', label: 'Market Valuation', icon: <TrendingUp className="w-3.5 h-3.5" /> },
+                                    { id: 'audits', label: 'Compliance Audits', icon: <ShieldCheck className="w-3.5 h-3.5" /> },
+                                    { id: 'conservation', label: 'Conservation', icon: <Activity className="w-3.5 h-3.5" /> },
+                                    { id: 'exhibitions', label: 'Exhibitions', icon: <MapPin className="w-3.5 h-3.5" /> }
+                                ].map(tab => (
+                                    <button 
+                                        key={tab.id}
+                                        onClick={() => setDetailTab(tab.id)}
+                                        className={`px-6 py-4 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all border-b-2 ${detailTab === tab.id ? 'border-[#D4AF37] text-black bg-zinc-50' : 'border-transparent text-zinc-400 hover:text-black'}`}
+                                    >
+                                        {tab.icon} {tab.label}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto p-10">
+                                {detailTab === 'provenance' && (
+                                    <div className="space-y-10 animate-in fade-in duration-500">
+                                        <div className="grid grid-cols-2 gap-10">
+                                            <section className="space-y-4">
+                                                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 border-b border-zinc-100 pb-2">Archival Identity</h4>
+                                                <div className="space-y-4">
+                                                    <div>
+                                                        <label className="text-[9px] font-black text-zinc-500 uppercase tracking-widest block mb-1">Catalog Number</label>
+                                                        <div className="text-sm font-bold text-black font-mono">{selected.catalog_number}</div>
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-[9px] font-black text-zinc-500 uppercase tracking-widest block mb-1">Accession Reference</label>
+                                                        <div className="text-sm font-bold text-black font-mono">{selected.expand?.accession_id?.accession_number}</div>
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-[9px] font-black text-zinc-500 uppercase tracking-widest block mb-1">Permanent Location</label>
+                                                        <div className="flex items-center gap-2 text-sm font-bold text-black">
+                                                            <MapPin className="w-4 h-4 text-[#D4AF37]" />
+                                                            {selected.current_location || 'Receiving Bay'}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                            <section className="space-y-4">
+                                                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 border-b border-zinc-100 pb-2">Technical Specs</h4>
+                                                <div className="space-y-4">
+                                                    <div>
+                                                        <label className="text-[9px] font-black text-zinc-500 uppercase tracking-widest block mb-1">Dimensions</label>
+                                                        <div className="text-sm text-black">{selected.expand?.accession_id?.dimensions || 'N/A'}</div>
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-[9px] font-black text-zinc-500 uppercase tracking-widest block mb-1">Materials</label>
+                                                        <div className="text-sm text-black">{selected.expand?.accession_id?.materials || 'N/A'}</div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                        <section className="space-y-4">
+                                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 border-b border-zinc-100 pb-2">Historical Significance</h4>
+                                            <p className="text-sm text-black leading-relaxed font-serif italic bg-zinc-50 p-6 border border-zinc-300 rounded-sm">
+                                                {selected.expand?.accession_id?.historical_significance || 'Archival research is ongoing for this specimen.'}
+                                            </p>
+                                        </section>
+                                    </div>
+                                )}
+
+                                {detailTab === 'trails' && (
+                                    <div className="space-y-8 animate-in fade-in duration-500">
+                                        <div className="flex justify-between items-center">
+                                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Movement History</h4>
+                                            <button 
+                                                onClick={() => setShowMovementForm(true)}
+                                                className="text-[9px] font-black uppercase tracking-widest text-[#D4AF37] hover:text-black transition-colors"
+                                            >
+                                                + Record Movement
+                                            </button>
+                                        </div>
+
+                                        {showMovementForm && (
+                                            <div className="bg-zinc-50 border border-zinc-300 rounded-sm p-8 mb-8 animate-in slide-in-from-top-4 duration-300 relative">
+                                                <button onClick={() => setShowMovementForm(false)} className="absolute top-4 right-4 text-zinc-400 hover:text-black">✕</button>
+                                                <FormRenderer 
+                                                    slug="artifact-movement"
+                                                    compact={true}
+                                                    hideHeader={true}
+                                                    customFetch={apiFetch}
+                                                    prefillData={{ artifact_id: selected.id }}
+                                                    onSuccess={() => { setShowMovementForm(false); fetchDetails(selected); }}
+                                                />
+                                            </div>
+                                        )}
+
+                                        <div className="space-y-0.5">
+                                            {movementTrails.map((trail, i) => (
+                                                <div key={i} className="flex gap-6 p-6 bg-white border border-zinc-300 group hover:bg-zinc-50 transition-all rounded-sm">
+                                                    <div className="flex flex-col items-center">
+                                                        <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-400 border border-zinc-200">
+                                                            <MapPin className="w-4 h-4" />
+                                                        </div>
+                                                        {i < movementTrails.length - 1 && <div className="w-0.5 flex-1 bg-zinc-100 mt-2"></div>}
+                                                    </div>
+                                                    <div className="flex-1 space-y-2">
+                                                        <div className="flex justify-between">
+                                                            <div className="text-xs font-black uppercase text-black">{trail.to_location}</div>
+                                                            <div className="text-[10px] font-mono text-zinc-400">{new Date(trail.created).toLocaleDateString()}</div>
+                                                        </div>
+                                                        <p className="text-xs text-zinc-500 font-light italic">"{trail.reason || 'Routine rotation'}"</p>
+                                                        <div className="text-[9px] uppercase font-bold text-zinc-400">Authorized by: {trail.authorized_by || 'MB-SERVER'}</div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {movementTrails.length === 0 && (
+                                                <div className="py-20 text-center text-[10px] uppercase font-black tracking-widest text-zinc-300">No movement recorded</div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {detailTab === 'reports' && (
+                                    <div className="space-y-8 animate-in fade-in duration-500">
+                                        <div className="flex justify-between items-center">
+                                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Condition Assessment Registry</h4>
+                                            <button 
+                                                onClick={() => setShowHealthForm(true)}
+                                                className="text-[9px] font-black uppercase tracking-widest text-[#D4AF37] hover:text-black transition-colors"
+                                            >
+                                                + New Assessment
+                                            </button>
+                                        </div>
+
+                                        {showHealthForm && (
+                                            <div className="bg-zinc-50 border border-zinc-300 rounded-sm p-8 mb-8 animate-in slide-in-from-top-4 duration-300 relative">
+                                                <button onClick={() => setShowHealthForm(false)} className="absolute top-4 right-4 text-zinc-400 hover:text-black">✕</button>
+                                                <FormRenderer 
+                                                    slug="artifact-health"
+                                                    compact={true}
+                                                    hideHeader={true}
+                                                    customFetch={apiFetch}
+                                                    prefillData={{ artifact_id: selected.id }}
+                                                    onSuccess={() => { setShowHealthForm(false); fetchDetails(selected); }}
+                                                />
+                                            </div>
+                                        )}
+
+                                        <div className="grid grid-cols-1 gap-4">
+                                            {healthLogs.map((log, i) => (
+                                                <div key={i} className="p-6 border border-zinc-300 rounded-sm bg-zinc-50/50 hover:bg-zinc-50 transition-all flex justify-between items-start">
+                                                    <div className="space-y-2 flex-1">
+                                                        <div className="flex items-center gap-3">
+                                                            <span className={`px-2 py-0.5 rounded-sm text-[8px] font-black uppercase tracking-widest border ${
+                                                                log.condition === 'Excellent' ? 'bg-green-50 text-green-700 border-green-200' :
+                                                                log.condition === 'Fair' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                                                                'bg-red-50 text-red-700 border-red-200'
+                                                            }`}>
+                                                                {log.condition}
+                                                            </span>
+                                                            <span className="text-[10px] font-mono text-zinc-400">{new Date(log.created).toLocaleDateString()}</span>
+                                                        </div>
+                                                        <p className="text-sm text-zinc-600 font-light italic leading-relaxed">"{log.notes}"</p>
+                                                        <div className="text-[9px] uppercase font-bold text-zinc-400">Reporter: {log.reporter_name || 'MB-STAFF'}</div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {healthLogs.length === 0 && (
+                                                <div className="py-20 text-center text-[10px] uppercase font-black tracking-widest text-zinc-300">No condition reports found</div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {detailTab === 'valuations' && (
+                                    <div className="space-y-8 animate-in fade-in duration-500">
+                                        <div className="flex justify-between items-center">
+                                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Market Appraisal History</h4>
+                                            <button 
+                                                onClick={handleValuation}
+                                                className="text-[9px] font-black uppercase tracking-widest text-[#D4AF37] hover:text-black transition-colors"
+                                            >
+                                                + Add Valuation
+                                            </button>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 gap-0.5">
+                                            {valuations.map((v, i) => (
+                                                <div key={i} className="p-8 border border-zinc-300 rounded-sm bg-white flex justify-between items-center group hover:bg-zinc-50 transition-all">
+                                                    <div>
+                                                        <div className="text-2xl font-serif text-black mb-1">PHP {v.amount.toLocaleString()}</div>
+                                                        <div className="text-[10px] text-zinc-400 font-black uppercase tracking-widest">{v.reason}</div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className="text-[10px] font-mono text-zinc-400 uppercase">{new Date(v.created).toLocaleDateString()}</div>
+                                                        <div className="text-[9px] text-[#A68A27] font-bold uppercase tracking-tighter mt-1">Verified Appraisal</div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {valuations.length === 0 && (
+                                                <div className="py-20 text-center text-[10px] uppercase font-black tracking-widest text-zinc-300">No financial data on record</div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {detailTab === 'audits' && (
+                                    <div className="space-y-8 animate-in fade-in duration-500">
+                                        <div className="flex justify-between items-center">
+                                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Compliance Audits</h4>
+                                            <button 
+                                                onClick={() => {
+                                                    const notes = prompt("Enter audit notes (e.g. Verified by spot check):");
+                                                    if (notes !== null) {
+                                                        apiFetch(`/api/v1/acquisitions/inventory/${selected.id}/audit`, {
+                                                            method: 'POST',
+                                                            headers: { 'Content-Type': 'application/json' },
+                                                            body: JSON.stringify({ 
+                                                                objectFound: true, 
+                                                                auditedLocation: selected.current_location, 
+                                                                discrepancyNotes: notes 
+                                                            })
+                                                        }).then(() => fetchDetails(selected));
+                                                    }
+                                                }}
+                                                className="text-[9px] font-black uppercase tracking-widest text-[#D4AF37] hover:text-black transition-colors"
+                                            >
+                                                + Record Spot Check
+                                            </button>
+                                        </div>
+
+                                        <div className="space-y-0.5">
+                                            {auditLogs.map((a, i) => (
+                                                <div key={i} className="p-6 border border-zinc-300 rounded-sm bg-white hover:bg-zinc-50 transition-all flex justify-between items-start">
+                                                    <div>
+                                                        <div className="flex items-center gap-2 mb-2">
+                                                            <ShieldCheck className={`w-4 h-4 ${a.found ? 'text-green-500' : 'text-red-500'}`} />
+                                                            <div className="text-sm font-black text-black">{a.found ? 'VERIFIED' : 'MISSING'}</div>
+                                                        </div>
+                                                        <p className="text-xs text-zinc-500 font-light italic">"{a.notes}"</p>
+                                                        <div className="text-[9px] uppercase font-bold text-zinc-400 mt-2">Auditor: {a.auditor_name} • Loc: {a.current_location}</div>
+                                                    </div>
+                                                    <div className="text-[10px] font-mono text-zinc-400">{new Date(a.audit_date).toLocaleDateString()}</div>
+                                                </div>
+                                            ))}
+                                            {auditLogs.length === 0 && (
+                                                <div className="py-20 text-center text-[10px] uppercase font-black tracking-widest text-zinc-300">No audits recorded</div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {detailTab === 'conservation' && (
+                                    <div className="space-y-8 animate-in fade-in duration-500">
+                                        <div className="flex justify-between items-center">
+                                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Conservation Treatments</h4>
+                                            <button 
+                                                onClick={() => setShowConservationForm(!showConservationForm)}
+                                                className="text-[9px] font-black uppercase tracking-widest text-[#D4AF37] hover:text-black transition-colors"
+                                            >
+                                                + Add Treatment Log
+                                            </button>
+                                        </div>
+
+                                        {showConservationForm && (
+                                            <div className="bg-zinc-50 border border-zinc-300 rounded-sm p-8 mb-8 animate-in slide-in-from-top-4 duration-300 relative">
+                                                <button onClick={() => setShowConservationForm(false)} className="absolute top-4 right-4 text-zinc-400 hover:text-black">✕</button>
+                                                <FormRenderer 
+                                                    slug="artifact-conservation"
+                                                    compact={true}
+                                                    hideHeader={true}
+                                                    customFetch={apiFetch}
+                                                    prefillData={{ artifact_id: selected.id }}
+                                                    onSuccess={() => { setShowConservationForm(false); fetchDetails(selected); }}
+                                                />
+                                            </div>
+                                        )}
+
+                                        <div className="space-y-0.5">
+                                            {conservationLogs.map((c, i) => (
+                                                <div key={i} className="p-6 border border-zinc-300 rounded-sm bg-white hover:bg-zinc-50 transition-all flex justify-between items-start">
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-2 mb-2">
+                                                            <Activity className="w-4 h-4 text-[#D4AF37]" />
+                                                            <div className="text-xs font-black uppercase text-black">{c.treatment_objective}</div>
+                                                        </div>
+                                                        <p className="text-xs text-zinc-600 mb-1">{c.treatment}</p>
+                                                        <p className="text-[10px] text-zinc-500 italic">Findings: {c.findings}</p>
+                                                        <div className="text-[9px] uppercase font-bold text-zinc-400 mt-2">Conservator: {c.conservator_name}</div>
+                                                    </div>
+                                                    <div className="text-[10px] font-mono text-zinc-400">{new Date(c.created_at).toLocaleDateString()}</div>
+                                                </div>
+                                            ))}
+                                            {conservationLogs.length === 0 && (
+                                                <div className="py-20 text-center text-[10px] uppercase font-black tracking-widest text-zinc-300">No conservation logs</div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {detailTab === 'exhibitions' && (
+                                    <div className="space-y-8 animate-in fade-in duration-500">
+                                        <div className="flex justify-between items-center">
+                                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Exhibition History</h4>
+                                        </div>
+                                        <div className="space-y-0.5">
+                                            {exhibitionHistory.map((e, i) => (
+                                                <div key={i} className="p-6 border border-zinc-300 rounded-sm bg-white hover:bg-zinc-50 transition-all flex flex-col gap-2">
+                                                    <div className="flex justify-between items-start">
+                                                        <div className="text-sm font-black text-black uppercase tracking-wider">{e.exhibition_title}</div>
+                                                        <span className="px-2 py-0.5 rounded-sm text-[8px] font-black uppercase tracking-widest border border-zinc-200 bg-zinc-50 text-zinc-600">
+                                                            {e.exhibition_status}
+                                                        </span>
+                                                    </div>
+                                                    <div className="text-xs text-zinc-500">Role/Notes: {e.notes || 'Featured artifact'}</div>
+                                                    <div className="text-[9px] uppercase font-bold text-zinc-400 mt-2 font-mono">
+                                                        {new Date(e.start_date).toLocaleDateString()} - {new Date(e.end_date).toLocaleDateString()}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {exhibitionHistory.length === 0 && (
+                                                <div className="py-20 text-center text-[10px] uppercase font-black tracking-widest text-zinc-300">No exhibition history</div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Actions Bar */}
+                            <div className="p-6 bg-zinc-50 border-t border-zinc-300 flex justify-end gap-3 flex-wrap">
+                                {selected.status !== 'deaccessioned' && (
+                                    <button 
+                                        onClick={() => handleDeaccession(selected.id)}
+                                        className="px-6 py-3 bg-white border border-red-200 text-red-700 text-[9px] font-black uppercase tracking-widest rounded-sm hover:bg-red-50 transition-all"
+                                    >
+                                        Deaccession Artifact
+                                    </button>
+                                )}
+                                <a 
+                                    href={`${import.meta.env.VITE_API_BASE_URL}/api/v1/acquisitions/inventory/${selected.id}/export`}
+                                    target="_blank" rel="noreferrer"
+                                    className="px-6 py-3 bg-white border border-zinc-300 text-black text-[9px] font-black uppercase tracking-widest rounded-sm hover:bg-zinc-100 transition-all block text-center"
+                                >
+                                    Export Ledger
+                                </a>
+                                {detailTab === 'reports' && healthLogs.length > 0 && (
+                                    <a 
+                                        href={`${import.meta.env.VITE_API_BASE_URL}/api/v1/acquisitions/inventory/${selected.id}/export-condition`}
+                                        target="_blank" rel="noreferrer"
+                                        className="px-6 py-3 bg-white border border-zinc-300 text-black text-[9px] font-black uppercase tracking-widest rounded-sm hover:bg-zinc-100 transition-all block text-center"
+                                    >
+                                        Export Condition Report
+                                    </a>
+                                )}
+                                {selected.status === 'deaccessioned' && (
+                                    <a 
+                                        href={`${import.meta.env.VITE_API_BASE_URL}/api/v1/acquisitions/inventory/${selected.id}/export-deaccession`}
+                                        target="_blank" rel="noreferrer"
+                                        className="px-6 py-3 bg-white border border-zinc-300 text-black text-[9px] font-black uppercase tracking-widest rounded-sm hover:bg-zinc-100 transition-all block text-center"
+                                    >
+                                        Export Certificate
+                                    </a>
+                                )}
+                                <button className="px-6 py-3 bg-black text-[#D4AF37] text-[9px] font-black uppercase tracking-widest rounded-sm hover:bg-zinc-900 transition-all">
+                                    Print ID Label
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            <Modal 
+                {...modal} 
+                onClose={() => setModal({ ...modal, isOpen: false })}
+                onInputChange={(val) => setModal({ ...modal, promptValue: val })}
+                inputValue={modal.promptValue}
+            />
+        </div>
     );
 }

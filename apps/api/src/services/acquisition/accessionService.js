@@ -7,6 +7,7 @@ import { logger } from '../../utils/logger.js';
 import { generateAccessionNumber } from '../../utils/sequenceGenerator.js';
 import { assertTransition } from '../../utils/stateMachine.js';
 import { documentService } from '../documentService.js';
+import { getContractType, getLegalStatus } from '../../utils/constants.js';
 
 /**
  * AccessionService
@@ -29,20 +30,13 @@ export const accessionService = {
                     throw new Error(`Accession record already exists for this intake.`);
                 }
 
-                const methodToContractMap = {
-                    'gift': 'deed_of_gift',
-                    'loan': 'loan_agreement',
-                    'purchase': 'bill_of_sale',
-                    'existing': 'internal_memo'
-                };
-
                 const accessionNumber = accessionData.accessionNumber || await generateAccessionNumber();
 
                 const accession = await baseService._createRecord(staffId, 'accessions', {
                     intake_id: intake.id,
                     accession_number: accessionNumber,
-                    contract_type: methodToContractMap[intake.acquisition_method],
-                    legal_status: intake.acquisition_method === 'loan' ? 'Temporary Custody' : 'Museum Property',
+                    contract_type: getContractType(intake.acquisition_method),
+                    legal_status: getLegalStatus(intake.acquisition_method),
                     handling_instructions: accessionData.handlingInstructions || '',
                     dimensions: '',
                     materials: '',
@@ -86,7 +80,7 @@ export const accessionService = {
                 // Enforce single MOA policy: Delete existing MOA links for this accession
                 const updatedFiles = await db.transaction(async (tx) => {
                     const existingLinks = await tx.query(
-                        `SELECT id FROM media_links WHERE entity_type = 'accessions' AND entity_id = ? AND context = 'Signed MOA Document'`,
+                        `SELECT id FROM media_links WHERE entity_type = 'accession' AND entity_id = ? AND context = 'Signed MOA Document'`,
                         [accessionId]
                     );
 
@@ -95,7 +89,7 @@ export const accessionService = {
                     }
 
                     // Attach the new MOA
-                    return await mediaService.attachMedia(staffId, 'accessions', accessionId, files, 'Signed MOA Document', tx);
+                    return await mediaService.attachMedia(staffId, 'accession', accessionId, files, 'Signed MOA Document', tx);
                 });
 
                 if (accession.intake_id) {
@@ -104,6 +98,8 @@ export const accessionService = {
                         await baseService._updateRecord(staffId, 'intakes', accession.intake_id, { moa_status: 'signed' });
                     }
                 }
+
+                await baseService._updateRecord(staffId, 'accessions', accessionId, { signed_moa: true });
 
                 return updatedFiles;
             } catch (error) {

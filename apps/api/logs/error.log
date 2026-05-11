@@ -960,3 +960,23 @@ sql: INSERT INTO constituents (id, name, type, contact_info, biography, external
 2026-04-30 22:20:39 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
     at getCollectionHealth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/analyticsController.js:107:126)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/analytics/collection-health","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-05-04 12:32:04 [error]: Error uploading MOA: (conn:3883, no: 1054, SQLState: 42S22) Unknown column 'signed_moa' in 'SET'
+sql: UPDATE accessions SET signed_moa = ?, version = ?, updated_by = ? WHERE id = ? - parameters:[true,2,'01KQ91VTA5A1RGM1SS01DWBQVK','01KQFARZXX6MA8C044YP1MZ2TX']
+2026-05-04 12:32:04 [error]: SqlError: (conn:3883, no: 1054, SQLState: 42S22) Unknown column 'signed_moa' in 'SET'
+sql: UPDATE accessions SET signed_moa = ?, version = ?, updated_by = ? WHERE id = ? - parameters:[true,2,'01KQ91VTA5A1RGM1SS01DWBQVK','01KQFARZXX6MA8C044YP1MZ2TX']
+    at Module.createError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) | Meta: {"method":"POST","url":"/api/v1/acquisitions/accessions/01KQFARZXX6MA8C044YP1MZ2TX/upload-moa","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-05-05 10:21:57 [error]: Failed to initialize MariaDB tables | Meta: {"error":"Cannot read properties of undefined (reading 'count')"}
+2026-05-05 10:22:04 [error]: Failed to initialize MariaDB tables | Meta: {"error":"Cannot read properties of undefined (reading 'count')"}
+2026-05-05 10:22:20 [error]: Failed to initialize MariaDB tables | Meta: {"error":"Cannot read properties of undefined (reading 'count')"}
+2026-05-05 10:22:27 [error]: Failed to initialize MariaDB tables | Meta: {"error":"Cannot read properties of undefined (reading 'count')"}
+2026-05-05 10:22:34 [error]: Failed to initialize MariaDB tables | Meta: {"error":"Cannot read properties of undefined (reading 'count')"}
+2026-05-05 10:28:53 [error]: Failed to initialize MariaDB tables | Meta: {"error":"Cannot read properties of undefined (reading 'count')"}

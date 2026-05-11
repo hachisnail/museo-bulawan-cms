@@ -1,12 +1,13 @@
 /**
  * DTO Mapper Utility
  * 
- * Responsible for transforming raw PocketBase records into clean, 
- * decoupled API responses by removing internal metadata and 
- * flattening expanded relations.
+ * Transforms raw database records into clean, decoupled API responses.
+ * Handles expanded relations recursively.
+ * 
+ * Note: After the PocketBase → MariaDB migration, PB-specific fields
+ * (collectionId, collectionName) no longer exist on records. The mapper
+ * now focuses solely on expand handling and response normalization.
  */
-
-const INTERNAL_FIELDS = ['collectionId', 'collectionName', '@collectionId', '@collectionName'];
 
 /**
  * Standard mapper that handles single records or lists
@@ -14,7 +15,7 @@ const INTERNAL_FIELDS = ['collectionId', 'collectionName', '@collectionId', '@co
 export const mapDTO = (data, options = {}) => {
     if (!data) return null;
 
-    // Handle lists (PocketBase ListResult)
+    // Handle lists (paginated result)
     if (data.items && Array.isArray(data.items)) {
         return {
             ...data,
@@ -27,21 +28,17 @@ export const mapDTO = (data, options = {}) => {
 };
 
 /**
- * Transforms a single PocketBase record
+ * Transforms a single record
  */
 function transformRecord(record, options) {
     if (!record || typeof record !== 'object') return record;
 
     const clean = { ...record };
 
-    // 1. Remove internal PocketBase system fields
-    INTERNAL_FIELDS.forEach(field => delete clean[field]);
-
-    // 2. Handle expanded relations recursively
+    // Handle expanded relations recursively
     if (clean.expand && typeof clean.expand === 'object') {
         const expanded = {};
         for (const [key, value] of Object.entries(clean.expand)) {
-            // Flatten the 'expand' object by moving its contents to the root or keeping them namespaced
             expanded[key] = Array.isArray(value) 
                 ? value.map(v => transformRecord(v, options)) 
                 : transformRecord(value, options);

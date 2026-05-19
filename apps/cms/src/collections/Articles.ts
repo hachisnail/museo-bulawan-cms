@@ -217,23 +217,61 @@ export const Articles: CollectionConfig = {
       }
     },
     create: ({ req }) => !!req.user,
-    update: ({ req }) => !!req.user,
-    delete: ({ req }) => !!req.user,
+    update: ({ req }) => {
+      if (!req.user) return false
+      // Admins and editors can update any article
+      if (req.user.role === 'admin' || req.user.role === 'editor') return true
+      // Writers can only update their own articles
+      return {
+        author: {
+          equals: req.user.id,
+        },
+      }
+    },
+    delete: ({ req }) => {
+      if (!req.user) return false
+      // Only admins and editors can delete articles
+      return req.user.role === 'admin' || req.user.role === 'editor'
+    },
   },
   hooks: {
     beforeChange: [
-      ({ data, operation, req }) => {
-        // Auto-generate slug from title if not provided
-        if (operation === 'create' && data?.title && !data?.slug) {
-          data.slug = data.title
+      async ({ data, operation, req, originalDoc }) => {
+        // Auto-generate slug from title if not provided or if title changed
+        if (data?.title && (!data?.slug || (operation === 'update' && data.title !== originalDoc?.title && data.slug === originalDoc?.slug))) {
+          let baseSlug = data.title
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-|-$/g, '')
+          
+          let slug = baseSlug
+          let count = 1
+          
+          // Ensure slug is unique
+          while (true) {
+            const existing = await req.payload.find({
+              collection: 'articles',
+              where: { slug: { equals: slug } },
+              limit: 1,
+            })
+            if (existing.docs.length === 0 || (operation === 'update' && existing.docs[0].id === originalDoc?.id)) {
+              break
+            }
+            slug = `${baseSlug}-${count}`
+            count++
+          }
+          
+          data.slug = slug
         }
         
         // Auto-assign author to current user if empty
         if (operation === 'create' && req.user && !data?.author) {
           data.author = req.user.id
+        }
+        
+        // Auto-set publishedAt if status changes to published
+        if (data?._status === 'published' && !data?.publishedAt) {
+          data.publishedAt = new Date().toISOString()
         }
         
         return data
@@ -259,6 +297,7 @@ export const Articles: CollectionConfig = {
           type: 'relationship',
           relationTo: 'users',
           label: 'Author',
+          required: true,
           admin: {
             description: 'Automatically assigned to you if left blank.',
             width: '33%',

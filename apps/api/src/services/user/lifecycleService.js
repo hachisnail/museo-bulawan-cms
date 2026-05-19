@@ -5,7 +5,7 @@ import { ulid } from "ulid";
 import { logger } from "../../utils/logger.js";
 import { sendEmail } from "../../utils/mailer.js";
 import { env } from "../../config/env.js";
-import { pbService } from "../pocketbaseService.js";
+
 import { auditService } from "../auditService.js";
 import { securityService } from "./securityService.js";
 
@@ -52,7 +52,7 @@ export const lifecycleService = {
                 role: 'admin'
             });
 
-            await pbService.syncUser({ id: userId, email, role: 'admin', fname, lname });
+
 
             return true;
         } catch (error) {
@@ -147,7 +147,7 @@ export const lifecycleService = {
             const [existing] = await db.query('SELECT id, username FROM users WHERE email = ?', [email]);
             if (existing) {
                 logger.info('Using existing MariaDB account for donor', { email, userId: existing.id });
-                await pbService.syncUser({ id: existing.id, email, role: 'donor', fname, lname, title, phone, address });
+
                 return { userId: existing.id, isNew: false, username: existing.username };
             }
 
@@ -162,16 +162,7 @@ export const lifecycleService = {
                 [userId, fname, lname, email, username, hashedPassword]
             );
 
-            await pbService.syncUser({ 
-                id: userId, 
-                email, 
-                role: 'donor', 
-                fname, 
-                lname,
-                title,
-                phone,
-                address
-            });
+
 
             logger.info('Donor provisioned successfully', { userId, email });
 
@@ -215,7 +206,7 @@ export const lifecycleService = {
 
             logger.info('User setup completed', { userId: user.id, username });
 
-            await pbService.syncUser({ id: user.id, email: user.email, role: user.role, fname: user.fname, lname: user.lname });
+
 
             return true;
 

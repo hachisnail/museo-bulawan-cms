@@ -26,6 +26,7 @@ export const corsOptions = {
         'Authorization', 
         'X-Requested-With', 
         'Accept',
+        'X-XSRF-TOKEN',
         'x-user-id',   // Add any custom headers your frontend sends
         'x-user-role' 
     ],

@@ -1,6 +1,6 @@
 import { db } from "../../config/db.js";
 import { logger } from "../../utils/logger.js";
-import { pbService } from "../pocketbaseService.js";
+
 import { auditService } from "../auditService.js";
 import { sseManager } from "../../utils/sseFactory.js";
 
@@ -32,11 +32,8 @@ export const managementService = {
             values.push(targetId);
             await db.query(`UPDATE users SET ${fields.join(', ')} WHERE id = ?`, values);
 
-            // Sync role/name change to PocketBase
             const [updated] = await db.query('SELECT id, email, role, fname, lname FROM users WHERE id = ?', [targetId]);
-            if (updated) {
-                await pbService.syncUser({ id: updated.id, email: updated.email, role: updated.role, fname: updated.fname, lname: updated.lname });
-            }
+
 
             await auditService.log({
                 userId: adminId,

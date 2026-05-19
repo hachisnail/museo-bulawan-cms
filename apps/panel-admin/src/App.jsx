@@ -21,6 +21,7 @@ import Analytics from './pages/Analytics';
 import SubmissionViewer from './pages/SubmissionViewer';
 import Constituents from './pages/Constituents';
 import Exhibitions from './pages/Exhibitions';
+import ArticlesCMS from './pages/ArticlesCMS';
 
 function App() {
     const navigate = useNavigate();
@@ -61,6 +62,7 @@ function App() {
                     <Route path="/management" element={<Management />} />
                     <Route path="/constituents" element={<Constituents />} />
                     <Route path="/exhibitions" element={<Exhibitions />} />
+                    <Route path="/articles" element={<ArticlesCMS />} />
                     <Route path="/settings" element={<Profile />} />
                     <Route path="/analytics" element={<Analytics />} />
                     <Route path="/admin/forms/submissions/:id" element={<SubmissionViewer />} />

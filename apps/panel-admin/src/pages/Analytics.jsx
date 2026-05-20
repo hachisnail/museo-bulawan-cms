@@ -17,6 +17,8 @@ export default function Analytics() {
     const [data, setData] = useState(null);
     const [health, setHealth] = useState(null);
     const [valuations, setValuations] = useState(null);
+    const [inventoryStatus, setInventoryStatus] = useState(null);
+    const [audits, setAudits] = useState(null);
     const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState({ startDate: '', endDate: '' });
 
@@ -24,19 +26,25 @@ export default function Analytics() {
         setLoading(true);
         try {
             const query = new URLSearchParams(filters).toString();
-            const [acqRes, healthRes, valRes] = await Promise.all([
+            const [acqRes, healthRes, valRes, invRes, audRes] = await Promise.all([
                 apiFetch(`/api/v1/analytics/acquisitions?${query}`),
                 apiFetch(`/api/v1/analytics/collection-health`),
-                apiFetch(`/api/v1/analytics/valuations`)
+                apiFetch(`/api/v1/analytics/valuations`),
+                apiFetch(`/api/v1/analytics/inventory-status`),
+                apiFetch(`/api/v1/analytics/audits`)
             ]);
             
             const acqJson = await acqRes.json();
             const healthJson = await healthRes.json();
             const valJson = await valRes.json();
+            const invJson = await invRes.json();
+            const audJson = await audRes.json();
 
             if (acqJson.status === 'success') setData(acqJson.data);
             if (healthJson.status === 'success') setHealth(healthJson.data);
             if (valJson.status === 'success') setValuations(valJson.data);
+            if (invJson.status === 'success') setInventoryStatus(invJson.data);
+            if (audJson.status === 'success') setAudits(audJson.data);
             
         } catch (err) {
             console.error("Failed to fetch analytics", err);
@@ -91,7 +99,7 @@ export default function Analytics() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <KPICard title="Total Assets" value={data?.totals.inventory} icon={<Database />} trend="+8%" color="indigo" />
                 <KPICard title="Collection Health" value={`${health?.healthPercentage}%`} icon={<Heart />} trend="Stable" color="emerald" />
-                <KPICard title="Maintenace Needed" value={health?.maintenanceRequired} icon={<Hammer />} trend="Priority" color="rose" />
+                <KPICard title="Overdue Audits" value={audits?.overdueAudits || 0} icon={<FileCheck />} trend="Attention" color="rose" />
                 <KPICard 
                     title="Total Value" 
                     value={valuations?.totalValue?.[0]?.total ? `${new Intl.NumberFormat().format(valuations.totalValue[0].total)} ${valuations.totalValue[0].currency}` : 'N/A'} 
@@ -186,18 +194,45 @@ export default function Analytics() {
 
                 <div className="lg:col-span-7 glass-panel rounded-[40px] p-8 border border-white/5 shadow-2xl">
                     <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-8 flex items-center gap-2">
-                        <Inbox className="w-4 h-4 text-orange-400" /> Acquisition Pipeline Efficiency
+                        <Inbox className="w-4 h-4 text-orange-400" /> Location Distribution
                     </h3>
                     <div className="h-[300px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={data?.distributions.intakeStatus}>
+                            <BarChart data={inventoryStatus?.locationsDistribution || []}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                                <XAxis dataKey="status" stroke="#52525b" fontSize={8} axisLine={false} tickLine={false} />
+                                <XAxis dataKey="current_location" stroke="#52525b" fontSize={8} axisLine={false} tickLine={false} />
                                 <YAxis stroke="#52525b" fontSize={10} axisLine={false} tickLine={false} />
                                 <Tooltip contentStyle={{ backgroundColor: '#0a0a0c', border: '1px solid #ffffff10', borderRadius: '16px', fontSize: '10px' }} />
                                 <Bar dataKey="count" fill="#6366f1" radius={[8, 8, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
+                    </div>
+                </div>
+            </div>
+
+            {/* Row 3: Audit Compliance */}
+            <div className="grid grid-cols-1 gap-8 mt-8">
+                <div className="glass-panel rounded-[40px] p-8 border border-white/5 shadow-2xl">
+                    <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-8 flex items-center gap-2">
+                        <FileCheck className="w-4 h-4 text-blue-400" /> Compliance Audits (Last 12 Months)
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+                            <div className="text-2xl font-black text-white">{audits?.last12Months?.totalAudits || 0}</div>
+                            <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Total Spot Checks</div>
+                        </div>
+                        <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+                            <div className="text-2xl font-black text-emerald-400">{audits?.last12Months?.itemsFound || 0}</div>
+                            <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Items Found Valid</div>
+                        </div>
+                        <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+                            <div className="text-2xl font-black text-rose-400">{audits?.last12Months?.itemsMissing || 0}</div>
+                            <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Items Missing</div>
+                        </div>
+                        <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+                            <div className="text-2xl font-black text-amber-400">{audits?.last12Months?.locationMismatches || 0}</div>
+                            <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Location Mismatches</div>
+                        </div>
                     </div>
                 </div>
             </div>

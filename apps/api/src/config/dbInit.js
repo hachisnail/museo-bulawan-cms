@@ -166,6 +166,7 @@ export async function initMariaDB() {
                 donor_name_override VARCHAR(255) NULL,
                 loan_duration_override VARCHAR(100) NULL,
                 delivery_slip_id VARCHAR(100) NULL,
+                current_location VARCHAR(255) NULL,   -- Added for pre-accession movement
                 qr_token_hash VARCHAR(255) NULL,
                 qr_token_expires DATETIME NULL,
                 version INT DEFAULT 1,
@@ -184,7 +185,40 @@ export async function initMariaDB() {
         // Migration: Fix qr_token_expires type
         try {
             await conn.query(`ALTER TABLE intakes MODIFY COLUMN qr_token_expires DATETIME NULL`);
+            await conn.query(`ALTER TABLE intakes ADD COLUMN current_location VARCHAR(255) NULL AFTER delivery_slip_id`);
         } catch(e) {}
+        
+        await conn.query(`
+            CREATE TABLE IF NOT EXISTS locations (
+                id VARCHAR(36) PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                type VARCHAR(100) DEFAULT 'storage', -- 'storage', 'exhibit', 'lab'
+                description TEXT NULL,
+                parent_id VARCHAR(36) NULL,           -- For nested locations (Room -> Shelf)
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                version INT DEFAULT 1,
+                FOREIGN KEY (parent_id) REFERENCES locations(id) ON DELETE SET NULL
+            )
+        `);
+
+        // Seed some default locations if none exist
+        const locs = await conn.query('SELECT COUNT(*) as count FROM locations');
+        const locCount = (locs && locs[0] && (locs[0].count !== undefined)) ? Number(locs[0].count) : 0;
+        
+        if (locCount === 0) {
+            const seedLocs = [
+                ['LOC-001', 'Receiving Bay', 'lab', 'Initial receipt area'],
+                ['LOC-002', 'Quarantine Room', 'lab', 'Observation for new arrivals'],
+                ['LOC-003', 'Main Vault', 'storage', 'Primary secure storage'],
+                ['LOC-004', 'Conservation Lab', 'lab', 'Restoration and cleaning'],
+                ['LOC-005', 'Exhibition Gallery A', 'exhibit', 'Main public gallery']
+            ];
+            for (const [id, name, type, desc] of seedLocs) {
+                await conn.query('INSERT INTO locations (id, name, type, description) VALUES (?, ?, ?, ?)', [id, name, type, desc]);
+            }
+        }
+
         await conn.query(`
             CREATE TABLE IF NOT EXISTS accessions (
                 id VARCHAR(26) PRIMARY KEY,
@@ -211,6 +245,8 @@ export async function initMariaDB() {
                 credit_line TEXT NULL,            -- e.g. 'Gift of John Doe'
                 
                 status VARCHAR(50) NOT NULL,
+                signed_moa BOOLEAN DEFAULT FALSE,
+                research_completed BOOLEAN DEFAULT FALSE,
                 version INT DEFAULT 1,
                 research_data JSON NULL,
                 created_by VARCHAR(26) NOT NULL,
@@ -226,13 +262,13 @@ export async function initMariaDB() {
         `);
 
         // Migration: Add new cataloging and rights fields to accessions
-        try {
-            await conn.query(`ALTER TABLE accessions ADD COLUMN maker_id VARCHAR(26) NULL AFTER maker`);
-            await conn.query(`ALTER TABLE accessions ADD COLUMN copyright_holder_id VARCHAR(26) NULL AFTER historical_significance`);
-            await conn.query(`ALTER TABLE accessions ADD COLUMN license_type VARCHAR(100) NULL AFTER copyright_holder_id`);
-            await conn.query(`ALTER TABLE accessions ADD COLUMN usage_restrictions TEXT NULL AFTER license_type`);
-            await conn.query(`ALTER TABLE accessions ADD COLUMN credit_line TEXT NULL AFTER usage_restrictions`);
-        } catch(e) {}
+        try { await conn.query(`ALTER TABLE accessions ADD COLUMN maker_id VARCHAR(26) NULL AFTER maker`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE accessions ADD COLUMN copyright_holder_id VARCHAR(26) NULL AFTER historical_significance`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE accessions ADD COLUMN license_type VARCHAR(100) NULL AFTER copyright_holder_id`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE accessions ADD COLUMN usage_restrictions TEXT NULL AFTER license_type`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE accessions ADD COLUMN credit_line TEXT NULL AFTER usage_restrictions`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE accessions ADD COLUMN signed_moa BOOLEAN DEFAULT FALSE AFTER status`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE accessions ADD COLUMN research_completed BOOLEAN DEFAULT FALSE AFTER signed_moa`); } catch(e) {}
 
         // 8.5 Constituents (SPECTRUM: Authority Control for People/Organizations)
         await conn.query(`
@@ -267,7 +303,10 @@ export async function initMariaDB() {
                 current_location VARCHAR(255) NOT NULL,
                 status VARCHAR(50) NOT NULL,
                 deaccession_reason TEXT NULL,
+                deaccession_date DATE NULL,
                 manual_status_override BOOLEAN DEFAULT FALSE,
+                last_audit_date DATE NULL,
+                last_audited_by VARCHAR(26) NULL,
                 tags JSON NULL,
                 version INT DEFAULT 1,
                 created_by VARCHAR(26) NOT NULL,
@@ -289,6 +328,37 @@ export async function initMariaDB() {
         try {
             await conn.query(`ALTER TABLE inventory ADD COLUMN tags JSON NULL AFTER manual_status_override`);
         } catch(e) {}
+
+        // Migration: Add audit tracking and deaccession date fields
+        try { await conn.query(`ALTER TABLE inventory ADD COLUMN deaccession_date DATE NULL AFTER deaccession_reason`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE inventory ADD COLUMN last_audit_date DATE NULL AFTER manual_status_override`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE inventory ADD COLUMN last_audited_by VARCHAR(26) NULL AFTER last_audit_date`); } catch(e) {}
+
+        // 9.1 Inventory Audits (SPECTRUM: Inventory / Object Audit procedure)
+        await conn.query(`
+            CREATE TABLE IF NOT EXISTS inventory_audits (
+                id VARCHAR(26) PRIMARY KEY,
+                inventory_item_id VARCHAR(26) NOT NULL,
+                audit_type VARCHAR(50) NOT NULL DEFAULT 'spot_check',
+                location_verified BOOLEAN DEFAULT TRUE,
+                object_found BOOLEAN DEFAULT TRUE,
+                number_legible BOOLEAN DEFAULT TRUE,
+                condition_consistent BOOLEAN DEFAULT TRUE,
+                discrepancy_notes TEXT NULL,
+                audited_location VARCHAR(255) NULL,
+                audited_by VARCHAR(26) NOT NULL,
+                version INT DEFAULT 1,
+                created_by VARCHAR(26) NULL,
+                updated_by VARCHAR(26) NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX idx_audit_item (inventory_item_id),
+                CONSTRAINT fk_invaudit_item FOREIGN KEY (inventory_item_id) REFERENCES inventory(id) ON DELETE CASCADE,
+                CONSTRAINT fk_invaudit_user FOREIGN KEY (audited_by) REFERENCES users(id),
+                CONSTRAINT fk_invaudit_creator FOREIGN KEY (created_by) REFERENCES users(id),
+                CONSTRAINT fk_invaudit_updater FOREIGN KEY (updated_by) REFERENCES users(id)
+            )
+        `);
 
         // 9.5 Valuations (SPECTRUM: Financial Accountability)
         await conn.query(`
@@ -377,11 +447,9 @@ export async function initMariaDB() {
         `);
 
         // Migration logic for condition_reports
-        try {
-            await conn.query(`ALTER TABLE condition_reports ADD COLUMN stability VARCHAR(100) NULL AFTER condition_status`);
-            await conn.query(`ALTER TABLE condition_reports ADD COLUMN hazards TEXT NULL AFTER stability`);
-            await conn.query(`ALTER TABLE condition_reports ADD COLUMN immediate_action_required BOOLEAN DEFAULT FALSE AFTER notes`);
-        } catch(e) {}
+        try { await conn.query(`ALTER TABLE condition_reports ADD COLUMN stability VARCHAR(100) NULL AFTER condition_status`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE condition_reports ADD COLUMN hazards TEXT NULL AFTER stability`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE condition_reports ADD COLUMN immediate_action_required BOOLEAN DEFAULT FALSE AFTER notes`); } catch(e) {}
 
         // Safely add/modify columns if missing
         try {
@@ -436,6 +504,18 @@ export async function initMariaDB() {
             )
         `);
 
+        // 12.1. Notification Reads (for global/role targets)
+        await conn.query(`
+            CREATE TABLE IF NOT EXISTS user_notification_reads (
+                user_id VARCHAR(26) NOT NULL,
+                notification_id VARCHAR(26) NOT NULL,
+                read_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (user_id, notification_id),
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY (notification_id) REFERENCES notifications(id) ON DELETE CASCADE
+            )
+        `);
+
         // 13. Accession Approvals
         await conn.query(`
             CREATE TABLE IF NOT EXISTS accession_approvals (
@@ -459,11 +539,9 @@ export async function initMariaDB() {
         `);
 
         // Migration logic
-        try {
-            await conn.query(`ALTER TABLE accession_approvals ADD COLUMN version INT DEFAULT 1 AFTER submission_id`);
-            await conn.query(`ALTER TABLE accession_approvals ADD COLUMN created_by VARCHAR(26) NULL AFTER version`);
-            await conn.query(`ALTER TABLE accession_approvals ADD COLUMN updated_by VARCHAR(26) NULL AFTER created_by`);
-        } catch(e) {}
+        try { await conn.query(`ALTER TABLE accession_approvals ADD COLUMN version INT DEFAULT 1 AFTER submission_id`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE accession_approvals ADD COLUMN created_by VARCHAR(26) NULL AFTER version`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE accession_approvals ADD COLUMN updated_by VARCHAR(26) NULL AFTER created_by`); } catch(e) {}
 
         // 14. Location History
         await conn.query(`
@@ -489,13 +567,11 @@ export async function initMariaDB() {
             )
         `);
 
-        try {
-            await conn.query(`ALTER TABLE location_history ADD COLUMN movement_type VARCHAR(50) NULL AFTER to_location`);
-            await conn.query(`ALTER TABLE location_history ADD COLUMN handling_notes TEXT NULL AFTER reason`);
-            await conn.query(`ALTER TABLE location_history ADD COLUMN version INT DEFAULT 1 AFTER submission_id`);
-            await conn.query(`ALTER TABLE location_history ADD COLUMN created_by VARCHAR(26) NULL AFTER version`);
-            await conn.query(`ALTER TABLE location_history ADD COLUMN updated_by VARCHAR(26) NULL AFTER created_by`);
-        } catch(e) {}
+        try { await conn.query(`ALTER TABLE location_history ADD COLUMN movement_type VARCHAR(50) NULL AFTER to_location`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE location_history ADD COLUMN handling_notes TEXT NULL AFTER reason`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE location_history ADD COLUMN version INT DEFAULT 1 AFTER submission_id`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE location_history ADD COLUMN created_by VARCHAR(26) NULL AFTER version`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE location_history ADD COLUMN updated_by VARCHAR(26) NULL AFTER created_by`); } catch(e) {}
 
         // 15. Conservation Logs
         await conn.query(`
@@ -522,15 +598,13 @@ export async function initMariaDB() {
             )
         `);
 
-        try {
-            await conn.query(`ALTER TABLE conservation_logs ADD COLUMN conservator_name VARCHAR(255) NULL AFTER inventory_item_id`);
-            await conn.query(`ALTER TABLE conservation_logs ADD COLUMN treatment_objective VARCHAR(100) NULL AFTER conservator_name`);
-            await conn.query(`ALTER TABLE conservation_logs ADD COLUMN next_review_date DATE NULL AFTER recommendations`);
-            await conn.query(`ALTER TABLE conservation_logs ADD COLUMN version INT DEFAULT 1 AFTER conservator_id`);
-            await conn.query(`ALTER TABLE conservation_logs ADD COLUMN created_by VARCHAR(26) NULL AFTER version`);
-            await conn.query(`ALTER TABLE conservation_logs ADD COLUMN updated_by VARCHAR(26) NULL AFTER created_by`);
-            await conn.query(`ALTER TABLE conservation_logs ADD COLUMN submission_id VARCHAR(26) NULL AFTER conservator_id`);
-        } catch(e) {}
+        try { await conn.query(`ALTER TABLE conservation_logs ADD COLUMN conservator_name VARCHAR(255) NULL AFTER inventory_item_id`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE conservation_logs ADD COLUMN treatment_objective VARCHAR(100) NULL AFTER conservator_name`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE conservation_logs ADD COLUMN next_review_date DATE NULL AFTER recommendations`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE conservation_logs ADD COLUMN version INT DEFAULT 1 AFTER conservator_id`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE conservation_logs ADD COLUMN created_by VARCHAR(26) NULL AFTER version`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE conservation_logs ADD COLUMN updated_by VARCHAR(26) NULL AFTER created_by`); } catch(e) {}
+        try { await conn.query(`ALTER TABLE conservation_logs ADD COLUMN submission_id VARCHAR(26) NULL AFTER conservator_id`); } catch(e) {}
 
         // 18. Valuations (Financial Appraisal)
         await conn.query(`

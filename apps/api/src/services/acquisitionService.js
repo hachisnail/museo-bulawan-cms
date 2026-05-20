@@ -6,6 +6,7 @@ import { constituentService } from './acquisition/constituentService.js';
 import { valuationService } from './acquisition/valuationService.js';
 import { exhibitionService } from './acquisition/exhibitionService.js';
 import { loanService } from './acquisition/loanService.js';
+import { locationService } from './acquisition/locationService.js';
 
 /**
  * AcquisitionService Facade
@@ -42,6 +43,7 @@ export const acquisitionService = {
     rollbackToReview: intakeService.rollbackToReview.bind(intakeService),
     verifyDeliveryToken: intakeService.verifyDeliveryToken.bind(intakeService),
     confirmPhysicalDelivery: intakeService.confirmPhysicalDelivery.bind(intakeService),
+    updateIntakeLocation: intakeService.updateIntakeLocation.bind(intakeService),
 
     // ==========================================
     // ACCESSION DOMAIN (Phase 3)
@@ -53,6 +55,7 @@ export const acquisitionService = {
     updateAccessionResearch: accessionService.updateAccessionResearch.bind(accessionService),
     generateFormalReport: accessionService.generateFormalReport.bind(accessionService),
     exportFormalReport: accessionService.exportFormalReport.bind(accessionService),
+    rollbackAccession: (staffId, id) => baseService._transitionRecord(staffId, 'accession', 'accessions', id, 'in_research'),
 
     // ==========================================
     // INVENTORY DOMAIN (Phase 4 & Beyond)
@@ -61,6 +64,8 @@ export const acquisitionService = {
     finalizeToInventory: inventoryService.finalizeToInventory.bind(inventoryService),
     transferLocation: inventoryService.transferLocation.bind(inventoryService),
     deaccessionItem: inventoryService.deaccessionItem.bind(inventoryService),
+    approveDeaccession: inventoryService.approveDeaccession.bind(inventoryService),
+    cancelDeaccession: inventoryService.cancelDeaccession.bind(inventoryService),
     getMovementHistory: inventoryService.getMovementHistory.bind(inventoryService),
     createConservationLog: inventoryService.createConservationLog.bind(inventoryService),
     getConservationLogs: inventoryService.getConservationLogs.bind(inventoryService),
@@ -71,12 +76,19 @@ export const acquisitionService = {
     generateInventoryReport: inventoryService.generateReport.bind(inventoryService),
     exportInventoryReport: inventoryService.exportReport.bind(inventoryService),
 
+    // SPECTRUM: Inventory Audit & Object Summary
+    recordAuditCheck: inventoryService.recordAuditCheck.bind(inventoryService),
+    getAuditHistory: inventoryService.getAuditHistory.bind(inventoryService),
+    getOverdueAudits: inventoryService.getOverdueAudits.bind(inventoryService),
+    getObjectSummary: inventoryService.getObjectSummary.bind(inventoryService),
+
     // Authority Control (Constituents)
     createConstituent: constituentService.createConstituent.bind(constituentService),
     updateConstituent: constituentService.updateConstituent.bind(constituentService),
     getConstituent: constituentService.getConstituent.bind(constituentService),
     listConstituents: constituentService.listConstituents.bind(constituentService),
     searchConstituents: constituentService.search.bind(constituentService),
+    getConstituentArtifacts: constituentService.getLinkedArtifacts.bind(constituentService),
 
     // Financials (Valuations)
     addValuation: valuationService.addValuation.bind(valuationService),
@@ -91,10 +103,15 @@ export const acquisitionService = {
     addArtifactToExhibition: exhibitionService.addArtifactToExhibition.bind(exhibitionService),
     getArtifactExhibitionHistory: exhibitionService.getArtifactHistory.bind(exhibitionService),
 
+    // Physical Locations
+    listLocations: locationService.listLocations.bind(locationService),
+    createLocation: locationService.createLocation.bind(locationService),
+
     // ==========================================
     // LOANS & EXTERNAL MOVEMENT
     // ==========================================
     listLoans: loanService.listLoans.bind(loanService),
     createLoan: loanService.createLoan.bind(loanService),
-    activateLoan: loanService.activateLoan.bind(loanService)
+    activateLoan: loanService.activateLoan.bind(loanService),
+    returnLoan: loanService.returnLoan.bind(loanService)
 };

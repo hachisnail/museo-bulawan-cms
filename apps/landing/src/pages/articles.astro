@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Placeholder Background
+const bgImage1 = "https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=2560&auto=format&fit=crop";
+const sampleImage = "https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?q=80&w=1000&auto=format&fit=crop";
+
+// Dummy Data to emulate the API fetch
+const articles = [
+  { title: "The Golden Era of Camarines Norte", article_category: "Exhibit", upload_date: "2026-05-01", images: sampleImage },
+  { title: "National Heritage Workshop", article_category: "Workshop", upload_date: "2026-05-12", images: sampleImage },
+  { title: "Rediscovering Amorsolo", article_category: "Education", upload_date: "2026-04-20", images: sampleImage },
+  { title: "Local Heroes Celebration", article_category: "Event", upload_date: "2026-05-30", images: sampleImage },
+];
+---
+
+<BaseLayout title="Articles | Museo Bulawan" theme="dark">
+  
+  <!-- Hero Section with Search Overlay -->
+  <div class="w-screen h-[40rem] bg-cover bg-center relative -mt-32" style={`background-image: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('${bgImage1}')`}>
+    
+    <div class="absolute inset-0 flex flex-col justify-center items-center px-8">
+      <h1 class="text-6xl md:text-8xl font-serif text-white font-bold mb-12 drop-shadow-xl text-center">News & Events</h1>
+      
+      <!-- Search & Filter Bar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 w-full max-w-5xl h-auto md:h-20 bg-white rounded-lg overflow-hidden shadow-2xl">
+        
+        <div class="flex items-center bg-white border-b md:border-b-0 md:border-r border-gray-300">
+          <input type="text" placeholder="Search articles..." class="w-full h-full px-6 py-4 md:py-0 text-2xl text-black bg-transparent focus:outline-none placeholder-gray-400" />
+        </div>
+        
+        <div class="relative flex items-center bg-white">
+          <select class="w-full h-full px-6 py-4 md:py-0 text-2xl text-black bg-transparent appearance-none focus:outline-none cursor-pointer">
+            <option value="">All Categories</option>
+            <option value="Article">Article</option>
+            <option value="Education">Education</option>
+            <option value="Exhibit">Exhibit</option>
+            <option value="Contests">Contests</option>
+            <option value="Workshop">Workshop</option>
+            <option value="Seminar">Seminar</option>
+          </select>
+          <div class="pointer-events-none absolute right-6">
+            <svg class="h-6 w-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Articles Grid -->
+  <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 py-24">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
+      {articles.map((article) => (
+        // Link points to a dummy article ID page to demonstrate routing
+        <a href="/article/123" class="group flex flex-col bg-[#1C1B19] rounded-xl overflow-hidden hover:-translate-y-2 transition-transform duration-300 shadow-xl border border-white/5">
+          <div class="w-full aspect-square overflow-hidden bg-gray-800">
+            <img src={article.images} alt={article.title} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+          </div>
+          <div class="p-8 flex flex-col justify-between flex-1 text-center items-center">
+            <span class="text-[#F05454] font-bold text-sm tracking-widest uppercase mb-4">{article.article_category}</span>
+            <h2 class="text-[#E5D2AC] font-serif text-3xl font-bold italic line-clamp-3 mb-4 leading-tight">{article.title}</h2>
+            <span class="text-gray-400 text-lg mt-auto">{article.upload_date}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+
+</BaseLayout>

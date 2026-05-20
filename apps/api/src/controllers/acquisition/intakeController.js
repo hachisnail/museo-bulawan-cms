@@ -8,9 +8,32 @@ import { mapDTO } from '../../utils/dtoMapper.js';
  * Handles early lifecycle actions: initial registration, MOA generation, and delivery tracking.
  */
 export const intakeController = {
+    /**
+     * GET /intakes
+     * 
+     * Supports query parameters:
+     *   ?status=under_review          — Filter by intake status
+     *   ?method=gift|loan|purchase    — Filter by acquisition method
+     *   ?search=text                  — Search by proposed item name (LIKE)
+     *   ?page=1&perPage=50            — Pagination
+     *   ?expand=donor_account_id      — Expand relations
+     *   ?sort=asc|desc                — Sort direction for created_at
+     */
     async listIntakes(req, res, next) {
         try {
-            const result = await acquisitionService._listRecords('intakes', req.query);
+            const filters = [];
+            if (req.query.status) filters.push(`status="${req.query.status}"`);
+            if (req.query.method) filters.push(`acquisition_method="${req.query.method}"`);
+            if (req.query.search) filters.push(`proposed_item_name~"${req.query.search}"`);
+
+            const query = {
+                page: req.query.page,
+                perPage: req.query.perPage,
+                expand: req.query.expand,
+                filter: filters.length > 0 ? filters.join(' && ') : req.query.filter
+            };
+
+            const result = await acquisitionService._listRecords('intakes', query);
             res.status(200).json({ status: 'success', data: mapDTO(result) });
         } catch (error) { next(error); }
     },
@@ -113,6 +136,31 @@ export const intakeController = {
             const { intakeId } = req.params;
             const intake = await acquisitionService.confirmPhysicalDelivery(req.user.id, intakeId, req.body.token);
             res.status(200).json({ message: "Physical delivery confirmed.", intake: mapDTO(intake) });
+        } catch (error) { next(error); }
+    },
+
+    async rejectSubmission(req, res, next) {
+        try {
+            const { submissionId } = req.params;
+            const result = await formPipelineService.rejectSubmission(submissionId);
+            res.status(200).json({ message: "Submission archived.", ...result });
+        } catch (error) { next(error); }
+    },
+
+    async reopenSubmission(req, res, next) {
+        try {
+            const { submissionId } = req.params;
+            const result = await formPipelineService.reopenSubmission(submissionId);
+            res.status(200).json({ message: "Submission restored to pending.", ...result });
+        } catch (error) { next(error); }
+    },
+
+    async updateLocation(req, res, next) {
+        try {
+            const { intakeId } = req.params;
+            const { location } = req.body;
+            const result = await acquisitionService.updateIntakeLocation(req.user.id, intakeId, location);
+            res.status(200).json({ status: 'success', data: mapDTO(result) });
         } catch (error) { next(error); }
     }
 };

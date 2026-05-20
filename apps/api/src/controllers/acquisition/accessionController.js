@@ -7,9 +7,33 @@ import { mapDTO } from '../../utils/dtoMapper.js';
  * Handles formal accessioning, research data updates, and formal report generation.
  */
 export const accessionController = {
+    /**
+     * GET /accessions
+     * 
+     * Supports query parameters:
+     *   ?status=pending_approval|in_research|finalized  — Filter by accession status
+     *   ?contractType=deed_of_gift|loan_agreement       — Filter by contract type
+     *   ?search=text                                    — Search by accession number (LIKE)
+     *   ?tag=tag_name                                   — Filter by tag
+     *   ?page=1&perPage=50                              — Pagination
+     *   ?expand=intake_id                               — Expand relations
+     */
     async listAccessions(req, res, next) {
         try {
-            const result = await acquisitionService._listRecords('accessions', req.query);
+            const filters = [];
+            if (req.query.status) filters.push(`status="${req.query.status}"`);
+            if (req.query.contractType) filters.push(`contract_type="${req.query.contractType}"`);
+            if (req.query.search) filters.push(`accession_number~"${req.query.search}"`);
+            if (req.query.legalStatus) filters.push(`legal_status="${req.query.legalStatus}"`);
+
+            const query = {
+                page: req.query.page,
+                perPage: req.query.perPage,
+                expand: req.query.expand || 'intake_id',
+                filter: filters.length > 0 ? filters.join(' && ') : req.query.filter
+            };
+
+            const result = await acquisitionService._listRecords('accessions', query);
             res.status(200).json({ status: 'success', data: mapDTO(result) });
         } catch (error) { next(error); }
     },
@@ -71,8 +95,16 @@ export const accessionController = {
             const { accessionId } = req.params;
             const buffer = await acquisitionService.exportFormalReport(accessionId);
             res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-            res.setHeader('Content-Disposition', `attachment; filename=Accession_Report_${accessionId}.docx`);
+            res.setHeader('Content-Disposition', `attachment; filename=ACCESSION_REPORT_${accessionId}.docx`);
             res.status(200).send(buffer);
+        } catch (error) { next(error); }
+    },
+
+    rollbackAccession: async (req, res, next) => {
+        try {
+            const { accessionId } = req.params;
+            const result = await acquisitionService.rollbackAccession(req.user.id, accessionId);
+            res.status(200).json({ status: 'success', data: result });
         } catch (error) { next(error); }
     },
 

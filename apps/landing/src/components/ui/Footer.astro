@@ -1,0 +1,91 @@
+---
+import Logo from '../../assets/LOGO.png';
+
+// Removed catalogs_public
+const flags = {
+  home: true,
+  articles_public: true,
+  about: true,
+  appointment_public: true,
+};
+---
+
+<div class="w-full bg-[#1C1B19] pt-8 pb-12 overflow-x-hidden">
+  <div class="max-w-[140rem] mx-auto flex flex-col h-auto">
+    
+    <div class="w-full h-12 flex items-center py-2 px-8 md:px-16 lg:px-32 border-b-2 border-white">
+      {flags.home && (
+        <div class="h-full flex items-center border-r border-white justify-center px-4">
+          <a href="/"><span class="text-white font-semibold text-lg hover:text-yellow-400 transition-colors">Home</span></a>
+        </div>
+      )}
+      {flags.articles_public && (
+        <div class="h-full flex items-center border-r border-white justify-center px-4">
+          <a href="/articles"><span class="text-white font-semibold text-lg hover:text-yellow-400 transition-colors">News & Events</span></a>
+        </div>
+      )}
+      {flags.about && (
+        <div class="h-full flex items-center justify-center px-4">
+          <a href="/about"><span class="text-white font-semibold text-lg hover:text-yellow-400 transition-colors">About us</span></a>
+        </div>
+      )}
+    </div>
+
+    <div class="w-full flex flex-col sm:flex-row pt-8 px-8 md:px-16 lg:px-32">
+      
+      <div class="w-full flex flex-col gap-y-4 pr-4">
+        
+        <div class="w-full gap-x-4 flex items-center">
+          <img src={Logo.src} alt="Museo Bulawan Logo" class="w-16" />
+          <span class="text-4xl font-bold text-white">MUSEO BULAWAN</span>
+        </div>
+
+        <div class="w-full py-2">
+          <span class="font-light text-xl text-white font-serif max-w-lg block">
+            Helping us raise awareness regarding Camnorteños identity is crucial, and your support can make a significant difference.
+          </span>
+        </div>
+
+        <div class="w-full flex flex-col sm:flex-row items-start sm:items-center gap-6 mt-2">
+          <div class="w-fit">
+            <span class="text-white/80 text-sm font-serif tracking-wider">
+              We gratefully accept donations. Lending your artifact will greatly help us.
+              <br />
+              &copy; {new Date().getFullYear()} Museo Bulawan. All rights reserved.
+            </span>
+          </div>
+          
+          {flags.about && (
+            <div class="flex items-center justify-center">
+              <a href="/about/support" class="px-8 py-3 flex items-center justify-center font-semibold bg-white text-black hover:bg-gray-200 transition-colors rounded">
+                <span class="text-xl">Contribute</span>
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div class="w-full flex flex-col sm:flex-row gap-12 pt-8 sm:pt-0 sm:justify-end">
+        
+        <div class="flex flex-col gap-y-2">
+          <span class="font-bold text-xl mb-2 text-white border-b border-white/20 pb-1 w-fit">Visit Us</span>
+          
+          {flags.about && <a href="/about" class="text-lg text-white/90 hover:text-yellow-400 hover:underline transition-all">About Us</a>}
+          {flags.appointment_public && <a href="/appointment" class="text-lg text-white/90 hover:text-yellow-400 hover:underline transition-all">Book a Tour</a>}
+          {flags.about && <a href="/about/support" class="text-lg text-white/90 hover:text-yellow-400 hover:underline transition-all">Contact Us</a>}
+          <a href="/#feedback" class="text-lg text-white/90 hover:text-yellow-400 hover:underline transition-all">Give Feedback</a>
+        </div>
+
+        <div class="flex flex-col gap-y-2">
+          <span class="font-bold text-xl mb-2 text-white border-b border-white/20 pb-1 w-fit">Opening Hours</span>
+          <span class="text-lg text-white/90">
+            Camarines Norte Provincial<br />Capitol Grounds, Daet
+          </span>
+          <span class="text-lg text-white/90 mt-2">
+            Open Daily 9:00am-5:00pm<br />Monday–Friday
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

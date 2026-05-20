@@ -1,5 +1,13 @@
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } from "docx";
 import { logger } from "../utils/logger.js";
+import fs from "fs";
+import path from "path";
+import PizZip from "pizzip";
+import Docxtemplater from "docxtemplater";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /**
  * DocumentService
@@ -14,18 +22,73 @@ export const documentService = {
     // ==========================================
     
     async generateMOA(intake, format = 'html', overrides = {}) {
+        const donorAccount = intake.expand?.donor_account_id || {};
+        const donationItem = intake.expand?.donation_item_id || {};
+        
+        // Extract city/province from address if possible
+        let city = 'Daet';
+        let province = 'Camarines Norte';
+        if (donorAccount.address) {
+            const parts = donorAccount.address.split(',').map(s => s.trim());
+            if (parts.length >= 2) {
+                province = parts[parts.length - 1];
+                city = parts[parts.length - 2];
+            }
+        }
+
         const data = {
-            donorName: overrides.donorName || intake.donor_name_override || intake.donor_info,
-            itemName: intake.proposed_item_name,
+            // New mappings for [[ ]] templates
+            name: overrides.donorName || intake.donor_name_override || intake.donor_info || donorAccount.fname + ' ' + donorAccount.lname || 'Valued Donor',
+            artifact: intake.proposed_item_name,
             method: intake.acquisition_method,
             date: new Date().toLocaleDateString(undefined, { dateStyle: 'long' }),
+            total: donationItem.quantity || 1,
+            start: new Date().toLocaleDateString(undefined, { dateStyle: 'long' }),
+            end: intake.loan_end_date ? new Date(intake.loan_end_date).toLocaleDateString(undefined, { dateStyle: 'long' }) : 'Permanent',
+            province,
+            city,
+            // Legacy mappings for HTML preview
+            donorName: overrides.donorName || intake.donor_name_override || intake.donor_info,
+            itemName: intake.proposed_item_name,
+            artifactName: intake.proposed_item_name,
             loanDuration: overrides.loanDuration || intake.loan_duration_override || 'N/A'
         };
 
         if (format === 'docx') {
-            return await this._buildMOADOCX(data);
+            const templateName = data.method === 'loan' ? 'LEND-FORM.docx' : 'DONATION-FORM.docx';
+            const templatePath = path.join(__dirname, '../templates', templateName);
+            
+            try {
+                if (fs.existsSync(templatePath)) {
+                    return this._fillTemplate(templatePath, data);
+                }
+                logger.warn(`Template ${templateName} not found at ${templatePath}, falling back to code-generated DOCX.`);
+                return await this._buildMOADOCX(data);
+            } catch (err) {
+                logger.error(`Error filling template ${templateName}: ${err.message}`);
+                return await this._buildMOADOCX(data);
+            }
         }
         return this._buildMOAHTML(data);
+    },
+
+    _fillTemplate(templatePath, data) {
+        const content = fs.readFileSync(templatePath, "binary");
+        const zip = new PizZip(content);
+        const doc = new Docxtemplater(zip, {
+            paragraphLoop: true,
+            linebreaks: true,
+            delimiters: { start: '[[', end: ']]' }
+        });
+
+        doc.render(data);
+
+        const buf = doc.getZip().generate({
+            type: "nodebuffer",
+            compression: "DEFLATE",
+        });
+
+        return buf;
     },
 
     _buildMOAHTML(data) {
@@ -493,6 +556,220 @@ export const documentService = {
             }],
         });
 
+        return await Packer.toBuffer(doc);
+    },
+
+    // ==========================================
+    // 4. CONDITION REPORT
+    // ==========================================
+
+    async generateConditionReport(inventory, accession, conditionLogs = [], format = 'html') {
+        const latest = conditionLogs[0] || {};
+        const data = {
+            catNum: inventory.catalog_number,
+            itemName: accession.object_type || 'Unknown Object',
+            evalDate: new Date(latest.created_at || new Date()).toLocaleDateString(),
+            condition: latest.condition_status || 'Unknown',
+            stability: latest.stability || 'Unknown',
+            hazards: latest.hazards || 'None',
+            notes: latest.notes || 'No notes provided',
+            actionRequired: latest.immediate_action_required ? 'YES - URGENT' : 'NO'
+        };
+
+        if (format === 'docx') {
+            return await this._buildConditionDOCX(data);
+        }
+        return this._buildConditionHTML(data);
+    },
+
+    _buildConditionHTML(data) {
+        return `
+            <div style="font-family: 'Times New Roman', serif; padding: 50px; color: #000; line-height: 1.6; max-width: 800px; margin: 0 auto; background: white; border: 1px solid #eee;">
+                <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 15px;">
+                    <div style="font-size: 24px; font-weight: bold; letter-spacing: 2px;">MUSEO BULAWAN</div>
+                    <div style="font-size: 12px; text-transform: uppercase;">Conservation Division • Condition Report</div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <strong>Catalog Number:</strong> ${data.catNum}<br>
+                    <strong>Object Name:</strong> ${data.itemName}<br>
+                    <strong>Evaluation Date:</strong> ${data.evalDate}
+                </div>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 20px;" border="1">
+                    <tr><td style="padding: 10px; width: 30%;"><strong>Overall Condition</strong></td><td style="padding: 10px;">${data.condition}</td></tr>
+                    <tr><td style="padding: 10px;"><strong>Stability</strong></td><td style="padding: 10px;">${data.stability}</td></tr>
+                    <tr><td style="padding: 10px;"><strong>Hazards</strong></td><td style="padding: 10px;">${data.hazards}</td></tr>
+                    <tr><td style="padding: 10px;"><strong>Immediate Action Required?</strong></td><td style="padding: 10px; font-weight: bold; color: ${data.actionRequired.includes('YES') ? 'red' : 'black'};">${data.actionRequired}</td></tr>
+                </table>
+                <div style="margin-top: 20px;">
+                    <strong>Detailed Notes:</strong>
+                    <div style="padding: 15px; border: 1px solid #ccc; min-height: 100px; margin-top: 10px;">${data.notes}</div>
+                </div>
+            </div>
+        `;
+    },
+
+    async _buildConditionDOCX(data) {
+        const doc = new Document({
+            sections: [{
+                children: [
+                    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "MUSEO BULAWAN", bold: true, size: 32 })] }),
+                    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Conservation Division • Condition Report", size: 20 })] }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ children: [new TextRun({ text: `Catalog Number: ${data.catNum}`, bold: true })] }),
+                    new Paragraph({ children: [new TextRun({ text: `Object Name: ${data.itemName}` })] }),
+                    new Paragraph({ children: [new TextRun({ text: `Evaluation Date: ${data.evalDate}` })] }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ children: [new TextRun({ text: `Condition: ${data.condition}`, bold: true })] }),
+                    new Paragraph({ children: [new TextRun({ text: `Stability: ${data.stability}` })] }),
+                    new Paragraph({ children: [new TextRun({ text: `Hazards: ${data.hazards}` })] }),
+                    new Paragraph({ children: [new TextRun({ text: `Immediate Action Required: ${data.actionRequired}` })] }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ heading: HeadingLevel.HEADING_3, children: [new TextRun({ text: "Detailed Notes:", bold: true })] }),
+                    new Paragraph({ children: [new TextRun({ text: data.notes })] })
+                ]
+            }]
+        });
+        return await Packer.toBuffer(doc);
+    },
+
+    // ==========================================
+    // 5. DEACCESSION & DISPOSAL REPORT
+    // ==========================================
+
+    async generateDeaccessionReport(inventory, accession, format = 'html') {
+        const data = {
+            catNum: inventory.catalog_number,
+            accNum: accession.accession_number,
+            itemName: accession.object_type || 'Unknown Object',
+            deaccessionDate: inventory.deaccession_date ? new Date(inventory.deaccession_date).toLocaleDateString() : new Date().toLocaleDateString(),
+            reason: inventory.deaccession_reason || 'No reason provided.'
+        };
+
+        if (format === 'docx') {
+            return await this._buildDeaccessionDOCX(data);
+        }
+        return this._buildDeaccessionHTML(data);
+    },
+
+    _buildDeaccessionHTML(data) {
+        return `
+            <div style="font-family: 'Times New Roman', serif; padding: 50px; color: #000; line-height: 1.6; max-width: 800px; margin: 0 auto; background: white; border: 1px solid #eee;">
+                <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 15px;">
+                    <div style="font-size: 24px; font-weight: bold; letter-spacing: 2px;">MUSEO BULAWAN</div>
+                    <div style="font-size: 12px; text-transform: uppercase;">Office of the Registrar • Deaccession & Disposal Report</div>
+                </div>
+                <h1 style="text-align: center; font-size: 20px; text-decoration: underline; margin-bottom: 30px;">CERTIFICATE OF DEACCESSION</h1>
+                <div style="margin-bottom: 20px;">
+                    <strong>Catalog Number:</strong> ${data.catNum}<br>
+                    <strong>Accession Reference:</strong> ${data.accNum}<br>
+                    <strong>Object Name:</strong> ${data.itemName}<br>
+                    <strong>Date of Deaccession:</strong> ${data.deaccessionDate}
+                </div>
+                <div style="margin-top: 30px;">
+                    <h3 style="font-size: 16px; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Justification for Disposal</h3>
+                    <p style="padding: 15px; border: 1px solid #ddd; background: #f9f9f9; min-height: 100px;">${data.reason}</p>
+                </div>
+                <div style="margin-top: 60px; text-align: right; border-top: 1px solid #000; width: 250px; padding-top: 10px; float: right;">
+                    <strong>Museum Registrar / Curator</strong><br>
+                    <span style="font-size: 12px; color: #666;">Authorized Signatory</span>
+                </div>
+            </div>
+        `;
+    },
+
+    async _buildDeaccessionDOCX(data) {
+        const doc = new Document({
+            sections: [{
+                children: [
+                    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "MUSEO BULAWAN", bold: true, size: 32 })] }),
+                    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Office of the Registrar • Deaccession & Disposal Report", size: 20 })] }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "CERTIFICATE OF DEACCESSION", bold: true, size: 24, underline: {} })] }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ children: [new TextRun({ text: `Catalog Number: ${data.catNum}`, bold: true })] }),
+                    new Paragraph({ children: [new TextRun({ text: `Accession Reference: ${data.accNum}` })] }),
+                    new Paragraph({ children: [new TextRun({ text: `Object Name: ${data.itemName}` })] }),
+                    new Paragraph({ children: [new TextRun({ text: `Date of Deaccession: ${data.deaccessionDate}` })] }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ heading: HeadingLevel.HEADING_3, children: [new TextRun({ text: "Justification for Disposal", bold: true })] }),
+                    new Paragraph({ children: [new TextRun({ text: data.reason })] })
+                ]
+            }]
+        });
+        return await Packer.toBuffer(doc);
+    },
+
+    // ==========================================
+    // 6. LOAN AGREEMENT
+    // ==========================================
+
+    async generateLoanAgreement(loan, artifacts, format = 'html') {
+        const data = {
+            loanId: loan.id,
+            type: loan.loan_type.toUpperCase(),
+            borrower: loan.borrower_name_manual || loan.borrower_name || 'Not Specified',
+            venue: loan.venue || 'Not Specified',
+            purpose: loan.purpose || 'Not Specified',
+            startDate: new Date(loan.start_date).toLocaleDateString(),
+            endDate: new Date(loan.end_date).toLocaleDateString(),
+            insurance: loan.insurance_coverage || 'Not Specified',
+            artifacts: artifacts.map(a => a.catalog_number).join(', ') || 'No artifacts attached'
+        };
+
+        if (format === 'docx') {
+            return await this._buildLoanDOCX(data);
+        }
+        return this._buildLoanHTML(data);
+    },
+
+    _buildLoanHTML(data) {
+        return `
+            <div style="font-family: 'Times New Roman', serif; padding: 50px; color: #000; line-height: 1.6; max-width: 800px; margin: 0 auto; background: white; border: 1px solid #eee;">
+                <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 15px;">
+                    <div style="font-size: 24px; font-weight: bold; letter-spacing: 2px;">MUSEO BULAWAN</div>
+                    <div style="font-size: 12px; text-transform: uppercase;">Office of the Registrar</div>
+                </div>
+                <h1 style="text-align: center; font-size: 20px; text-decoration: underline; margin-bottom: 30px;">${data.type} LOAN AGREEMENT</h1>
+                <div style="margin-bottom: 20px;">
+                    <strong>Agreement Reference:</strong> ${data.loanId}<br>
+                    <strong>Borrowing Institution / Venue:</strong> ${data.borrower} (${data.venue})<br>
+                    <strong>Loan Period:</strong> ${data.startDate} to ${data.endDate}<br>
+                    <strong>Purpose of Loan:</strong> ${data.purpose}
+                </div>
+                <div style="margin-top: 30px;">
+                    <h3 style="font-size: 16px; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Schedule of Artifacts</h3>
+                    <p style="padding: 15px; border: 1px solid #ddd; background: #f9f9f9;">${data.artifacts}</p>
+                </div>
+                <div style="margin-top: 30px;">
+                    <h3 style="font-size: 16px; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Insurance & Care</h3>
+                    <p>${data.insurance}</p>
+                </div>
+            </div>
+        `;
+    },
+
+    async _buildLoanDOCX(data) {
+        const doc = new Document({
+            sections: [{
+                children: [
+                    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "MUSEO BULAWAN", bold: true, size: 32 })] }),
+                    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Office of the Registrar", size: 20 })] }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: `${data.type} LOAN AGREEMENT`, bold: true, size: 24, underline: {} })] }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ children: [new TextRun({ text: `Agreement Reference: ${data.loanId}`, bold: true })] }),
+                    new Paragraph({ children: [new TextRun({ text: `Borrowing Institution / Venue: ${data.borrower} (${data.venue})` })] }),
+                    new Paragraph({ children: [new TextRun({ text: `Loan Period: ${data.startDate} to ${data.endDate}` })] }),
+                    new Paragraph({ children: [new TextRun({ text: `Purpose: ${data.purpose}` })] }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ heading: HeadingLevel.HEADING_3, children: [new TextRun({ text: "Schedule of Artifacts", bold: true })] }),
+                    new Paragraph({ children: [new TextRun({ text: data.artifacts })] }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ heading: HeadingLevel.HEADING_3, children: [new TextRun({ text: "Insurance & Care", bold: true })] }),
+                    new Paragraph({ children: [new TextRun({ text: data.insurance })] })
+                ]
+            }]
+        });
         return await Packer.toBuffer(doc);
     }
 };

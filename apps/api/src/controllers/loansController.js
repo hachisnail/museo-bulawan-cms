@@ -30,5 +30,27 @@ export const loansController = {
             logger.error('Failed to activate loan', { error: error.message });
             res.status(400).json({ error: error.message });
         }
+    },
+
+    async returnLoan(req, res) {
+        try {
+            await acquisitionService.returnLoan(req.user.id, req.params.id, req.body);
+            res.json({ status: 'success', message: 'Loan returned successfully.' });
+        } catch (error) {
+            logger.error('Failed to return loan', { error: error.message });
+            res.status(400).json({ error: error.message });
+        }
+    },
+
+    async exportLoanAgreement(req, res) {
+        try {
+            const buffer = await acquisitionService.getLoanAgreementDocument(req.params.id, 'docx');
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            res.setHeader('Content-Disposition', `attachment; filename=Loan_Agreement_${req.params.id}.docx`);
+            res.status(200).send(buffer);
+        } catch (error) {
+            logger.error('Failed to export loan agreement', { error: error.message });
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
     }
 };

@@ -137,5 +137,76 @@ export const analyticsController = {
                 }
             });
         } catch (error) { next(error); }
+    },
+
+    async getInventoryStatusSummary(req, res, next) {
+        try {
+            // 1. Current locations distribution
+            const locationsDist = await db.query(`
+                SELECT current_location as location, COUNT(*) as count 
+                FROM inventory 
+                WHERE status != 'deaccessioned'
+                GROUP BY current_location
+                ORDER BY count DESC
+            `);
+
+            // 2. Status distribution (active, maintenance, loan, storage, deaccessioned)
+            const statusDist = await db.query(`
+                SELECT status, COUNT(*) as count 
+                FROM inventory 
+                GROUP BY status
+            `);
+
+            // 3. Movement volume (moves in the last 30 days)
+            const [recentMoves] = await db.query(`
+                SELECT COUNT(*) as count 
+                FROM location_history 
+                WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+            `);
+
+            res.status(200).json({
+                status: 'success',
+                data: {
+                    locationsDistribution: locationsDist,
+                    statusDistribution: statusDist,
+                    recentMovementVolume: recentMoves.count
+                }
+            });
+        } catch (error) { next(error); }
+    },
+
+    async getAuditStatistics(req, res, next) {
+        try {
+            // 1. Overall Audit Check Results (last 12 months)
+            const auditResults = await db.query(`
+                SELECT 
+                    SUM(CASE WHEN object_found = 1 THEN 1 ELSE 0 END) as foundCount,
+                    SUM(CASE WHEN object_found = 0 THEN 1 ELSE 0 END) as missingCount,
+                    SUM(CASE WHEN location_verified = 0 THEN 1 ELSE 0 END) as locationMismatches,
+                    SUM(CASE WHEN condition_consistent = 0 THEN 1 ELSE 0 END) as conditionChanged,
+                    COUNT(*) as totalAudits
+                FROM inventory_audits
+                WHERE created_at >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
+            `);
+
+            // 2. Overdue Audits Count
+            // Items not audited in over a year
+            const [overdueCount] = await db.query(`
+                SELECT COUNT(*) as count
+                FROM inventory
+                WHERE status != 'deaccessioned'
+                  AND (last_audit_date IS NULL OR last_audit_date < DATE_SUB(NOW(), INTERVAL 365 DAY))
+            `);
+
+            res.status(200).json({
+                status: 'success',
+                data: {
+                    last12Months: auditResults[0] || {
+                        foundCount: 0, missingCount: 0, locationMismatches: 0, conditionChanged: 0, totalAudits: 0
+                    },
+                    overdueAudits: overdueCount.count
+                }
+            });
+        } catch (error) { next(error); }
     }
 };

@@ -64,6 +64,11 @@ router.post('/intakes/:intakeId/generate-moa',
     acquisitionController.generateMOA
 );
 
+router.get('/intakes/:intakeId/export-moa', 
+    requireAuth, 
+    acquisitionController.exportMOA
+);
+
 router.post('/intakes/:intakeId/rollback', 
     requireAuth, 
     checkPermission('update', 'Intake'),
@@ -77,10 +82,28 @@ router.post('/intakes/external/:submissionId',
     acquisitionController.processExternalIntake
 );
 
+router.post('/submissions/:submissionId/reject',
+    requireAuth,
+    checkPermission('update', 'Intake'),
+    acquisitionController.rejectSubmission
+);
+
+router.post('/submissions/:submissionId/reopen',
+    requireAuth,
+    checkPermission('update', 'Intake'),
+    acquisitionController.reopenSubmission
+);
+
 router.post('/intakes/:intakeId/confirm-delivery', 
     requireAuth, 
     validate(schemas.confirmDelivery), 
     acquisitionController.confirmDelivery
+);
+
+router.patch('/intakes/:intakeId/location',
+    requireAuth,
+    checkPermission('update', 'Intake'),
+    acquisitionController.updateLocation
 );
 
 // ==========================================
@@ -105,6 +128,12 @@ router.post('/accessions/:accessionId/approve',
     checkPermission('update', 'Accession'),
     validate(schemas.approveAccession), 
     acquisitionController.approveAccession
+);
+
+router.post('/accessions/:accessionId/rollback', 
+    requireAuth, 
+    checkPermission('update', 'Accession'), 
+    acquisitionController.rollbackAccession
 );
 
 router.patch('/accessions/:accessionId/research', 
@@ -142,6 +171,18 @@ router.post('/inventory/:inventoryId/deaccession',
     acquisitionController.deaccessionItem
 );
 
+router.post('/inventory/:inventoryId/approve-deaccession', 
+    requireAuth, 
+    checkPermission('delete', 'Inventory'),
+    acquisitionController.approveDeaccession
+);
+
+router.post('/inventory/:inventoryId/cancel-deaccession', 
+    requireAuth, 
+    checkPermission('delete', 'Inventory'),
+    acquisitionController.cancelDeaccession
+);
+
 router.post('/inventory/batch-transfer', 
     requireAuth, 
     checkPermission('update', 'Inventory'),
@@ -155,8 +196,20 @@ router.patch('/inventory/:inventoryId/status',
     acquisitionController.updateArtifactStatus
 );
 
+router.get('/inventory/overdue-audits', requireAuth, acquisitionController.getOverdueAudits);
+router.get('/inventory/:inventoryId/summary', requireAuth, acquisitionController.getObjectSummary);
+router.get('/inventory/:inventoryId/audits', requireAuth, acquisitionController.getAuditHistory);
+router.post('/inventory/:inventoryId/audit', 
+    requireAuth, 
+    checkPermission('update', 'Inventory'),
+    validate(schemas.auditCheck), 
+    acquisitionController.recordAuditCheck
+);
+
 router.get('/inventory/:inventoryId/report', requireAuth, acquisitionController.generateInventoryReport);
 router.get('/inventory/:inventoryId/export', requireAuth, acquisitionController.exportInventoryReport);
+router.get('/inventory/:inventoryId/export-condition', requireAuth, acquisitionController.exportConditionReport);
+router.get('/inventory/:inventoryId/export-deaccession', requireAuth, acquisitionController.exportDeaccessionReport);
 
 // ==========================================
 // COMPLIANCE & HISTORY
@@ -190,6 +243,10 @@ router.get('/tags', requireAuth, acquisitionController.getUniqueTags);
 router.get('/constituents', requireAuth, acquisitionController.listConstituents);
 router.post('/constituents', requireAuth, acquisitionController.createConstituent);
 router.get('/constituents/search', requireAuth, acquisitionController.searchConstituents);
+router.get('/constituents/:id/artifacts', requireAuth, acquisitionController.getConstituentArtifacts);
+
+router.get('/locations', requireAuth, acquisitionController.listLocations);
+router.post('/locations', requireAuth, checkPermission('update', 'Inventory'), acquisitionController.createLocation);
 
 router.get('/inventory/:inventoryId/valuations', requireAuth, acquisitionController.getValuationHistory);
 router.post('/inventory/:inventoryId/valuations', requireAuth, checkPermission('update', 'Inventory'), acquisitionController.addValuation);
@@ -205,5 +262,7 @@ router.post('/exhibitions/:exhibitionId/artifacts', requireAuth, checkPermission
 router.get('/loans', requireAuth, acquisitionController.listLoans);
 router.post('/loans', requireAuth, checkPermission('create', 'Loan'), acquisitionController.createLoan);
 router.post('/loans/:id/activate', requireAuth, checkPermission('update', 'Loan'), acquisitionController.activateLoan);
+router.post('/loans/:id/return', requireAuth, checkPermission('update', 'Loan'), acquisitionController.returnLoan);
+router.get('/loans/:id/export', requireAuth, acquisitionController.exportLoanAgreement);
 
 export default router;

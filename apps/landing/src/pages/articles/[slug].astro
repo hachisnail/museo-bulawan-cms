@@ -1,6 +1,10 @@
 ---
 // src/pages/articles/[slug].astro
 // SSR mode: fetch the article on every request so new articles work immediately.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// CMS base URL — change for production
+const CMS_URL = 'http://127.0.0.1:3001';
 
 const { slug } = Astro.params;
 
@@ -9,7 +13,7 @@ let article: any = null;
 
 // 1. Try fetching by slug
 const bySlug = await fetch(
-  `http://127.0.0.1:3001/api/articles?where[slug][equals]=${encodeURIComponent(slug!)}&where[_status][equals]=published&depth=1&limit=1`
+  `${CMS_URL}/api/articles?where[slug][equals]=${encodeURIComponent(slug!)}&where[_status][equals]=published&depth=1&limit=1`
 );
 if (bySlug.ok) {
   const data = await bySlug.json();
@@ -19,7 +23,7 @@ if (bySlug.ok) {
 // 2. If not found by slug, try fetching by numeric ID
 if (!article && slug && /^\d+$/.test(slug)) {
   const byId = await fetch(
-    `http://127.0.0.1:3001/api/articles/${slug}?depth=1`
+    `${CMS_URL}/api/articles/${slug}?depth=1`
   );
   if (byId.ok) {
     const data = await byId.json();
@@ -47,57 +51,162 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#39;');
 }
 
-// Simple recursive function to render Lexical AST to HTML
-// Payload CMS sends rich text as a JSON object (Abstract Syntax Tree)
-function renderLexicalNode(node: any): any {
-  if (!node) return null;
+/**
+ * Recursive function to render Lexical AST to HTML.
+ * Payload CMS sends rich text as a JSON object (Abstract Syntax Tree).
+ * Handles all standard node types + custom blocks defined in Articles.ts.
+ */
+function renderLexicalNode(node: any): string {
+  if (!node) return '';
 
+  // ── Text node ──────────────────────────────────
   if (node.type === 'text') {
-    let text = escapeHtml(node.text);
-    if (node.format & 1) text = `<strong>${text}</strong>`;
-    if (node.format & 2) text = `<em>${text}</em>`;
-    if (node.format & 8) text = `<u>${text}</u>`;
+    let text = escapeHtml(node.text || '');
+    if (node.format & 1) text = `<strong>${text}</strong>`;   // bold
+    if (node.format & 2) text = `<em>${text}</em>`;           // italic
+    if (node.format & 4) text = `<s>${text}</s>`;             // strikethrough
+    if (node.format & 8) text = `<u>${text}</u>`;             // underline
+    if (node.format & 16) text = `<code>${text}</code>`;      // inline code
+    if (node.format & 32) text = `<sub>${text}</sub>`;        // subscript
+    if (node.format & 64) text = `<sup>${text}</sup>`;        // superscript
     return text;
   }
 
+  // ── Line break ─────────────────────────────────
+  if (node.type === 'linebreak') {
+    return '<br />';
+  }
+
+  // ── Tab ────────────────────────────────────────
+  if (node.type === 'tab') {
+    return '&emsp;';
+  }
+
+  // ── Paragraph ──────────────────────────────────
   if (node.type === 'paragraph') {
     const children = node.children?.map(renderLexicalNode).join('') || '';
-    return `<p>${children}</p>`;
+    const align = node.format ? ` style="text-align:${getAlignment(node.format)}"` : '';
+    return `<p${align}>${children}</p>`;
   }
 
+  // ── Heading ────────────────────────────────────
   if (node.type === 'heading') {
     const children = node.children?.map(renderLexicalNode).join('') || '';
-    return `<${node.tag}>${children}</${node.tag}>`;
+    const tag = node.tag || 'h2';
+    return `<${tag}>${children}</${tag}>`;
   }
 
+  // ── Lists ──────────────────────────────────────
   if (node.type === 'list') {
-    const tag = node.listType === 'number' ? 'ol' : 'ul';
+    const tag = node.listType === 'number' ? 'ol' : node.listType === 'check' ? 'ul' : (node.tag || 'ul');
     const children = node.children?.map(renderLexicalNode).join('') || '';
-    return `<${tag}>${children}</${tag}>`;
+    const cls = node.listType === 'check' ? ' class="article-checklist"' : '';
+    return `<${tag}${cls}>${children}</${tag}>`;
   }
 
   if (node.type === 'listitem') {
     const children = node.children?.map(renderLexicalNode).join('') || '';
+    if (node.checked !== undefined) {
+      const checked = node.checked ? 'checked disabled' : 'disabled';
+      return `<li class="article-check-item"><input type="checkbox" ${checked} /> ${children}</li>`;
+    }
     return `<li>${children}</li>`;
   }
 
+  // ── Blockquote ─────────────────────────────────
   if (node.type === 'quote') {
     const children = node.children?.map(renderLexicalNode).join('') || '';
     return `<blockquote>${children}</blockquote>`;
   }
 
-  // Handle custom blocks (like Columns or Image Gallery)
+  // ── Link ───────────────────────────────────────
+  if (node.type === 'link' || node.type === 'autolink') {
+    const children = node.children?.map(renderLexicalNode).join('') || '';
+    const url = node.fields?.url || node.url || '#';
+    const target = node.fields?.newTab ? ' target="_blank" rel="noopener noreferrer"' : '';
+    return `<a href="${escapeHtml(url)}"${target}>${children}</a>`;
+  }
+
+  // ── Horizontal Rule ────────────────────────────
+  if (node.type === 'horizontalrule') {
+    return '<hr />';
+  }
+
+  // ── Upload (inline image) ──────────────────────
+  if (node.type === 'upload') {
+    const value = node.value || {};
+    const url = value.url ? `${CMS_URL}${value.url}` : '';
+    const alt = escapeHtml(value.alt || '');
+    if (url) {
+      return `<figure class="article-figure">
+        <img src="${url}" alt="${alt}" loading="lazy" />
+        ${value.caption ? `<figcaption>${escapeHtml(value.caption)}</figcaption>` : ''}
+      </figure>`;
+    }
+    return '';
+  }
+
+  // ── Custom Blocks ──────────────────────────────
   if (node.type === 'block') {
-    if (node.fields?.blockType === 'columns') {
-      const col1 = renderLexicalNode(node.fields.columnOne?.root);
-      const col2 = renderLexicalNode(node.fields.columnTwo?.root);
-      return `<div style="display:flex; gap: 2rem;">
-                <div style="flex:1">${col1}</div>
-                <div style="flex:1">${col2}</div>
-              </div>`;
+    const blockType = node.fields?.blockType;
+
+    // Columns block
+    if (blockType === 'columns') {
+      const col1 = renderLexicalNode(node.fields?.columnOne?.root);
+      const col2 = renderLexicalNode(node.fields?.columnTwo?.root);
+      const col3 = node.fields?.layoutType === 'three'
+        ? renderLexicalNode(node.fields?.columnThree?.root)
+        : '';
+      return `<div class="article-columns article-columns--${node.fields?.layoutType || 'two'}">
+        <div class="article-column">${col1}</div>
+        <div class="article-column">${col2}</div>
+        ${col3 ? `<div class="article-column">${col3}</div>` : ''}
+      </div>`;
+    }
+
+    // Artifact Highlight block
+    if (blockType === 'artifactHighlight') {
+      const f = node.fields || {};
+      const imgUrl = f.image?.url ? `${CMS_URL}${f.image.url}` : '';
+      return `<div class="article-artifact-highlight">
+        ${imgUrl ? `<img src="${imgUrl}" alt="${escapeHtml(f.artifactName || '')}" loading="lazy" />` : ''}
+        <div class="article-artifact-info">
+          <span class="article-artifact-catalog">${escapeHtml(f.catalogNumber || '')}</span>
+          <h3>${escapeHtml(f.artifactName || '')}</h3>
+          ${f.description ? `<p>${escapeHtml(f.description)}</p>` : ''}
+        </div>
+      </div>`;
+    }
+
+    // Call to Action block
+    if (blockType === 'callToAction') {
+      const f = node.fields || {};
+      const style = f.style || 'default';
+      return `<div class="article-cta article-cta--${style}">
+        <h3>${escapeHtml(f.heading || '')}</h3>
+        ${f.text ? `<p>${escapeHtml(f.text)}</p>` : ''}
+        ${f.linkUrl ? `<a href="${escapeHtml(f.linkUrl)}" class="article-cta-button">${escapeHtml(f.linkLabel || 'Learn More')}</a>` : ''}
+      </div>`;
+    }
+
+    // Image Gallery block
+    if (blockType === 'imageGallery') {
+      const f = node.fields || {};
+      const layout = f.layout || 'grid';
+      const images = f.images || [];
+      const items = images.map((item: any) => {
+        const imgUrl = item.image?.url ? `${CMS_URL}${item.image.url}` : '';
+        if (!imgUrl) return '';
+        return `<figure class="article-gallery-item">
+          <img src="${imgUrl}" alt="${escapeHtml(item.caption || '')}" loading="lazy" />
+          ${item.caption ? `<figcaption>${escapeHtml(item.caption)}</figcaption>` : ''}
+        </figure>`;
+      }).join('');
+      return `<div class="article-gallery article-gallery--${layout}">${items}</div>`;
     }
   }
 
+  // ── Root or unknown container — recurse children ─
   if (node.children) {
     return node.children.map(renderLexicalNode).join('');
   }
@@ -105,46 +214,154 @@ function renderLexicalNode(node: any): any {
   return '';
 }
 
+/**
+ * Map Lexical's numeric format code to CSS text-align value.
+ */
+function getAlignment(format: number | string): string {
+  const map: Record<string, string> = {
+    left: 'left', start: 'left',
+    center: 'center',
+    right: 'right', end: 'right',
+    justify: 'justify',
+  };
+  if (typeof format === 'string') return map[format] || 'left';
+  return 'left';
+}
+
 const htmlContent = renderLexicalNode(article.content?.root);
 
+// Build cover image URL
+const coverUrl = article.coverImage?.sizes?.hero?.url
+  ? `${CMS_URL}${article.coverImage.sizes.hero.url}`
+  : article.coverImage?.url
+    ? `${CMS_URL}${article.coverImage.url}`
+    : null;
+
+// SEO values
+const metaTitle = article.seo?.metaTitle || article.title;
+const metaDescription = article.seo?.metaDescription || article.excerpt || '';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{article.title}</title>
-    <style>
-      body { font-family: system-ui, sans-serif; background: #f4f4f5; padding: 2rem; max-width: 800px; margin: 0 auto; line-height: 1.6; }
-      .header-img { width: 100%; height: 400px; object-fit: cover; border-radius: 8px; margin-bottom: 2rem; }
-      .meta { color: #71717a; margin-bottom: 2rem; border-bottom: 1px solid #e4e4e7; padding-bottom: 1rem; }
-      .content { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-      blockquote { border-left: 4px solid #d4d4d8; padding-left: 1rem; color: #52525b; font-style: italic; }
-      a { color: #3b82f6; text-decoration: none; }
-      a:hover { text-decoration: underline; }
-    </style>
-  </head>
-  <body>
-    <a href="/articles" style="display: inline-block; margin-bottom: 1rem;">&larr; Back to News</a>
+<BaseLayout title={`${metaTitle} | Museo Bulawan`} theme="dark">
 
-    {article.coverImage && article.coverImage.url && (
+  <!-- Hero Cover Image -->
+  {coverUrl && (
+    <div class="w-screen -mt-32 mb-8">
       <img
-        class="header-img"
-        src={`http://127.0.0.1:3001${article.coverImage.url}`}
-        alt={article.coverImage.alt || article.title}
+        class="w-full h-[28rem] md:h-[36rem] object-cover"
+        src={coverUrl}
+        alt={article.coverImage?.alt || article.title}
       />
+    </div>
+  )}
+
+  <article class="w-full max-w-4xl mx-auto px-4 md:px-0 pb-16">
+    <!-- Back link -->
+    <a href="/articles" class="inline-flex items-center gap-2 text-gray-400 hover:text-[#E5D2AC] transition-colors mb-8 text-lg">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+      Back to News & Events
+    </a>
+
+    <!-- Title -->
+    <h1 class="text-4xl md:text-6xl font-serif font-bold text-[#E5D2AC] leading-tight mb-6">{article.title}</h1>
+
+    <!-- Meta row -->
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-gray-400 text-lg border-b border-white/10 pb-6 mb-10">
+      {article.category?.name && (
+        <span class="text-[#F05454] font-bold tracking-widest uppercase text-sm">{article.category.name}</span>
+      )}
+      {article.author?.name && (
+        <span>By <strong class="text-gray-200">{article.author.name}</strong></span>
+      )}
+      <span>{new Date(article.publishedAt || article.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+      {article.address && (
+        <span>📍 {article.address}</span>
+      )}
+    </div>
+
+    <!-- Article body -->
+    <div class="article-content prose prose-invert max-w-none" set:html={htmlContent} />
+
+    <!-- Tags -->
+    {article.tags && article.tags.length > 0 && (
+      <div class="flex flex-wrap gap-3 mt-12 pt-8 border-t border-white/10">
+        {article.tags.map((t: any) => (
+          <span class="px-4 py-1.5 rounded-full bg-white/5 text-gray-300 text-sm border border-white/10">#{t.tag}</span>
+        ))}
+      </div>
     )}
+  </article>
 
-    <h1>{article.title}</h1>
+</BaseLayout>
 
-    <div class="meta">
-      <strong>Category:</strong> {article.category?.title || 'Uncategorized'} <br/>
-      <strong>Author:</strong> {article.author?.name || 'Museum Staff'} <br/>
-      <strong>Published:</strong> {new Date(article.publishedAt || article.createdAt).toLocaleDateString()}
-    </div>
+<style is:global>
+  /* ── Article content typography ────────────────── */
+  .article-content h1 { font-size: 2.25rem; font-weight: 700; margin: 2rem 0 1rem; color: #E5D2AC; }
+  .article-content h2 { font-size: 1.875rem; font-weight: 700; margin: 1.75rem 0 0.75rem; color: #E5D2AC; }
+  .article-content h3 { font-size: 1.5rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: #fafafa; }
+  .article-content h4 { font-size: 1.25rem; font-weight: 600; margin: 1.25rem 0 0.5rem; color: #fafafa; }
+  .article-content p { margin: 0 0 1.25rem; line-height: 1.8; color: #d4d4d8; }
+  .article-content a { color: #60a5fa; text-decoration: underline; text-underline-offset: 3px; }
+  .article-content a:hover { color: #93bbfd; }
+  .article-content blockquote { border-left: 4px solid #D4AF37; padding: 1rem 1.5rem; margin: 1.5rem 0; color: #a1a1aa; font-style: italic; background: rgba(255,255,255,0.02); border-radius: 0 8px 8px 0; }
+  .article-content hr { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0; }
+  .article-content ul { list-style: disc; padding-left: 1.5rem; margin: 0 0 1.25rem; color: #d4d4d8; }
+  .article-content ol { list-style: decimal; padding-left: 1.5rem; margin: 0 0 1.25rem; color: #d4d4d8; }
+  .article-content li { margin-bottom: 0.5rem; line-height: 1.7; }
+  .article-content code { background: rgba(255,255,255,0.08); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+  .article-content img { border-radius: 8px; margin: 1rem 0; max-width: 100%; height: auto; }
 
-    <div class="content">
-      <div set:html={htmlContent} />
-    </div>
-  </body>
-</html>
+  /* ── Figures ─────────────────────────────────── */
+  .article-figure { margin: 1.5rem 0; text-align: center; }
+  .article-figure img { border-radius: 8px; max-width: 100%; }
+  .article-figure figcaption { color: #71717a; font-size: 0.875rem; margin-top: 0.5rem; }
+
+  /* ── Checklist ──────────────────────────────── */
+  .article-checklist { list-style: none; padding-left: 0; }
+  .article-check-item { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: #d4d4d8; }
+  .article-check-item input[type="checkbox"] { accent-color: #D4AF37; }
+
+  /* ── Columns ────────────────────────────────── */
+  .article-columns { display: flex; gap: 2rem; margin: 1.5rem 0; }
+  .article-column { flex: 1; min-width: 0; }
+  @media (max-width: 640px) {
+    .article-columns { flex-direction: column; gap: 1rem; }
+  }
+
+  /* ── Artifact Highlight ─────────────────────── */
+  .article-artifact-highlight { display: flex; gap: 1.5rem; padding: 1.5rem; margin: 1.5rem 0; border: 1px solid rgba(212,175,55,0.3); border-radius: 12px; background: rgba(212,175,55,0.05); }
+  .article-artifact-highlight img { width: 160px; height: 160px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+  .article-artifact-info { display: flex; flex-direction: column; justify-content: center; }
+  .article-artifact-catalog { font-size: 0.75rem; color: #D4AF37; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
+  .article-artifact-info h3 { font-size: 1.25rem; font-weight: 700; color: #E5D2AC; margin: 0.25rem 0 0.5rem; }
+  .article-artifact-info p { color: #a1a1aa; margin: 0; font-size: 0.95rem; }
+  @media (max-width: 640px) {
+    .article-artifact-highlight { flex-direction: column; align-items: center; text-align: center; }
+    .article-artifact-highlight img { width: 100%; height: 200px; }
+  }
+
+  /* ── Call to Action ─────────────────────────── */
+  .article-cta { padding: 2rem; margin: 2rem 0; border-radius: 12px; text-align: center; }
+  .article-cta--default { background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(212,175,55,0.05)); border: 1px solid rgba(212,175,55,0.3); }
+  .article-cta--dark { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); }
+  .article-cta--light { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); }
+  .article-cta h3 { font-size: 1.5rem; font-weight: 700; color: #E5D2AC; margin: 0 0 0.75rem; }
+  .article-cta p { color: #a1a1aa; margin: 0 0 1.25rem; }
+  .article-cta-button { display: inline-block; padding: 0.75rem 2rem; background: #D4AF37; color: #09090b; font-weight: 700; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+  .article-cta-button:hover { background: #c4a030; color: #09090b; text-decoration: none; }
+
+  /* ── Image Gallery ──────────────────────────── */
+  .article-gallery { margin: 1.5rem 0; }
+  .article-gallery--grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .article-gallery--masonry { columns: 2; column-gap: 1rem; }
+  .article-gallery--masonry .article-gallery-item { break-inside: avoid; margin-bottom: 1rem; }
+  .article-gallery--carousel { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 0.5rem; }
+  .article-gallery--carousel .article-gallery-item { flex: 0 0 80%; scroll-snap-align: start; }
+  .article-gallery-item { margin: 0; }
+  .article-gallery-item img { width: 100%; border-radius: 8px; }
+  .article-gallery-item figcaption { color: #71717a; font-size: 0.8rem; margin-top: 0.35rem; text-align: center; }
+  @media (max-width: 640px) {
+    .article-gallery--grid { grid-template-columns: 1fr; }
+    .article-gallery--masonry { columns: 1; }
+  }
+</style>

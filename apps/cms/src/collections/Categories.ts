@@ -9,6 +9,20 @@ export const Categories: CollectionConfig = {
   access: {
     read: () => true,
   },
+  hooks: {
+    beforeChange: [
+      async ({ data }) => {
+        // Auto-generate slug from name if not provided
+        if (data?.name && !data?.slug) {
+          data.slug = data.name
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-|-$/g, '')
+        }
+        return data
+      },
+    ],
+  },
   fields: [
     {
       name: 'name',
@@ -19,11 +33,10 @@ export const Categories: CollectionConfig = {
     {
       name: 'slug',
       type: 'text',
-      required: true,
       unique: true,
       label: 'URL Slug',
       admin: {
-        description: 'URL-friendly identifier (e.g., "museum-news").',
+        description: 'Auto-generated from name. Override for custom URLs.',
         position: 'sidebar',
       },
     },

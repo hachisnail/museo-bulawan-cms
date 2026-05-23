@@ -1,74 +1,107 @@
 ---
-// src/pages/articles.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
 
-// 1. Fetch published articles from Payload CMS (Port 3001)
-// We filter by _status=published to ensure drafts aren't shown, 
-// and filter out any articles that don't have a valid slug string.
-const response = await fetch('http://127.0.0.1:3001/api/articles?where[_status][equals]=published&depth=1');
-const data = await response.json();
+// CMS base URL — change for production
+const CMS_URL = 'http://127.0.0.1:3001';
 
-// Remove the strict filter so we can see all published articles. 
-// We will fallback to using the article ID for the URL if the slug is null.
-const articles = data.docs;
+// Placeholder Background
+const bgImage1 = "https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=2560&auto=format&fit=crop";
+const fallbackImage = "https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?q=80&w=1000&auto=format&fit=crop";
+
+// Fetch published articles from Payload CMS
+let articles: any[] = [];
+try {
+  const res = await fetch(
+    `${CMS_URL}/api/articles?where[_status][equals]=published&depth=1&sort=-publishedAt&limit=50`
+  );
+  if (res.ok) {
+    const data = await res.json();
+    articles = data.docs || [];
+  }
+} catch (e) {
+  // CMS may not be running — fall back to empty
+  console.warn('Could not fetch articles from CMS:', e);
+}
+
+// Fetch categories for the filter dropdown
+let categories: any[] = [];
+try {
+  const res = await fetch(`${CMS_URL}/api/categories?limit=50`);
+  if (res.ok) {
+    const data = await res.json();
+    categories = data.docs || [];
+  }
+} catch (e) {
+  console.warn('Could not fetch categories from CMS:', e);
+}
+
+/**
+ * Get the cover image URL for an article.
+ * Falls back to a placeholder if no cover image is set.
+ */
+function getCoverUrl(article: any): string {
+  if (article.coverImage?.sizes?.card?.url) {
+    return `${CMS_URL}${article.coverImage.sizes.card.url}`;
+  }
+  if (article.coverImage?.url) {
+    return `${CMS_URL}${article.coverImage.url}`;
+  }
+  return fallbackImage;
+}
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Museum News & Articles</title>
-    <style>
-      body { font-family: system-ui, sans-serif; background: #f4f4f5; padding: 2rem; }
-      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
-      .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-      .card img { width: 100%; height: 200px; object-fit: cover; }
-      .card-content { padding: 1.5rem; }
-      .tag { background: #e4e4e7; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.8rem; }
-      .meta { font-size: 0.85rem; color: #71717a; margin-top: 1rem; }
-    </style>
-  </head>
-  <body>
-    <h1>Latest Museum News</h1>
-    <p>This page demonstrates how Astro fetches data from the headless Payload CMS.</p>
+<BaseLayout title="Articles | Museo Bulawan" theme="dark">
+  
+  <!-- Hero Section with Search Overlay -->
+  <div class="w-screen h-[40rem] bg-cover bg-center relative -mt-32" style={`background-image: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('${bgImage1}')`}>
     
-    <div class="grid">
-      {articles.map((article: any) => (
-        <article class="card">
-          {/* Fallback to article.id if slug is null */}
-          <a href={`/articles/${article.slug || article.id}`}>
-            {/* Render the Cover Image if it exists */}
-            {article.coverImage && article.coverImage.url && (
-              <img 
-                src={`http://127.0.0.1:3001${article.coverImage.url}`} 
-                alt={article.coverImage.alt || article.title} 
-              />
-            )}
-            
-            <div class="card-content">
-              {/* Category Tag */}
-              {article.category && (
-                <span class="tag">{article.category.title}</span>
-              )}
-              
-              <h2>{article.title}</h2>
-              
-              {/* Excerpt */}
-              {article.excerpt && <p>{article.excerpt}</p>}
-              
-              <div class="meta">
-                <span>By: {article.author?.name || 'Museum Staff'}</span> &bull; 
-                <span>
-                  {new Date(article.publishedAt || article.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-            </div>
-          </a>
-        </article>
-      ))}
+    <div class="absolute inset-0 flex flex-col justify-center items-center px-8">
+      <h1 class="text-6xl md:text-8xl font-serif text-white font-bold mb-12 drop-shadow-xl text-center">News & Events</h1>
+      
+      <!-- Search & Filter Bar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 w-full max-w-5xl h-auto md:h-20 bg-white rounded-lg overflow-hidden shadow-2xl">
+        
+        <div class="flex items-center bg-white border-b md:border-b-0 md:border-r border-gray-300">
+          <input type="text" placeholder="Search articles..." class="w-full h-full px-6 py-4 md:py-0 text-2xl text-black bg-transparent focus:outline-none placeholder-gray-400" />
+        </div>
+        
+        <div class="relative flex items-center bg-white">
+          <select class="w-full h-full px-6 py-4 md:py-0 text-2xl text-black bg-transparent appearance-none focus:outline-none cursor-pointer">
+            <option value="">All Categories</option>
+            {categories.map((cat) => (
+              <option value={cat.slug}>{cat.name}</option>
+            ))}
+          </select>
+          <div class="pointer-events-none absolute right-6">
+            <svg class="h-6 w-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
 
-      {articles.length === 0 && (
-        <p>No published articles found. Go to the CMS (http://localhost:3001/admin) and publish an article!</p>
-      )}
+      </div>
     </div>
-  </body>
-</html>
+  </div>
+
+  <!-- Articles Grid -->
+  <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 py-24">
+    {articles.length === 0 && (
+      <p class="text-center text-gray-400 text-2xl py-12">No published articles yet. Check back soon!</p>
+    )}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
+      {articles.map((article) => (
+        <a href={`/articles/${article.slug || article.id}`} class="group flex flex-col bg-[#1C1B19] rounded-xl overflow-hidden hover:-translate-y-2 transition-transform duration-300 shadow-xl border border-white/5">
+          <div class="w-full aspect-square overflow-hidden bg-gray-800">
+            <img src={getCoverUrl(article)} alt={article.coverImage?.alt || article.title} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+          </div>
+          <div class="p-8 flex flex-col justify-between flex-1 text-center items-center">
+            <span class="text-[#F05454] font-bold text-sm tracking-widest uppercase mb-4">{article.category?.name || 'Uncategorized'}</span>
+            <h2 class="text-[#E5D2AC] font-serif text-3xl font-bold italic line-clamp-3 mb-4 leading-tight">{article.title}</h2>
+            <span class="text-gray-400 text-lg mt-auto">{new Date(article.publishedAt || article.createdAt).toLocaleDateString()}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+
+</BaseLayout>

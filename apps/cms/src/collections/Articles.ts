@@ -1,15 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import {
   lexicalEditor,
-  HeadingFeature,
-  BlockquoteFeature,
-  LinkFeature,
-  UploadFeature,
-  OrderedListFeature,
-  UnorderedListFeature,
-  ChecklistFeature,
-  InlineCodeFeature,
-  HorizontalRuleFeature,
   BlocksFeature,
 } from '@payloadcms/richtext-lexical'
 
@@ -172,16 +163,20 @@ const ColumnsBlock = {
       name: 'columnOne',
       type: 'richText' as const,
       label: 'Left Column',
+      // Explicit minimal editor prevents infinite recursion from BlocksFeature
+      editor: lexicalEditor({ features: ({ defaultFeatures }) => defaultFeatures }),
     },
     {
       name: 'columnTwo',
       type: 'richText' as const,
       label: 'Middle/Right Column',
+      editor: lexicalEditor({ features: ({ defaultFeatures }) => defaultFeatures }),
     },
     {
       name: 'columnThree',
       type: 'richText' as const,
       label: 'Right Column (if 3 columns)',
+      editor: lexicalEditor({ features: ({ defaultFeatures }) => defaultFeatures }),
       admin: {
         condition: (data, siblingData) => siblingData.layoutType === 'three',
       },
@@ -244,11 +239,17 @@ export const Articles: CollectionConfig = {
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-|-$/g, '')
           
+          // Guard against empty slug (e.g. title was only special characters)
+          if (!baseSlug) {
+            baseSlug = `article-${Date.now()}`
+          }
+          
           let slug = baseSlug
           let count = 1
+          const MAX_ATTEMPTS = 100
           
-          // Ensure slug is unique
-          while (true) {
+          // Ensure slug is unique (bounded loop to prevent infinite iteration)
+          while (count <= MAX_ATTEMPTS) {
             const existing = await req.payload.find({
               collection: 'articles',
               where: { slug: { equals: slug } },
@@ -357,18 +358,11 @@ export const Articles: CollectionConfig = {
       editor: lexicalEditor({
         features: ({ defaultFeatures }) => [
           ...defaultFeatures,
-          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
-          BlockquoteFeature(),
-          LinkFeature(),
-          UploadFeature(),
-          OrderedListFeature(),
-          UnorderedListFeature(),
-          ChecklistFeature(),
-          InlineCodeFeature(),
-          HorizontalRuleFeature(),
+          // Only add BlocksFeature — all other features (Heading, Link, List, etc.)
+          // are already included in defaultFeatures.
           BlocksFeature({
             blocks: [
-              ColumnsBlock, // <-- Added Columns feature inside the editor!
+              ColumnsBlock,
               ArtifactHighlightBlock,
               CallToActionBlock,
               ImageGalleryBlock,

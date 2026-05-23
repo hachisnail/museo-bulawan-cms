@@ -3,16 +3,16 @@
   "version": "0.0.0",
   "description": "",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/*"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently -n ADMIN,API,CMS,MINIO -c blue,green,cyan,magenta,yellow \"npm run dev:admin\" \"npm run dev:api\" \"npm run dev:cms\" \"npm run dev:minio\"",
+    "dev": "concurrently -n ADMIN,API,LANDING,MINIO,CMS -c blue,green,cyan,yellow,pink \"npm run dev:admin\" \"npm run dev:api\" \"npm run dev:landing\" \"npm run dev:minio\" \"npm run dev:cms\"",
     "dev:admin": "npm run dev -w panel-admin",
     "dev:api": "npm run dev -w api",
-    "dev:cms": "npm run dev -w cms",
-    "dev:minio": "apps\\minio\\minio.windows-amd64.RELEASE.2025-09-07T16-13-09Z.exe server apps\\minio\\data --console-address \":9001\""
+    "dev:landing": "npm run dev -w landing",
+    "dev:minio": "apps\\minio\\minio.windows-amd64.RELEASE.2025-09-07T16-13-09Z.exe server apps\\minio\\data --console-address \":9001\"",
+    "dev:cms": "npm run dev -w cms"
   },
   "type": "module",
   "keywords": [],

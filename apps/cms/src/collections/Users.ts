@@ -8,11 +8,17 @@ export const Users: CollectionConfig = {
     description: 'CMS admin accounts for content editors and writers.',
   },
   access: {
-    // Only authenticated users can read the users list
+    // All authenticated users can see the user list (for relationship dropdowns)
     read: ({ req }) => !!req.user,
-    create: ({ req }) => !!req.user,
-    update: ({ req }) => !!req.user,
-    delete: ({ req }) => !!req.user,
+    // Only admins can create, update, or delete users
+    create: ({ req }) => req.user?.role === 'admin',
+    update: ({ req }) => {
+      if (!req.user) return false
+      // Admins can update anyone; others can only update themselves
+      if (req.user.role === 'admin') return true
+      return { id: { equals: req.user.id } }
+    },
+    delete: ({ req }) => req.user?.role === 'admin',
   },
   fields: [
     {

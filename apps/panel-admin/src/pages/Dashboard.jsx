@@ -24,7 +24,7 @@ export default function Dashboard() {
         <div className="max-w-6xl mx-auto space-y-10">
             
             {/* --- Header --- */}
-            <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-zinc-200 pb-6">
+            <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-zinc-300 pb-6">
                 <div>
                     <h1 className="text-2xl font-serif text-black uppercase tracking-widest">
                         Archive Overview
@@ -38,7 +38,7 @@ export default function Dashboard() {
                     <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-zinc-400">
                         SSE Stream
                     </span>
-                    <div className="flex items-center gap-2 px-3 py-1.5 border border-zinc-200 bg-white rounded-sm text-xs font-medium uppercase tracking-wider text-zinc-600 shadow-sm">
+                    <div className="flex items-center gap-2 px-3 py-1.5 border border-zinc-300 bg-white rounded-sm text-xs font-medium uppercase tracking-wider text-zinc-600 shadow-sm">
                         <span className={`w-1.5 h-1.5 rounded-full ${status === 'open' ? 'bg-green-500' : 'bg-red-500'}`}></span>
                         {status}
                     </div>
@@ -47,7 +47,7 @@ export default function Dashboard() {
 
             {/* --- Key Metrics --- */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="border border-zinc-200 bg-white p-6 rounded-sm shadow-sm flex flex-col justify-between">
+                <div className="border border-zinc-300 bg-white p-6 rounded-sm shadow-sm flex flex-col justify-between">
                     <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400 mb-4">
                         Pending Reviews
                     </div>
@@ -56,7 +56,7 @@ export default function Dashboard() {
                     </div>
                 </div>
                 
-                <div className="border border-zinc-200 bg-white p-6 rounded-sm shadow-sm flex flex-col justify-between">
+                <div className="border border-zinc-300 bg-white p-6 rounded-sm shadow-sm flex flex-col justify-between">
                     <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400 mb-4">
                         Active Accessions
                     </div>
@@ -66,7 +66,7 @@ export default function Dashboard() {
                 </div>
                 
                 {/* Highlighted Metric Card */}
-                <div className="border border-zinc-900 bg-zinc-950 p-6 rounded-sm shadow-sm flex flex-col justify-between relative overflow-hidden">
+                <div className="border border-zinc-300 bg-white p-6 rounded-sm shadow-sm flex flex-col justify-between relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-1 h-full bg-[#D4AF37]"></div>
                     <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400 mb-4 ml-2">
                         Cataloged Items
@@ -88,7 +88,7 @@ export default function Dashboard() {
                     </button>
                 </div>
                 
-                <div className="border border-zinc-200 bg-white rounded-sm shadow-sm">
+                <div className="border border-zinc-300 bg-white rounded-sm shadow-sm">
                     {displayList.length === 0 ? (
                         <div className="p-16 text-center flex flex-col items-center justify-center">
                             <svg className="w-8 h-8 text-zinc-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
@@ -117,7 +117,7 @@ export default function Dashboard() {
                                         <span className={`px-2 py-1 rounded-sm text-[9px] font-bold uppercase tracking-widest border ${
                                             item?.status === 'under_review' 
                                                 ? 'border-[#D4AF37]/30 text-[#A68A27] bg-[#D4AF37]/10' 
-                                                : 'border-zinc-200 text-zinc-600 bg-zinc-50'
+                                                : 'border-zinc-300 text-zinc-600 bg-zinc-50'
                                         }`}>
                                             {item?.status?.replace('_', ' ') || 'UNKNOWN'}
                                         </span>

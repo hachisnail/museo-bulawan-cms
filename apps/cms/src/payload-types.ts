@@ -164,7 +164,7 @@ export interface Article {
   /**
    * Automatically assigned to you if left blank.
    */
-  author?: (number | null) | User;
+  author: number | User;
   publishedAt?: string | null;
   coverImage?: (number | null) | Media;
   address?: string | null;

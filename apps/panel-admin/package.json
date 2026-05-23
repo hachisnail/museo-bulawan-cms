@@ -12,7 +12,9 @@
   "dependencies": {
     "@headlessui/react": "^2.2.10",
     "@tailwindcss/vite": "^4.2.4",
+    "docx-preview": "^0.3.7",
     "js-cookie": "^3.0.5",
+    "jszip": "^3.10.1",
     "lucide-react": "^1.14.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",

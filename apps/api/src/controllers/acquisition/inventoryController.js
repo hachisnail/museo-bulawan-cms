@@ -7,28 +7,54 @@ import { mapDTO } from '../../utils/dtoMapper.js';
  * Handles active inventory management: cataloging, status updates, transfers, and deaccessioning.
  */
 export const inventoryController = {
+    /**
+     * GET /inventory
+     * 
+     * Supports query parameters:
+     *   ?status=active|loan|maintenance|storage   — Filter by artifact status
+     *   ?location=Gallery+A                       — Filter by current location
+     *   ?search=text                              — Search by catalog number (LIKE)
+     *   ?page=1&perPage=50                        — Pagination
+     *   ?expand=accession_id.intake_id            — Expand relations (default)
+     * 
+     * Note: Deaccessioned items are excluded by default. Use /inventory/archive instead.
+     */
     async listInventory(req, res, next) {
         try {
-            // By default, exclude deaccessioned items from the active inventory list
-            const filter = req.query.filter ? `(${req.query.filter}) && status != "deaccessioned"` : 'status != "deaccessioned"';
+            const filters = ['status!="deaccessioned"'];
+
+            if (req.query.status) filters.push(`status="${req.query.status}"`);
+            if (req.query.location) filters.push(`current_location="${req.query.location}"`);
+            if (req.query.search) filters.push(`catalog_number~"${req.query.search}"`);
+
             const query = { 
-                ...req.query, 
-                filter,
-                expand: req.query.expand || 'accession_id.intake_id' 
+                page: req.query.page,
+                perPage: req.query.perPage,
+                expand: req.query.expand || 'accession_id.intake_id',
+                filter: filters.join(' && ')
             };
             const result = await acquisitionService._listRecords('inventory', query);
             res.status(200).json({ status: 'success', data: mapDTO(result) });
         } catch (error) { next(error); }
     },
 
+    /**
+     * GET /inventory/archive
+     * 
+     * Supports the same query parameters as listInventory but only returns deaccessioned items.
+     */
     async listDeaccessioned(req, res, next) {
         try {
-            // Explicitly only show deaccessioned items in the archive
-            const filter = req.query.filter ? `(${req.query.filter}) && status = "deaccessioned"` : 'status = "deaccessioned"';
+            const filters = ['status="deaccessioned"'];
+
+            if (req.query.search) filters.push(`catalog_number~"${req.query.search}"`);
+            if (req.query.location) filters.push(`current_location="${req.query.location}"`);
+
             const query = { 
-                ...req.query, 
-                filter,
-                expand: req.query.expand || 'accession_id.intake_id' 
+                page: req.query.page,
+                perPage: req.query.perPage,
+                expand: req.query.expand || 'accession_id.intake_id',
+                filter: filters.join(' && ')
             };
             const result = await acquisitionService._listRecords('inventory', query);
             res.status(200).json({ status: 'success', data: mapDTO(result) });
@@ -100,6 +126,111 @@ export const inventoryController = {
             res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
             res.setHeader('Content-Disposition', `attachment; filename=Inventory_Report_${inventoryId}.docx`);
             res.status(200).send(buffer);
+        } catch (error) { next(error); }
+    },
+
+    async exportConditionReport(req, res, next) {
+        try {
+            const { inventoryId } = req.params;
+            const buffer = await acquisitionService.getConditionReportDocument(inventoryId, 'docx');
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            res.setHeader('Content-Disposition', `attachment; filename=Condition_Report_${inventoryId}.docx`);
+            res.status(200).send(buffer);
+        } catch (error) { next(error); }
+    },
+
+    async exportDeaccessionReport(req, res, next) {
+        try {
+            const { inventoryId } = req.params;
+            const buffer = await acquisitionService.getDeaccessionReport(inventoryId, 'docx');
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            res.setHeader('Content-Disposition', `attachment; filename=Deaccession_Report_${inventoryId}.docx`);
+            res.status(200).send(buffer);
+        } catch (error) { next(error); }
+    },
+
+    // ==========================================
+    // INVENTORY AUDIT (SPECTRUM: Inventory procedure)
+    // ==========================================
+
+    /**
+     * POST /inventory/:inventoryId/audit
+     * Records the result of a physical audit/spot check for a single item.
+     */
+    async recordAuditCheck(req, res, next) {
+        try {
+            const { inventoryId } = req.params;
+            const result = await acquisitionService.recordAuditCheck(req.user.id, inventoryId, req.body);
+            res.status(201).json({ 
+                message: 'Audit check recorded.', 
+                audit: result 
+            });
+        } catch (error) { next(error); }
+    },
+
+    /**
+     * GET /inventory/:inventoryId/audits
+     * Returns the audit history for a specific inventory item.
+     */
+    async getAuditHistory(req, res, next) {
+        try {
+            const { inventoryId } = req.params;
+            const result = await acquisitionService.getAuditHistory(inventoryId);
+            res.status(200).json({ status: 'success', data: result });
+        } catch (error) { next(error); }
+    },
+
+    /**
+     * GET /inventory/overdue-audits
+     * Returns items that are overdue for their periodic inventory check.
+     */
+    async getOverdueAudits(req, res, next) {
+        try {
+            const thresholdDays = parseInt(req.query.days) || 365;
+            const result = await acquisitionService.getOverdueAudits(thresholdDays);
+            res.status(200).json({ status: 'success', data: result });
+        } catch (error) { next(error); }
+    },
+
+    // ==========================================
+    // OBJECT SUMMARY (Aggregated compliance view)
+    // ==========================================
+
+    /**
+     * GET /inventory/:inventoryId/summary
+     * Returns a complete compliance snapshot for a single artifact.
+     */
+    async getObjectSummary(req, res, next) {
+        try {
+            const { inventoryId } = req.params;
+            const result = await acquisitionService.getObjectSummary(inventoryId);
+            res.status(200).json({ status: 'success', data: result });
+        } catch (error) { next(error); }
+    },
+
+    // ==========================================
+    // DEACCESSION MANAGEMENT
+    // ==========================================
+
+    /**
+     * POST /inventory/:inventoryId/approve-deaccession
+     */
+    async approveDeaccession(req, res, next) {
+        try {
+            const { inventoryId } = req.params;
+            const result = await acquisitionService.approveDeaccession(req.user.id, inventoryId);
+            res.status(200).json({ message: 'Deaccession approved. Item removed from active collection.', item: result });
+        } catch (error) { next(error); }
+    },
+
+    /**
+     * POST /inventory/:inventoryId/cancel-deaccession
+     */
+    async cancelDeaccession(req, res, next) {
+        try {
+            const { inventoryId } = req.params;
+            const result = await acquisitionService.cancelDeaccession(req.user.id, inventoryId);
+            res.status(200).json({ message: 'Deaccession cancelled. Item restored to active status.', item: result });
         } catch (error) { next(error); }
     }
 };

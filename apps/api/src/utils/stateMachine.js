@@ -23,7 +23,7 @@ const INTAKE_TRANSITIONS = {
 const ACCESSION_TRANSITIONS = {
     'pending_approval': ['in_research', 'rejected'],
     'in_research':      ['finalized'],
-    'finalized':        [],                               // terminal
+    'finalized':        ['in_research'],                  // allow correction/updates
     'rejected':         ['pending_approval']              // re-submit
 };
 
@@ -31,11 +31,12 @@ const ACCESSION_TRANSITIONS = {
 // INVENTORY STATUS TRANSITIONS
 // ==========================================
 const INVENTORY_TRANSITIONS = {
-    'active':           ['loan', 'maintenance', 'storage', 'deaccessioned'],
-    'loan':             ['active', 'storage', 'maintenance', 'deaccessioned'],
-    'maintenance':      ['active', 'storage', 'deaccessioned'],
-    'storage':          ['active', 'loan', 'maintenance', 'deaccessioned'],
-    'deaccessioned':    []                                // terminal
+    'active':              ['loan', 'maintenance', 'storage', 'deaccession_pending'],
+    'loan':                ['active', 'storage', 'maintenance', 'deaccession_pending'],
+    'maintenance':         ['active', 'storage', 'deaccession_pending'],
+    'storage':             ['active', 'loan', 'maintenance', 'deaccession_pending'],
+    'deaccession_pending': ['active', 'deaccessioned'],   // can be cancelled or approved
+    'deaccessioned':       []                              // terminal
 };
 
 // ==========================================
@@ -44,7 +45,7 @@ const INVENTORY_TRANSITIONS = {
 const SUBMISSION_TRANSITIONS = {
     'pending':    ['processed', 'archived'],
     'processed':  ['archived'],
-    'archived':   []                                      // terminal
+    'archived':   ['pending']                              // allow reopen
 };
 
 // ==========================================

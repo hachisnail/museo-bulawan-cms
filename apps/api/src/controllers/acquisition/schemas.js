@@ -44,6 +44,8 @@ export const schemas = {
         materials: Joi.string().optional().allow(''),
         research_notes: Joi.string().optional().allow(''),
         historical_significance: Joi.string().optional().allow(''),
+        tags: Joi.string().optional().allow(''),
+        research_completed: Joi.boolean().optional(),
         research_data: Joi.object().optional()
     }),
     
@@ -77,5 +79,16 @@ export const schemas = {
         treatment: Joi.string().required(),
         findings: Joi.string().required(),
         recommendations: Joi.string().allow('', null).default('')
+    }),
+
+    auditCheck: Joi.object({
+        auditType: Joi.string().valid('spot_check', 'full_audit', 'annual_review', 'random_sample').default('spot_check'),
+        objectFound: Joi.boolean().default(true),
+        locationVerified: Joi.boolean().default(true),
+        numberLegible: Joi.boolean().default(true),
+        conditionConsistent: Joi.boolean().default(true),
+        discrepancyNotes: Joi.string().allow('', null).default(null),
+        auditedLocation: Joi.string().allow('', null).optional(),
+        observedCondition: Joi.string().valid('Excellent', 'Good', 'Fair', 'Poor', 'Critical').optional()
     })
 };

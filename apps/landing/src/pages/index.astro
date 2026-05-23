@@ -1,17 +1,169 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
 
+// Placeholder images to ensure the project compiles
+const bgImage1 = "https://images.unsplash.com/photo-1518998053401-b15e84852986?q=80&w=2560&auto=format&fit=crop";
+const block1 = "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=1000&auto=format&fit=crop";
+const block2 = "https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?q=80&w=1000&auto=format&fit=crop";
+const na1 = "https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=1000&auto=format&fit=crop";
+const na2 = "https://images.unsplash.com/photo-1572953109213-3be62398eb95?q=80&w=1000&auto=format&fit=crop";
+
+// Mock Data for initial render
+const displayEvents = [
+  { title: "Opening Exhibition", upload_date: "2026-05-10", images: block1 },
+  { title: "Cultural Workshop", upload_date: "2026-05-15", images: block2 }
+];
+const articles = [...displayEvents, ...displayEvents]; 
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Home | Museo Bulawan" theme="dark">
+  <div class="w-full flex flex-col items-center">
+    
+    <!-- Hero Section -->
+    <div 
+      id="home" 
+      class="w-screen min-h-screen bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center -mt-32 pt-32"
+      style={`background-image: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('${bgImage1}');`}
+    >
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col justify-center h-full">
+        <span class="text-3xl md:text-5xl font-bold text-[#DAB765] drop-shadow-lg mb-2">WELCOME TO</span>
+        <span class="text-6xl md:text-8xl lg:text-9xl font-bold text-white drop-shadow-xl leading-none">MUSEO <br /> BULAWAN</span>
+        
+        <div class="flex gap-x-6 my-12">
+          <a href="#learn_more" class="w-48 h-16 bg-white hover:bg-gray-200 flex items-center justify-center text-black text-xl font-medium transition duration-300">
+            Learn More
+          </a>
+          <a href="/appointment" class="w-48 h-16 bg-transparent border-2 border-white hover:bg-white hover:text-black flex items-center justify-center text-white text-xl font-medium transition duration-300">
+            BOOK A VISIT
+          </a>
+        </div>
+
+        <div class="flex flex-col gap-y-6 mt-8">
+          <div class="text-white flex items-start gap-4">
+            <svg class="w-8" fill="currentColor" viewBox="0 0 512 512"><path d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/></svg>
+            <div>
+              <span class="block text-xl font-bold">Museum Hours</span>
+              <span class="text-base font-light text-white/80">Open Daily 9:00am-5:00pm, Monday-Friday</span>
+            </div>
+          </div>
+          <div class="text-white flex items-start gap-4">
+            <svg class="w-8" fill="currentColor" viewBox="0 0 384 512"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>
+            <div>
+              <span class="block text-xl font-bold">Museum Location</span>
+              <span class="text-base font-light text-white/80">Camarines Norte Provincial Capitol Grounds, Daet</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Learn More Section -->
+    <section id="learn_more" class="w-screen bg-white min-h-screen py-24 flex items-center">
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row items-center gap-16">
+        <div class="flex-1 flex flex-col justify-center">
+          <p class="text-2xl md:text-4xl text-justify text-black leading-relaxed font-serif">
+            <span class="text-5xl md:text-7xl text-[#EFBF04] font-bold">Museo Bulawan</span>, 
+            known as the "Golden Museum", is the leading and the most viewer-friendly community museum that serves as the nerve center for education and communication of the rich cultural, artistic and natural heritage and history of Camarines Norte.
+          </p>
+          <a href="/about" class="mt-12 flex items-center gap-x-4 text-gray-600 hover:text-black transition-colors">
+            <div class="w-16 h-px bg-gray-600"></div>
+            <span class="text-2xl font-light uppercase tracking-widest">About Museo Bulawan</span>
+          </a>
+        </div>
+        <div class="flex-1 relative">
+          <img src={block1} alt="Museum Heritage" class="w-full h-[40rem] object-cover shadow-2xl rounded" />
+        </div>
+      </div>
+    </section>
+
+    <!-- What's On Section -->
+    <section id="whats_on" class="w-screen bg-[#f9f9f9] min-h-screen py-24 flex items-center">
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row gap-16">
+        <div class="flex-1 relative hidden lg:block">
+          <img src={block2} alt="Calendar Display" class="w-full h-[50rem] object-cover rounded shadow-lg" />
+          <div class="absolute inset-0 bg-black/40 flex items-center justify-center rounded">
+            <span class="text-white text-3xl font-bold border-2 border-white p-8">Calendar Placeholder</span>
+          </div>
+        </div>
+        <div class="flex-1 flex flex-col justify-center">
+          <h2 class="text-6xl md:text-8xl font-serif text-black mb-12 border-b-4 border-black pb-4 inline-block w-fit">What's On?</h2>
+          <div class="flex flex-col gap-y-8">
+            {displayEvents.map((article) => (
+              <a href={`/articles`} class="w-full h-[20rem] md:h-[25rem] bg-cover bg-center rounded-lg shadow-lg relative overflow-hidden group" style={`background-image: url('${article.images}')`}>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-8 group-hover:from-black/90 transition-all">
+                  <span class="text-white text-3xl font-bold">{article.title}</span>
+                  <span class="text-white/80 text-lg mt-2">{article.upload_date}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- News & Events Section -->
+    <section id="news_events" class="w-screen bg-[#1C1B19] min-h-screen py-24">
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32">
+        <div class="flex items-center text-gray-400 gap-4 mb-4">
+          <div class="w-12 h-px bg-gray-400"></div>
+          <span class="text-xl font-light uppercase tracking-widest">Don't Miss</span>
+        </div>
+        <h2 class="text-6xl md:text-8xl font-serif text-white mb-16">News & Events</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          {articles.slice(0, 4).map((article) => (
+            <a href={`/articles`} class="flex flex-col xl:flex-row gap-6 bg-black/40 p-6 rounded-xl hover:bg-black/60 transition-colors border border-white/5">
+              <div class="w-full xl:w-2/5 h-[20rem] rounded-lg bg-cover bg-center" style={`background-image: url('${article.images}')`}></div>
+              <div class="w-full xl:w-3/5 flex flex-col justify-between py-2">
+                <h3 class="text-3xl font-bold text-white leading-tight">{article.title}</h3>
+                <div class="flex gap-4 mt-4">
+                  <span class="text-[#DAB765] text-lg font-semibold">Exhibition</span>
+                  <span class="text-gray-400 text-lg">{article.upload_date}</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div class="flex justify-end">
+          <a href="/articles" class="text-2xl text-white hover:text-[#DAB765] flex items-center gap-4 transition-colors">
+            See All Events &rarr;
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Support Us Section -->
+    <section id="support" class="w-screen bg-white min-h-screen py-24 flex items-center">
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col gap-24">
+        
+        <div class="flex flex-col lg:flex-row items-center gap-16">
+          <div class="flex-1 w-full h-[30rem] bg-cover bg-center rounded-xl shadow-xl" style={`background-image: url('${na1}')`}></div>
+          <div class="flex-1 flex flex-col items-start lg:items-end text-left lg:text-right">
+            <h2 class="text-6xl font-bold text-black mb-6">VISIT US!</h2>
+            <p class="text-2xl text-gray-700 leading-relaxed mb-8 max-w-2xl">
+              Explore the treasures of Museo Bulawan! Plan your visit today by booking a tour or schedule an appointment for research, interviews, and more.
+            </p>
+            <a href="/appointment" class="border-2 border-black text-black hover:bg-black hover:text-white px-8 py-4 text-2xl font-bold rounded transition-colors">
+              BOOK AN APPOINTMENT
+            </a>
+          </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row-reverse items-center gap-16">
+          <div class="flex-1 w-full h-[30rem] bg-cover bg-center rounded-xl shadow-xl" style={`background-image: url('${na2}')`}></div>
+          <div class="flex-1 flex flex-col items-start text-left">
+            <h2 class="text-6xl font-bold text-black mb-6">YOUR SUPPORT MATTERS!</h2>
+            <p class="text-2xl text-gray-700 leading-relaxed mb-8 max-w-2xl">
+              Help us preserve and celebrate our heritage! Contribute to Museo Bulawan by donating or lending artifacts to enrich our collection and share history with future generations.
+            </p>
+            <a href="/about/support" class="border-2 border-black text-black hover:bg-black hover:text-white px-8 py-4 text-2xl font-bold rounded transition-colors">
+              SUPPORT US
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>

@@ -1,0 +1,95 @@
+---
+interface Props {
+  theme?: "light" | "dark";
+}
+
+const { theme = "light" } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+// Removed catalogs_public
+const flags = {
+  home: true,
+  articles_public: true,
+  about: true,
+};
+
+const initialBg = theme === "dark" ? "bg-[#1C1B19] shadow-md" : "bg-transparent shadow-md";
+const initialText = theme === "dark" ? "text-white" : "text-black";
+---
+
+<header
+  id="public-header"
+  data-theme={theme}
+  class={`w-full fixed top-0 z-50 transition-all h-10 duration-300 ${initialBg}`}
+>
+  <div class="flex w-full max-w-[140rem] mx-auto h-full justify-between px-8 md:px-16 lg:px-32">
+    
+    <span
+      id="header-text"
+      class={`${initialText} text-[0.65rem] sm:text-xs md:text-sm h-fit w-fit my-auto transition-colors duration-300`}
+    >
+      Open Daily 9:00am-5:00pm, Monday-Friday, Closed During Holidays
+    </span>
+
+    <div class="w-auto flex items-center">
+      <div id="nav-links" class="inline-block opacity-0 pointer-events-none transition-opacity duration-300">
+        {flags.home && (
+          <a href="/" class={`mx-2 text-xs my-auto hover:underline hover:underline-offset-4 nav-item ${currentPath === "/" ? "underline underline-offset-4 decoration-1" : ""} ${initialText}`}>
+            Home
+          </a>
+        )}
+        {flags.articles_public && (
+          <a href="/articles" class={`mx-2 text-xs my-auto hover:underline hover:underline-offset-4 nav-item ${currentPath.startsWith("/articles") ? "underline underline-offset-4 decoration-1" : ""} ${initialText}`}>
+            News & Events
+          </a>
+        )}
+        {flags.about && (
+          <a href="/about" class={`mx-2 text-xs my-auto hover:underline hover:underline-offset-4 nav-item ${currentPath.startsWith("/about") ? "underline underline-offset-4 decoration-1" : ""} ${initialText}`}>
+            About
+          </a>
+        )}
+      </div>
+
+      <a href="/login" class={`mx-2 my-auto ${currentPath === "/login" ? "hidden" : ""}`}>
+        <span
+          id="login-btn"
+          class={`${initialText} px-1 hover:text-gray-400 border border-gray-700 font-semibold rounded-sm text-xs transition-colors duration-300`}
+        >
+          Login
+        </span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById("public-header");
+  const headerText = document.getElementById("header-text");
+  const loginBtn = document.getElementById("login-btn");
+  const navLinksContainer = document.getElementById("nav-links");
+  const navItems = document.querySelectorAll(".nav-item");
+  const theme = header?.getAttribute("data-theme");
+
+  const handleScroll = () => {
+    const isScrolled = window.scrollY > 5;
+    if (isScrolled) {
+      header?.classList.replace("bg-transparent", "bg-[#1C1B19]");
+      
+      if (theme === "light") {
+        headerText?.classList.replace("text-black", "text-white");
+        loginBtn?.classList.replace("text-black", "text-white");
+        navItems.forEach(item => item.classList.replace("text-black", "text-white"));
+      }
+      navLinksContainer?.classList.remove("opacity-0", "pointer-events-none");
+    } else {
+      if (theme === "light") {
+        header?.classList.replace("bg-[#1C1B19]", "bg-transparent");
+        headerText?.classList.replace("text-white", "text-black");
+        loginBtn?.classList.replace("text-white", "text-black");
+        navItems.forEach(item => item.classList.replace("text-white", "text-black"));
+      }
+      navLinksContainer?.classList.add("opacity-0", "pointer-events-none");
+    }
+  };
+  window.addEventListener("scroll", handleScroll);
+</script>

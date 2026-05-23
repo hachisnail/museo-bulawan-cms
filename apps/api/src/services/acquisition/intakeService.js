@@ -7,12 +7,13 @@ import { sendEmail } from '../../utils/mailer.js';
 import { assertTransition } from '../../utils/stateMachine.js';
 import { documentService } from '../documentService.js';
 import { notificationService } from '../notificationService.js';
+import { getContractType } from '../../utils/constants.js';
 
 export const intakeService = {
     // ==========================================
     // PHASE 1A: Register External Intake
     // ==========================================
-    async registerExternalIntake(staffId, submissionId, donorAccountId, donorName, acquisitionMethod, itemDetails) {
+    async registerExternalIntake(staffId, submissionId, donorAccountId, donorName, acquisitionMethod, itemDetails, connection = null) {
         return await globalMutex.runExclusive(`external_intake_${submissionId}_${itemDetails.itemName}`, async () => {
             const donationItem = await baseService._createRecord(staffId, 'donation_items', {
                 submission_id: submissionId,
@@ -20,7 +21,7 @@ export const intakeService = {
                 description: itemDetails.description,
                 quantity: itemDetails.quantity,
                 status: 'accepted'
-            });
+            }, connection);
 
             const intake = await baseService._createRecord(staffId, 'intakes', {
                 submission_id: submissionId,
@@ -31,7 +32,7 @@ export const intakeService = {
                 acquisition_method: acquisitionMethod,
                 status: 'under_review',
                 moa_status: 'pending'
-            });
+            }, connection);
 
             return { intake, donationItem };
         });
@@ -43,23 +44,25 @@ export const intakeService = {
     async createInternalIntake(staffId, itemDetails, method, loanEndDate = null) {
         return await globalMutex.runExclusive(`internal_intake_${staffId}`, async () => {
             try {
-                const donationItem = await baseService._createRecord(staffId, 'donation_items', {
-                    item_name: itemDetails.itemName,
-                    description: itemDetails.description || 'Internal Intake Item',
-                    quantity: itemDetails.quantity || 1,
-                    status: 'accepted'
-                });
+                return await db.transaction(async (tx) => {
+                    const donationItem = await baseService._createRecord(staffId, 'donation_items', {
+                        item_name: itemDetails.itemName,
+                        description: itemDetails.description || 'Internal Intake Item',
+                        quantity: itemDetails.quantity || 1,
+                        status: 'accepted'
+                    }, tx);
 
-                const intake = await baseService._createRecord(staffId, 'intakes', {
-                    donation_item_id: donationItem.id,
-                    proposed_item_name: itemDetails.itemName,
-                    donor_info: itemDetails.sourceInfo || 'Internal/Purchase',
-                    acquisition_method: method, 
-                    loan_end_date: loanEndDate,
-                    status: 'under_review',
-                    moa_status: 'pending'
+                    const intake = await baseService._createRecord(staffId, 'intakes', {
+                        donation_item_id: donationItem.id,
+                        proposed_item_name: itemDetails.itemName,
+                        donor_info: itemDetails.sourceInfo || 'Internal/Purchase',
+                        acquisition_method: method, 
+                        loan_end_date: loanEndDate,
+                        status: 'under_review',
+                        moa_status: 'pending'
+                    }, tx);
+                    return intake;
                 });
-                return intake;
             } catch (error) {
                 logger.error(`Error creating internal intake: ${error.message}`);
                 throw error;
@@ -72,7 +75,9 @@ export const intakeService = {
     // ==========================================
     async approveIntake(staffId, intakeId) {
         return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
-            const result = await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'approved');
+            const result = await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'approved', {
+                current_location: 'Pending Documentation (With Donor)'
+            });
             const intake = await baseService._getRecord('intakes', intakeId);
             notificationService.sendToRole('curator', 'Intake Approved', 
                 `Intake for "${intake.proposed_item_name}" has been approved. Please generate delivery documents.`, 'success', { actionUrl: `/intakes?id=${intakeId}` });
@@ -85,12 +90,14 @@ export const intakeService = {
     // ==========================================
     async rejectIntake(staffId, intakeId, reason) {
         return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
-            const intake = await baseService._getRecord('intakes', intakeId);
-            if (intake.donation_item_id) {
-                await baseService._updateRecord(staffId, 'donation_items', intake.donation_item_id, { status: 'rejected' });
-            }
-            return await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'rejected', {
-                rejection_reason: reason
+            return await db.transaction(async (tx) => {
+                const intake = await baseService._getRecord('intakes', intakeId, {}, tx);
+                if (intake.donation_item_id) {
+                    await baseService._updateRecord(staffId, 'donation_items', intake.donation_item_id, { status: 'rejected' }, tx);
+                }
+                return await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'rejected', {
+                    rejection_reason: reason
+                }, tx);
             });
         });
     },
@@ -100,12 +107,14 @@ export const intakeService = {
     // ==========================================
     async reopenIntake(staffId, intakeId) {
         return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
-            const intake = await baseService._getRecord('intakes', intakeId);
-            if (intake.donation_item_id) {
-                await baseService._updateRecord(staffId, 'donation_items', intake.donation_item_id, { status: 'accepted' });
-            }
-            return await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'under_review', {
-                rejection_reason: null
+            return await db.transaction(async (tx) => {
+                const intake = await baseService._getRecord('intakes', intakeId, {}, tx);
+                if (intake.donation_item_id) {
+                    await baseService._updateRecord(staffId, 'donation_items', intake.donation_item_id, { status: 'accepted' }, tx);
+                }
+                return await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'under_review', {
+                    rejection_reason: null
+                }, tx);
             });
         });
     },
@@ -116,7 +125,7 @@ export const intakeService = {
     async generateDynamicMOA(staffId, intakeId, overrides = {}) {
         return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
             try {
-                const intake = await baseService._getRecord('intakes', intakeId);
+                const intake = await baseService._getRecord('intakes', intakeId, { expand: 'donor_account_id,donation_item_id' });
                 assertTransition('intake', intake.status, 'awaiting_delivery');
 
                 const finalDonorName = overrides.donorName || intake.donor_info;
@@ -126,18 +135,13 @@ export const intakeService = {
                     finalLoanDuration = overrides.loanDuration || (intake.loan_end_date ? `Until ${intake.loan_end_date}` : 'Standard 6 Months');
                 }
 
-                const contractTypes = {
-                    'gift': 'deed_of_gift',
-                    'loan': 'loan_agreement',
-                    'purchase': 'bill_of_sale',
-                    'existing': 'internal_memo'
-                };
+                const contractType = getContractType(intake.acquisition_method);
 
-                const contractType = contractTypes[intake.acquisition_method];
-                if (!contractType) throw new Error('Unknown acquisition method.');
-
-                const doc = await documentService.generateMOA(intake, 'html', overrides);
-                const moaDraft = doc;
+                const docHtml = await documentService.generateMOA(intake, 'html', overrides);
+                const docDocx = await documentService.generateMOA(intake, 'docx', overrides);
+                
+                const moaDraft = docHtml;
+                const docxBase64 = docDocx.toString('base64');
 
                 const deliverySlipId = `DS-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
                 const rawToken = crypto.randomBytes(4).toString('hex').toUpperCase(); 
@@ -150,36 +154,41 @@ export const intakeService = {
                     delivery_slip_id: deliverySlipId,
                     moa_status: 'generated',
                     qr_token_hash: tokenHash,
-                    qr_token_expires: tokenExpires
+                    qr_token_expires: tokenExpires,
+                    current_location: 'With Donor (Awaiting Delivery)'
                 });
 
                 const donorEmail = intake.expand?.donor_account_id?.email || '';
                 if (donorEmail) {
-                    await sendEmail({
-                        to: donorEmail,
-                        subject: `Museum Acquisition Documents: ${intake.proposed_item_name}`,
-                        html: `
-                            <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 12px;">
-                                <h2 style="color: #4f46e5;">Museum Acquisition Documents</h2>
-                                <p>Hello ${finalDonorName},</p>
-                                <p>An official <strong>${contractType.replace(/_/g, ' ')}</strong> has been generated for your artifact: <strong>${intake.proposed_item_name}</strong>.</p>
-                                <div style="background: #f9fafb; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 13px; border: 1px solid #e5e7eb; margin: 20px 0;">
-                                    ${moaDraft}
+                    try {
+                        await sendEmail({
+                            to: donorEmail,
+                            subject: `Museum Acquisition Documents: ${intake.proposed_item_name}`,
+                            html: `
+                                <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 12px;">
+                                    <h2 style="color: #4f46e5;">Museum Acquisition Documents</h2>
+                                    <p>Hello ${finalDonorName},</p>
+                                    <p>An official <strong>${contractType.replace(/_/g, ' ')}</strong> has been generated for your artifact: <strong>${intake.proposed_item_name}</strong>.</p>
+                                    <div style="background: #f9fafb; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 13px; border: 1px solid #e5e7eb; margin: 20px 0;">
+                                        ${moaDraft}
+                                    </div>
+                                    <h3 style="color: #111827;">Step 2: Physical Delivery</h3>
+                                    <p>To complete the intake, please deliver the artifact to the museum. During the handover, provide this verification token to the staff:</p>
+                                    <div style="background: #eff6ff; padding: 24px; border-radius: 12px; font-size: 28px; text-align: center; font-weight: 800; color: #1d4ed8; letter-spacing: 4px; border: 2px dashed #3b82f6; margin: 20px 0;">
+                                        ${rawToken}
+                                    </div>
+                                    <p style="font-size: 12px; color: #6b7280; text-align: center;">
+                                        <strong>Delivery Slip ID:</strong> ${deliverySlipId}<br/>
+                                        This token expires on ${new Date(tokenExpires).toLocaleDateString()}.
+                                    </p>
+                                    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;"/>
+                                    <p style="font-size: 11px; color: #9ca3af; text-align: center;">Museo Bulawan CMS - Official Acquisition Communication</p>
                                 </div>
-                                <h3 style="color: #111827;">Step 2: Physical Delivery</h3>
-                                <p>To complete the intake, please deliver the artifact to the museum. During the handover, provide this verification token to the staff:</p>
-                                <div style="background: #eff6ff; padding: 24px; border-radius: 12px; font-size: 28px; text-align: center; font-weight: 800; color: #1d4ed8; letter-spacing: 4px; border: 2px dashed #3b82f6; margin: 20px 0;">
-                                    ${rawToken}
-                                </div>
-                                <p style="font-size: 12px; color: #6b7280; text-align: center;">
-                                    <strong>Delivery Slip ID:</strong> ${deliverySlipId}<br/>
-                                    This token expires on ${new Date(tokenExpires).toLocaleDateString()}.
-                                </p>
-                                <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;"/>
-                                <p style="font-size: 11px; color: #9ca3af; text-align: center;">Museo Bulawan CMS - Official Acquisition Communication</p>
-                            </div>
-                        `
-                    });
+                            `
+                        });
+                    } catch (emailErr) {
+                        logger.error(`Non-blocking error sending MOA email: ${emailErr.message}`);
+                    }
                 }
 
                 return {
@@ -187,6 +196,7 @@ export const intakeService = {
                     deliverySlipId,
                     contractType,
                     moaDraft,
+                    docxData: docxBase64,
                     qrPayload: { type: "delivery_confirmation", intakeId, token: rawToken },
                     intake: updatedIntake
                 };
@@ -198,7 +208,7 @@ export const intakeService = {
     },
 
     async exportMOA(intakeId) {
-        const intake = await baseService._getRecord('intakes', intakeId);
+        const intake = await baseService._getRecord('intakes', intakeId, { expand: 'donor_account_id,donation_item_id' });
         return await documentService.generateMOA(intake, 'docx');
     },
 
@@ -259,7 +269,8 @@ export const intakeService = {
                 const updated = await baseService._updateRecord(staffId, 'intakes', intakeId, {
                     status: 'in_custody',
                     qr_token_hash: null,
-                    qr_token_expires: null
+                    qr_token_expires: null,
+                    current_location: 'Quarantine Room'
                 });
 
                 notificationService.sendToRole('curator', 'Artifact in Custody', 
@@ -270,6 +281,15 @@ export const intakeService = {
                 logger.error(`Error confirming delivery: ${error.message}`);
                 throw error;
             }
+        });
+    },
+
+    async updateIntakeLocation(staffId, intakeId, location) {
+        return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
+            const intake = await baseService._getRecord('intakes', intakeId);
+            return await baseService._updateRecord(staffId, 'intakes', intakeId, {
+                current_location: location
+            });
         });
     }
 };

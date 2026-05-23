@@ -7,8 +7,8 @@
  * Catalog Number Format: CAT-YYYY-NNNNN
  *   Example: CAT-2026-00042
  *
- * Uses MariaDB for atomic sequence generation to prevent duplicates
- * even under concurrent access.
+ * Uses MariaDB LAST_INSERT_ID() for truly atomic sequence generation,
+ * preventing duplicates even under concurrent access.
  */
 
 import { db } from '../config/db.js';
@@ -18,27 +18,35 @@ import { logger } from './logger.js';
  * Atomically increments a named sequence counter.
  * Resets to 1 at the start of each new year.
  * 
+ * Uses LAST_INSERT_ID() to make the UPDATE + read atomic in a single
+ * round-trip, eliminating the race condition where two concurrent requests
+ * could read the same current_value between separate UPDATE and SELECT queries.
+ * 
  * @param {string} name - Sequence name ('accession' or 'catalog')
  * @returns {Promise<{ year: number, seq: number }>}
  */
 async function nextSequenceValue(name) {
     const currentYear = new Date().getFullYear();
-
-    // Atomic increment + year reset in a single query
-    await db.query(`
-        UPDATE sequences 
-        SET current_value = IF(reset_year = ?, current_value + 1, 1),
+    const conn = await db.getConnection();
+    try {
+        // Atomic: UPDATE sets LAST_INSERT_ID to the new value, which we read back
+        // in the same connection context. No window for a concurrent reader to 
+        // observe a stale value.
+        await conn.query(`
+            UPDATE sequences 
+            SET current_value = LAST_INSERT_ID(
+                IF(reset_year = ?, current_value + 1, 1)
+            ),
             reset_year = ?
-        WHERE sequence_name = ?
-    `, [currentYear, currentYear, name]);
+            WHERE sequence_name = ?
+        `, [currentYear, currentYear, name]);
 
-    const rows = await db.query(
-        'SELECT current_value, reset_year FROM sequences WHERE sequence_name = ?',
-        [name]
-    );
-
-    const row = Array.isArray(rows) ? rows[0] : rows;
-    return { year: row.reset_year, seq: row.current_value };
+        const rows = await conn.query('SELECT LAST_INSERT_ID() as seq');
+        const seq = Number(rows[0]?.seq || 1);
+        return { year: currentYear, seq };
+    } finally {
+        conn.release();
+    }
 }
 
 /**
@@ -50,7 +58,7 @@ async function nextSequenceValue(name) {
  */
 export async function generateAccessionNumber(batch = 1) {
     const { year, seq } = await nextSequenceValue('accession');
-    const seqPadded = String(seq).padStart(2, '0');
+    const seqPadded = String(seq).padStart(3, '0');
     const batchPadded = String(batch).padStart(2, '0');
     return `${year}.${seqPadded}.${batchPadded}`;
 }

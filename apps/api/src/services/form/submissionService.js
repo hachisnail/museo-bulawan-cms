@@ -11,8 +11,10 @@ import { definitionService } from './definitionService.js';
 
 const ajv = new Ajv({ strict: false });
 
-ajv.addFormat('textarea', { validate: () => true });
-ajv.addFormat('file', { validate: () => true });
+ajv.addFormat('textarea', { validate: (val) => typeof val === 'string' });
+ajv.addFormat('file', { 
+    validate: (val) => typeof val === 'string' || (Array.isArray(val) && val.every(item => typeof item === 'string'))
+});
 
 export const submissionService = {
     async submitForm(slug, payload, otp, files = null, requestMeta = {}, actingStaffId = null) {
@@ -31,7 +33,7 @@ export const submissionService = {
         const mapping = definition.settings?.field_mapping || {};
         const emailField = mapping.donorEmail || 'email';
         const userEmail = payload[emailField];
-        const isOtpRequired = definition.otp === true;
+        const isOtpRequired = !!definition.otp;
         
         if (userEmail && isOtpRequired) {
             if (!otp) throw new Error('OTP is required for email verification.');

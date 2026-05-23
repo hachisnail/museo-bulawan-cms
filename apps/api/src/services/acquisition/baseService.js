@@ -1,8 +1,8 @@
-import crypto from 'crypto';
 import { db } from '../../config/db.js';
 import { auditService } from '../auditService.js';
 import { logger } from '../../utils/logger.js';
 import { assertTransition } from '../../utils/stateMachine.js';
+import { ALLOWED_TABLES } from '../../utils/constants.js';
 import { ulid } from 'ulidx';
 
 export const baseService = {
@@ -10,29 +10,116 @@ export const baseService = {
         return ulid();
     },
 
+    /**
+     * Validates a table name against the whitelist to prevent SQL injection
+     * via table-name interpolation.
+     */
+    _assertTable(table) {
+        if (!ALLOWED_TABLES.has(table)) {
+            throw new Error(`INVALID_TABLE: '${table}' is not a valid collection.`);
+        }
+    },
+
+    tableColumnsCache: {},
+
+    async _getTableColumns(table, connection = null) {
+        if (this.tableColumnsCache[table] && this.tableColumnsCache[table].size > 0) {
+            return this.tableColumnsCache[table];
+        }
+        const rows = await db.query(
+            'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
+            [table],
+            connection
+        );
+        const columns = new Set(rows.map(r => r.COLUMN_NAME || r.column_name));
+        if (columns.size > 0) {
+            this.tableColumnsCache[table] = columns;
+        } else {
+            logger.warn(`[baseService] No columns found for table '${table}'. Columns cache NOT updated.`);
+        }
+        return columns;
+    },
+
+    /**
+     * Parses a PocketBase-style filter string into parameterized SQL.
+     * 
+     * Supported operators:
+     *   field = "value"    → field = ?
+     *   field != "value"   → field != ?
+     *   field ~ "value"    → field LIKE ?  (wraps value in %)
+     * 
+     * Conjunctions: && → AND
+     * 
+     * This replaces the old approach of directly interpolating the filter
+     * string into SQL, which was vulnerable to SQL injection.
+     */
+    _buildFilterClause(filterStr) {
+        if (!filterStr) return { sql: '', params: [] };
+
+        const conditions = [];
+        const params = [];
+
+        // Split by && (AND) conjunctions
+        const parts = filterStr.split('&&').map(s => s.trim());
+
+        for (const part of parts) {
+            // Match: field != "value" or field != 'value'
+            let match = part.match(/^(\w+)\s*!=\s*["']([^"']*)["']$/);
+            if (match) {
+                conditions.push(`\`${match[1]}\` != ?`);
+                params.push(match[2]);
+                continue;
+            }
+
+            // Match: field = "value" or field = 'value'
+            match = part.match(/^(\w+)\s*=\s*["']([^"']*)["']$/);
+            if (match) {
+                conditions.push(`\`${match[1]}\` = ?`);
+                params.push(match[2]);
+                continue;
+            }
+
+            // Match: field ~ "value" (LIKE search)
+            match = part.match(/^(\w+)\s*~\s*["']([^"']*)["']$/);
+            if (match) {
+                conditions.push(`\`${match[1]}\` LIKE ?`);
+                params.push(`%${match[2]}%`);
+                continue;
+            }
+
+            // If we can't parse a part, log a warning and skip it
+            // This prevents unknown syntax from being injected
+            logger.warn(`[baseService] Unparseable filter segment ignored: "${part}"`);
+        }
+
+        if (conditions.length === 0) return { sql: '', params: [] };
+        return { sql: 'WHERE ' + conditions.join(' AND '), params };
+    },
+
     async _listRecords(table, query = {}, connection = null) {
+        this._assertTable(table);
+
         const page = query.page || 1;
         const perPage = query.perPage || 50;
         const offset = (page - 1) * perPage;
         
-        let filterSql = '';
-        let queryParams = [];
+        // Build a parameterized WHERE clause from the filter string
+        const { sql: filterSql, params: filterParams } = this._buildFilterClause(query.filter);
 
-        // Simple translation for direct ID matches or basic text (needs enhancement for complex PB filters)
-        if (query.filter) {
-            filterSql = 'WHERE ' + query.filter.replace(/"/g, "'").replace(/&&/g, 'AND');
-        }
-
-        const sql = `SELECT * FROM ${table} ${filterSql} ORDER BY created_at DESC LIMIT ? OFFSET ?`;
-        queryParams.push(perPage, offset);
+        const sql = `SELECT * FROM \`${table}\` ${filterSql} ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?`;
+        const queryParams = [...filterParams, perPage, offset];
 
         const rows = await db.query(sql, queryParams, connection);
         
-        // Count total for pagination
-        const countResult = await db.query(`SELECT COUNT(*) as total FROM ${table} ${filterSql}`, [], connection);
+        // Count total for pagination (reuse the same parameterized filter)
+        const countResult = await db.query(
+            `SELECT COUNT(*) as total FROM \`${table}\` ${filterSql}`,
+            filterParams,
+            connection
+        );
         const totalItems = countResult[0]?.total || 0;
 
-        // Implementation of PB-style expand
+        // Implementation of expand (relational joins)
         if (query.expand && rows.length > 0) {
             await this._expandRecords(rows, query.expand);
         }
@@ -47,7 +134,9 @@ export const baseService = {
     },
 
     async _getRecord(table, id, query = {}, connection = null) {
-        const rows = await db.query(`SELECT * FROM ${table} WHERE id = ?`, [id], connection);
+        this._assertTable(table);
+
+        const rows = await db.query(`SELECT * FROM \`${table}\` WHERE id = ?`, [id], connection);
         if (!rows || rows.length === 0) {
             throw new Error(`Record not found in ${table} with id ${id}`);
         }
@@ -91,7 +180,7 @@ export const baseService = {
             const foreignKey = record[currentField];
 
             if (foreignKey) {
-                const results = await db.query(`SELECT * FROM ${targetTable} WHERE id = ?`, [foreignKey], connection);
+                const results = await db.query(`SELECT * FROM \`${targetTable}\` WHERE id = ?`, [foreignKey], connection);
                 if (results && results.length > 0) {
                     const expanded = results[0];
                     record.expand = record.expand || {};
@@ -106,17 +195,34 @@ export const baseService = {
     },
 
     async _createRecord(userId, table, data, connection = null) {
-        const recordId = this._genId();
+        this._assertTable(table);
+
+        const columns = await this._getTableColumns(table, connection);
+        const recordId = data.id || this._genId();
         
         const recordData = {
             id: recordId,
-            ...data,
-            version: 1,
-            created_by: userId,
-            updated_by: userId
+            ...data
         };
 
-        const record = await db.insertRecord(table, recordData, connection);
+        if (columns.has('version')) {
+            recordData.version = 1;
+        }
+        if (columns.has('created_by')) {
+            recordData.created_by = userId;
+        }
+        if (columns.has('updated_by')) {
+            recordData.updated_by = userId;
+        }
+
+        const filteredData = {};
+        for (const [key, val] of Object.entries(recordData)) {
+            if (columns.has(key)) {
+                filteredData[key] = val;
+            }
+        }
+
+        const record = await db.insertRecord(table, filteredData, connection);
 
         await auditService.log({
             collection: table,
@@ -128,8 +234,12 @@ export const baseService = {
         
         return record;
     },
+
     async _updateRecord(userId, table, id, data, connection = null) {
-        const rows = await db.query(`SELECT * FROM ${table} WHERE id = ?`, [id], connection);
+        this._assertTable(table);
+
+        const columns = await this._getTableColumns(table, connection);
+        const rows = await db.query(`SELECT * FROM \`${table}\` WHERE id = ?`, [id], connection);
         const existing = rows[0];
         
         if (!existing) {
@@ -137,12 +247,24 @@ export const baseService = {
         }
 
         const updateData = {
-            ...data,
-            version: (existing.version || 0) + 1,
-            updated_by: userId
+            ...data
         };
 
-        const updated = await db.updateRecord(table, id, updateData, connection);
+        if (columns.has('version')) {
+            updateData.version = (existing.version || 0) + 1;
+        }
+        if (columns.has('updated_by')) {
+            updateData.updated_by = userId;
+        }
+
+        const filteredData = {};
+        for (const [key, val] of Object.entries(updateData)) {
+            if (columns.has(key) && key !== 'id') {
+                filteredData[key] = val;
+            }
+        }
+
+        const updated = await db.updateRecord(table, id, filteredData, connection);
 
         await auditService.log({
             collection: table,
@@ -157,7 +279,9 @@ export const baseService = {
     },
 
     async _transitionRecord(userId, entityType, table, id, targetStatus, extraData = {}, connection = null) {
-        const rows = await db.query(`SELECT * FROM ${table} WHERE id = ?`, [id], connection);
+        this._assertTable(table);
+
+        const rows = await db.query(`SELECT * FROM \`${table}\` WHERE id = ?`, [id], connection);
         const existing = rows[0];
         
         if (!existing) {
@@ -187,9 +311,10 @@ export const baseService = {
         }, connection);
     },
 
-    async getConditionReports(entityType, entityId) {
+    async getConditionReports(entityType, entityId, connection = null) {
+        // Use parameterized filter instead of string interpolation
         return await this._listRecords('condition_reports', {
             filter: `entity_type="${entityType}" && entity_id="${entityId}"`
-        });
+        }, connection);
     }
 };

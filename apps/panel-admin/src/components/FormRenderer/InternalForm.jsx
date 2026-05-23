@@ -1,11 +1,11 @@
 import React from 'react';
 import { useFormLogic } from './useFormLogic';
+import { Check, AlertCircle, FileText, Upload } from 'lucide-react';
 
 const InternalForm = (props) => {
     const { 
         className = "",
         hideHeader = false,
-        prefillData = {}
     } = props;
 
     const {
@@ -21,8 +21,20 @@ const InternalForm = (props) => {
         handleSubmit
     } = useFormLogic(props);
 
-    if (loading) return <div className="p-8 text-center opacity-50 text-xs">Loading internal system form...</div>;
-    if (error && !definition) return <div className="p-8 text-rose-400 text-xs bg-rose-500/5 rounded-2xl border border-rose-500/10">System Error: {error}</div>;
+    if (loading) return (
+        <div className="py-10 text-center flex flex-col items-center justify-center gap-4">
+            <div className="w-6 h-6 border-2 border-zinc-200 border-t-black rounded-full animate-spin"></div>
+            <div className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-300">Retrieving Schema...</div>
+        </div>
+    );
+
+    if (error && !definition) return (
+        <div className="p-6 bg-rose-50 border border-rose-100 rounded-sm flex items-center gap-4">
+            <AlertCircle className="w-5 h-5 text-rose-500" />
+            <p className="text-[10px] text-rose-600 font-bold uppercase tracking-tight">{error}</p>
+        </div>
+    );
+
     if (!definition) return null;
 
     const { schema, settings } = definition;
@@ -42,23 +54,20 @@ const InternalForm = (props) => {
     };
 
     return (
-        <div className={`internal-form-system ${className}`}>
+        <div className={`internal-form-compact ${className}`}>
             {!hideHeader && (
-                <header className="mb-6">
-                    <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
-                        {definition.title}
-                    </h2>
+                <header className="mb-8 pb-4 border-b border-zinc-200">
+                    <h2 className="text-xl font-serif text-black uppercase tracking-tight">{definition.title}</h2>
                     {settings?.description && (
-                        <p className="text-[10px] text-zinc-500 mt-1 uppercase tracking-wider font-semibold">
+                        <p className="text-[10px] text-zinc-500 mt-1 uppercase font-black tracking-widest leading-relaxed">
                             {settings.description}
                         </p>
                     )}
                 </header>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-5">
+            <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
                     {Object.entries(properties).map(([key, prop]) => {
                         if (!isFieldVisible(key, prop)) return null;
                         if (prop['ui:widget'] === 'hidden') {
@@ -69,17 +78,17 @@ const InternalForm = (props) => {
                         const isFullWidth = prop.type === 'string' && prop.format === 'textarea';
 
                         return (
-                            <div key={key} className={`${isFullWidth ? 'md:col-span-2' : ''} space-y-1.5`}>
-                                <label className="text-[10px] font-bold uppercase text-zinc-500 flex items-center gap-1">
+                            <div key={key} className={`${isFullWidth ? 'md:col-span-2' : ''} space-y-2`}>
+                                <label className="text-[9px] font-black uppercase text-zinc-500 tracking-widest flex items-center gap-2">
                                     {prop.title || key}
-                                    {isRequired && <span className="text-rose-500">*</span>}
+                                    {isRequired && <span className="text-[#D4AF37]">•</span>}
                                 </label>
 
                                 {prop.type === 'boolean' ? (
-                                    <label className="relative inline-flex items-center cursor-pointer group">
+                                    <label className="relative inline-flex items-center cursor-pointer group py-1.5">
                                         <input type="checkbox" name={key} checked={!!formData[key]} onChange={handleInputChange} className="sr-only peer" />
-                                        <div className="w-9 h-5 bg-zinc-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-zinc-400 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600 after:peer-checked:bg-white"></div>
-                                        <span className="ml-3 text-[11px] text-zinc-400 group-hover:text-zinc-200 transition-colors">{prop.description}</span>
+                                        <div className="w-10 h-5 bg-zinc-100 rounded-sm peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-zinc-400 after:rounded-sm after:h-4 after:w-4 after:transition-all peer-checked:bg-black after:peer-checked:bg-[#D4AF37]"></div>
+                                        <span className="ml-3 text-[10px] text-zinc-500 group-hover:text-black transition-colors uppercase font-bold tracking-tighter">{prop.description || 'Enable'}</span>
                                     </label>
                                 ) : prop.enum ? (
                                     <select
@@ -87,10 +96,10 @@ const InternalForm = (props) => {
                                         required={isRequired}
                                         value={formData[key] || ''}
                                         onChange={handleInputChange}
-                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-white focus:outline-none focus:border-indigo-500 transition-all"
+                                        className="w-full bg-zinc-100 border border-zinc-300 rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none focus:border-[#D4AF37] transition-all appearance-none font-medium"
                                     >
                                         <option value="" disabled>Select...</option>
-                                        {prop.enum.map(opt => <option key={opt} value={opt} className="bg-zinc-900">{opt}</option>)}
+                                        {prop.enum.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                                     </select>
                                 ) : prop.format === 'textarea' ? (
                                     <textarea
@@ -100,7 +109,7 @@ const InternalForm = (props) => {
                                         onChange={handleInputChange}
                                         rows={3}
                                         placeholder={prop.description}
-                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-white focus:outline-none focus:border-indigo-500 transition-all resize-none placeholder:text-zinc-700"
+                                        className="w-full bg-zinc-100 border border-zinc-300 rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none focus:border-[#D4AF37] transition-all resize-none placeholder:text-zinc-400 font-light"
                                     />
                                 ) : (
                                     <input
@@ -110,7 +119,7 @@ const InternalForm = (props) => {
                                         value={formData[key] || ''}
                                         onChange={handleInputChange}
                                         placeholder={prop.description}
-                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-[11px] text-white focus:outline-none focus:border-indigo-500 transition-all placeholder:text-zinc-700"
+                                        className="w-full bg-zinc-100 border border-zinc-300 rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none focus:border-[#D4AF37] transition-all placeholder:text-zinc-400 font-medium"
                                     />
                                 )}
                             </div>
@@ -119,34 +128,39 @@ const InternalForm = (props) => {
                 </div>
 
                 {settings?.allow_attachments && (
-                    <div className="pt-4 border-t border-white/5 space-y-3">
+                    <div className="pt-6 border-t border-zinc-200 space-y-4">
                         <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-bold uppercase text-zinc-500">Attachments</span>
-                            <span className="text-[9px] font-mono text-zinc-600">{files.length} / 5</span>
+                            <span className="text-[9px] font-black uppercase text-zinc-500 tracking-widest">Supporting Assets</span>
+                            <span className="text-[8px] font-bold text-zinc-400 uppercase">{files.length} / 5</span>
                         </div>
-                        <div className="flex flex-wrap gap-2">
-                            <label className="w-12 h-12 flex items-center justify-center border border-dashed border-white/10 hover:border-indigo-500 rounded-xl bg-white/5 cursor-pointer transition-all text-zinc-500 hover:text-indigo-400">
-                                <span className="text-xl">+</span>
+                        <div className="flex flex-wrap gap-3">
+                            <label className="w-10 h-10 flex items-center justify-center border border-dashed border-zinc-300 hover:border-[#D4AF37] rounded-sm bg-zinc-100 cursor-pointer transition-all text-zinc-500 hover:text-[#D4AF37]">
+                                <Upload className="w-4 h-4" />
                                 <input type="file" multiple onChange={handleFileChange} className="hidden" />
                             </label>
                             {files.map((f, i) => (
-                                <div key={i} className="h-12 px-3 flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl text-[10px] text-zinc-400 group">
-                                    <span className="truncate max-w-[80px]">{f.name}</span>
-                                    <button type="button" onClick={() => removeFile(i)} className="text-rose-500 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity">×</button>
+                                <div key={i} className="h-10 px-3 flex items-center gap-3 bg-white border border-zinc-300 rounded-sm text-[9px] text-zinc-600 group shadow-sm">
+                                    <FileText className="w-3.5 h-3.5 text-[#D4AF37]" />
+                                    <span className="truncate max-w-[100px] font-bold">{f.name}</span>
+                                    <button type="button" onClick={() => removeFile(i)} className="text-rose-400 hover:text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
                                 </div>
                             ))}
                         </div>
                     </div>
                 )}
 
-                {error && <div className="text-[10px] text-rose-500 font-bold bg-rose-500/5 p-2 rounded-lg border border-rose-500/10">⚠️ {error}</div>}
+                {error && (
+                    <div className="text-[9px] text-rose-600 font-black uppercase tracking-widest flex items-center gap-2 bg-rose-50 p-3 rounded-sm border border-rose-100">
+                        <AlertCircle className="w-3.5 h-3.5" /> {error}
+                    </div>
+                )}
 
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-[11px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-indigo-500/20"
+                    className="w-full py-4 bg-black text-[#D4AF37] rounded-sm text-[10px] font-black uppercase tracking-widest hover:bg-zinc-900 transition-all shadow-xl shadow-black/10 disabled:opacity-50 flex items-center justify-center gap-3"
                 >
-                    {submitting ? 'Processing System Update...' : 'Commit Changes to Database'}
+                    {submitting ? 'Authenticating Submission...' : <><Check className="w-4 h-4" /> Finalize Registry Entry</>}
                 </button>
             </form>
         </div>

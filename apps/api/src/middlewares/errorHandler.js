@@ -16,7 +16,8 @@ const errorMessages = {
     'OTP_EXPIRED_OR_NOT_FOUND': { status: 400, message: 'OTP not found or expired. Please request a new one.' },
     'OTP_EXPIRED': { status: 400, message: 'OTP has expired.' },
     'INVALID_OTP': { status: 400, message: 'Invalid OTP.' },
-    'EMAIL_AND_OTP_REQUIRED': { status: 400, message: 'Email and OTP are required.' }
+    'EMAIL_AND_OTP_REQUIRED': { status: 400, message: 'Email and OTP are required.' },
+    'DONOR_PROVISIONING_FAILED': { status: 500, message: 'Failed to provision donor account.' }
 };
 
 export const errorHandler = (err, req, res, next) => {

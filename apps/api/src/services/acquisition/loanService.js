@@ -1,9 +1,16 @@
 import { db } from '../../config/db.js';
-import { ulid } from 'ulid';
 import { baseService } from './baseService.js';
+import { inventoryService } from './inventoryService.js';
 import { logger } from '../../utils/logger.js';
 import { notificationService } from '../notificationService.js';
+import { auditService } from '../auditService.js';
 
+/**
+ * LoanService
+ * 
+ * Manages outbound and inbound loan agreements for museum artifacts.
+ * Migrated to use baseService patterns for consistent audit trails and ID generation.
+ */
 export const loanService = {
     async listLoans(params = {}) {
         const { status, type = 'outbound' } = params;
@@ -22,42 +29,38 @@ export const loanService = {
 
     async createLoan(staffId, data) {
         return await db.transaction(async (tx) => {
-            const loanId = ulid();
             const { artifacts, ...loanData } = data;
 
-            await tx.query(`
-                INSERT INTO loans (id, loan_type, borrower_id, borrower_name_manual, venue, purpose, start_date, end_date, insurance_coverage, courier_details, created_by)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `, [
-                loanId, 
-                loanData.loan_type || 'outbound',
-                loanData.borrower_id,
-                loanData.borrower_name_manual,
-                loanData.venue,
-                loanData.purpose,
-                loanData.start_date,
-                loanData.end_date,
-                loanData.insurance_coverage,
-                loanData.courier_details,
-                staffId
-            ]);
+            // Use baseService for consistent ID generation, audit trail, and version tracking
+            const loan = await baseService._createRecord(staffId, 'loans', {
+                loan_type: loanData.loan_type || 'outbound',
+                borrower_id: loanData.borrower_id || null,
+                borrower_name_manual: loanData.borrower_name_manual || null,
+                venue: loanData.venue || null,
+                purpose: loanData.purpose || null,
+                start_date: loanData.start_date || null,
+                end_date: loanData.end_date || null,
+                insurance_coverage: loanData.insurance_coverage || null,
+                courier_details: loanData.courier_details || null,
+                status: loanData.status || 'draft'
+            }, tx);
 
             if (artifacts && Array.isArray(artifacts)) {
                 for (const invId of artifacts) {
-                    await tx.query(`
-                        INSERT INTO loan_artifacts (id, loan_id, inventory_id)
-                        VALUES (?, ?, ?)
-                    `, [ulid(), loanId, invId]);
+                    await baseService._createRecord(staffId, 'loan_artifacts', {
+                        loan_id: loan.id,
+                        inventory_id: invId
+                    }, tx);
 
-                    // Update inventory status if active
+                    // Update inventory status if loan is immediately active
                     if (loanData.status === 'active') {
                         await tx.updateRecord('inventory', invId, { status: 'loan' });
                     }
                 }
             }
 
-            notificationService.sendGlobal('New Loan Agreement', `Loan ${loanId} has been drafted for ${loanData.venue || 'external venue'}.`);
-            return { id: loanId, ...loanData };
+            notificationService.sendGlobal('New Loan Agreement', `Loan ${loan.id} has been drafted for ${loanData.venue || 'external venue'}.`);
+            return loan;
         });
     },
 
@@ -68,6 +71,16 @@ export const loanService = {
 
             await tx.updateRecord('loans', loanId, { status: 'active' });
 
+            // Audit the activation
+            await auditService.log({
+                collection: 'loans',
+                recordId: loanId,
+                action: 'update',
+                userId: staffId,
+                before: { status: loan.status },
+                after: { status: 'active' }
+            }, tx);
+
             // Update all linked artifacts to 'loan' status
             const artifacts = await tx.query('SELECT inventory_id FROM loan_artifacts WHERE loan_id = ?', [loanId]);
             for (const a of artifacts) {
@@ -77,5 +90,65 @@ export const loanService = {
             logger.info('Loan activated', { loanId, staffId });
             return true;
         });
+    },
+
+    async returnLoan(staffId, loanId, returnData = {}) {
+        return await db.transaction(async (tx) => {
+            const [loan] = await tx.query('SELECT * FROM loans WHERE id = ?', [loanId]);
+            if (!loan) throw new Error('LOAN_NOT_FOUND');
+            if (loan.status === 'returned') throw new Error('LOAN_ALREADY_RETURNED');
+
+            await tx.updateRecord('loans', loanId, { status: 'returned' });
+
+            // Audit the return
+            await auditService.log({
+                collection: 'loans',
+                recordId: loanId,
+                action: 'update',
+                userId: staffId,
+                before: { status: loan.status },
+                after: { status: 'returned' }
+            }, tx);
+
+            // Update all linked artifacts based on location/condition upon return
+            const artifacts = await tx.query('SELECT inventory_id FROM loan_artifacts WHERE loan_id = ?', [loanId]);
+            for (const a of artifacts) {
+                const invId = a.inventory_id;
+
+                // Create location history entry for the return
+                const [item] = await tx.query('SELECT current_location FROM inventory WHERE id = ?', [invId]);
+                if (item) {
+                    await baseService._createRecord(staffId, 'location_history', {
+                        inventory_item_id: invId,
+                        from_location: loan.venue || 'External Loan',
+                        to_location: item.current_location,
+                        movement_type: 'Loan Return',
+                        reason: returnData.reason || 'Loan agreement concluded',
+                        moved_by: staffId
+                    }, tx);
+                }
+
+                // Auto-derive status based on current location and condition
+                await inventoryService._autoDeriveArtifactStatus(staffId, invId, tx);
+            }
+
+            logger.info('Loan returned', { loanId, staffId });
+            notificationService.sendGlobal('Loan Concluded', `Loan ${loan.id} from ${loan.venue || 'external venue'} has been returned.`);
+            return true;
+        });
+    },
+
+    async getLoanAgreementDocument(loanId, format = 'html') {
+        const [loan] = await db.query('SELECT * FROM loans WHERE id = ?', [loanId]);
+        if (!loan) throw new Error('LOAN_NOT_FOUND');
+
+        const artifacts = await db.query(`
+            SELECT i.* 
+            FROM inventory i
+            JOIN loan_artifacts la ON la.inventory_id = i.id
+            WHERE la.loan_id = ?
+        `, [loanId]);
+
+        return await documentService.generateLoanAgreement(loan, artifacts, format);
     }
 };

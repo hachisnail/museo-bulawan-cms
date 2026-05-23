@@ -69,6 +69,12 @@ describe('Museum System Integration Tests', () => {
             JSON.stringify(formDefinition.schema_data), 
             JSON.stringify(formDefinition.settings), 
             false]);
+
+        // Insert Jest Vault to satisfy the physical location validation constraints
+        await db.query(`
+            INSERT IGNORE INTO locations (id, name, type, description)
+            VALUES (?, ?, ?, ?)
+        `, [ulid(), 'Jest Vault', 'storage', 'Vault for Jest integration tests']);
     });
 
     test('Step 1: Form Submission', async () => {
@@ -121,7 +127,8 @@ describe('Museum System Integration Tests', () => {
         await acquisitionService.updateAccessionResearch(testUserId, testAccessionId, {
             dimensions: '10x10x10',
             materials: 'Digital Matter',
-            historical_significance: 'Created during system validation'
+            historical_significance: 'Created during system validation',
+            research_completed: true
         });
 
         const inventory = await inventoryService.finalizeToInventory(testUserId, testAccessionId, {

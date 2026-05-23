@@ -242,7 +242,6 @@ export async function initMariaDB() {
         try {
             await conn.query(`ALTER TABLE constituents ADD COLUMN version INT DEFAULT 1 AFTER external_id`);
         } catch(e) {}
-
         await conn.query(`
             CREATE TABLE IF NOT EXISTS accessions (
                 id VARCHAR(26) PRIMARY KEY,

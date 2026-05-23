@@ -1,6 +1,6 @@
 import { db } from "../../config/db.js";
 import { logger } from "../../utils/logger.js";
-import { pbService } from "../pocketbaseService.js";
+
 import { auditService } from "../auditService.js";
 
 /**
@@ -84,11 +84,7 @@ export const identityService = {
                 [fname, lname, userId]
             );
 
-            // Sync name change to PocketBase
-            const [user] = await db.query('SELECT id, email, role, fname, lname FROM users WHERE id = ?', [userId]);
-            if (user) {
-                await pbService.syncUser({ id: user.id, email: user.email, role: user.role, fname: user.fname, lname: user.lname });
-            }
+
 
             await auditService.log({
                 userId,

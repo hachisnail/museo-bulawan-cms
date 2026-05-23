@@ -2,19 +2,19 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Field, Label, Input, Description, Button } from '@headlessui/react';
 
-export default function ResetPassword() {
+export default function SetupAccount() {
     const [searchParams] = useSearchParams();
     const token = searchParams.get('token');
     
-    const [formData, setFormData] = useState({ newPassword: '', confirmPassword: '' });
+    const [formData, setFormData] = useState({ username: '', password: '', confirmPassword: '' });
     const [status, setStatus] = useState({ type: '', message: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
     // Client-side validation
-    const isLengthValid = formData.newPassword.length >= 8;
-    const passwordsMatch = formData.newPassword === formData.confirmPassword;
-    const canSubmit = formData.newPassword.length > 0 && isLengthValid && passwordsMatch;
+    const isLengthValid = formData.password.length >= 8;
+    const passwordsMatch = formData.password === formData.confirmPassword;
+    const canSubmit = formData.username.trim().length > 0 && formData.password.length > 0 && isLengthValid && passwordsMatch;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,16 +25,20 @@ export default function ResetPassword() {
 
         try {
             const baseURL = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_BASE_URL || '');
-            const res = await fetch(`${baseURL}/api/v1/user/reset-password`, {
+            const res = await fetch(`${baseURL}/api/v1/user/setup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token, newPassword: formData.newPassword })
+                body: JSON.stringify({ 
+                    token, 
+                    username: formData.username, 
+                    password: formData.password 
+                })
             });
 
             const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Failed to reset password.');
+            if (!res.ok) throw new Error(data.error || 'Failed to setup account.');
             
-            setStatus({ type: 'success', message: "Access restored. Redirecting to login..." });
+            setStatus({ type: 'success', message: "Account successfully created. Redirecting to login..." });
             setTimeout(() => navigate('/login'), 2500);
         } catch (err) {
             setStatus({ type: 'error', message: err.message });
@@ -53,14 +57,8 @@ export default function ResetPassword() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                         </svg>
                     </div>
-                    <h2 className="text-xl font-serif tracking-widest text-black uppercase mb-2">Invalid Request</h2>
-                    <p className="text-sm text-zinc-500 mb-6">Security token is missing or malformed. Please use the exact link provided in your authorization email.</p>
-                    <Link 
-                        to="/forgot-password" 
-                        className="inline-flex w-full justify-center rounded-sm bg-black px-4 py-3 text-sm font-bold tracking-widest uppercase text-white hover:bg-zinc-800 transition-colors"
-                    >
-                        Request New Link
-                    </Link>
+                    <h2 className="text-xl font-serif tracking-widest text-black uppercase mb-2">Invalid Invitation</h2>
+                    <p className="text-sm text-zinc-500 mb-6">Security token is missing or malformed. Please use the exact link provided in your invitation email.</p>
                 </div>
             </div>
         );
@@ -76,16 +74,16 @@ export default function ResetPassword() {
                 <div className="z-10 flex flex-col items-start px-16 max-w-lg">
                     <div className="h-1 w-12 bg-[#D4AF37] mb-6"></div>
                     <h2 className="text-4xl font-serif text-white leading-tight">
-                        Restoring access.<br/>
-                        <span className="text-[#D4AF37]">Securing the archive.</span>
+                        Welcome to the archive.<br/>
+                        <span className="text-[#D4AF37]">Set up your profile.</span>
                     </h2>
                     <p className="mt-4 text-sm text-zinc-400 font-light leading-relaxed">
-                        Establish a new secure passcode for your Museo Bulawan curator account to regain access to the collection management system.
+                        Create your username and password to establish your access to the Museo Bulawan collection management system.
                     </p>
                 </div>
             </div>
 
-            {/* Right Column: Reset Form */}
+            {/* Right Column: Setup Form */}
             <div className="flex w-full lg:w-1/2 flex-col justify-center px-8 py-12 sm:px-16 md:px-24">
                 <div className="mx-auto w-full max-w-sm">
                     
@@ -94,15 +92,15 @@ export default function ResetPassword() {
                         <div className="flex items-center gap-3 mb-1">
                             <div className="flex h-10 w-10 items-center justify-center bg-black rounded-sm shadow-sm border border-zinc-800">
                                 <svg className="h-6 w-6 text-[#D4AF37]" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2L2 22h20L12 2zm0 4.5l6.5 13h-13L12 6.5z" />
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                                 </svg>
                             </div>
                             <h1 className="text-2xl font-serif tracking-widest text-black uppercase">
-                                System Reset
+                                Account Setup
                             </h1>
                         </div>
                         <h2 className="text-[10px] font-semibold text-zinc-400 uppercase tracking-[0.2em] ml-[3.25rem]">
-                            Create New Password
+                            Create Credentials
                         </h2>
                     </div>
 
@@ -113,24 +111,36 @@ export default function ResetPassword() {
                         </div>
                     )}
 
-                    {/* Reset Form */}
+                    {/* Setup Form */}
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-4">
                             <Field>
                                 <Label className="block text-xs font-medium text-zinc-700 uppercase tracking-wider mb-1">
-                                    New Password
+                                    Username
+                                </Label>
+                                <Input 
+                                    type="text" 
+                                    className="block w-full rounded-sm border border-zinc-300 px-4 py-2.5 text-black placeholder:text-zinc-400 outline-none transition-all sm:text-sm bg-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]"
+                                    onChange={e => setFormData({...formData, username: e.target.value})} 
+                                    required
+                                />
+                            </Field>
+
+                            <Field>
+                                <Label className="block text-xs font-medium text-zinc-700 uppercase tracking-wider mb-1">
+                                    Password
                                 </Label>
                                 <Input 
                                     type="password" 
                                     className={`block w-full rounded-sm border px-4 py-2.5 text-black placeholder:text-zinc-400 outline-none transition-all sm:text-sm bg-white ${
-                                        formData.newPassword && !isLengthValid 
+                                        formData.password && !isLengthValid 
                                             ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
                                             : 'border-zinc-300 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]'
                                     }`}
-                                    onChange={e => setFormData({...formData, newPassword: e.target.value})} 
+                                    onChange={e => setFormData({...formData, password: e.target.value})} 
                                     required
                                 />
-                                {formData.newPassword && !isLengthValid && (
+                                {formData.password && !isLengthValid && (
                                     <Description className="mt-1.5 text-xs text-red-600 font-medium">
                                         Password must be at least 8 characters long.
                                     </Description>
@@ -139,7 +149,7 @@ export default function ResetPassword() {
 
                             <Field>
                                 <Label className="block text-xs font-medium text-zinc-700 uppercase tracking-wider mb-1">
-                                    Confirm New Password
+                                    Confirm Password
                                 </Label>
                                 <Input 
                                     type="password" 
@@ -165,7 +175,7 @@ export default function ResetPassword() {
                                 disabled={!canSubmit || isSubmitting || status.type === 'success'}
                                 className="w-full rounded-sm bg-black px-4 py-3 text-sm font-bold tracking-widest uppercase text-white shadow-sm hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 transition-all data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed"
                             >
-                                {isSubmitting ? 'Updating System...' : 'Save New Password'}
+                                {isSubmitting ? 'Setting up...' : 'Complete Setup'}
                             </Button>
                         </div>
                     </form>

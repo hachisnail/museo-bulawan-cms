@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx --no-install tsc --noEmit)",
+      "Bash(npx --no-install astro check)",
+      "Bash(npx --no-install astro sync --help)",
+      "Bash(npm test -- --testPathPattern=acquisition_flow)",
+      "Bash(npm test -- --testPathPatterns=acquisition_flow)",
+      "Bash(curl -s -o /dev/null -w \"API \\(3000\\): HTTP %{http_code}\\\\n\" http://127.0.0.1:3000/)",
+      "Bash(curl -s -o /dev/null -w \"Payload \\(3001\\) /admin: HTTP %{http_code}\\\\n\" http://127.0.0.1:3001/admin)",
+      "Bash(curl -s -o /dev/null -w \"Payload API articles: HTTP %{http_code}\\\\n\" \"http://127.0.0.1:3001/api/articles?limit=1\")",
+      "Bash(curl -s -o /dev/null -w \"Astro \\(4321\\): HTTP %{http_code}\\\\n\" http://127.0.0.1:4321/)",
+      "Bash(curl -s -o /dev/null -w \"Panel-admin \\(5173\\): HTTP %{http_code}\\\\n\" http://127.0.0.1:5173/)",
+      "Bash(curl -s -o /dev/null -w \"MinIO \\(9000\\): HTTP %{http_code}\\\\n\" http://127.0.0.1:9000/minio/health/live)",
+      "Bash(curl -s \"http://127.0.0.1:3001/api/articles?where[_status][equals]=published&limit=3\")",
+      "Bash(xargs grep -l \"articles\")",
+      "Bash(npx astro --version)"
+    ]
+  }
+}

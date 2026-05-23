@@ -1,8 +1,6 @@
 technology stack:
 Express backend
-Pocketbase backend as a service
 MariaDB.
-Appointments Pocketbase backend
 payload cms
 umami js analytics
 

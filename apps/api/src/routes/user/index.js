@@ -15,9 +15,9 @@ const schemas = userController.schemas;
 // ==========================================
 // PUBLIC / PRE-AUTH ROUTES
 // ==========================================
-router.post('/onboard-admin', userController.onboardAdmin);
-router.post('/complete-setup', userController.completeSetup);
-router.post('/request-reset', userController.requestPasswordReset);
+router.post('/onboard', userController.onboardAdmin);
+router.post('/setup', userController.completeSetup);
+router.post('/forgot-password', userController.requestPasswordReset);
 router.post('/reset-password', userController.resetPassword);
 
 // ==========================================

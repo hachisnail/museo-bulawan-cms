@@ -1,17 +1,53 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+// CMS base URL — change for production
+const CMS_URL = 'http://127.0.0.1:3001';
+
 // Placeholder Background
 const bgImage1 = "https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=2560&auto=format&fit=crop";
-const sampleImage = "https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?q=80&w=1000&auto=format&fit=crop";
+const fallbackImage = "https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?q=80&w=1000&auto=format&fit=crop";
 
-// Dummy Data to emulate the API fetch
-const articles = [
-  { title: "The Golden Era of Camarines Norte", article_category: "Exhibit", upload_date: "2026-05-01", images: sampleImage },
-  { title: "National Heritage Workshop", article_category: "Workshop", upload_date: "2026-05-12", images: sampleImage },
-  { title: "Rediscovering Amorsolo", article_category: "Education", upload_date: "2026-04-20", images: sampleImage },
-  { title: "Local Heroes Celebration", article_category: "Event", upload_date: "2026-05-30", images: sampleImage },
-];
+// Fetch published articles from Payload CMS
+let articles: any[] = [];
+try {
+  const res = await fetch(
+    `${CMS_URL}/api/articles?where[_status][equals]=published&depth=1&sort=-publishedAt&limit=50`
+  );
+  if (res.ok) {
+    const data = await res.json();
+    articles = data.docs || [];
+  }
+} catch (e) {
+  // CMS may not be running — fall back to empty
+  console.warn('Could not fetch articles from CMS:', e);
+}
+
+// Fetch categories for the filter dropdown
+let categories: any[] = [];
+try {
+  const res = await fetch(`${CMS_URL}/api/categories?limit=50`);
+  if (res.ok) {
+    const data = await res.json();
+    categories = data.docs || [];
+  }
+} catch (e) {
+  console.warn('Could not fetch categories from CMS:', e);
+}
+
+/**
+ * Get the cover image URL for an article.
+ * Falls back to a placeholder if no cover image is set.
+ */
+function getCoverUrl(article: any): string {
+  if (article.coverImage?.sizes?.card?.url) {
+    return `${CMS_URL}${article.coverImage.sizes.card.url}`;
+  }
+  if (article.coverImage?.url) {
+    return `${CMS_URL}${article.coverImage.url}`;
+  }
+  return fallbackImage;
+}
 ---
 
 <BaseLayout title="Articles | Museo Bulawan" theme="dark">
@@ -32,12 +68,9 @@ const articles = [
         <div class="relative flex items-center bg-white">
           <select class="w-full h-full px-6 py-4 md:py-0 text-2xl text-black bg-transparent appearance-none focus:outline-none cursor-pointer">
             <option value="">All Categories</option>
-            <option value="Article">Article</option>
-            <option value="Education">Education</option>
-            <option value="Exhibit">Exhibit</option>
-            <option value="Contests">Contests</option>
-            <option value="Workshop">Workshop</option>
-            <option value="Seminar">Seminar</option>
+            {categories.map((cat) => (
+              <option value={cat.slug}>{cat.name}</option>
+            ))}
           </select>
           <div class="pointer-events-none absolute right-6">
             <svg class="h-6 w-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,17 +85,19 @@ const articles = [
 
   <!-- Articles Grid -->
   <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 py-24">
+    {articles.length === 0 && (
+      <p class="text-center text-gray-400 text-2xl py-12">No published articles yet. Check back soon!</p>
+    )}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
       {articles.map((article) => (
-        // Link points to a dummy article ID page to demonstrate routing
-        <a href="/article/123" class="group flex flex-col bg-[#1C1B19] rounded-xl overflow-hidden hover:-translate-y-2 transition-transform duration-300 shadow-xl border border-white/5">
+        <a href={`/articles/${article.slug || article.id}`} class="group flex flex-col bg-[#1C1B19] rounded-xl overflow-hidden hover:-translate-y-2 transition-transform duration-300 shadow-xl border border-white/5">
           <div class="w-full aspect-square overflow-hidden bg-gray-800">
-            <img src={article.images} alt={article.title} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+            <img src={getCoverUrl(article)} alt={article.coverImage?.alt || article.title} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
           </div>
           <div class="p-8 flex flex-col justify-between flex-1 text-center items-center">
-            <span class="text-[#F05454] font-bold text-sm tracking-widest uppercase mb-4">{article.article_category}</span>
+            <span class="text-[#F05454] font-bold text-sm tracking-widest uppercase mb-4">{article.category?.name || 'Uncategorized'}</span>
             <h2 class="text-[#E5D2AC] font-serif text-3xl font-bold italic line-clamp-3 mb-4 leading-tight">{article.title}</h2>
-            <span class="text-gray-400 text-lg mt-auto">{article.upload_date}</span>
+            <span class="text-gray-400 text-lg mt-auto">{new Date(article.publishedAt || article.createdAt).toLocaleDateString()}</span>
           </div>
         </a>
       ))}

@@ -75,6 +75,8 @@ export const acquisitionService = {
     autoDeriveArtifactStatus: inventoryService.autoDeriveArtifactStatus.bind(inventoryService),
     generateInventoryReport: inventoryService.generateReport.bind(inventoryService),
     exportInventoryReport: inventoryService.exportReport.bind(inventoryService),
+    getConditionReportDocument: inventoryService.getConditionReportDocument.bind(inventoryService),
+    getDeaccessionReport: inventoryService.getDeaccessionReport.bind(inventoryService),
 
     // SPECTRUM: Inventory Audit & Object Summary
     recordAuditCheck: inventoryService.recordAuditCheck.bind(inventoryService),

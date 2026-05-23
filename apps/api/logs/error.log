@@ -1039,3 +1039,27 @@ sql: INSERT INTO condition_reports () VALUES () - parameters:[]
 2026-05-23 00:49:44 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
 2026-05-23 00:51:06 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
 2026-05-23 00:52:20 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 13:34:38 [error]: TypeError: acquisitionService.getConditionReportDocument is not a function
+    at Object.exportConditionReport (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/inventoryController.js:135:53)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at requireAuth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:55:5)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KS89J24F3TDSP2K7Z431GKMP/export-condition","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-05-23 13:35:05 [error]: TypeError: acquisitionService.getConditionReportDocument is not a function
+    at Object.exportConditionReport (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/inventoryController.js:135:53)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at requireAuth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/middlewares/authorizationHandler.js:55:5)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KS89J24F3TDSP2K7Z431GKMP/export-condition","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-05-23 13:39:21 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 13:39:42 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.

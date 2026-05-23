@@ -21,6 +21,7 @@ import Analytics from './pages/Analytics';
 import SubmissionViewer from './pages/SubmissionViewer';
 import Constituents from './pages/Constituents';
 import Exhibitions from './pages/Exhibitions';
+import ArticlesCMS from './pages/ArticlesCMS';
 import Settings from './pages/Settings';
 import AuditLogs from './pages/AuditLogs';
 import Locations from './pages/Locations';
@@ -65,6 +66,7 @@ function App() {
                     <Route path="/constituents" element={<Constituents />} />
                     <Route path="/exhibitions" element={<Exhibitions />} />
                     <Route path="/locations" element={<Locations />} />
+                    <Route path="/articles" element={<ArticlesCMS />} />
                     <Route path="/settings" element={<Settings />} />
                     <Route path="/analytics" element={<Analytics />} />
                     <Route path="/admin/forms/submissions/:id" element={<SubmissionViewer />} />

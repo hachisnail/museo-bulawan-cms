@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2026-04-27 10:59:43 [error]: CRITICAL: Failed to auto-provision PocketBase service account. | Meta: {"error":"Something went wrong."}
 2026-04-27 11:00:33 [error]: CRITICAL: Failed to auto-provision PocketBase service account. | Meta: {"error":"Something went wrong."}
 2026-04-27 11:02:15 [error]: Failed to subscribe to PB collection: inventory | Meta: {"error":"EventSource is not defined"}
@@ -1063,3 +1064,25 @@ sql: INSERT INTO condition_reports () VALUES () - parameters:[]
     at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KS89J24F3TDSP2K7Z431GKMP/export-condition","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
 2026-05-23 13:39:21 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
 2026-05-23 13:39:42 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+=======
+2026-05-23 14:41:13 [error]: Failed to reset password | Meta: {"action":"UPDATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-23 14:41:13 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.resetPassword (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/services/user/securityService.js:89:18)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async Object.resetPassword (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/controllers/user/securityController.js:44:13) | Meta: {"method":"POST","url":"/api/v1/user/reset-password","ip":"::1","user":"Guest"}
+2026-05-23 14:42:39 [error]: Failed to write to audit log in MariaDB | Meta: {"error":"(conn:7, no: 1054, SQLState: 42S22) Unknown column 'before_state' in 'INSERT INTO'\nsql: \n                INSERT INTO audit_logs (id, user_id, action, resource, details, ip_address, before_state, after_state)\n                VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n             - parameters:['01KS9S4N4Y56KZV51Q97JNX4AK','01KQA7Q6M13E9N05SAXGZD6CS4','LO..."}
+2026-05-23 14:43:45 [error]: Failed to write to audit log in MariaDB | Meta: {"error":"(conn:6, no: 1054, SQLState: 42S22) Unknown column 'before_state' in 'INSERT INTO'\nsql: \n                INSERT INTO audit_logs (id, user_id, action, resource, details, ip_address, before_state, after_state)\n                VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n             - parameters:['01KS9S6NM1J4KNW2YG06667E7V','01KQA7Q6M13E9N05SAXGZD6CS4','LO..."}
+2026-05-23 14:50:02 [error]: Failed to write to audit log in MariaDB | Meta: {"error":"(conn:18, no: 1054, SQLState: 42S22) Unknown column 'before_state' in 'INSERT INTO'\nsql: \n                INSERT INTO audit_logs (id, user_id, action, resource, details, ip_address, before_state, after_state)\n                VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n             - parameters:['01KS9SJ645MSYJFN3FHR6NAFV1','01KQA7Q6M13E9N05SAXGZD6CS4','LO..."}
+2026-05-23 14:55:01 [error]: Failed to write to audit log in MariaDB | Meta: {"error":"(conn:29, no: 1054, SQLState: 42S22) Unknown column 'before_state' in 'INSERT INTO'\nsql: \n                INSERT INTO audit_logs (id, user_id, action, resource, details, ip_address, before_state, after_state)\n                VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n             - parameters:['01KS9SV9XBW02ZD567PG5EA9A5','01KQA7Q6M13E9N05SAXGZD6CS4','LO..."}
+2026-05-23 15:30:52 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:45, no: 1005, SQLState: HY000) Can't create table `scratch`.`accessions` (errno: 150 \"Foreign key constraint is incorrectly formed\")\nsql: \n            CREATE TABLE IF NOT EXISTS accessions (\n                id VARCHAR(26) PRIMARY KEY,\n                intake_id VARCHAR(26) NOT NULL,\n                accession_number VARCHAR(100) UNIQUE NOT NULL,\n                handling_instructions TEXT NULL,... - parameters:[]"}
+2026-05-23 15:35:38 [error]: Error: VALIDATION_FAILED: data.donor_email should match format "email"
+    at Object.submitForm (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:28:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async Object.submitForm (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"01KS9W2S2H0AR9EA9KJYESGZKV"}
+2026-05-23 15:38:34 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"ALREADY_ONBOARDED"}
+2026-05-23 15:38:34 [error]: Error: ALREADY_ONBOARDED
+    at Object.onboardFirstAdmin (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:33:33)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async Object.onboardAdmin (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"01KS9W2S2H0AR9EA9KJYESGZKV"}
+>>>>>>> c1c7919b39d4c8dc9f807f8198e2701c6e103ad7

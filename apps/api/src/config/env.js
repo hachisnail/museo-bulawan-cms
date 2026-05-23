@@ -31,9 +31,7 @@ const envSchema = Joi.object({
     FRONTEND_URL: Joi.string().default('http://localhost:5173'), // Used for email links
     CORS_ORIGINS: Joi.string().default('http://localhost:5173'),  // Comma-separated list for CORS
         // Add this inside envSchema in api/src/config/env.js
-    PB_URL: Joi.string().default('http://127.0.0.1:8090'),
-    PB_ADMIN_EMAIL: Joi.string().required(),
-    PB_ADMIN_PASSWORD: Joi.string().required(),
+
 
     // ==========================================
     // NEW: MinIO / S3 Config
@@ -81,11 +79,7 @@ export const env = {
         pass: envVars.SMTP_PASS,
         from: envVars.EMAIL_FROM
     },
-    pb: {
-        url: envVars.PB_URL,
-        adminEmail: envVars.PB_ADMIN_EMAIL,
-        adminPassword: envVars.PB_ADMIN_PASSWORD
-    },
+
     minio: {
         enabled: envVars.MINIO_ENABLED,
         endpoint: envVars.MINIO_ENDPOINT,

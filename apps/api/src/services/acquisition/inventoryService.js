@@ -695,7 +695,7 @@ export const inventoryService = {
     async getConditionReportDocument(inventoryId, format = 'html') {
         const inventory = await baseService._getRecord('inventory', inventoryId);
         const accession = await baseService._getRecord('accessions', inventory.accession_id);
-        const conditionLogs = await this.getConditionReports('inventory', inventoryId);
+        const conditionLogs = await baseService.getConditionReports('inventory', inventoryId);
         
         return await documentService.generateConditionReport(inventory, accession, conditionLogs.items, format);
     },

@@ -19,26 +19,32 @@ if (env.minio.enabled) {
 export { minioClient };
 
 export const minioService = {
-    async initialize() {
+    async initialize(retries = 10, delayMs = 2000) {
         if (!env.minio.enabled || !minioClient) return;
 
-        try {
-            const bucketName = env.minio.bucket;
+        for (let i = 0; i < retries; i++) {
+            try {
+                const bucketName = env.minio.bucket;
 
-            const exists = await minioClient.bucketExists(bucketName);
-            if (exists) {
-                logger.info(`MinIO bucket '${bucketName}' already exists. Ready.`);
-                return;
+                const exists = await minioClient.bucketExists(bucketName);
+                if (exists) {
+                    logger.info(`MinIO bucket '${bucketName}' already exists. Ready.`);
+                    return;
+                }
+
+                logger.warn(`MinIO bucket '${bucketName}' not found. Auto-provisioning...`);
+                await minioClient.makeBucket(bucketName, env.minio.region || 'us-east-1');
+                
+                logger.info(`Successfully auto-provisioned Private MinIO bucket '${bucketName}'!`);
+                return; // Success, exit the loop
+            } catch (error) {
+                if (i === retries - 1) {
+                    logger.error('Failed to auto-provision MinIO bucket after multiple attempts', { error: error.message });
+                    throw error; 
+                }
+                logger.warn(`MinIO connection failed (attempt ${i + 1}/${retries}). Retrying in ${delayMs}ms...`);
+                await new Promise(resolve => setTimeout(resolve, delayMs));
             }
-
-            logger.warn(`MinIO bucket '${bucketName}' not found. Auto-provisioning...`);
-            await minioClient.makeBucket(bucketName, env.minio.region || 'us-east-1');
-            
-            logger.info(`Successfully auto-provisioned Private MinIO bucket '${bucketName}'!`);
-
-        } catch (error) {
-            logger.error('Failed to auto-provision MinIO bucket', { error: error.message });
-            throw error; 
         }
     }
 };

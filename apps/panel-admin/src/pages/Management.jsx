@@ -114,6 +114,24 @@ export default function Management() {
         });
     };
 
+    const handleResendInvite = async (userId) => {
+        setActionLoading(true);
+        try {
+            const res = await apiFetch(`/api/v1/user/${userId}/resend-invite`, { method: 'POST' });
+            if (res.ok) {
+                setModal({ isOpen: true, title: 'Success', message: 'Invitation resent.', type: 'alert', variant: 'success' });
+                fetchUsers();
+            } else {
+                const data = await res.json();
+                setModal({ isOpen: true, title: 'Error', message: data.error || 'Failed to resend invite.', type: 'alert', variant: 'error' });
+            }
+        } catch (err) {
+            setModal({ isOpen: true, title: 'Error', message: 'Internal system fault.', type: 'alert', variant: 'error' });
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
     const filteredUsers = Array.isArray(users) ? users.filter(u => 
         (u.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
         (`${u.fname} ${u.lname}`).toLowerCase().includes(searchTerm.toLowerCase())
@@ -254,6 +272,15 @@ export default function Management() {
                                         </td>
                                         <td className="px-8 py-5 text-right">
                                             <div className="flex justify-end gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                {u.status === 'invited' && (
+                                                    <button 
+                                                        onClick={() => handleResendInvite(u.id)}
+                                                        className="p-2 hover:bg-zinc-100 rounded-sm text-zinc-400 hover:text-black transition-all"
+                                                        title="Resend Invite"
+                                                    >
+                                                        <Mail className="w-4 h-4" />
+                                                    </button>
+                                                )}
                                                 <button 
                                                     onClick={() => {
                                                         setSelectedUser(u);

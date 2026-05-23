@@ -77,11 +77,16 @@ export const analyticsController = {
     },
     async getCollectionHealth(req, res, next) {
         try {
-            // 1. Distribution of health states
             const healthDist = await db.query(`
                 SELECT condition_status as state, COUNT(*) as count 
                 FROM condition_reports 
                 WHERE entity_type = 'inventory'
+                  AND id IN (
+                      SELECT MAX(id) 
+                      FROM condition_reports 
+                      WHERE entity_type = 'inventory' 
+                      GROUP BY entity_id
+                  )
                 GROUP BY condition_status
             `);
 

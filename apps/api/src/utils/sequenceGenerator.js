@@ -27,22 +27,26 @@ import { logger } from './logger.js';
  */
 async function nextSequenceValue(name) {
     const currentYear = new Date().getFullYear();
+    const conn = await db.getConnection();
+    try {
+        // Atomic: UPDATE sets LAST_INSERT_ID to the new value, which we read back
+        // in the same connection context. No window for a concurrent reader to 
+        // observe a stale value.
+        await conn.query(`
+            UPDATE sequences 
+            SET current_value = LAST_INSERT_ID(
+                IF(reset_year = ?, current_value + 1, 1)
+            ),
+            reset_year = ?
+            WHERE sequence_name = ?
+        `, [currentYear, currentYear, name]);
 
-    // Atomic: UPDATE sets LAST_INSERT_ID to the new value, which we read back
-    // in the same connection context. No window for a concurrent reader to 
-    // observe a stale value.
-    await db.query(`
-        UPDATE sequences 
-        SET current_value = LAST_INSERT_ID(
-            IF(reset_year = ?, current_value + 1, 1)
-        ),
-        reset_year = ?
-        WHERE sequence_name = ?
-    `, [currentYear, currentYear, name]);
-
-    const rows = await db.query('SELECT LAST_INSERT_ID() as seq');
-    const seq = Number(rows[0]?.seq || 1);
-    return { year: currentYear, seq };
+        const rows = await conn.query('SELECT LAST_INSERT_ID() as seq');
+        const seq = Number(rows[0]?.seq || 1);
+        return { year: currentYear, seq };
+    } finally {
+        conn.release();
+    }
 }
 
 /**

@@ -3,6 +3,10 @@ import { logger } from '../../utils/logger.js';
 import { definitionService } from './definitionService.js';
 import { baseService } from '../acquisition/baseService.js';
 
+function escapeLikePattern(val) {
+    return val.replace(/[|%_]/g, '|$&');
+}
+
 export const queryService = {
     async listSubmissions(slug, query = {}) {
         try {
@@ -19,8 +23,8 @@ export const queryService = {
                 params.push(query.status);
             }
             if (query.search) {
-                sql += ` AND submitted_by LIKE ?`;
-                params.push(`%${query.search}%`);
+                sql += ` AND submitted_email LIKE ? ESCAPE '|'`;
+                params.push(`%${escapeLikePattern(query.search)}%`);
             }
             
             sql += ` ORDER BY created_at DESC LIMIT ? OFFSET ?`;
@@ -57,8 +61,8 @@ export const queryService = {
                 params.push(query.status);
             }
             if (query.search) {
-                sql += ` AND s.submitted_by LIKE ?`;
-                params.push(`%${query.search}%`);
+                sql += ` AND s.submitted_email LIKE ? ESCAPE '|'`;
+                params.push(`%${escapeLikePattern(query.search)}%`);
             }
             
             sql += ` ORDER BY s.created_at DESC LIMIT ? OFFSET ?`;

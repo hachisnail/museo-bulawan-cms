@@ -49,60 +49,69 @@ export const donationPipeline = {
                     address: data.donor_address || ""
                 };
 
-                // Provision donor account
+                // ==========================================
+                // PHASE 1: Provision donor account (outside transaction — has external side effects)
+                // ==========================================
                 let donorAccountId = null;
                 if (donorEmail) {
                     const accountDetails = await helpers._provisionDonorAccount(donorEmail, donorName, donorExtras);
-                    if (accountDetails) {
-                        donorAccountId = accountDetails.userId;
-                        const portalUrl = env.frontendUrl ? `${env.frontendUrl}/portal-visitor` : "http://localhost:5173/portal-visitor";
+                    donorAccountId = accountDetails.userId;
+                    const portalUrl = env.frontendUrl ? `${env.frontendUrl}/portal-visitor` : "http://localhost:5173/portal-visitor";
 
-                        if (accountDetails.isNew) {
-                            await sendEmail({
-                                to: donorEmail,
-                                subject: "Donation Accepted - Track Your Artifact",
-                                html: `
-                                    <h2>Thank you, ${donorName}!</h2>
-                                    <p>Your proposed donation has passed our initial screening and is now in formal review.</p>
-                                    <p>We have created a secure Visitor Portal account for you.</p>
-                                    <hr/>
-                                    <p><strong>Portal Login:</strong> <a href="${portalUrl}">${portalUrl}</a></p>
-                                    <p><strong>Username:</strong> ${accountDetails.username}</p>
-                                    <p><strong>Temporary Password:</strong> ${accountDetails.password}</p>
-                                    <p><em>Please log in and change your password as soon as possible.</em></p>
-                                `
-                            });
-                        } else {
-                            await sendEmail({
-                                to: donorEmail,
-                                subject: "Donation Update - Items Accepted for Review",
-                                html: `
-                                    <h2>Hello again, ${donorName}!</h2>
-                                    <p>Your new donation has passed our initial screening.</p>
-                                    <p>Track progress in your Visitor Portal: <a href="${portalUrl}">${portalUrl}</a></p>
-                                `
-                            });
-                        }
+                    if (accountDetails.isNew) {
+                        await sendEmail({
+                            to: donorEmail,
+                            subject: "Donation Accepted - Set Up Your Account",
+                            html: `
+                                <h2>Thank you, ${donorName}!</h2>
+                                <p>Your proposed donation has passed our initial screening and is now in formal review.</p>
+                                <p>We have created a secure Visitor Portal account for you. Please set up your account by clicking the link below:</p>
+                                <hr/>
+                                <p style="text-align: center; margin: 24px 0;">
+                                    <a href="${accountDetails.setupUrl}" style="background: #4f46e5; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">Set Up Your Account</a>
+                                </p>
+                                <p style="font-size: 12px; color: #6b7280;">This link expires in 7 days. If it expires, please contact us for a new one.</p>
+                                <p>Once your account is set up, you can track your donation at: <a href="${portalUrl}">${portalUrl}</a></p>
+                            `
+                        });
+                    } else {
+                        await sendEmail({
+                            to: donorEmail,
+                            subject: "Donation Update - Items Accepted for Review",
+                            html: `
+                                <h2>Hello again, ${donorName}!</h2>
+                                <p>Your new donation has passed our initial screening.</p>
+                                <p>Track progress in your Visitor Portal: <a href="${portalUrl}">${portalUrl}</a></p>
+                            `
+                        });
                     }
                 }
 
+                // ==========================================
+                // PHASE 2: Create intake records in a transaction for atomicity
+                // ==========================================
                 const parsedItems = helpers._extractSubmissionItems(data, mapping);
-                const intakes = [];
-                const donationItems = [];
 
-                for (const item of parsedItems) {
-                    let method = acquisitionMethod?.toLowerCase() || "gift";
-                    if (!["gift", "loan", "purchase", "existing"].includes(method)) method = "gift";
+                const { intakes, donationItems } = await db.transaction(async (tx) => {
+                    const txIntakes = [];
+                    const txDonationItems = [];
 
-                    const result = await acquisitionService.registerExternalIntake(
-                        staffId, submission.id, donorAccountId, donorName, method, item
-                    );
-                    
-                    intakes.push(result.intake);
-                    donationItems.push(result.donationItem);
-                }
+                    for (const item of parsedItems) {
+                        let method = acquisitionMethod?.toLowerCase() || "gift";
+                        if (!["gift", "loan", "purchase", "existing"].includes(method)) method = "gift";
 
-                await db.query('UPDATE form_submissions SET status = "processed" WHERE id = ?', [submissionId]);
+                        const result = await acquisitionService.registerExternalIntake(
+                            staffId, submission.id, donorAccountId, donorName, method, item, tx
+                        );
+                        
+                        txIntakes.push(result.intake);
+                        txDonationItems.push(result.donationItem);
+                    }
+
+                    await tx.query('UPDATE form_submissions SET status = "processed" WHERE id = ?', [submissionId]);
+
+                    return { intakes: txIntakes, donationItems: txDonationItems };
+                });
 
                 notificationService.sendToRole("admin", "New Intake Created", 
                     `External submission processed into ${intakes.length} intake(s).`, "info", { actionUrl: intakes.length === 1 ? `/intakes?id=${intakes[0].id}` : "/intakes" });

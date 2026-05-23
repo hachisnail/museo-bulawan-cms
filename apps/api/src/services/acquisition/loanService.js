@@ -1,5 +1,6 @@
 import { db } from '../../config/db.js';
 import { baseService } from './baseService.js';
+import { inventoryService } from './inventoryService.js';
 import { logger } from '../../utils/logger.js';
 import { notificationService } from '../notificationService.js';
 import { auditService } from '../auditService.js';
@@ -109,11 +110,10 @@ export const loanService = {
                 after: { status: 'returned' }
             }, tx);
 
-            // Update all linked artifacts back to 'active'
+            // Update all linked artifacts based on location/condition upon return
             const artifacts = await tx.query('SELECT inventory_id FROM loan_artifacts WHERE loan_id = ?', [loanId]);
             for (const a of artifacts) {
                 const invId = a.inventory_id;
-                await tx.updateRecord('inventory', invId, { status: 'active' });
 
                 // Create location history entry for the return
                 const [item] = await tx.query('SELECT current_location FROM inventory WHERE id = ?', [invId]);
@@ -127,6 +127,9 @@ export const loanService = {
                         moved_by: staffId
                     }, tx);
                 }
+
+                // Auto-derive status based on current location and condition
+                await inventoryService._autoDeriveArtifactStatus(staffId, invId, tx);
             }
 
             logger.info('Loan returned', { loanId, staffId });

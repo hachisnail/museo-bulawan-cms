@@ -115,28 +115,22 @@ export const formPipelineService = {
   async _provisionDonorAccount(email, name, extras = {}) {
     const lockKey = `provision_user_${email.toLowerCase()}`;
     return await globalMutex.runExclusive(lockKey, async () => {
-      try {
-        const [existingUser] = await db.query('SELECT id, username FROM users WHERE email = ?', [email]);
+      const [existingUser] = await db.query('SELECT id FROM users WHERE email = ?', [email]);
 
-        if (existingUser) {
-          return { userId: existingUser.id, isNew: false, password: null, username: existingUser.username };
-        }
-
-        const [fname, ...rest] = (name || "Valued Donor").split(" ");
-        const lname = rest.join(" ") || "";
-
-        const result = await userService.provisionDonor({ fname, lname, email, ...extras });
-
-        return {
-          userId: result.userId,
-          isNew: true,
-          password: result.tempPassword,
-          username: result.username,
-        };
-      } catch (error) {
-        logger.error(`Error provisioning donor account: ${error.message}`);
-        return null;
+      if (existingUser) {
+        return { userId: existingUser.id, isNew: false, setupUrl: null };
       }
+
+      const [fname, ...rest] = (name || "Valued Donor").split(" ");
+      const lname = rest.join(" ") || "";
+
+      const result = await userService.provisionDonor({ fname, lname, email, ...extras });
+
+      return {
+        userId: result.userId,
+        isNew: true,
+        setupUrl: result.setupUrl,
+      };
     });
   },
 

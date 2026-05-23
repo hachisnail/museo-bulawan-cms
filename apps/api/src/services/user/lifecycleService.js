@@ -152,14 +152,13 @@ export const lifecycleService = {
             }
 
             const userId = ulid();
-            const tempPassword = crypto.randomBytes(6).toString('hex');
-            const hashedPassword = await bcrypt.hash(tempPassword, 10);
-            const username = email.split('@')[0] + '_' + crypto.randomBytes(2).toString('hex');
+            const actionToken = generateToken();
+            const tokenExpires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days for donors
 
             await db.query(
-                `INSERT INTO users (id, fname, lname, email, username, password, role, status) 
-                 VALUES (?, ?, ?, ?, ?, ?, 'donor', 'active')`,
-                [userId, fname, lname, email, username, hashedPassword]
+                `INSERT INTO users (id, fname, lname, email, role, status, action_token, action_token_expires) 
+                 VALUES (?, ?, ?, ?, 'donor', 'invited', ?, ?)`,
+                [userId, fname, lname, email, actionToken, tokenExpires]
             );
 
             await pbService.syncUser({ 
@@ -175,10 +174,12 @@ export const lifecycleService = {
 
             logger.info('Donor provisioned successfully', { userId, email });
 
-            return { userId, tempPassword, username, isNew: true };
+            const setupUrl = `${env.frontendUrl}/setup?token=${actionToken}`;
+
+            return { userId, setupUrl, isNew: true };
         } catch (error) {
             logger.error('Failed to provision donor', { error: error.message });
-            throw error;
+            throw new Error('DONOR_PROVISIONING_FAILED');
         }
     },
 

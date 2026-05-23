@@ -9,83 +9,121 @@ import { documentService } from '../documentService.js';
 import { auditService } from '../auditService.js';
 
 export const inventoryService = {
+    async validateLocationName(locationName, connection = null) {
+        if (!locationName || typeof locationName !== 'string') {
+            throw new Error('VALIDATION_FAILED: Invalid location name.');
+        }
+
+        const trimmedLocation = locationName.trim();
+        const lowerLocation = trimmedLocation.toLowerCase();
+
+        // Whitelisted pre-custody or off-site locations that don't need to be in the locations table
+        const whitelist = [
+            'pending documentation (with donor)',
+            'with donor (awaiting delivery)',
+            'n/a (new entry)',
+            'off-site / deaccessioned'
+        ];
+
+        if (whitelist.includes(lowerLocation)) {
+            return;
+        }
+
+        // Query the database to see if the location name exists (case-insensitive check)
+        const check = await db.query(
+            'SELECT name FROM locations WHERE LOWER(name) = ?',
+            [lowerLocation],
+            connection
+        );
+
+        if (!check || check.length === 0) {
+            throw new Error(`VALIDATION_FAILED: The location "${trimmedLocation}" does not exist in the system.`);
+        }
+    },
+
     // ==========================================
     // PHASE 4: Finalize to Active Inventory
     // ==========================================
     async finalizeToInventory(staffId, accessionId, inventoryData) {
         return await globalMutex.runExclusive(`accession_${accessionId}`, async () => {
             try {
-                const accession = await baseService._getRecord('accessions', accessionId);
-                assertTransition('accession', accession.status, 'finalized');
+                return await db.transaction(async (tx) => {
+                    const accession = await baseService._getRecord('accessions', accessionId, {}, tx);
+                    assertTransition('accession', accession.status, 'finalized');
 
-                const existing = await db.query('SELECT * FROM inventory WHERE accession_id = ?', [accessionId]);
-                if (existing && existing.length > 0) {
-                    throw new Error(`Inventory item already exists for this accession.`);
-                }
+                    const existing = await tx.query('SELECT * FROM inventory WHERE accession_id = ?', [accessionId]);
+                    if (existing && existing.length > 0) {
+                        throw new Error(`Inventory item already exists for this accession.`);
+                    }
 
-                const missingFields = [];
-                if (!accession.dimensions) missingFields.push('Dimensions');
-                if (!accession.materials) missingFields.push('Materials');
-                if (!accession.historical_significance) missingFields.push('Historical Significance');
+                    const missingFields = [];
+                    if (!accession.dimensions) missingFields.push('Dimensions');
+                    if (!accession.materials) missingFields.push('Materials');
+                    if (!accession.historical_significance) missingFields.push('Historical Significance');
 
-                if (missingFields.length > 0) {
-                    throw new Error(`Cannot finalize. Missing required research fields: ${missingFields.join(', ')}`);
-                }
+                    if (missingFields.length > 0) {
+                        throw new Error(`Cannot finalize. Missing required research fields: ${missingFields.join(', ')}`);
+                    }
 
-                if (!accession.signed_moa) {
-                    throw new Error("Cannot finalize. Signed MOA document must be uploaded.");
-                }
-                if (!accession.research_completed) {
-                    throw new Error("Cannot finalize. Curatorial research must be marked as completed.");
-                }
+                    if (!accession.signed_moa) {
+                        throw new Error("Cannot finalize. Signed MOA document must be uploaded.");
+                    }
+                    if (!accession.research_completed) {
+                        throw new Error("Cannot finalize. Curatorial research must be marked as completed.");
+                    }
 
-                const media = await db.query(`
-                    SELECT l.id 
-                    FROM media_links l 
-                    WHERE l.entity_type = 'accession' AND l.entity_id = ?
-                `, [accessionId]);
-                const hasImages = media.length > 0;
-                const skipReason = inventoryData.imageSkipReason;
+                    const media = await tx.query(`
+                        SELECT l.id 
+                        FROM media_links l 
+                        WHERE l.entity_type = 'accession' AND l.entity_id = ?
+                    `, [accessionId]);
+                    const hasImages = media.length > 0;
+                    const skipReason = inventoryData.imageSkipReason;
 
-                if (!hasImages && !skipReason) {
-                    throw new Error("Mandatory Imaging Requirement: You must either upload artifact images or provide a formal curatorial fallback reason.");
-                }
+                    if (!hasImages && !skipReason) {
+                        throw new Error("Mandatory Imaging Requirement: You must either upload artifact images or provide a formal curatorial fallback reason.");
+                    }
 
-                const catalogNumber = inventoryData.catalogNumber || await generateCatalogNumber();
-                const location = inventoryData.location || 'Receiving Bay';
+                    const catalogNumber = inventoryData.catalogNumber || await generateCatalogNumber();
+                    const location = inventoryData.location || 'Receiving Bay';
 
-                const inventory = await baseService._createRecord(staffId, 'inventory', {
-                    accession_id: accession.id,
-                    catalog_number: catalogNumber,
-                    current_location: location,
-                    status: 'active',
-                    last_audit_date: new Date().toISOString().slice(0, 10),
-                    last_audited_by: staffId,
-                    deaccession_reason: skipReason ? `Image Skipped: ${skipReason}` : null 
+                    await this.validateLocationName(location, tx);
+
+                    const inventory = await baseService._createRecord(staffId, 'inventory', {
+                        accession_id: accession.id,
+                        catalog_number: catalogNumber,
+                        current_location: location,
+                        status: 'active',
+                        last_audit_date: new Date().toISOString().slice(0, 10),
+                        last_audited_by: staffId,
+                        deaccession_reason: skipReason ? `Image Skipped: ${skipReason}` : null 
+                    }, tx);
+
+                    const conditionReports = await baseService.getConditionReports('accession', accessionId, tx);
+                    if (conditionReports.items?.length > 0) {
+                        const latestCondition = conditionReports.items[0];
+                        await baseService.createConditionReport(staffId, 'inventory', inventory.id, latestCondition.condition_status, latestCondition.notes, null, '', {}, tx);
+                    } else if (inventoryData.conditionReport) {
+                        await baseService.createConditionReport(staffId, 'inventory', inventory.id, inventoryData.conditionReport, '', null, '', {}, tx);
+                    }
+
+                    await baseService._createRecord(staffId, 'location_history', {
+                        inventory_item_id: inventory.id,
+                        from_location: 'N/A (New Entry)',
+                        to_location: location,
+                        reason: 'Initial cataloging',
+                        moved_by: staffId
+                    }, tx);
+
+                    await this._autoDeriveArtifactStatus(staffId, inventory.id, tx);
+
+                    await baseService._transitionRecord(staffId, 'accession', 'accessions', accessionId, 'finalized', {}, tx);
+
+                    notificationService.sendGlobal('New Artifact Cataloged', 
+                        `Item ${catalogNumber} has been moved to ${location}.`, 'success', { actionUrl: `/inventory?id=${inventory.id}` });
+                    
+                    return inventory;
                 });
-
-                const conditionReports = await baseService.getConditionReports('accession', accessionId);
-                if (conditionReports.items?.length > 0) {
-                    const latestCondition = conditionReports.items[0];
-                    await baseService.createConditionReport(staffId, 'inventory', inventory.id, latestCondition.condition_status, latestCondition.notes);
-                } else if (inventoryData.conditionReport) {
-                    await baseService.createConditionReport(staffId, 'inventory', inventory.id, inventoryData.conditionReport);
-                }
-
-                await baseService._createRecord(staffId, 'location_history', {
-                    inventory_item_id: inventory.id,
-                    from_location: 'N/A (New Entry)',
-                    to_location: location,
-                    reason: 'Initial cataloging',
-                    moved_by: staffId
-                });
-
-                await baseService._transitionRecord(staffId, 'accession', 'accessions', accessionId, 'finalized');
-
-                notificationService.sendGlobal('New Artifact Cataloged', 
-                    `Item ${catalogNumber} has been moved to ${location}.`, 'success', { actionUrl: `/inventory?id=${inventory.id}` });
-                
-                return inventory;
             } catch (error) {
                 logger.error(`Error finalizing to inventory: ${error.message}`);
                 throw error; 
@@ -97,6 +135,8 @@ export const inventoryService = {
     // INVENTORY: Location Transfer
     // ==========================================
     async transferLocation(staffId, inventoryId, toLocation, reason, submissionId = null, extra = {}) {
+        await this.validateLocationName(toLocation);
+
         return await globalMutex.runExclusive(`inventory_${inventoryId}`, async () => {
             const inventory = await baseService._getRecord('inventory', inventoryId);
             
@@ -119,18 +159,12 @@ export const inventoryService = {
                     submission_id: submissionId
                 }, tx);
 
-                return await tx.updateRecord('inventory', inventoryId, {
+                await baseService._updateRecord(staffId, 'inventory', inventoryId, {
                     current_location: toLocation
-                });
-            });
+                }, tx);
 
-            // Run auto-derivation AFTER the transaction commits, but await it
-            // so failures are visible rather than silently swallowed
-            try {
-                await this.autoDeriveArtifactStatus(staffId, inventoryId);
-            } catch (err) {
-                logger.warn(`Auto-derivation failed for ${inventoryId} after location transfer: ${err.message}`);
-            }
+                return await this._autoDeriveArtifactStatus(staffId, inventoryId, tx);
+            });
 
             return updated;
         });
@@ -143,6 +177,8 @@ export const inventoryService = {
         if (!Array.isArray(inventoryIds) || inventoryIds.length === 0) {
             throw new Error('VALIDATION_FAILED: No inventory IDs provided for batch transfer.');
         }
+
+        await this.validateLocationName(toLocation);
 
         return await globalMutex.runExclusive('inventory_batch_move', async () => {
             return await db.transaction(async (tx) => {
@@ -165,11 +201,14 @@ export const inventoryService = {
                     }, tx);
 
                     // 2. Update inventory
-                    const updated = await tx.updateRecord('inventory', id, {
+                    const updated = await baseService._updateRecord(staffId, 'inventory', id, {
                         current_location: toLocation
-                    });
+                    }, tx);
+
+                    // 3. Auto-derive status
+                    const derived = await this._autoDeriveArtifactStatus(staffId, id, tx);
                     
-                    results.push(updated);
+                    results.push(derived);
                 }
 
                 notificationService.sendGlobal('Batch Movement Completed', 
@@ -204,22 +243,29 @@ export const inventoryService = {
 
     async approveDeaccession(staffId, inventoryId) {
         return await globalMutex.runExclusive(`inventory_${inventoryId}`, async () => {
-            const item = await baseService._getRecord('inventory', inventoryId);
-            assertTransition('inventory', item.status, 'deaccessioned');
+            try {
+                return await db.transaction(async (tx) => {
+                    const item = await baseService._getRecord('inventory', inventoryId, {}, tx);
+                    assertTransition('inventory', item.status, 'deaccessioned');
 
-            await baseService._createRecord(staffId, 'location_history', {
-                inventory_item_id: inventoryId,
-                from_location: item.current_location,
-                to_location: 'OFF-SITE / DEACCESSIONED',
-                movement_type: 'Deaccession',
-                reason: item.deaccession_reason,
-                moved_by: staffId
-            });
+                    await baseService._createRecord(staffId, 'location_history', {
+                        inventory_item_id: inventoryId,
+                        from_location: item.current_location,
+                        to_location: 'OFF-SITE / DEACCESSIONED',
+                        movement_type: 'Deaccession',
+                        reason: item.deaccession_reason,
+                        moved_by: staffId
+                    }, tx);
 
-            return await baseService._updateRecord(staffId, 'inventory', inventoryId, {
-                status: 'deaccessioned',
-                deaccession_date: new Date().toISOString().slice(0, 10)
-            });
+                    return await baseService._updateRecord(staffId, 'inventory', inventoryId, {
+                        status: 'deaccessioned',
+                        deaccession_date: new Date().toISOString().slice(0, 10)
+                    }, tx);
+                });
+            } catch (error) {
+                logger.error(`Error approving deaccession: ${error.message}`);
+                throw error;
+            }
         });
     },
 
@@ -232,9 +278,13 @@ export const inventoryService = {
             const item = await baseService._getRecord('inventory', inventoryId);
             assertTransition('inventory', item.status, 'active');
 
-            const updated = await baseService._updateRecord(staffId, 'inventory', inventoryId, {
-                status: 'active',
-                deaccession_reason: null
+            const updated = await db.transaction(async (tx) => {
+                await baseService._updateRecord(staffId, 'inventory', inventoryId, {
+                    status: 'active',
+                    deaccession_reason: null
+                }, tx);
+
+                return await this._autoDeriveArtifactStatus(staffId, inventoryId, tx);
             });
 
             notificationService.sendToRole('admin', 'Deaccession Cancelled', 
@@ -247,10 +297,10 @@ export const inventoryService = {
     // ==========================================
     // MOVEMENT HISTORY & CONSERVATION (SPECTRUM: Location & Movement Control)
     // ==========================================
-    async getMovementHistory(inventoryId) {
+    async getMovementHistory(inventoryId, connection = null) {
         return await baseService._listRecords('location_history', {
             filter: `inventory_item_id="${inventoryId}"`
-        });
+        }, connection);
     },
 
     async createConservationLog(staffId, inventoryId, treatment, findings, recommendations, submissionId = null, extra = {}) {
@@ -292,61 +342,76 @@ export const inventoryService = {
     // ==========================================
     async recordAuditCheck(staffId, inventoryId, auditData) {
         return await globalMutex.runExclusive(`inventory_${inventoryId}`, async () => {
-            const item = await baseService._getRecord('inventory', inventoryId);
+            try {
+                return await db.transaction(async (tx) => {
+                    const item = await baseService._getRecord('inventory', inventoryId, {}, tx);
 
-            const auditRecord = await baseService._createRecord(staffId, 'inventory_audits', {
-                inventory_item_id: inventoryId,
-                audit_type: auditData.auditType || 'spot_check',
-                location_verified: auditData.locationVerified ?? true,
-                object_found: auditData.objectFound ?? true,
-                number_legible: auditData.numberLegible ?? true,
-                condition_consistent: auditData.conditionConsistent ?? true,
-                discrepancy_notes: auditData.discrepancyNotes || null,
-                audited_location: auditData.auditedLocation || item.current_location,
-                audited_by: staffId
-            });
+                    // If audited location is provided, validate it first
+                    if (auditData.auditedLocation) {
+                        await this.validateLocationName(auditData.auditedLocation, tx);
+                    }
 
-            // Update the inventory record's last-audit timestamp
-            await baseService._updateRecord(staffId, 'inventory', inventoryId, {
-                last_audit_date: new Date().toISOString().slice(0, 10),
-                last_audited_by: staffId
-            });
+                    const auditRecord = await baseService._createRecord(staffId, 'inventory_audits', {
+                        inventory_item_id: inventoryId,
+                        audit_type: auditData.auditType || 'spot_check',
+                        location_verified: auditData.locationVerified ?? true,
+                        object_found: auditData.objectFound ?? true,
+                        number_legible: auditData.numberLegible ?? true,
+                        condition_consistent: auditData.conditionConsistent ?? true,
+                        discrepancy_notes: auditData.discrepancyNotes || null,
+                        audited_location: auditData.auditedLocation || item.current_location,
+                        audited_by: staffId
+                    }, tx);
 
-            // If the object was NOT found at the expected location, flag it
-            if (!auditData.objectFound) {
-                notificationService.sendToRole('admin', 'Audit Discrepancy: Object Not Found',
-                    `Artifact ${item.catalog_number} was not found at ${item.current_location} during ${auditData.auditType || 'spot check'}.`,
-                    'error', { actionUrl: `/inventory?id=${inventoryId}` });
-            }
+                    // Update the inventory record's last-audit timestamp
+                    await baseService._updateRecord(staffId, 'inventory', inventoryId, {
+                        last_audit_date: new Date().toISOString().slice(0, 10),
+                        last_audited_by: staffId
+                    }, tx);
 
-            // If the object was found but location doesn't match records, auto-correct
-            if (auditData.objectFound && !auditData.locationVerified && auditData.auditedLocation) {
-                logger.warn(`Audit location mismatch for ${item.catalog_number}: expected ${item.current_location}, found at ${auditData.auditedLocation}`);
-                
-                await baseService._createRecord(staffId, 'location_history', {
-                    inventory_item_id: inventoryId,
-                    from_location: item.current_location,
-                    to_location: auditData.auditedLocation,
-                    movement_type: 'Audit Correction',
-                    reason: `Location corrected during ${auditData.auditType || 'spot check'}: ${auditData.discrepancyNotes || 'Location mismatch'}`,
-                    moved_by: staffId
+                    // If the object was NOT found at the expected location, flag it
+                    if (!auditData.objectFound) {
+                        notificationService.sendToRole('admin', 'Audit Discrepancy: Object Not Found',
+                            `Artifact ${item.catalog_number} was not found at ${item.current_location} during ${auditData.auditType || 'spot check'}.`,
+                            'error', { actionUrl: `/inventory?id=${inventoryId}` });
+                    }
+
+                    // If the object was found but location doesn't match records, auto-correct
+                    if (auditData.objectFound && !auditData.locationVerified && auditData.auditedLocation) {
+                        logger.warn(`Audit location mismatch for ${item.catalog_number}: expected ${item.current_location}, found at ${auditData.auditedLocation}`);
+                        
+                        await baseService._createRecord(staffId, 'location_history', {
+                            inventory_item_id: inventoryId,
+                            from_location: item.current_location,
+                            to_location: auditData.auditedLocation,
+                            movement_type: 'Audit Correction',
+                            reason: `Location corrected during ${auditData.auditType || 'spot check'}: ${auditData.discrepancyNotes || 'Location mismatch'}`,
+                            moved_by: staffId
+                        }, tx);
+
+                        await baseService._updateRecord(staffId, 'inventory', inventoryId, {
+                            current_location: auditData.auditedLocation
+                        }, tx);
+                    }
+
+                    // If condition is inconsistent, trigger a formal condition check
+                    if (!auditData.conditionConsistent && auditData.observedCondition) {
+                        await baseService.createConditionReport(
+                            staffId, 'inventory', inventoryId,
+                            auditData.observedCondition,
+                            `Flagged during ${auditData.auditType || 'spot check'}: ${auditData.discrepancyNotes || 'Condition changed'}`,
+                            null, '', {}, tx
+                        );
+                    }
+
+                    await this._autoDeriveArtifactStatus(staffId, inventoryId, tx);
+
+                    return auditRecord;
                 });
-
-                await baseService._updateRecord(staffId, 'inventory', inventoryId, {
-                    current_location: auditData.auditedLocation
-                });
+            } catch (error) {
+                logger.error(`Error recording audit check: ${error.message}`);
+                throw error;
             }
-
-            // If condition is inconsistent, trigger a formal condition check
-            if (!auditData.conditionConsistent && auditData.observedCondition) {
-                await baseService.createConditionReport(
-                    staffId, 'inventory', inventoryId,
-                    auditData.observedCondition,
-                    `Flagged during ${auditData.auditType || 'spot check'}: ${auditData.discrepancyNotes || 'Condition changed'}`
-                );
-            }
-
-            return auditRecord;
         });
     },
 
@@ -546,50 +611,55 @@ export const inventoryService = {
 
     async autoDeriveArtifactStatus(staffId, inventoryId) {
         return await globalMutex.runExclusive(`inventory_${inventoryId}`, async () => {
-            const item = await baseService._getRecord('inventory', inventoryId);
-            
-            if (item.manual_status_override) {
-                logger.info(`Skipping auto-derivation for artifact ${inventoryId} due to manual override.`);
-                return item;
-            }
-
-            const healthReports = await baseService.getConditionReports('inventory', inventoryId);
-            const latestHealth = healthReports.items?.[0];
-
-            const movementHistory = await this.getMovementHistory(inventoryId);
-            const latestMovement = movementHistory.items?.[0];
-
-            let derivedStatus = 'active';
-
-            if (latestHealth) {
-                const condition = latestHealth.condition_status;
-                if (condition === 'Critical' || condition === 'Poor') {
-                    derivedStatus = 'maintenance';
-                }
-            }
-
-            if (latestMovement) {
-                const loc = (latestMovement.to_location || '').toLowerCase();
-                if (loc.includes('loan')) {
-                    derivedStatus = 'loan';
-                } else if (loc.includes('storage') || loc.includes('vault')) {
-                    derivedStatus = 'storage';
-                }
-            }
-
-            if (item.status === 'deaccessioned' || item.status === 'deaccession_pending') {
-                derivedStatus = item.status;
-            }
-
-            if (item.status !== derivedStatus) {
-                logger.info(`Auto-deriving status for ${inventoryId}: ${item.status} -> ${derivedStatus}`);
-                return await baseService._updateRecord(staffId, 'inventory', inventoryId, {
-                    status: derivedStatus
-                });
-            }
-
-            return item;
+            return await this._autoDeriveArtifactStatus(staffId, inventoryId);
         });
+    },
+
+    async _autoDeriveArtifactStatus(staffId, inventoryId, connection = null) {
+        const item = await baseService._getRecord('inventory', inventoryId, {}, connection);
+        
+        if (item.manual_status_override) {
+            logger.info(`Skipping auto-derivation for artifact ${inventoryId} due to manual override.`);
+            return item;
+        }
+
+        const healthReports = await baseService.getConditionReports('inventory', inventoryId, connection);
+        const latestHealth = healthReports.items?.[0];
+
+        const movementHistory = await this.getMovementHistory(inventoryId, connection);
+        const latestMovement = movementHistory.items?.[0];
+
+        let derivedStatus = 'active';
+
+        if (latestMovement) {
+            const loc = (latestMovement.to_location || '').toLowerCase();
+            if (loc.includes('loan')) {
+                derivedStatus = 'loan';
+            } else if (loc.includes('storage') || loc.includes('vault')) {
+                derivedStatus = 'storage';
+            }
+        }
+
+        if (latestHealth && derivedStatus !== 'loan') {
+            const condition = latestHealth.condition_status;
+            if (condition === 'Critical' || condition === 'Poor') {
+                derivedStatus = 'maintenance';
+            }
+        }
+
+        if (item.status === 'deaccessioned' || item.status === 'deaccession_pending') {
+            derivedStatus = item.status;
+        }
+
+        if (item.status !== derivedStatus) {
+            logger.info(`Auto-deriving status for ${inventoryId}: ${item.status} -> ${derivedStatus}`);
+            await baseService._updateRecord(staffId, 'inventory', inventoryId, {
+                status: derivedStatus
+            }, connection);
+            return await baseService._getRecord('inventory', inventoryId, {}, connection);
+        }
+
+        return item;
     },
 
     // ==========================================

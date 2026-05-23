@@ -48,8 +48,7 @@ export const verificationService = {
         const hash = crypto.createHash('sha256').update(otp).digest('hex');
         if (hash !== cached.otpHash) throw new Error('INVALID_OTP');
         
-        // Consume OTP to prevent reuse
-        await otpStore.delete(email);
+        // Do not delete OTP here so it can be consumed during final submission
         return { valid: true };
     }
 };

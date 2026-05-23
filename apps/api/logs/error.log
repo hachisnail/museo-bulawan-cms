@@ -980,3 +980,62 @@ sql: UPDATE accessions SET signed_moa = ?, version = ?, updated_by = ? WHERE id 
 2026-05-05 10:22:27 [error]: Failed to initialize MariaDB tables | Meta: {"error":"Cannot read properties of undefined (reading 'count')"}
 2026-05-05 10:22:34 [error]: Failed to initialize MariaDB tables | Meta: {"error":"Cannot read properties of undefined (reading 'count')"}
 2026-05-05 10:28:53 [error]: Failed to initialize MariaDB tables | Meta: {"error":"Cannot read properties of undefined (reading 'count')"}
+2026-05-22 23:58:47 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-22 23:58:47 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-22 23:58:48 [error]: Error finalizing to inventory: Cannot finalize. Signed MOA document must be uploaded.
+2026-05-22 23:59:16 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:00:52 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:00:52 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:00:53 [error]: Error processing accession: (conn:4283, no: 1062, SQLState: 23000) Duplicate entry '2026.001.01' for key 'accession_number'
+sql: INSERT INTO accessions (id, intake_id, accession_number, contract_type, legal_status, handling_instructions, dimensions, materials, research_notes, status, signed_moa, version, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) - par...
+2026-05-23 00:01:45 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:01:45 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:01:45 [error]: Error processing accession: (conn:4289, no: 1062, SQLState: 23000) Duplicate entry '2026.001.01' for key 'accession_number'
+sql: INSERT INTO accessions (id, intake_id, accession_number, contract_type, legal_status, handling_instructions, dimensions, materials, research_notes, status, signed_moa, version, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) - par...
+2026-05-23 00:02:02 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:02:02 [error]: Error processing accession: (conn:4301, no: 1062, SQLState: 23000) Duplicate entry '2026.001.01' for key 'accession_number'
+sql: INSERT INTO accessions (id, intake_id, accession_number, contract_type, legal_status, handling_instructions, dimensions, materials, research_notes, status, signed_moa, version, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) - par...
+2026-05-23 00:03:17 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:03:29 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:03:29 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:07:35 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:07:35 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:08:26 [error]: Failed to list submissions for hardening-test: (conn:4369, no: 1064, SQLState: 42000) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''\' ORDER BY created_at DESC LIMIT ? OFFSET ?' at line 1
+sql: SELECT * FROM form_submissions WHERE form_id = ? AND submitted_email LIKE ? ESCAPE '\' ORDER BY created_at DESC LIMIT ? OFFSET ? - parameters:['HARDENING_FORM_ID','%\%%',50,0]
+2026-05-23 00:08:27 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:08:27 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:08:33 [error]: Failed to list submissions for hardening-test: (conn:4383, no: 1064, SQLState: 42000) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''\' ORDER BY created_at DESC LIMIT ? OFFSET ?' at line 1
+sql: SELECT * FROM form_submissions WHERE form_id = ? AND submitted_email LIKE ? ESCAPE '\' ORDER BY created_at DESC LIMIT ? OFFSET ? - parameters:['HARDENING_FORM_ID','%\%%',50,0]
+2026-05-23 00:11:30 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:11:30 [error]: Failed to sync user to PB | Meta: {"error":"Something went wrong.","data":{}}
+2026-05-23 00:11:30 [error]: Failed to list submissions for hardening-test: (conn:4404, no: 1064, SQLState: 42000) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''\' ORDER BY created_at DESC LIMIT ? OFFSET ?' at line 1
+sql: SELECT * FROM form_submissions WHERE form_id = ? AND submitted_email LIKE ? ESCAPE '\' ORDER BY created_at DESC LIMIT ? OFFSET ? - parameters:['HARDENING_FORM_ID','%\%%',50,0]
+2026-05-23 00:23:44 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Jest Vault" does not exist in the system.
+2026-05-23 00:27:27 [error]: Error finalizing to inventory: Invalid transition: 'accession' cannot move from 'pending_approval' → 'finalized'. Allowed: [in_research, rejected]
+2026-05-23 00:27:27 [error]: Error finalizing to inventory: Invalid transition: 'accession' cannot move from 'pending_approval' → 'finalized'. Allowed: [in_research, rejected]
+2026-05-23 00:28:00 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:28:38 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:29:58 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:32:02 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:33:05 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:33:59 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:35:03 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:35:56 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:37:24 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:37:36 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:38:36 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:39:14 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:46:41 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:47:36 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:47:52 [error]: Error processing accession: (conn:4973, no: 1364, SQLState: HY000) Field 'id' doesn't have a default value
+sql: INSERT INTO condition_reports () VALUES () - parameters:[]
+2026-05-23 00:47:52 [error]: Error recording audit check: (conn:4976, no: 1364, SQLState: HY000) Field 'id' doesn't have a default value
+sql: INSERT INTO condition_reports () VALUES () - parameters:[]
+2026-05-23 00:48:44 [error]: Error processing accession: (conn:4998, no: 1364, SQLState: HY000) Field 'id' doesn't have a default value
+sql: INSERT INTO condition_reports () VALUES () - parameters:[]
+2026-05-23 00:49:24 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:49:36 [error]: Error processing accession: (conn:5023, no: 1364, SQLState: HY000) Field 'id' doesn't have a default value
+sql: INSERT INTO condition_reports () VALUES () - parameters:[]
+2026-05-23 00:49:44 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:51:06 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 00:52:20 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.

@@ -20,6 +20,26 @@ export const baseService = {
         }
     },
 
+    tableColumnsCache: {},
+
+    async _getTableColumns(table, connection = null) {
+        if (this.tableColumnsCache[table] && this.tableColumnsCache[table].size > 0) {
+            return this.tableColumnsCache[table];
+        }
+        const rows = await db.query(
+            'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
+            [table],
+            connection
+        );
+        const columns = new Set(rows.map(r => r.COLUMN_NAME || r.column_name));
+        if (columns.size > 0) {
+            this.tableColumnsCache[table] = columns;
+        } else {
+            logger.warn(`[baseService] No columns found for table '${table}'. Columns cache NOT updated.`);
+        }
+        return columns;
+    },
+
     /**
      * Parses a PocketBase-style filter string into parameterized SQL.
      * 
@@ -86,7 +106,7 @@ export const baseService = {
         // Build a parameterized WHERE clause from the filter string
         const { sql: filterSql, params: filterParams } = this._buildFilterClause(query.filter);
 
-        const sql = `SELECT * FROM \`${table}\` ${filterSql} ORDER BY created_at DESC LIMIT ? OFFSET ?`;
+        const sql = `SELECT * FROM \`${table}\` ${filterSql} ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?`;
         const queryParams = [...filterParams, perPage, offset];
 
         const rows = await db.query(sql, queryParams, connection);
@@ -177,17 +197,32 @@ export const baseService = {
     async _createRecord(userId, table, data, connection = null) {
         this._assertTable(table);
 
-        const recordId = this._genId();
+        const columns = await this._getTableColumns(table, connection);
+        const recordId = data.id || this._genId();
         
         const recordData = {
             id: recordId,
-            ...data,
-            version: 1,
-            created_by: userId,
-            updated_by: userId
+            ...data
         };
 
-        const record = await db.insertRecord(table, recordData, connection);
+        if (columns.has('version')) {
+            recordData.version = 1;
+        }
+        if (columns.has('created_by')) {
+            recordData.created_by = userId;
+        }
+        if (columns.has('updated_by')) {
+            recordData.updated_by = userId;
+        }
+
+        const filteredData = {};
+        for (const [key, val] of Object.entries(recordData)) {
+            if (columns.has(key)) {
+                filteredData[key] = val;
+            }
+        }
+
+        const record = await db.insertRecord(table, filteredData, connection);
 
         await auditService.log({
             collection: table,
@@ -203,6 +238,7 @@ export const baseService = {
     async _updateRecord(userId, table, id, data, connection = null) {
         this._assertTable(table);
 
+        const columns = await this._getTableColumns(table, connection);
         const rows = await db.query(`SELECT * FROM \`${table}\` WHERE id = ?`, [id], connection);
         const existing = rows[0];
         
@@ -211,12 +247,24 @@ export const baseService = {
         }
 
         const updateData = {
-            ...data,
-            version: (existing.version || 0) + 1,
-            updated_by: userId
+            ...data
         };
 
-        const updated = await db.updateRecord(table, id, updateData, connection);
+        if (columns.has('version')) {
+            updateData.version = (existing.version || 0) + 1;
+        }
+        if (columns.has('updated_by')) {
+            updateData.updated_by = userId;
+        }
+
+        const filteredData = {};
+        for (const [key, val] of Object.entries(updateData)) {
+            if (columns.has(key) && key !== 'id') {
+                filteredData[key] = val;
+            }
+        }
+
+        const updated = await db.updateRecord(table, id, filteredData, connection);
 
         await auditService.log({
             collection: table,
@@ -263,10 +311,10 @@ export const baseService = {
         }, connection);
     },
 
-    async getConditionReports(entityType, entityId) {
+    async getConditionReports(entityType, entityId, connection = null) {
         // Use parameterized filter instead of string interpolation
         return await this._listRecords('condition_reports', {
             filter: `entity_type="${entityType}" && entity_id="${entityId}"`
-        });
+        }, connection);
     }
 };

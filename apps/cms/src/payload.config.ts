@@ -16,7 +16,6 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  // ─── Admin Panel ──────────────────────────────
   admin: {
     user: Users.slug,
     meta: {

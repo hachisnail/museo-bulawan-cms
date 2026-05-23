@@ -275,9 +275,9 @@ export interface Category {
   id: number;
   name: string;
   /**
-   * URL-friendly identifier (e.g., "museum-news").
+   * Auto-generated from name. Override for custom URLs.
    */
-  slug: string;
+  slug?: string | null;
   description?: string | null;
   /**
    * Hex color code for UI badges (e.g., "#D4AF37").

@@ -12,8 +12,16 @@ import { Categories } from './collections/Categories'
 import { Authors } from './collections/Authors'
 import { Media } from './collections/Media'
 
+import fs from 'fs'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+// Ensure the local data directory exists so SQLite doesn't crash on fresh pulls
+const dataDir = path.resolve(process.cwd(), 'data')
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true })
+}
 
 export default buildConfig({
   admin: {

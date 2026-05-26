@@ -33,7 +33,8 @@ class SSEFactory {
 
         this.clients.set(clientId, {
             res,
-            channels: new Set(channels)
+            channels: new Set(channels),
+            role: req.user?.role || 'visitor'
         });
 
         logger.info('SSE Client Connected', { clientId, channels });
@@ -50,12 +51,21 @@ class SSEFactory {
 
     broadcast(channel, eventName, payload) {
         let sentCount = 0;
-        const dataString = JSON.stringify(payload, (key, value) =>
-            typeof value === 'bigint' ? value.toString() : value
-        );
 
         for (const [clientId, client] of this.clients.entries()) {
             if (client.channels.has(channel) || client.channels.has('all') || client.channels.has('global')) {
+                let outboundPayload = payload;
+                if ((client.role === 'donor' || client.role === 'visitor') && payload && payload.record) {
+                    outboundPayload = {
+                        action: payload.action,
+                        resource: payload.resource
+                    };
+                }
+
+                const dataString = JSON.stringify(outboundPayload, (key, value) =>
+                    typeof value === 'bigint' ? value.toString() : value
+                );
+
                 client.res.write(`event: ${eventName}\n`);
                 client.res.write(`data: ${dataString}\n\n`);
                 sentCount++;

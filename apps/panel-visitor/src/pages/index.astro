@@ -1,19 +1,458 @@
 ---
-
-
-
+import Layout from '../layouts/Layout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Museo Bulawan - Donor Portal">
+    <div class="min-h-screen flex flex-col bg-zinc-50">
+        <!-- Header -->
+        <header class="bg-zinc-950 text-white border-b-4 border-[#D4AF37] px-6 py-4 flex justify-between items-center shadow-md">
+            <div class="flex items-center gap-3">
+                <div class="flex h-9 w-9 items-center justify-center bg-zinc-900 border border-zinc-800 rounded-sm">
+                    <svg class="h-5 w-5 text-[#D4AF37]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 22h20L12 2zm0 4.5l6.5 13h-13L12 6.5z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-serif tracking-widest uppercase text-white">Museo Bulawan</h1>
+                    <p class="text-[9px] text-[#D4AF37] uppercase tracking-[0.2em] font-medium">Donor Portal</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="user-display" class="text-xs text-zinc-300 font-light">Loading Account...</span>
+                <button 
+                    id="logout-btn" 
+                    class="bg-zinc-900 border border-zinc-800 hover:border-red-500/50 hover:bg-red-950/20 text-zinc-400 hover:text-red-400 px-3.5 py-1.5 rounded-sm text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+                >
+                    Log Out
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8 flex flex-col md:flex-row gap-8 items-stretch h-[calc(100vh-80px)] overflow-hidden">
+            <!-- Sidebar: Donations List -->
+            <div class="w-full md:w-80 flex flex-col gap-4 h-full">
+                <div>
+                    <h2 class="text-xl font-serif text-black uppercase tracking-wider">My Submissions</h2>
+                    <p class="text-xs text-zinc-500 font-light mt-1">Select an artifact to track its lifecycle.</p>
+                </div>
+                
+                <div 
+                    id="donations-list" 
+                    class="flex-1 bg-white border border-zinc-200 rounded-sm overflow-y-auto divide-y divide-zinc-100 min-h-[250px] shadow-sm"
+                >
+                    <div class="p-8 text-center text-xs text-zinc-400 uppercase tracking-widest animate-pulse">
+                        Retrieving submissions...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Details Panel -->
+            <div class="flex-1 bg-white border border-zinc-200 rounded-sm shadow-sm flex flex-col h-full overflow-hidden">
+                <div id="details-empty" class="flex-1 flex flex-col items-center justify-center p-12 text-center text-zinc-400 italic font-serif">
+                    Select a submission from the list to view tracking stages and physical delivery receipts.
+                </div>
+                
+                <div id="details-content" class="hidden flex-1 flex flex-col h-full overflow-hidden">
+                    <!-- Title Area -->
+                    <div class="p-6 border-b border-zinc-200 bg-zinc-50/50 flex justify-between items-start">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span id="detail-id" class="text-[9px] uppercase font-mono font-bold text-zinc-400">ID: -</span>
+                                <span id="detail-method-badge" class="px-2 py-0.5 bg-zinc-100 text-zinc-650 rounded-sm text-[8px] font-bold uppercase tracking-wider border border-zinc-200">GIFT</span>
+                            </div>
+                            <h2 id="detail-title" class="text-2xl font-serif text-black uppercase tracking-wider">Pre-colonial Artifact</h2>
+                        </div>
+                        <div class="text-right text-xs text-zinc-400">
+                            Logged: <span id="detail-date">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Scrollable Details -->
+                    <div class="flex-1 overflow-y-auto p-6 space-y-8">
+                        <!-- Pipeline Stage Stepper -->
+                        <div class="bg-zinc-50 p-6 border border-zinc-200 rounded-sm">
+                            <div class="text-[10px] font-black uppercase tracking-widest text-[#A68A27] text-center mb-6">Artifact Acquisition Stage</div>
+                            
+                            <div class="flex flex-col sm:flex-row items-center w-full gap-4 sm:gap-0">
+                                <!-- Stage 1: Intake -->
+                                <div class="flex flex-col items-center flex-1 relative w-full" id="step-1">
+                                    <div class="step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-zinc-200 text-zinc-400 border-2 border-zinc-200 transition-colors">1</div>
+                                    <div class="text-[10px] uppercase font-bold tracking-wider mt-2 text-zinc-400 step-label">Intake</div>
+                                </div>
+                                <div class="hidden sm:block h-0.5 bg-zinc-200 flex-1 -mt-4 transition-colors" id="line-1"></div>
+                                
+                                <!-- Stage 2: Handover (Receive Artifact) -->
+                                <div class="flex flex-col items-center flex-1 relative w-full" id="step-2">
+                                    <div class="step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-zinc-200 text-zinc-400 border-2 border-zinc-200 transition-colors">2</div>
+                                    <div class="text-[10px] uppercase font-bold tracking-wider mt-2 text-zinc-400 step-label">Receive Artifact</div>
+                                </div>
+                                <div class="hidden sm:block h-0.5 bg-zinc-200 flex-1 -mt-4 transition-colors" id="line-2"></div>
+                                
+                                <!-- Stage 3: Accession -->
+                                <div class="flex flex-col items-center flex-1 relative w-full" id="step-3">
+                                    <div class="step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-zinc-200 text-zinc-400 border-2 border-zinc-200 transition-colors">3</div>
+                                    <div class="text-[10px] uppercase font-bold tracking-wider mt-2 text-zinc-400 step-label">Accession</div>
+                                </div>
+                                <div class="hidden sm:block h-0.5 bg-zinc-200 flex-1 -mt-4 transition-colors" id="line-3"></div>
+                                
+                                <!-- Stage 4: Inventory -->
+                                <div class="flex flex-col items-center flex-1 relative w-full" id="step-4">
+                                    <div class="step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-zinc-200 text-zinc-400 border-2 border-zinc-200 transition-colors">4</div>
+                                    <div class="text-[10px] uppercase font-bold tracking-wider mt-2 text-zinc-400 step-label">Inventory</div>
+                                </div>
+                                <div class="hidden sm:block h-0.5 bg-zinc-200 flex-1 -mt-4 transition-colors" id="line-4"></div>
+                                
+                                <!-- Stage 5: Exhibition -->
+                                <div class="flex flex-col items-center flex-1 relative w-full" id="step-5">
+                                    <div class="step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-zinc-200 text-zinc-400 border-2 border-zinc-200 transition-colors">5</div>
+                                    <div class="text-[10px] uppercase font-bold tracking-wider mt-2 text-zinc-400 step-label">On Display</div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-6 text-xs text-zinc-500 font-light italic" id="detail-stage-desc">
+                                Loading status...
+                            </div>
+                        </div>
+
+                        <!-- Double columns: Delivery QR Code slip vs Metadata Details -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                            
+                            <!-- Delivery Slip Box -->
+                            <div id="delivery-slip-container" class="border border-zinc-200 rounded-sm p-5 bg-zinc-50/50 space-y-4">
+                                <div class="text-[10px] font-black uppercase tracking-widest text-[#A68A27] border-b border-zinc-200 pb-2">Physical Handover Verification</div>
+                                <p class="text-xs text-zinc-500 leading-relaxed font-light">
+                                    Please deliver the artifact to the museum. Present either this QR code or the token below to the receiving registrar to verify the delivery.
+                                </p>
+                                
+                                <div class="bg-white border border-zinc-250 p-4 rounded-sm text-center shadow-sm flex flex-col items-center justify-center">
+                                    <div id="qr-container" class="mb-4 bg-zinc-50 border border-zinc-150 p-2 rounded-sm inline-block shadow-inner w-[216px] h-[216px] flex items-center justify-center">
+                                        <canvas id="qr-canvas"></canvas>
+                                    </div>
+                                    <div id="token-display" class="font-mono text-lg font-bold text-black tracking-widest uppercase border-2 border-dashed border-[#D4AF37] px-4 py-1.5 bg-[#FFFDF5] inline-block rounded-sm mb-3">
+                                        --------
+                                    </div>
+                                    <div class="text-[10px] text-zinc-400 space-y-0.5">
+                                        <div>Slip Reference: <span id="slip-ref" class="font-mono font-semibold text-zinc-650">-</span></div>
+                                        <div>Expires: <span id="slip-expiry">-</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Metadata details -->
+                            <div class="border border-zinc-200 rounded-sm p-5 space-y-5">
+                                <div class="text-[10px] font-black uppercase tracking-widest text-zinc-400 border-b border-zinc-200 pb-2">Artifact Metadata</div>
+                                
+                                <div class="space-y-4 text-left">
+                                    <div>
+                                        <label class="text-[9px] uppercase font-bold tracking-widest text-zinc-400 block mb-0.5">Current Physical Location</label>
+                                        <div id="meta-location" class="text-sm font-semibold text-black flex items-center gap-1.5">
+                                            <span class="w-1.5 h-1.5 bg-[#D4AF37] rounded-full inline-block"></span>
+                                            Receiving Bay
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="text-[9px] uppercase font-bold tracking-widest text-zinc-400 block mb-0.5">Accession Number</label>
+                                        <div id="meta-accession" class="text-xs font-mono font-medium text-zinc-600 bg-zinc-50 px-2 py-1 border border-zinc-150 rounded-sm inline-block">
+                                            Not Accessioned Yet
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="text-[9px] uppercase font-bold tracking-widest text-zinc-400 block mb-0.5">Catalog Number</label>
+                                        <div id="meta-catalog" class="text-xs font-mono font-medium text-zinc-650 bg-zinc-50 px-2 py-1 border border-zinc-150 rounded-sm inline-block">
+                                            Not Cataloged Yet
+                                        </div>
+                                    </div>
+
+                                    <div id="meta-exhibition-container" class="hidden">
+                                        <label class="text-[9px] uppercase font-bold tracking-widest text-zinc-400 block mb-0.5">Current Exhibition</label>
+                                        <div id="meta-exhibition" class="text-xs font-semibold text-zinc-800 bg-green-50 border border-green-200 px-2.5 py-1.5 rounded-sm">
+                                            -
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</Layout>
+
+<!-- Load QRCode library via CDN for client-side rendering -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js" is:inline></script>
+
+<script>
+    const API_BASE_URL = 'http://localhost:3000';
+    let currentUser: any = null;
+    let donationsList: any[] = [];
+    let selectedDonation: any = null;
+    let sseSource: EventSource | null = null;
+
+    // Elements
+    const userDisplay = document.getElementById('user-display') as HTMLSpanElement;
+    const logoutBtn = document.getElementById('logout-btn') as HTMLButtonElement;
+    const donationsContainer = document.getElementById('donations-list') as HTMLDivElement;
+    const detailsEmpty = document.getElementById('details-empty') as HTMLDivElement;
+    const detailsContent = document.getElementById('details-content') as HTMLDivElement;
+
+    // Detail Fields
+    const detailId = document.getElementById('detail-id') as HTMLSpanElement;
+    const detailMethodBadge = document.getElementById('detail-method-badge') as HTMLSpanElement;
+    const detailTitle = document.getElementById('detail-title') as HTMLHeadingElement;
+    const detailDate = document.getElementById('detail-date') as HTMLSpanElement;
+    const detailStageDesc = document.getElementById('detail-stage-desc') as HTMLDivElement;
+    
+    // Metadata fields
+    const metaLocation = document.getElementById('meta-location') as HTMLDivElement;
+    const metaAccession = document.getElementById('meta-accession') as HTMLDivElement;
+    const metaCatalog = document.getElementById('meta-catalog') as HTMLDivElement;
+    const metaExhibitionContainer = document.getElementById('meta-exhibition-container') as HTMLDivElement;
+    const metaExhibition = document.getElementById('meta-exhibition') as HTMLDivElement;
+
+    // Delivery Slip fields
+    const deliverySlipContainer = document.getElementById('delivery-slip-container') as HTMLDivElement;
+    const tokenDisplay = document.getElementById('token-display') as HTMLDivElement;
+    const slipRef = document.getElementById('slip-ref') as HTMLSpanElement;
+    const slipExpiry = document.getElementById('slip-expiry') as HTMLSpanElement;
+    const qrCanvas = document.getElementById('qr-canvas') as HTMLCanvasElement;
+
+    // check session
+    async function init() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/auth/check`, { credentials: 'include' });
+            if (!res.ok) {
+                window.location.href = '/login';
+                return;
+            }
+            const data = await res.json();
+            currentUser = data.user;
+            userDisplay.textContent = `Welcome, ${currentUser.fname} ${currentUser.lname}`;
+
+            // Fetch visitor donations
+            await fetchDonations();
+
+            // Connect to SSE stream
+            connectSSE();
+        } catch (e) {
+            window.location.href = '/login';
+        }
+    }
+
+    function connectSSE() {
+        if (sseSource) sseSource.close();
+
+        console.log('[SSE] Connecting to stream...');
+        sseSource = new EventSource(`${API_BASE_URL}/api/v1/realtime/stream`, {
+            withCredentials: true
+        });
+
+        sseSource.addEventListener('db_change', async (e: any) => {
+            try {
+                const parsed = JSON.parse(e.data);
+                if (parsed.resource === 'intakes' || parsed.resource === 'accessions') {
+                    console.log('[SSE] Real-time updates detected, refreshing...');
+                    await fetchDonations();
+                }
+            } catch (err) {
+                console.error('[SSE] Failed to parse event', err);
+            }
+        });
+
+        sseSource.onerror = () => {
+            console.log('[SSE] Connection error, retrying in 5s...');
+            if (sseSource) sseSource.close();
+            setTimeout(connectSSE, 5000);
+        };
+    }
+
+    async function fetchDonations() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/acquisitions/visitor/my-donations`, { credentials: 'include' });
+            const data = await res.json();
+            if (res.ok && data.status === 'success') {
+                donationsList = data.data;
+                renderDonations();
+
+                // Restore active selection
+                const urlParams = new URLSearchParams(window.location.search);
+                const idParam = urlParams.get('id');
+                if (idParam) {
+                    const match = donationsList.find(d => d.id === idParam);
+                    if (match) {
+                        selectDonation(match);
+                    }
+                }
+            } else {
+                donationsContainer.innerHTML = '<div class="p-8 text-center text-xs text-zinc-400 italic">Error loading submissions.</div>';
+            }
+        } catch (e) {
+            donationsContainer.innerHTML = '<div class="p-8 text-center text-xs text-zinc-400 italic">Failed to retrieve data.</div>';
+        }
+    }
+
+    function renderDonations() {
+        if (donationsList.length === 0) {
+            donationsContainer.innerHTML = '<div class="p-12 text-center text-xs text-zinc-400 italic">You have no registered submissions.</div>';
+            return;
+        }
+
+        donationsContainer.innerHTML = '';
+        donationsList.forEach(item => {
+            const btn = document.createElement('button');
+            btn.className = `w-full p-5 text-left border-l-4 transition-colors flex flex-col gap-1.5 border-b border-zinc-100 ${selectedDonation?.id === item.id ? 'bg-zinc-50 border-[#D4AF37]' : 'bg-white border-transparent hover:bg-zinc-50'}`;
+            
+            const titleRow = document.createElement('div');
+            titleRow.className = 'flex justify-between items-start w-full';
+            
+            const titleText = document.createElement('span');
+            titleText.className = 'font-bold text-sm text-black line-clamp-1 pr-4';
+            titleText.textContent = item.itemName;
+            
+            const stageBadge = document.createElement('span');
+            stageBadge.className = `px-2 py-0.5 rounded-sm text-[8px] font-bold uppercase tracking-wider border ${getStageBadgeClass(item.stage)}`;
+            stageBadge.textContent = item.stage.replace(/_/g, ' ');
+
+            titleRow.appendChild(titleText);
+            titleRow.appendChild(stageBadge);
+
+            const methodRow = document.createElement('div');
+            methodRow.className = 'text-[9px] text-zinc-400 uppercase tracking-widest font-semibold';
+            methodRow.textContent = `${item.method} • ${new Date(item.dateLogged).toLocaleDateString()}`;
+
+            btn.appendChild(titleRow);
+            btn.appendChild(methodRow);
+            btn.addEventListener('click', () => selectDonation(item));
+
+            donationsContainer.appendChild(btn);
+        });
+    }
+
+    function getStageBadgeClass(stage: string) {
+        switch (stage) {
+            case 'on_display': return 'text-green-700 bg-green-50 border-green-200';
+            case 'inventory': return 'text-black bg-zinc-200 border-black';
+            case 'accession': return 'text-zinc-700 bg-zinc-100 border-zinc-300';
+            case 'receive_artifact': return 'text-amber-700 bg-amber-50 border-amber-200';
+            default: return 'text-[#A68A27] bg-[#D4AF37]/10 border-[#D4AF37]/30';
+        }
+    }
+
+    function selectDonation(item: any) {
+        selectedDonation = item;
+        
+        // Update URL query parameters
+        const url = new URL(window.location.href);
+        if (item) {
+            url.searchParams.set('id', item.id);
+        } else {
+            url.searchParams.delete('id');
+        }
+        window.history.replaceState({}, '', url.toString());
+
+        renderDonations(); // refresh highlights
+        
+        detailsEmpty.classList.add('hidden');
+        detailsContent.classList.remove('hidden');
+
+        // Populate detail fields
+        detailId.textContent = `ID: ${item.id}`;
+        detailMethodBadge.textContent = item.method;
+        detailTitle.textContent = item.itemName;
+        detailDate.textContent = new Date(item.dateLogged).toLocaleDateString();
+        detailStageDesc.textContent = item.stageDescription;
+
+        // Metadata fields
+        if (item.stage === 'intake' && item.intakeStatus !== 'in_custody') {
+            metaLocation.innerHTML = `<span class="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span> <span class="text-amber-700 font-bold text-xs uppercase tracking-wider bg-amber-50 border border-amber-200/50 px-2 py-0.5 rounded-sm">Awaiting Physical Handover</span>`;
+        } else {
+            metaLocation.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> ${item.location || 'Receiving Bay'}`;
+        }
+        
+        metaAccession.textContent = item.accessionNumber || 'Not Accessioned Yet';
+        metaCatalog.textContent = item.catalogNumber || 'Not Cataloged Yet';
+
+        if (item.exhibitionTitle) {
+            metaExhibitionContainer.classList.remove('hidden');
+            metaExhibition.textContent = `${item.exhibitionVenue} - "${item.exhibitionTitle}"`;
+        } else {
+            metaExhibitionContainer.classList.add('hidden');
+        }
+
+        // Stepper updates
+        const stages = ['intake', 'receive_artifact', 'accession', 'inventory', 'on_display'];
+        const currentStageIndex = stages.indexOf(item.stage);
+
+        for (let i = 1; i <= 5; i++) {
+            const stepEl = document.getElementById(`step-${i}`) as HTMLDivElement;
+            const circle = stepEl.querySelector('.step-circle') as HTMLDivElement;
+            const label = stepEl.querySelector('.step-label') as HTMLDivElement;
+            const line = document.getElementById(`line-${i}`) as HTMLDivElement;
+
+            // Reset
+            circle.className = 'step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors border-2 ';
+            label.className = 'text-[10px] uppercase font-bold tracking-wider mt-2 step-label ';
+
+            if (i - 1 < currentStageIndex) {
+                // Completed
+                circle.classList.add('bg-green-600', 'text-white', 'border-green-600');
+                circle.innerHTML = '✓';
+                label.classList.add('text-green-700');
+                if (line) line.className = 'hidden sm:block h-0.5 flex-1 -mt-4 transition-colors bg-green-600';
+            } else if (i - 1 === currentStageIndex) {
+                // Active
+                circle.classList.add('bg-black', 'text-white', 'border-[#D4AF37]');
+                circle.textContent = i.toString();
+                label.classList.add('text-black', 'font-black');
+                if (line) line.className = 'hidden sm:block h-0.5 flex-1 -mt-4 transition-colors bg-zinc-200';
+            } else {
+                // Future
+                circle.classList.add('bg-zinc-100', 'text-zinc-400', 'border-zinc-200');
+                circle.textContent = i.toString();
+                label.classList.add('text-zinc-400');
+                if (line) line.className = 'hidden sm:block h-0.5 flex-1 -mt-4 transition-colors bg-zinc-200';
+            }
+        }
+
+        // Delivery Slip Box Display
+        const isDeliveryPending = item.stage === 'intake' && ['awaiting_delivery', 'approved', 'under_review'].includes(item.intakeStatus) && item.qrToken;
+        if (isDeliveryPending) {
+            deliverySlipContainer.classList.remove('hidden');
+            tokenDisplay.textContent = item.qrToken;
+            slipRef.textContent = item.deliverySlipId || '-';
+            slipExpiry.textContent = item.qrTokenExpires ? new Date(item.qrTokenExpires).toLocaleDateString() : 'N/A';
+
+            // Render QR Code client-side on canvas
+            try {
+                // @ts-ignore
+                QRCode.toCanvas(qrCanvas, item.qrToken, {
+                    width: 200,
+                    margin: 1,
+                    color: {
+                        dark: '#111827',
+                        light: '#FFFFFF'
+                    }
+                });
+            } catch (err) {
+                console.error("Failed to draw QR code to canvas", err);
+            }
+        } else {
+            deliverySlipContainer.classList.add('hidden');
+        }
+    }
+
+    // Logout
+    logoutBtn.addEventListener('click', async () => {
+        try {
+            if (sseSource) sseSource.close();
+            await fetch(`${API_BASE_URL}/api/v1/auth/logout`, { method: 'POST', credentials: 'include' });
+        } catch(e) {}
+        window.location.href = '/login';
+    });
+
+    init();
+</script>

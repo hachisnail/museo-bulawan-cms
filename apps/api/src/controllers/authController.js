@@ -93,3 +93,43 @@ export const check = async (req, res) => {
         res.status(401).json({ error: "No active session" });
     }
 };
+
+export const loginVisitor = async (req, res, next) => {
+    passport.authenticate('local', async (err, user, info) => {
+        if(err) return next(err);
+
+        if(!user) {
+            return res.status(401).json({error: info.message || "Authentication failed" })
+        }
+
+        // ONLY ALLOW DONORS/VISITORS
+        if (user.role !== 'donor' && user.role !== 'visitor') {
+            return res.status(403).json({ 
+                error: "ACCESS_DENIED", 
+                message: "This portal is only for donors and visitors." 
+            });
+        }
+
+        req.logIn(user, async (err) => {
+            if(err) return next(err);
+
+            const loginInstanceId = crypto.randomUUID();
+            req.session.loginInstanceId = loginInstanceId;
+
+            await db.query('UPDATE users SET current_session_id = ? WHERE id = ?', [loginInstanceId, user.id]);
+
+            await auditService.log({
+                userId: user.id,
+                action: 'LOGIN_VISITOR',
+                resource: 'Auth',
+                details: { message: "Donor/Visitor logged in" },
+                ipAddress: req.ip
+            });
+
+            res.status(200).json({ 
+                message: "Logged in successfully",
+                user: { id: user.id, username: user.username, role: user.role, fname: user.fname, lname: user.lname, email: user.email }
+            });
+        });
+    })(req, res, next);
+};

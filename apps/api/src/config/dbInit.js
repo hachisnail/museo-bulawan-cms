@@ -1,11 +1,15 @@
 import { db } from './db.js';
 import { logger } from '../utils/logger.js';
+import { baseService } from '../services/acquisition/baseService.js';
 
 /**
  * Initializes all required MariaDB tables if they do not exist.
  * This file replaces the legacy PocketBase schema with native relational tables.
  */
 export async function initMariaDB() {
+    // Clear static column metadata caches so migrations reflect immediately
+    baseService.tableColumnsCache = {};
+
     let conn;
     try {
         conn = await db.getConnection(); // Get a connection for transaction
@@ -186,6 +190,9 @@ export async function initMariaDB() {
         try {
             await conn.query(`ALTER TABLE intakes MODIFY COLUMN qr_token_expires DATETIME NULL`);
             await conn.query(`ALTER TABLE intakes ADD COLUMN current_location VARCHAR(255) NULL AFTER delivery_slip_id`);
+        } catch(e) {}
+        try {
+            await conn.query(`ALTER TABLE intakes ADD COLUMN qr_token VARCHAR(255) NULL AFTER qr_token_hash`);
         } catch(e) {}
         
         await conn.query(`
@@ -669,17 +676,103 @@ export async function initMariaDB() {
                 type: 'donation',
                 schema_data: {
                     properties: {
-                        acquisition_type: { enum: ["Gift", "Loan", "Bequest"], title: "Acquisition Type", type: "string" },
-                        artifact_description: { format: "textarea", title: "Physical Description", type: "string" },
-                        artifact_name: { title: "Artifact Name", type: "string" },
-                        donor_email: { format: "email", title: "Email Address", type: "string" },
-                        donor_first_name: { title: "First Name", type: "string" },
-                        donor_last_name: { title: "Last Name", type: "string" }
+                        // ── Step 1: Donor Information ──
+                        is_anonymous: {
+                            title: "Submit Anonymously",
+                            type: "boolean",
+                            description: "Check to hide your name and contact details. Only your email is required.",
+                            "ui:group": "donor_info"
+                        },
+                        donor_first_name: {
+                            title: "First Name",
+                            type: "string",
+                            dependsOn: { field: "is_anonymous", value: true, operator: "neq" },
+                            "ui:group": "donor_info"
+                        },
+                        donor_last_name: {
+                            title: "Last Name",
+                            type: "string",
+                            dependsOn: { field: "is_anonymous", value: true, operator: "neq" },
+                            "ui:group": "donor_info"
+                        },
+                        donor_email: {
+                            format: "email",
+                            title: "Email Address",
+                            type: "string",
+                            "ui:group": "donor_info"
+                        },
+                        donor_phone: {
+                            title: "Phone Number",
+                            type: "string",
+                            dependsOn: { field: "is_anonymous", value: true, operator: "neq" },
+                            "ui:group": "donor_info"
+                        },
+
+                        // ── Step 2: Donation Type ──
+                        acquisition_type: {
+                            enum: ["Gift", "Loan", "Bequest"],
+                            title: "Donation Type",
+                            type: "string",
+                            "ui:group": "donation_type"
+                        },
+                        loan_end_date: {
+                            format: "date",
+                            title: "Loan Return Date",
+                            type: "string",
+                            description: "When should the loaned artifact be returned?",
+                            dependsOn: { field: "acquisition_type", value: "Loan" },
+                            "ui:group": "donation_type"
+                        },
+
+                        // ── Step 3: Artifact Information ──
+                        artifact_name: {
+                            title: "Artifact Name",
+                            type: "string",
+                            description: "The formal title or name of the object",
+                            "ui:group": "artifact_info"
+                        },
+                        artifact_description: {
+                            format: "textarea",
+                            title: "Physical Description",
+                            type: "string",
+                            "ui:group": "artifact_info"
+                        },
+                        artifact_provenance: {
+                            format: "textarea",
+                            title: "Provenance / History",
+                            type: "string",
+                            description: "How did you acquire this item?",
+                            "ui:group": "artifact_info"
+                        },
+                        supporting_documents: {
+                            format: "file",
+                            title: "Photos / Supporting Documents",
+                            type: "string",
+                            description: "Upload photos of the artifact, certificates, or provenance documents",
+                            "ui:group": "artifact_info"
+                        }
                     },
                     required: ["donor_first_name", "donor_last_name", "donor_email", "artifact_name", "acquisition_type"],
                     type: "object"
                 },
-                settings: { allow_attachments: true, description: "Official Artifact Donation Form", layout: "double_column" },
+                settings: {
+                    allow_attachments: true,
+                    description: "Official Artifact Donation & Temporary Loan Form",
+                    field_mapping: {
+                        acquisitionType: "acquisition_type",
+                        description: "artifact_description",
+                        donorEmail: "donor_email",
+                        firstName: "donor_first_name",
+                        itemName: "artifact_name",
+                        lastName: "donor_last_name"
+                    },
+                    step_groups: [
+                        { id: "donor_info", label: "Donor Information", icon: "user" },
+                        { id: "donation_type", label: "Donation Type", icon: "gift" },
+                        { id: "artifact_info", label: "Artifact Details", icon: "archive" }
+                    ],
+                    layout: "wizard"
+                },
                 otp: true
             },
             {
@@ -747,8 +840,14 @@ export async function initMariaDB() {
 
         for (const f of defaultForms) {
             await conn.query(`
-                INSERT IGNORE INTO form_definitions (id, slug, title, type, schema_data, settings, otp)
+                INSERT INTO form_definitions (id, slug, title, type, schema_data, settings, otp)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                    title = VALUES(title),
+                    type = VALUES(type),
+                    schema_data = VALUES(schema_data),
+                    settings = VALUES(settings),
+                    otp = VALUES(otp)
             `, [f.id, f.slug, f.title, f.type, JSON.stringify(f.schema_data), JSON.stringify(f.settings), f.otp]);
         }
 

@@ -44,6 +44,7 @@ export const acquisitionService = {
     verifyDeliveryToken: intakeService.verifyDeliveryToken.bind(intakeService),
     confirmPhysicalDelivery: intakeService.confirmPhysicalDelivery.bind(intakeService),
     updateIntakeLocation: intakeService.updateIntakeLocation.bind(intakeService),
+    listVisitorDonations: intakeService.listVisitorDonations.bind(intakeService),
 
     // ==========================================
     // ACCESSION DOMAIN (Phase 3)

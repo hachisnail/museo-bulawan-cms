@@ -34,7 +34,9 @@ export const acquisitionController = {
     confirmDelivery: intakeController.confirmDelivery.bind(intakeController),
     rejectSubmission: intakeController.rejectSubmission.bind(intakeController),
     reopenSubmission: intakeController.reopenSubmission.bind(intakeController),
+    acceptAndIssueExternal: intakeController.acceptAndIssueExternal.bind(intakeController),
     updateLocation: intakeController.updateLocation.bind(intakeController),
+    listVisitorDonations: intakeController.listVisitorDonations.bind(intakeController),
 
     // ==========================================
     // ACCESSION ACTIONS

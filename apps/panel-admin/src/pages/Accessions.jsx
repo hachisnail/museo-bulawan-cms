@@ -37,8 +37,8 @@ export default function Accessions() {
     const [locations, setLocations] = useState([]);
     const [showLocationSelect, setShowLocationSelect] = useState(false);
 
-    const fetchData = useCallback(async () => {
-        setLoading(true);
+    const fetchData = useCallback(async (silent = false) => {
+        if (!silent) setLoading(true);
         try {
             const [accRes, archRes] = await Promise.all([
                 apiFetch('/api/v1/acquisitions/accessions?expand=intake_id'),
@@ -76,20 +76,26 @@ export default function Accessions() {
     useEffect(() => { fetchData(); }, [fetchData]);
 
     useEffect(() => {
-        if (events.length > 0) fetchData();
+        if (events.length > 0) fetchData(true);
     }, [events, fetchData]);
 
     // Handle initial selection from URL params
     useEffect(() => {
         const id = searchParams.get('id');
-        if (id && accessions.length > 0) {
-            const item = accessions.find(i => i.id === id);
-            if (item) {
-                setActiveTab('active');
+        const tab = searchParams.get('tab');
+        if (tab && tab !== activeTab) {
+            setActiveTab(tab);
+            return;
+        }
+        if (id) {
+            const list = activeTab === 'active' ? accessions : archived;
+            const item = list.find(i => i.id === id);
+            if (item && selected?.id !== id) {
                 setSelected(item);
+                if (activeTab === 'archive') fetchArchiveMedia(item);
             }
         }
-    }, [searchParams, accessions]);
+    }, [searchParams, accessions, archived, activeTab, selected]);
 
     // Sync form state when a record is selected
     useEffect(() => {
@@ -140,7 +146,7 @@ export default function Accessions() {
         } catch (err) {
             setModal({ isOpen: true, title: 'Error', message: 'System request failed.', type: 'alert', variant: 'error' });
         } finally {
-            setActionLoading(true);
+            setActionLoading(false);
         }
     };
 
@@ -276,13 +282,13 @@ export default function Accessions() {
                     {/* Tabs */}
                     <div className="flex border-b border-zinc-200">
                         <button 
-                            onClick={() => { setActiveTab('active'); setSelected(null); }}
+                            onClick={() => { setActiveTab('active'); setSelected(null); setSearchParams({ tab: 'active' }); }}
                             className={`flex-1 pb-3 text-xs font-bold uppercase tracking-widest transition-colors border-b-2 ${activeTab === 'active' ? 'border-[#D4AF37] text-black' : 'border-transparent text-zinc-400 hover:text-black'}`}
                         >
                             Active Registry ({accessions.length})
                         </button>
                         <button 
-                            onClick={() => { setActiveTab('archive'); setSelected(null); }}
+                            onClick={() => { setActiveTab('archive'); setSelected(null); setSearchParams({ tab: 'archive' }); }}
                             className={`flex-1 pb-3 text-xs font-bold uppercase tracking-widest transition-colors border-b-2 ${activeTab === 'archive' ? 'border-[#D4AF37] text-black' : 'border-transparent text-zinc-400 hover:text-black'}`}
                         >
                             Archive ({archived.length})
@@ -308,6 +314,7 @@ export default function Accessions() {
                                         key={item.id} 
                                         onClick={() => {
                                             setSelected(item);
+                                            setSearchParams({ id: item.id, tab: activeTab });
                                             if (activeTab === 'archive') fetchArchiveMedia(item);
                                         }}
                                         className={`w-full p-4 text-left transition-colors flex flex-col gap-2 border-l-2 ${isSelected ? 'bg-zinc-50 border-[#D4AF37]' : 'bg-white border-transparent hover:bg-zinc-50'}`}
@@ -409,9 +416,16 @@ export default function Accessions() {
                                     <div className="grid grid-cols-2 gap-6 bg-zinc-50 p-4 border border-zinc-200 rounded-sm">
                                         <div>
                                             <span className="block text-[9px] uppercase font-bold text-zinc-500 mb-1">Contract Type</span>
-                                            <span className="text-sm text-black font-medium uppercase tracking-wider">
+                                            <span className="text-sm text-black font-medium uppercase tracking-wider block">
                                                 {activeTab === 'active' ? (selected.contract_type || 'PENDING GENERATION').replace(/_/g, ' ') : (selected.expand?.accession_id?.contract_type || 'N/A').replace(/_/g, ' ')}
                                             </span>
+                                            {((activeTab === 'active' ? selected.contract_type : selected.expand?.accession_id?.contract_type)?.toLowerCase() === 'loan') && (
+                                                <div className="text-xs text-amber-600 font-bold mt-1 uppercase tracking-wider">
+                                                    Loan Ends: {activeTab === 'active'
+                                                        ? (selected.expand?.intake_id?.loan_end_date ? new Date(selected.expand.intake_id.loan_end_date).toLocaleDateString() : 'No Limit')
+                                                        : (selected.expand?.accession_id?.expand?.intake_id?.loan_end_date ? new Date(selected.expand.accession_id.expand.intake_id.loan_end_date).toLocaleDateString() : 'No Limit')}
+                                                </div>
+                                            )}
                                         </div>
                                         <div>
                                             <span className="block text-[9px] uppercase font-bold text-zinc-500 mb-1">Signed Legal Document</span>

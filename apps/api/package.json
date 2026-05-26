@@ -36,6 +36,7 @@
     "passport-local": "^1.0.0",
     "pizzip": "^3.2.0",
     "pocketbase": "^0.26.8",
+    "qrcode": "^1.5.4",
     "redis": "^5.12.1",
     "ulid": "^3.0.2",
     "ulidx": "^2.4.1",

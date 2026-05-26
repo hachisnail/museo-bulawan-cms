@@ -7,25 +7,44 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently -n ADMIN,API,LANDING,MINIO,CMS -c blue,green,cyan,yellow,pink \"npm run dev:admin\" \"npm run dev:api\" \"npm run dev:landing\" \"npm run dev:minio\" \"npm run dev:cms\"",
+    "dev": "concurrently -n ADMIN,API,LANDING,MINIO,CMS,VISITOR -c blue,green,cyan,yellow,pink,magenta \"npm run dev:admin\" \"npm run dev:api\" \"npm run dev:landing\" \"npm run dev:minio\" \"npm run dev:cms\" \"npm run dev:visitor\"",
     "dev:admin": "npm run dev -w panel-admin",
     "dev:api": "npm run dev -w api",
     "dev:landing": "npm run dev -w landing",
     "dev:minio": "apps\\minio\\minio.windows-amd64.RELEASE.2025-09-07T16-13-09Z.exe server apps\\minio\\data --console-address \":9001\"",
-    "dev:cms": "npm run dev -w cms"
+    "dev:cms": "npm run dev -w cms",
+    "dev:visitor": "npm run dev -w panel-visitor"
   },
   "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "vite": "^7.1.0"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.4",
+    "@jridgewell/trace-mapping": "^0.3.31",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "lucide-react": "^1.16.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
+  },
+  "overrides": {
+    "vite": "^7.1.0",
+    "@tailwindcss/vite": {
+      "vite": "^7.1.0"
+    },
+    "panel-admin": {
+      "vite": "^7.1.0"
+    },
+    "landing": {
+      "vite": "^7.1.0"
+    },
+    "panel-visitor": {
+      "vite": "^7.1.0"
+    }
   }
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 import { useSSE } from '../hooks/useSSE';
 import { 
@@ -33,6 +34,7 @@ const ITEM_STATUS_COLORS = {
 
 export default function Inventory() {
     const { apiFetch } = useAuth();
+    const [searchParams, setSearchParams] = useSearchParams();
     const { events } = useSSE('inventory');
     
     const [inventory, setInventory] = useState([]);
@@ -62,8 +64,8 @@ export default function Inventory() {
     const [showAuditForm, setShowAuditForm] = useState(false);
     const [showConservationForm, setShowConservationForm] = useState(false);
 
-    const fetchInventory = useCallback(async () => {
-        setLoading(true);
+    const fetchInventory = useCallback(async (silent = false) => {
+        if (!silent) setLoading(true);
         try {
             const res = await apiFetch('/api/v1/acquisitions/inventory?expand=accession_id.intake_id');
             const json = await res.json();
@@ -83,8 +85,27 @@ export default function Inventory() {
 
     // Handle real-time updates
     useEffect(() => {
-        if (events.length > 0) fetchInventory();
+        if (events.length > 0) fetchInventory(true);
     }, [events, fetchInventory]);
+
+    // Handle initial selection from URL params
+    useEffect(() => {
+        const id = searchParams.get('id');
+        const tab = searchParams.get('tab');
+        if (tab && tab !== activeTab) {
+            setActiveTab(tab);
+            return;
+        }
+        if (id && inventory.length > 0) {
+            const list = activeTab === 'active' 
+                ? inventory.filter(item => item.status !== 'deaccessioned')
+                : inventory.filter(item => item.status === 'deaccessioned');
+            const item = list.find(i => i.id === id);
+            if (item && selected?.id !== id) {
+                fetchDetails(item);
+            }
+        }
+    }, [searchParams, inventory, activeTab, selected]);
 
     const fetchDetails = async (item) => {
         setSelected(item);
@@ -202,13 +223,13 @@ export default function Inventory() {
                 <div className="w-full lg:w-1/3 flex flex-col gap-4">
                     <div className="flex border-b border-zinc-300">
                         <button 
-                            onClick={() => { setActiveTab('active'); setSelected(null); }}
+                            onClick={() => { setActiveTab('active'); setSelected(null); setSearchParams({ tab: 'active' }); }}
                             className={`flex-1 pb-3 text-[10px] font-black uppercase tracking-widest transition-colors border-b-2 ${activeTab === 'active' ? 'border-[#D4AF37] text-black' : 'border-transparent text-zinc-400 hover:text-black'}`}
                         >
                             Collection
                         </button>
                         <button 
-                            onClick={() => { setActiveTab('archived'); setSelected(null); }}
+                            onClick={() => { setActiveTab('archived'); setSelected(null); setSearchParams({ tab: 'archived' }); }}
                             className={`flex-1 pb-3 text-[10px] font-black uppercase tracking-widest transition-colors border-b-2 ${activeTab === 'archived' ? 'border-[#D4AF37] text-black' : 'border-transparent text-zinc-400 hover:text-black'}`}
                         >
                             Deaccessioned
@@ -238,7 +259,10 @@ export default function Inventory() {
                             filteredInventory.map(item => (
                                 <button 
                                     key={item.id}
-                                    onClick={() => fetchDetails(item)}
+                                    onClick={() => {
+                                        fetchDetails(item);
+                                        setSearchParams({ id: item.id, tab: activeTab });
+                                    }}
                                     className={`w-full p-5 text-left transition-all border-l-4 flex flex-col gap-2 ${selected?.id === item.id ? 'bg-zinc-50 border-[#D4AF37]' : 'border-transparent hover:bg-zinc-50'}`}
                                 >
                                     <div className="flex justify-between items-start">
@@ -282,7 +306,7 @@ export default function Inventory() {
                                     </h2>
                                 </div>
                                 <button 
-                                    onClick={() => setSelected(null)}
+                                    onClick={() => { setSelected(null); setSearchParams({ tab: activeTab }); }}
                                     className="p-3 bg-white border border-zinc-300 rounded-sm hover:bg-zinc-50 transition-all text-zinc-400 hover:text-black"
                                 >
                                     <X className="w-5 h-5" />
@@ -332,6 +356,22 @@ export default function Inventory() {
                                                             {selected.current_location || 'Receiving Bay'}
                                                         </div>
                                                     </div>
+                                                    <div>
+                                                        <label className="text-[9px] font-black text-zinc-500 uppercase tracking-widest block mb-1">Acquisition Method</label>
+                                                        <div className="text-sm font-bold text-black uppercase tracking-wider">
+                                                            {selected.expand?.accession_id?.contract_type?.replace(/_/g, ' ') || 'N/A'}
+                                                        </div>
+                                                    </div>
+                                                    {selected.expand?.accession_id?.contract_type?.toLowerCase() === 'loan' && (
+                                                        <div>
+                                                            <label className="text-[9px] font-black text-zinc-500 uppercase tracking-widest block mb-1">Loan Ends</label>
+                                                            <div className="text-xs text-amber-600 font-bold uppercase tracking-wider">
+                                                                {selected.expand?.accession_id?.expand?.intake_id?.loan_end_date 
+                                                                    ? new Date(selected.expand.accession_id.expand.intake_id.loan_end_date).toLocaleDateString() 
+                                                                    : 'No Limit'}
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </section>
 

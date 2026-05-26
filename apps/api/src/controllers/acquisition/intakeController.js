@@ -139,6 +139,44 @@ export const intakeController = {
         } catch (error) { next(error); }
     },
 
+    /**
+     * POST /intakes/external/:submissionId/accept-and-issue
+     *
+     * Streamlined one-click path for donation submissions:
+     * 1. Processes the external submission into intake(s)
+     * 2. Approves the first intake
+     * 3. Generates the MOA / Deed of Gift + delivery slip
+     *
+     * Returns the MOA payload directly so the UI can open the document modal immediately.
+     */
+    async acceptAndIssueExternal(req, res, next) {
+        try {
+            const { submissionId } = req.params;
+            const staffId = req.user.id;
+
+            // Step 1: Process submission → intake(s)
+            const processResult = await formPipelineService.processExternalIntake(staffId, submissionId);
+            if (!processResult.intakes || processResult.intakes.length === 0) {
+                return res.status(400).json({ error: 'No intakes were created from this submission.' });
+            }
+
+            // Step 2 & 3: Approve + generate MOA for each intake
+            // For multi-item submissions we handle all, return the last MOA result for display
+            let lastMoaResult = null;
+            for (const intake of processResult.intakes) {
+                await acquisitionService.approveIntake(staffId, intake.id);
+                const overrides = req.body || {};
+                lastMoaResult = await acquisitionService.generateDynamicMOA(staffId, intake.id, overrides);
+            }
+
+            res.status(200).json({
+                ...lastMoaResult,
+                intake: mapDTO(lastMoaResult.intake),
+                intakeCount: processResult.intakes.length
+            });
+        } catch (error) { next(error); }
+    },
+
     async rejectSubmission(req, res, next) {
         try {
             const { submissionId } = req.params;
@@ -161,6 +199,13 @@ export const intakeController = {
             const { location } = req.body;
             const result = await acquisitionService.updateIntakeLocation(req.user.id, intakeId, location);
             res.status(200).json({ status: 'success', data: mapDTO(result) });
+        } catch (error) { next(error); }
+    },
+
+    async listVisitorDonations(req, res, next) {
+        try {
+            const result = await acquisitionService.listVisitorDonations(req.user.id);
+            res.status(200).json({ status: 'success', data: result });
         } catch (error) { next(error); }
     }
 };

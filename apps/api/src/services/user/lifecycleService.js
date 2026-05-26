@@ -144,11 +144,11 @@ export const lifecycleService = {
 
     async provisionDonor({ fname, lname, email, title, phone, address }) {
         try {
-            const [existing] = await db.query('SELECT id, username FROM users WHERE email = ?', [email]);
+            const [existing] = await db.query('SELECT id, username, role FROM users WHERE email = ?', [email]);
             if (existing) {
                 logger.info('Using existing MariaDB account for donor', { email, userId: existing.id });
 
-                return { userId: existing.id, isNew: false, username: existing.username };
+                return { userId: existing.id, isNew: false, username: existing.username, role: existing.role };
             }
 
             const userId = ulid();
@@ -166,6 +166,17 @@ export const lifecycleService = {
             logger.info('Donor provisioned successfully', { userId, email });
 
             const setupUrl = `${env.frontendUrl}/setup?token=${actionToken}`;
+            const visitorSetupUrl = setupUrl.replace('http://localhost:5173', 'http://localhost:4321');
+
+            try {
+                await sendEmail({
+                    to: email,
+                    subject: 'Set up your Museo Bulawan donor account',
+                    html: `<p>Hello ${fname},</p><p>An account has been created for you as a <strong>donor</strong> in the Museo Bulawan system.</p><p><a href="${visitorSetupUrl}">Click here to set up your account and password</a></p><p>This link expires in 7 days.</p>`
+                });
+            } catch (emailErr) {
+                logger.error(`Non-blocking error sending donor setup email: ${emailErr.message}`);
+            }
 
             return { userId, setupUrl, isNew: true };
         } catch (error) {

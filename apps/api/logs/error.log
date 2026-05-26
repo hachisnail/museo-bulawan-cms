@@ -1086,3 +1086,141 @@ sql: INSERT INTO condition_reports () VALUES () - parameters:[]
     at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
     at async Object.onboardAdmin (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"01KS9W2S2H0AR9EA9KJYESGZKV"}
 >>>>>>> c1c7919b39d4c8dc9f807f8198e2701c6e103ad7
+2026-05-23 20:28:07 [error]: Error: VALIDATION_FAILED: data should have required property 'donor_first_name'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:47:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-05-23 20:29:49 [error]: Form submission validation failed for donation-form. Errors: data should have required property 'donor_first_name'. Payload: {}
+2026-05-23 20:29:49 [error]: Error: VALIDATION_FAILED: data should have required property 'donor_first_name'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-05-23 20:30:53 [error]: Form submission validation failed for donation-form. Errors: data should have required property 'donor_first_name'. Payload: {}
+2026-05-23 20:30:53 [error]: Error: VALIDATION_FAILED: data should have required property 'donor_first_name'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-05-23 20:32:27 [error]: Form submission validation failed for donation-form. Errors: data should have required property 'donor_first_name'. Payload: {}
+2026-05-23 20:32:27 [error]: Error: VALIDATION_FAILED: data should have required property 'donor_first_name'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-05-23 21:46:30 [error]: Error processing accession: (conn:5248, no: 1364, SQLState: HY000) Field 'id' doesn't have a default value
+sql: INSERT INTO condition_reports () VALUES () - parameters:[]
+2026-05-23 21:46:31 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779543987485@example.com","notes":12345,"attachment":"file.png"}
+2026-05-23 21:46:31 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779543987485@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-23 21:47:14 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 21:50:26 [error]: Error processing accession: (conn:5282, no: 1364, SQLState: HY000) Field 'id' doesn't have a default value
+sql: INSERT INTO condition_reports () VALUES () - parameters:[]
+2026-05-23 21:50:26 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779544223319@example.com","notes":12345,"attachment":"file.png"}
+2026-05-23 21:50:26 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779544223319@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-23 21:50:56 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779544254813@example.com","notes":12345,"attachment":"file.png"}
+2026-05-23 21:50:56 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779544254813@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-23 21:55:14 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779544511650@example.com","notes":12345,"attachment":"file.png"}
+2026-05-23 21:55:14 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779544511650@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-23 21:55:17 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-24 01:15:35 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-24 01:15:35 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779556534274@example.com","notes":12345,"attachment":"file.png"}
+2026-05-24 01:15:35 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779556534274@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-24 01:15:54 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-24 01:15:54 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779556552986@example.com","notes":12345,"attachment":"file.png"}
+2026-05-24 01:15:54 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779556552986@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 21:23:41 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779801820774@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 21:23:41 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779801820774@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 21:23:46 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 21:47:59 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779803278114@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 21:47:59 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779803278114@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 21:48:00 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:05:31 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779804329993@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:05:31 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779804329993@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:05:32 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:16:40 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779804998977@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:16:40 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779804998977@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:16:41 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:38:47 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779806326407@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:38:47 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779806326407@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:38:48 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:39:07 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779806346048@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:39:07 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779806346048@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:39:07 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:40:49 [error]: Error generating MOA: Unknown acquisition method: 'bequest'
+2026-05-26 22:40:49 [error]: Error: Unknown acquisition method: 'bequest'
+    at getContractType (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/constants.js:35:22)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/intakeService.js:154:38
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.generateDynamicMOA (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/intakeService.js:142:16)
+    at async Object.acceptAndIssueExternal (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:169:33) | Meta: {"method":"POST","url":"/api/v1/acquisitions/intakes/external/01KSJBNZJWV1K41ZT2Z1C9F18D/accept-and-issue","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-05-26 22:41:31 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779806490144@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:41:31 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779806490144@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:41:33 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:42:51 [error]: Error processing external intake: Invalid transition: 'submission' cannot move from 'processed' → 'processed'. Allowed: [archived]
+2026-05-26 22:42:51 [error]: Error: Invalid transition: 'submission' cannot move from 'processed' → 'processed'. Allowed: [archived]
+    at assertTransition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/stateMachine.js:99:15)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/pipeline/donationPipeline.js:32:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/pipeline/donationPipeline.js:19:16)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formPipelineService.js:25:12)
+    at async Object.acceptAndIssueExternal (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:158:35) | Meta: {"method":"POST","url":"/api/v1/acquisitions/intakes/external/01KSJBQMN7GPNHPRNKBE1F4CAW/accept-and-issue","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-05-26 22:45:45 [error]: Failed to complete setup | Meta: {"username":"hachisnail","error":"USERNAME_TAKEN"}
+2026-05-26 22:45:45 [error]: Error: USERNAME_TAKEN
+    at Object.completeSetup (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:205:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.completeSetup (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:29:13) | Meta: {"method":"POST","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}
+2026-05-26 22:48:31 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779806909636@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:48:31 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779806909636@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:48:31 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:49:11 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779806950052@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:49:11 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779806950052@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:49:11 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:59:06 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779807544865@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:59:06 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779807544865@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:59:06 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 23:06:55 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779808013613@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 23:06:55 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779808013613@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 23:06:55 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 23:10:30 [error]: Error: Not allowed by CORS
+    at origin (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/config/cors.js:14:22)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:204:7)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:342:13)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:297:9
+    at processParams (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:582:12)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:291:5)
+    at internalNext (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/helmet/index.mjs:527:6) | Meta: {"method":"OPTIONS","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}
+2026-05-26 23:10:32 [error]: Error: Not allowed by CORS
+    at origin (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/config/cors.js:14:22)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:204:7)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:342:13)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:297:9
+    at processParams (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:582:12)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:291:5)
+    at internalNext (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/helmet/index.mjs:527:6) | Meta: {"method":"OPTIONS","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}
+2026-05-26 23:11:12 [error]: Error: Not allowed by CORS
+    at origin (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/config/cors.js:14:22)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:204:7)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:342:13)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:297:9
+    at processParams (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:582:12)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:291:5)
+    at internalNext (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/helmet/index.mjs:527:6) | Meta: {"method":"OPTIONS","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}
+2026-05-26 23:11:12 [error]: Error: Not allowed by CORS
+    at origin (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/config/cors.js:14:22)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:204:7)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:342:13)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:297:9
+    at processParams (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:582:12)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:291:5)
+    at internalNext (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/helmet/index.mjs:527:6) | Meta: {"method":"OPTIONS","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}

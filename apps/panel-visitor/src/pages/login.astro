@@ -1,0 +1,150 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Museo Bulawan - Donor Login">
+    <div class="flex min-h-screen bg-white">
+        
+        <!-- Left Side: Decorative Gold & Black Column -->
+        <div class="hidden lg:flex lg:w-1/2 relative bg-zinc-950 items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 bg-zinc-900 opacity-80 mix-blend-multiply"></div>
+            
+            <div class="z-10 flex flex-col items-start px-16 max-w-lg">
+                <div class="h-1 w-12 bg-[#D4AF37] mb-6"></div>
+                <h2 class="text-4xl font-serif text-white leading-tight">
+                    Track Your Gift.<br/>
+                    <span class="text-[#D4AF37]">Follow Your Legacy.</span>
+                </h2>
+                <p class="mt-4 text-sm text-zinc-400 font-light leading-relaxed">
+                    Welcome to the Museo Bulawan Donor Portal. Log in to track your submissions, view physical receipt QR codes, and monitor the progress of your artifact acquisitions.
+                </p>
+            </div>
+        </div>
+
+        <!-- Right Side: Login Form -->
+        <div class="flex w-full lg:w-1/2 flex-col justify-center px-8 py-12 sm:px-16 md:px-24">
+            <div class="mx-auto w-full max-w-sm">
+                
+                <!-- Brand Header -->
+                <div class="flex flex-col mb-10">
+                    <div class="flex items-center gap-3 mb-1">
+                        <div class="flex h-10 w-10 items-center justify-center bg-black rounded-sm shadow-sm border border-zinc-800">
+                            <svg class="h-6 w-6 text-[#D4AF37]" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L2 22h20L12 2zm0 4.5l6.5 13h-13L12 6.5z" />
+                            </svg>
+                        </div>
+                        <h1 class="text-2xl font-serif tracking-widest text-black uppercase">
+                            Museo Bulawan
+                        </h1>
+                    </div>
+                    <h2 class="text-[10px] font-semibold text-zinc-400 uppercase tracking-[0.2em] ml-[3.25rem]">
+                        Donor Portal
+                    </h2>
+                </div>
+
+                <!-- Error Container -->
+                <div id="error-alert" class="hidden mb-6 text-sm py-3 px-4 rounded-sm border bg-red-50 text-red-700 border-red-200"></div>
+
+                <!-- Form -->
+                <form id="login-form" class="space-y-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="username" class="block text-xs font-medium text-zinc-700 uppercase tracking-wider mb-1">
+                                Username
+                            </label>
+                            <input 
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                class="block w-full rounded-sm border border-zinc-300 px-4 py-2.5 text-black placeholder:text-zinc-400 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all sm:text-sm bg-white"
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label for="password" class="block text-xs font-medium text-zinc-700 uppercase tracking-wider mb-1">
+                                Password
+                            </label>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="block w-full rounded-sm border border-zinc-300 px-4 py-2.5 text-black placeholder:text-zinc-400 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all sm:text-sm bg-white"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button 
+                            type="submit" 
+                            id="submit-btn"
+                            class="w-full rounded-sm bg-black px-4 py-3 text-sm font-bold tracking-widest uppercase text-white shadow-sm hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 transition-all cursor-pointer"
+                        >
+                            Log In
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    const form = document.getElementById('login-form') as HTMLFormElement;
+    const errorAlert = document.getElementById('error-alert') as HTMLDivElement;
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+    const API_BASE_URL = 'http://localhost:3000';
+    
+    async function checkSession() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/auth/check`, { credentials: 'include' });
+            if (res.ok) {
+                const data = await res.json();
+                if (data.valid && (data.user.role === 'donor' || data.user.role === 'visitor')) {
+                    window.location.href = '/';
+                }
+            }
+        } catch(e) {}
+    }
+    
+    checkSession();
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorAlert.classList.add('hidden');
+        errorAlert.textContent = '';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Processing...';
+
+        const usernameInput = document.getElementById('username') as HTMLInputElement;
+        const passwordInput = document.getElementById('password') as HTMLInputElement;
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/auth/login-visitor`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: usernameInput.value,
+                    password: passwordInput.value
+                }),
+                credentials: 'include'
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || data.error || 'Failed to authenticate.');
+            }
+
+            window.location.href = '/';
+        } catch (err: any) {
+            errorAlert.textContent = err.message;
+            errorAlert.classList.remove('hidden');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Log In';
+        }
+    });
+</script>

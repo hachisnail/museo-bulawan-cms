@@ -14,7 +14,8 @@ export const CONTRACT_TYPE_MAP = {
     'gift':     'deed_of_gift',
     'loan':     'loan_agreement',
     'purchase': 'bill_of_sale',
-    'existing': 'internal_memo'
+    'existing': 'internal_memo',
+    'bequest':  'deed_of_gift'
 };
 
 // ==========================================

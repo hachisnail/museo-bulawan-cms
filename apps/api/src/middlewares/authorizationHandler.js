@@ -55,4 +55,14 @@ export const requireAuth = (req, res, next) => {
     next();
 };
 
+export const requireVisitorAuth = (req, res, next) => {
+    if (!req.user || (req.user.role !== 'donor' && req.user.role !== 'visitor')) {
+        return res.status(401).json({ 
+            error: "Unauthorized", 
+            message: "You must be logged in as a donor/visitor to access this resource." 
+        });
+    }
+    next();
+};
+
 export { subject };

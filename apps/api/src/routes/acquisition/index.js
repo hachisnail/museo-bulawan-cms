@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { acquisitionController } from "../../controllers/acquisitionController.js";
 import { validate } from "../../middlewares/validateRequest.js";
-import { requireAuth, checkPermission } from "../../middlewares/authorizationHandler.js";
+import { requireAuth, checkPermission, requireVisitorAuth } from "../../middlewares/authorizationHandler.js";
 import multer from 'multer';
 import os from 'os';
 
@@ -19,6 +19,7 @@ const schemas = acquisitionController.schemas;
 // LISTING & RETRIEVAL
 // ==========================================
 router.get('/intakes', requireAuth, acquisitionController.listIntakes);
+router.get('/visitor/my-donations', requireVisitorAuth, acquisitionController.listVisitorDonations);
 router.get('/intakes/:intakeId', requireAuth, acquisitionController.getIntakeItem);
 router.get('/accessions', requireAuth, acquisitionController.listAccessions);
 router.get('/inventory', requireAuth, acquisitionController.listInventory);
@@ -76,6 +77,12 @@ router.post('/intakes/:intakeId/rollback',
 );
 
 router.get('/delivery/verify/:token', acquisitionController.verifyDeliveryToken);
+router.post('/intakes/external/:submissionId/accept-and-issue',
+    requireAuth,
+    checkPermission('create', 'Intake'),
+    acquisitionController.acceptAndIssueExternal
+);
+
 router.post('/intakes/external/:submissionId', 
     requireAuth, 
     checkPermission('create', 'Intake'),

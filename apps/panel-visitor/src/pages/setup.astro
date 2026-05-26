@@ -1,0 +1,157 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Museo Bulawan - Complete Account Setup">
+    <div class="flex min-h-screen bg-white">
+        
+        <!-- Left Side Column -->
+        <div class="hidden lg:flex lg:w-1/2 relative bg-zinc-950 items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 bg-zinc-900 opacity-80 mix-blend-multiply"></div>
+            
+            <div class="z-10 flex flex-col items-start px-16 max-w-lg">
+                <div class="h-1 w-12 bg-[#D4AF37] mb-6"></div>
+                <h2 class="text-4xl font-serif text-white leading-tight">
+                    Establish Your Account.<br/>
+                    <span class="text-[#D4AF37]">Secure Your Connection.</span>
+                </h2>
+                <p class="mt-4 text-sm text-zinc-400 font-light leading-relaxed">
+                    Set up your secure credentials to log in to the Museo Bulawan Visitor Portal.
+                </p>
+            </div>
+        </div>
+
+        <!-- Right Side: Setup Form -->
+        <div class="flex w-full lg:w-1/2 flex-col justify-center px-8 py-12 sm:px-16 md:px-24">
+            <div class="mx-auto w-full max-w-sm">
+                
+                <!-- Brand Header -->
+                <div class="flex flex-col mb-10">
+                    <div class="flex items-center gap-3 mb-1">
+                        <div class="flex h-10 w-10 items-center justify-center bg-black rounded-sm shadow-sm border border-zinc-800">
+                            <svg class="h-6 w-6 text-[#D4AF37]" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L2 22h20L12 2zm0 4.5l6.5 13h-13L12 6.5z" />
+                            </svg>
+                        </div>
+                        <h1 class="text-2xl font-serif tracking-widest text-black uppercase">
+                            Museo Bulawan
+                        </h1>
+                    </div>
+                    <h2 class="text-[10px] font-semibold text-zinc-400 uppercase tracking-[0.2em] ml-[3.25rem]">
+                        Account Setup
+                    </h2>
+                </div>
+
+                <!-- Error Container -->
+                <div id="error-alert" class="hidden mb-6 text-sm py-3 px-4 rounded-sm border bg-red-50 text-red-700 border-red-200"></div>
+
+                <!-- Success Container -->
+                <div id="success-alert" class="hidden mb-6 text-sm py-5 px-6 rounded-sm border bg-green-50 text-green-800 border-green-200">
+                    <h4 class="font-bold text-base mb-1">Setup Complete!</h4>
+                    <p class="text-xs mb-4">Your credentials have been securely stored. You can now log in to the donor portal.</p>
+                    <a href="/login" class="inline-block bg-black text-[#D4AF37] px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-sm hover:bg-zinc-800 transition-colors">Go to Login</a>
+                </div>
+
+                <!-- Form -->
+                <form id="setup-form" class="space-y-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="username" class="block text-xs font-medium text-zinc-700 uppercase tracking-wider mb-1">
+                                Choose Username
+                            </label>
+                            <input 
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                minlength="3"
+                                class="block w-full rounded-sm border border-zinc-300 px-4 py-2.5 text-black placeholder:text-zinc-400 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all sm:text-sm bg-white"
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label for="password" class="block text-xs font-medium text-zinc-700 uppercase tracking-wider mb-1">
+                                Choose Password
+                            </label>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                minlength="8"
+                                class="block w-full rounded-sm border border-zinc-300 px-4 py-2.5 text-black placeholder:text-zinc-400 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all sm:text-sm bg-white"
+                                required
+                            />
+                            <p class="text-[10px] text-zinc-400 mt-1 font-light">Must be at least 8 characters long, including uppercase, lowercase, numbers, and symbols.</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button 
+                            type="submit" 
+                            id="submit-btn"
+                            class="w-full rounded-sm bg-black px-4 py-3 text-sm font-bold tracking-widest uppercase text-white shadow-sm hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 transition-all cursor-pointer"
+                        >
+                            Save Account &amp; Complete
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    const form = document.getElementById('setup-form') as HTMLFormElement;
+    const errorAlert = document.getElementById('error-alert') as HTMLDivElement;
+    const successAlert = document.getElementById('success-alert') as HTMLDivElement;
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+    const API_BASE_URL = 'http://localhost:3000';
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    if (!token) {
+        errorAlert.textContent = 'Invalid setup request. No token was provided in the URL.';
+        errorAlert.classList.remove('hidden');
+        form.classList.add('hidden');
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorAlert.classList.add('hidden');
+        errorAlert.textContent = '';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Saving...';
+
+        const usernameInput = document.getElementById('username') as HTMLInputElement;
+        const passwordInput = document.getElementById('password') as HTMLInputElement;
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/user/setup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    token,
+                    username: usernameInput.value,
+                    password: passwordInput.value
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || data.error || 'Failed to set up account.');
+            }
+
+            form.classList.add('hidden');
+            successAlert.classList.remove('hidden');
+        } catch (err: any) {
+            errorAlert.textContent = err.message;
+            errorAlert.classList.remove('hidden');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Save Account & Complete';
+        }
+    });
+</script>

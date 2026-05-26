@@ -20,7 +20,7 @@ export const SSEProvider = ({ children }) => {
         if (!user) return;
         if (evtSource.current) evtSource.current.close();
 
-        const baseURL = import.meta.env.DEV ? '' : import.meta.env.VITE_API_BASE_URL;
+        const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
         
         console.log('[SSE] Connecting to global stream...');
         evtSource.current = new EventSource(`${baseURL}/api/v1/realtime/stream`, {

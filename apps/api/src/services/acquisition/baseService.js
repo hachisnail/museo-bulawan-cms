@@ -1,4 +1,5 @@
 import { db } from '../../config/db.js';
+import { env } from '../../config/env.js';
 import { auditService } from '../auditService.js';
 import { logger } from '../../utils/logger.js';
 import { assertTransition } from '../../utils/stateMachine.js';
@@ -27,8 +28,8 @@ export const baseService = {
             return this.tableColumnsCache[table];
         }
         const rows = await db.query(
-            'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
-            [table],
+            'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = COALESCE(DATABASE(), ?) AND TABLE_NAME = ?',
+            [env.db.name, table],
             connection
         );
         const columns = new Set(rows.map(r => r.COLUMN_NAME || r.column_name));

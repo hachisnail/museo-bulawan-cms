@@ -16,7 +16,7 @@ export default function Dashboard() {
             .catch(err => console.error("Failed to fetch intakes", err));
     }, []);
 
-    const displayList = [...events.map(e => e.data), ...initialData]
+    const displayList = [...events.map(e => e.record).filter(Boolean), ...initialData]
         .filter((v, i, a) => a.findIndex(t => t.id === v.id) === i)
         .slice(0, 50);
 
@@ -39,7 +39,7 @@ export default function Dashboard() {
                         SSE Stream
                     </span>
                     <div className="flex items-center gap-2 px-3 py-1.5 border border-zinc-300 bg-white rounded-sm text-xs font-medium uppercase tracking-wider text-zinc-600 shadow-sm">
-                        <span className={`w-1.5 h-1.5 rounded-full ${status === 'open' ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                        <span className={`w-1.5 h-1.5 rounded-full ${status === 'connected' ? 'bg-green-500' : 'bg-red-500'}`}></span>
                         {status}
                     </div>
                 </div>

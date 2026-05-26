@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, Block } from 'payload'
 import {
   lexicalEditor,
   BlocksFeature,
@@ -8,7 +8,7 @@ import {
  * Custom block: Artifact Highlight
  * Allows article authors to embed a styled museum artifact card inside articles.
  */
-const ArtifactHighlightBlock = {
+const ArtifactHighlightBlock: Block = {
   slug: 'artifactHighlight',
   labels: {
     singular: 'Artifact Highlight',
@@ -48,7 +48,7 @@ const ArtifactHighlightBlock = {
  * Custom block: Call to Action
  * A styled banner with a heading, text, and link button.
  */
-const CallToActionBlock = {
+const CallToActionBlock: Block = {
   slug: 'callToAction',
   labels: {
     singular: 'Call to Action',
@@ -95,7 +95,7 @@ const CallToActionBlock = {
  * Custom block: Image Gallery
  * A grid of images with optional captions.
  */
-const ImageGalleryBlock = {
+const ImageGalleryBlock: Block = {
   slug: 'imageGallery',
   labels: {
     singular: 'Image Gallery',
@@ -139,7 +139,7 @@ const ImageGalleryBlock = {
  * Custom block: Columns Layout
  * Allows users to split the rich text into 2 or 3 columns.
  */
-const ColumnsBlock = {
+const ColumnsBlock: Block = {
   slug: 'columns',
   labels: {
     singular: 'Column Layout',
@@ -178,7 +178,7 @@ const ColumnsBlock = {
       label: 'Right Column (if 3 columns)',
       editor: lexicalEditor({ features: ({ defaultFeatures }) => defaultFeatures }),
       admin: {
-        condition: (data, siblingData) => siblingData.layoutType === 'three',
+        condition: (data: any, siblingData: any) => siblingData.layoutType === 'three',
       },
     },
   ],
@@ -191,6 +191,7 @@ export const Articles: CollectionConfig = {
     defaultColumns: ['title', 'category', 'author', '_status', 'publishedAt'],
     description: 'Museum articles, news, and publications.',
     listSearchableFields: ['title', 'excerpt'],
+    group: 'CMS',
   },
   // Enable draft/publish workflow with version history
   versions: {
@@ -211,21 +212,19 @@ export const Articles: CollectionConfig = {
         },
       }
     },
-    create: ({ req }) => !!req.user,
+    // Only admins and editors can create articles (exclusive access)
+    create: ({ req }) => {
+      if (!req.user) return false
+      return req.user.role === 'admin' || req.user.role === 'editor'
+    },
+    // Only admins and editors can update articles (exclusive access)
     update: ({ req }) => {
       if (!req.user) return false
-      // Admins and editors can update any article
-      if (req.user.role === 'admin' || req.user.role === 'editor') return true
-      // Writers can only update their own articles
-      return {
-        author: {
-          equals: req.user.id,
-        },
-      }
+      return req.user.role === 'admin' || req.user.role === 'editor'
     },
+    // Only admins and editors can delete articles
     delete: ({ req }) => {
       if (!req.user) return false
-      // Only admins and editors can delete articles
       return req.user.role === 'admin' || req.user.role === 'editor'
     },
   },

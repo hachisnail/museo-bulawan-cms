@@ -8,11 +8,7 @@ export const buildAbility = async (req, res, next) => {
             return next();
         } 
 
-        // ==========================================
         // SECURITY CHECK: Enforce Single Instance
-        // ==========================================
-        // If the session ID in their cookie doesn't match the active one in the DB,
-        // it means they were kicked out by a newer login.
         if (req.session.loginInstanceId !== req.user.current_session_id) {
             return req.logout((err) => {
                 req.session.destroy(() => {
@@ -43,23 +39,21 @@ export const checkPermission = (action, resource) => {
 };
 
 export const requireAuth = (req, res, next) => {
-    // Normalize to prevent "Admin" from failing the staff check
-    const role = String(req.user?.role || '').toLowerCase();
+    // Normalize casing to prevent staff with capitalized roles from failing the check
+    const role = String(req.user?.role || '').toLowerCase().trim();
     
-    if (!req.user || role === 'visitor') {
+    if (!req.user || role === 'visitor' || role === 'donor') {
         return res.status(401).json({ 
             error: "Unauthorized", 
             message: "You must be logged in as staff to access this resource." 
         });
     }
 
-    // If they are valid, proceed to the next function (the controller)
     next();
 };
 
 export const requireVisitorAuth = (req, res, next) => {
-    // Normalize to prevent "Donor" from failing the visitor check
-    const role = String(req.user?.role || '').toLowerCase();
+    const role = String(req.user?.role || '').toLowerCase().trim();
     
     if (!req.user || (role !== 'donor' && role !== 'visitor')) {
         return res.status(401).json({ 

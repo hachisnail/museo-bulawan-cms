@@ -20,6 +20,11 @@ const Icons = {
       />
     </svg>
   ),
+  Articles: () => (
+    <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+    </svg>
+  ),
   Acquisitions: () => (
     <svg
       className="w-4 h-4 flex-shrink-0"
@@ -199,6 +204,7 @@ export default function MainLayout() {
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [isCmsLoading, setIsCmsLoading] = useState(true);
 
   const isAdmin = user?.role === "admin";
   const userInitials = user?.username
@@ -286,6 +292,12 @@ export default function MainLayout() {
       name: "Dashboard",
       path: "/dashboard",
       icon: <Icons.Dashboard />,
+      show: true,
+    },
+    {
+      name: "Articles",
+      path: "/articles",
+      icon: <Icons.Articles />,
       show: true,
     },
     {
@@ -465,8 +477,27 @@ export default function MainLayout() {
         </header>
 
         {/* Page Content */}
-        <section className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-zinc-50/50">
-          <Outlet />
+        <section className={`flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-zinc-50/50 relative ${location.pathname === '/articles' ? '!p-0' : ''}`}>
+          <div className={`h-full flex flex-col relative ${location.pathname === '/articles' ? 'block' : 'hidden'}`}>
+            {isCmsLoading && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-50 z-10">
+                <svg className="w-8 h-8 text-[#D4AF37] animate-spin mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p className="text-sm font-semibold text-zinc-600 tracking-wider uppercase">Loading CMS...</p>
+              </div>
+            )}
+            <iframe 
+                src="http://localhost:3001/admin/collections/articles" 
+                className="w-full h-full flex-1 border-0"
+                title="Payload CMS Editor Preloaded"
+                onLoad={() => setIsCmsLoading(false)}
+            />
+          </div>
+          <div className={location.pathname === '/articles' ? 'hidden' : 'block h-full'}>
+            <Outlet />
+          </div>
         </section>
 
         {/* --- Notification Drawer Overlay --- */}

@@ -49,7 +49,15 @@ export default buildConfig({
   }),
 
   // ─── Security ─────────────────────────────────
-  secret: process.env.PAYLOAD_SECRET || 'CHANGE-ME-IN-PRODUCTION',
+  secret: (() => {
+    if (!process.env.PAYLOAD_SECRET) {
+      throw new Error(
+        'FATAL: PAYLOAD_SECRET environment variable is not set. ' +
+        'Create an apps/cms/.env file with a strong random PAYLOAD_SECRET value.'
+      )
+    }
+    return process.env.PAYLOAD_SECRET
+  })(),
 
   // ─── TypeScript ───────────────────────────────
   typescript: {
@@ -57,7 +65,7 @@ export default buildConfig({
   },
 
   // ─── Image Processing ─────────────────────────
-  sharp,
+  sharp: sharp as any,
 
   // ─── CORS (allow admin panel and existing frontend) ─
   cors: [
@@ -66,6 +74,11 @@ export default buildConfig({
     'http://localhost:4321',   // landing (Astro)
     'http://localhost:4322',   // panel-visitor (Astro)
   ],
+
+  // ─── GraphQL (disabled — REST API is used exclusively) ─
+  graphQL: {
+    disable: true,
+  },
 
   // ─── Upload Limits ────────────────────────────
   upload: {

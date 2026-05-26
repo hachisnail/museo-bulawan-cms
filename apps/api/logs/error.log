@@ -1086,3 +1086,7 @@ sql: INSERT INTO condition_reports () VALUES () - parameters:[]
     at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
     at async Object.onboardAdmin (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"01KS9W2S2H0AR9EA9KJYESGZKV"}
 >>>>>>> c1c7919b39d4c8dc9f807f8198e2701c6e103ad7
+2026-05-23 18:16:09 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
+2026-05-23 18:17:09 [error]: Failed to auto-provision MinIO bucket after multiple attempts | Meta: {"error":"connect ECONNREFUSED 127.0.0.1:9000"}
+2026-05-23 18:19:46 [error]: Failed to auto-provision MinIO bucket after multiple attempts | Meta: {"error":"connect ECONNREFUSED 127.0.0.1:9000"}
+2026-05-23 18:21:59 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}

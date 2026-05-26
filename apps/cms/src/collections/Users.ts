@@ -9,7 +9,7 @@ export const Users: CollectionConfig = {
         authenticate: async ({ headers, payload }) => {
           const cookieHeader = headers.get('cookie');
           if (!cookieHeader || !cookieHeader.includes('connect.sid')) {
-            return null;
+            return { user: null };
           }
           
           try {
@@ -20,13 +20,13 @@ export const Users: CollectionConfig = {
             
             if (!response.ok) {
               console.log('api-auth: check failed', response.status);
-              return null;
+              return { user: null };
             }
             
             const data = await response.json();
             if (!data.valid || !data.user) {
               console.log('api-auth: invalid session');
-              return null;
+              return { user: null };
             }
 
             console.log('api-auth: user found in API', data.user.email);
@@ -55,7 +55,7 @@ export const Users: CollectionConfig = {
             return { user: newUser, collection: 'users' };
           } catch (error) {
             console.error('API Auth check failed', error);
-            return null;
+            return { user: null };
           }
         },
       },

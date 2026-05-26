@@ -7,3 +7,22 @@
   --theme-elevation-200: #52525b;
   --theme-text: #fafafa;
 }
+
+/* Hide Payload's navigation menu since we only use it via iframe in Admin Panel */
+#nav,
+.nav,
+aside[class*="nav"] {
+  display: none !important;
+}
+
+/* Ensure the main layout takes up the full width instead of leaving space for the sidebar */
+.template-default {
+  grid-template-columns: 1fr !important;
+}
+
+/* Hide breadcrumbs/hamburger if it exists so it looks completely clean inside the iframe */
+.nav-toggler,
+.step-nav,
+.hamburger {
+  display: none !important;
+}

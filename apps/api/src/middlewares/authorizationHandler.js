@@ -43,8 +43,10 @@ export const checkPermission = (action, resource) => {
 };
 
 export const requireAuth = (req, res, next) => {
-    // Check if the user object exists and isn't a guest
-    if (!req.user || req.user.role === 'visitor') {
+    // Normalize to prevent "Admin" from failing the staff check
+    const role = String(req.user?.role || '').toLowerCase();
+    
+    if (!req.user || role === 'visitor') {
         return res.status(401).json({ 
             error: "Unauthorized", 
             message: "You must be logged in as staff to access this resource." 
@@ -56,7 +58,10 @@ export const requireAuth = (req, res, next) => {
 };
 
 export const requireVisitorAuth = (req, res, next) => {
-    if (!req.user || (req.user.role !== 'donor' && req.user.role !== 'visitor')) {
+    // Normalize to prevent "Donor" from failing the visitor check
+    const role = String(req.user?.role || '').toLowerCase();
+    
+    if (!req.user || (role !== 'donor' && role !== 'visitor')) {
         return res.status(401).json({ 
             error: "Unauthorized", 
             message: "You must be logged in as a donor/visitor to access this resource." 

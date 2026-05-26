@@ -119,11 +119,14 @@ export default function Intakes() {
         }
     }, [apiFetch]);
 
-    const handleSelectRecord = async (type, item) => {
+    const handleSelectRecord = useCallback(async (type, item, updateUrl = true) => {
         setActionLoading(true);
-        setSelected(null); // Clear previous
-        setIsRegistering(false); // Dismiss registration form
-        setSearchParams({ id: item.id, tab: activeTab });
+        setIsRegistering(false); 
+        
+        if (updateUrl) {
+            setSearchParams({ id: item.id, tab: activeTab });
+        }
+        
         try {
             let endpoint = type === 'submission' 
                 ? `/api/v1/forms/admin/submissions/${item.id}` 
@@ -166,7 +169,7 @@ export default function Intakes() {
         } finally {
             setActionLoading(false);
         }
-    };
+    }, [apiFetch, activeTab, setSearchParams]);
 
     useEffect(() => { fetchData(); }, [fetchData]);
 
@@ -199,7 +202,7 @@ export default function Intakes() {
             }
             
             if (item && selected?.data?.id !== id) {
-                handleSelectRecord(type, item);
+                handleSelectRecord(type, item, false); 
             }
         }
     }, [searchParams, intakes, submissions, activeTab, selected, handleSelectRecord]);
@@ -535,7 +538,7 @@ export default function Intakes() {
                                     return (
                                         <button 
                                             key={item.id} 
-                                            onClick={() => handleSelectRecord(type, item)}
+                                            onClick={() => handleSelectRecord(type, item, true)}
                                             className={`w-full p-5 text-left transition-colors flex flex-col gap-2 border-l-4 ${isSelected ? 'bg-zinc-50 border-[#D4AF37]' : 'bg-white border-transparent hover:bg-zinc-50'}`}
                                         >
                                             <div className="flex justify-between items-start w-full">
@@ -547,7 +550,7 @@ export default function Intakes() {
                                                     ) : item.proposed_item_name}
                                                 </div>
                                                 <span className={`flex-shrink-0 px-2 py-0.5 rounded-sm text-[8px] font-bold uppercase tracking-widest border ${STATUS_STYLES[item.status] || STATUS_STYLES.pending}`}>
-                                                    {item.status.replace(/_/g, ' ')}
+                                                    {item.status === 'accessioned' ? 'start accessioning' : item.status.replace(/_/g, ' ')}
                                                 </span>
                                             </div>
                                             <div className="text-[10px] text-zinc-400 uppercase font-bold tracking-widest">
@@ -638,7 +641,7 @@ export default function Intakes() {
                                     <div className="flex items-center gap-3 mb-2">
                                         <span className="text-[10px] uppercase font-bold tracking-widest text-zinc-500">Record ID: {selected.data.id}</span>
                                         <span className={`px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest border ${STATUS_STYLES[selected.data.status]}`}>
-                                            {selected.data.status.replace(/_/g, ' ')}
+                                            {selected.data.status === 'accessioned' ? 'start accessioning' : selected.data.status.replace(/_/g, ' ')}
                                         </span>
                                     </div>
                                     <h2 className="text-2xl font-serif text-black uppercase tracking-wider leading-tight">
@@ -704,8 +707,6 @@ export default function Intakes() {
                                         <div>
                                             <label className="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-1">Current Physical Location</label>
                                             {(() => {
-                                                // For donation/loan intakes not yet delivered, the artifact is not in the museum.
-                                                // Only show a real location once status is in_custody or beyond.
                                                 const isDeliveryPending = selected.type === 'intake' &&
                                                     ['gift', 'loan', 'bequest'].includes((selected.data.acquisition_method || '').toLowerCase()) &&
                                                     ['under_review', 'approved', 'awaiting_delivery'].includes(selected.data.status);
@@ -729,7 +730,6 @@ export default function Intakes() {
                                                 );
                                             })()}
                                         </div>
-                                        {/* Set Location: only available once the artifact is physically in the museum */}
                                         {selected.type === 'intake' &&
                                             ['in_custody', 'accessioned', 'processed'].includes(selected.data.status) && (
                                             <div className="relative">
@@ -919,8 +919,8 @@ export default function Intakes() {
                                             <svg className="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
                                             Print MOA
                                         </a>
-                                        <button onClick={() => setModal({ isOpen: true, title: 'Accession Artifact', message: 'Enter condition notes:', type: 'prompt', variant: 'info', onConfirm: (val) => handleAction(selected.data.id, 'accession', { handlingInstructions: val }) })} className="px-6 py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-sm">
-                                            Begin Formal Accession
+                                        <button onClick={() => setModal({ isOpen: true, title: 'Start Accessioning', message: 'Enter condition notes:', type: 'prompt', variant: 'info', onConfirm: (val) => handleAction(selected.data.id, 'accession', { handlingInstructions: val }) })} className="px-6 py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-sm">
+                                            Start Accessioning
                                         </button>
                                     </div>
                                 )}

@@ -1,6 +1,6 @@
 import { AbilityBuilder, createMongoAbility } from '@casl/ability';
 
-// 1. The Multi-Department Hierarchy (Guide Removed)
+// 1. The Multi-Department Hierarchy
 const HIERARCHY = {
     admin: ['registrar', 'conservator', 'content_editor', 'appointment_coordinator'], 
     
@@ -82,7 +82,9 @@ const getEffectiveRoles = (role) => {
 
 export const defineAbilityFor = (user) => {
     const { can, cannot, build } = new AbilityBuilder(createMongoAbility);
-    const primaryRole = user?.role || 'visitor';
+    
+    // Normalize role string to lowercase to prevent case-mismatches blocking access
+    const primaryRole = String(user?.role || 'visitor').toLowerCase();
     
     getEffectiveRoles(primaryRole).forEach(role => {
         if (ROLE_RULES[role]) ROLE_RULES[role](can, user);

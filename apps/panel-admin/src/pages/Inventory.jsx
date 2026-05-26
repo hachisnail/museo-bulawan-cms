@@ -83,33 +83,17 @@ export default function Inventory() {
         fetchInventory();
     }, [fetchInventory]);
 
-    // Handle real-time updates
     useEffect(() => {
         if (events.length > 0) fetchInventory(true);
     }, [events, fetchInventory]);
 
-    // Handle initial selection from URL params
-    useEffect(() => {
-        const id = searchParams.get('id');
-        const tab = searchParams.get('tab');
-        if (tab && tab !== activeTab) {
-            setActiveTab(tab);
-            return;
-        }
-        if (id && inventory.length > 0) {
-            const list = activeTab === 'active' 
-                ? inventory.filter(item => item.status !== 'deaccessioned')
-                : inventory.filter(item => item.status === 'deaccessioned');
-            const item = list.find(i => i.id === id);
-            if (item && selected?.id !== id) {
-                fetchDetails(item);
-            }
-        }
-    }, [searchParams, inventory, activeTab, selected]);
-
-    const fetchDetails = async (item) => {
+    // FIX: Stabilized details fetcher
+    const fetchDetails = useCallback(async (item, updateUrl = false) => {
         setSelected(item);
         setDetailTab('provenance');
+        if (updateUrl) {
+            setSearchParams({ id: item.id, tab: activeTab });
+        }
         try {
             const [mRes, hRes, vRes, aRes, cRes, eRes] = await Promise.all([
                 apiFetch(`/api/v1/acquisitions/inventory/${item.id}/movement`),
@@ -136,7 +120,27 @@ export default function Inventory() {
         } catch (err) {
             console.error("Failed to fetch detail data", err);
         }
-    };
+    }, [apiFetch, activeTab, setSearchParams]);
+
+    // Handle initial selection from URL params robustly
+    useEffect(() => {
+        const id = searchParams.get('id');
+        const tab = searchParams.get('tab');
+        if (tab && tab !== activeTab) {
+            setActiveTab(tab);
+            return;
+        }
+        if (id && inventory.length > 0) {
+            const list = activeTab === 'active' 
+                ? inventory.filter(item => item.status !== 'deaccessioned')
+                : inventory.filter(item => item.status === 'deaccessioned');
+            const item = list.find(i => i.id === id);
+            if (item && selected?.id !== id) {
+                fetchDetails(item, false); // pass false to avoid URL replacement loop
+            }
+        }
+    }, [searchParams, inventory, activeTab, selected, fetchDetails]);
+
 
     const handleDeaccession = (id) => {
         setModal({
@@ -189,7 +193,7 @@ export default function Inventory() {
                             });
                             if (res.ok) {
                                 setModal({ isOpen: true, title: 'Success', message: 'Valuation added.', type: 'alert', variant: 'success' });
-                                fetchDetails(selected);
+                                fetchDetails(selected, false);
                             }
                         } catch (err) {}
                         finally { setActionLoading(false); }
@@ -259,10 +263,7 @@ export default function Inventory() {
                             filteredInventory.map(item => (
                                 <button 
                                     key={item.id}
-                                    onClick={() => {
-                                        fetchDetails(item);
-                                        setSearchParams({ id: item.id, tab: activeTab });
-                                    }}
+                                    onClick={() => fetchDetails(item, true)}
                                     className={`w-full p-5 text-left transition-all border-l-4 flex flex-col gap-2 ${selected?.id === item.id ? 'bg-zinc-50 border-[#D4AF37]' : 'border-transparent hover:bg-zinc-50'}`}
                                 >
                                     <div className="flex justify-between items-start">
@@ -420,7 +421,7 @@ export default function Inventory() {
                                                     hideHeader={true}
                                                     customFetch={apiFetch}
                                                     prefillData={{ artifact_id: selected.id }}
-                                                    onSuccess={() => { setShowMovementForm(false); fetchDetails(selected); }}
+                                                    onSuccess={() => { setShowMovementForm(false); fetchDetails(selected, false); }}
                                                 />
                                             </div>
                                         )}
@@ -472,7 +473,7 @@ export default function Inventory() {
                                                     hideHeader={true}
                                                     customFetch={apiFetch}
                                                     prefillData={{ artifact_id: selected.id }}
-                                                    onSuccess={() => { setShowHealthForm(false); fetchDetails(selected); }}
+                                                    onSuccess={() => { setShowHealthForm(false); fetchDetails(selected, false); }}
                                                 />
                                             </div>
                                         )}
@@ -551,7 +552,7 @@ export default function Inventory() {
                                                                 auditedLocation: selected.current_location, 
                                                                 discrepancyNotes: notes 
                                                             })
-                                                        }).then(() => fetchDetails(selected));
+                                                        }).then(() => fetchDetails(selected, false));
                                                     }
                                                 }}
                                                 className="text-[9px] font-black uppercase tracking-widest text-[#D4AF37] hover:text-black transition-colors"
@@ -602,7 +603,7 @@ export default function Inventory() {
                                                     hideHeader={true}
                                                     customFetch={apiFetch}
                                                     prefillData={{ artifact_id: selected.id }}
-                                                    onSuccess={() => { setShowConservationForm(false); fetchDetails(selected); }}
+                                                    onSuccess={() => { setShowConservationForm(false); fetchDetails(selected, false); }}
                                                 />
                                             </div>
                                         )}

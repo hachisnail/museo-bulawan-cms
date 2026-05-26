@@ -73,13 +73,34 @@ export default function Accessions() {
         }
     }, [apiFetch]);
 
+    // FIX: Stabilized fetcher
+    const fetchArchiveMedia = useCallback(async (item) => {
+        if (!item || item.mediaFetched) return;
+        try {
+            const accId = item.expand?.accession_id?.id;
+            if (!accId) return;
+            const mRes = await apiFetch(`/api/v1/media/accession/${accId}`);
+            const mData = await mRes.json();
+            setSelected(prev => ({
+                ...prev, mediaFetched: true,
+                expand: {
+                    ...prev.expand,
+                    accession_id: {
+                        ...prev.expand.accession_id,
+                        expand: { ...prev.expand.accession_id.expand, media_attachments_via_entity_id: mData.data?.items || [] }
+                    }
+                }
+            }));
+        } catch (e) { console.error("Failed to fetch archive media"); }
+    }, [apiFetch]);
+
     useEffect(() => { fetchData(); }, [fetchData]);
 
     useEffect(() => {
         if (events.length > 0) fetchData(true);
     }, [events, fetchData]);
 
-    // Handle initial selection from URL params
+    // Handle initial selection from URL params robustly
     useEffect(() => {
         const id = searchParams.get('id');
         const tab = searchParams.get('tab');
@@ -95,7 +116,7 @@ export default function Accessions() {
                 if (activeTab === 'archive') fetchArchiveMedia(item);
             }
         }
-    }, [searchParams, accessions, archived, activeTab, selected]);
+    }, [searchParams, accessions, archived, activeTab, selected, fetchArchiveMedia]);
 
     // Sync form state when a record is selected
     useEffect(() => {
@@ -233,26 +254,6 @@ export default function Accessions() {
         } finally {
             setActionLoading(false);
         }
-    };
-
-    const fetchArchiveMedia = async (item) => {
-        if (!item || item.mediaFetched) return;
-        try {
-            const accId = item.expand?.accession_id?.id;
-            if (!accId) return;
-            const mRes = await apiFetch(`/api/v1/media/accession/${accId}`);
-            const mData = await mRes.json();
-            setSelected(prev => ({
-                ...prev, mediaFetched: true,
-                expand: {
-                    ...prev.expand,
-                    accession_id: {
-                        ...prev.expand.accession_id,
-                        expand: { ...prev.expand.accession_id.expand, media_attachments_via_entity_id: mData.data?.items || [] }
-                    }
-                }
-            }));
-        } catch (e) { console.error("Failed to fetch archive media"); }
     };
 
     const displayList = activeTab === 'active' ? accessions : archived;

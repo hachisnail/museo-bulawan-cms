@@ -6,7 +6,7 @@ const SSEContext = createContext(null);
 export const SSEProvider = ({ children }) => {
     const { user } = useAuth();
     const [status, setStatus] = useState('disconnected');
-    const [lastEvent, setLastEvent] = useState(null);
+    // Removed 'lastEvent' state to completely prevent global re-render storms
     const evtSource = useRef(null);
     const subscribers = useRef(new Set());
     const reconnectTimeout = useRef(null);
@@ -17,7 +17,9 @@ export const SSEProvider = ({ children }) => {
     }, []);
 
     const connect = useCallback(() => {
-        if (!user) return;
+        // Strict check: ONLY connect if the user is fully logged in with an ID
+        if (!user || !user.id) return; 
+        
         if (evtSource.current) evtSource.current.close();
 
         const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
@@ -39,7 +41,6 @@ export const SSEProvider = ({ children }) => {
         evtSource.current.onmessage = (e) => {
             try {
                 const parsed = JSON.parse(e.data);
-                setLastEvent(parsed);
                 subscribers.current.forEach(cb => cb({ event: 'message', data: parsed }));
             } catch (err) {}
         };
@@ -49,7 +50,7 @@ export const SSEProvider = ({ children }) => {
             evtSource.current.addEventListener(eventName, (e) => {
                 try {
                     const parsed = JSON.parse(e.data);
-                    setLastEvent({ event: eventName, data: parsed });
+                    // Emit only to subscribers, bypassing React state
                     subscribers.current.forEach(cb => cb({ event: eventName, data: parsed }));
                 } catch (err) {}
             });
@@ -58,14 +59,15 @@ export const SSEProvider = ({ children }) => {
         evtSource.current.onerror = () => {
             setStatus('error');
             evtSource.current.close();
-            if (!reconnectTimeout.current && user) {
+            // Ensure we only reconnect if STILL logged in
+            if (!reconnectTimeout.current && user && user.id) {
                 reconnectTimeout.current = setTimeout(connect, 5000);
             }
         };
     }, [user]);
 
     useEffect(() => {
-        if (user) {
+        if (user && user.id) {
             connect();
         } else {
             if (evtSource.current) {
@@ -82,7 +84,7 @@ export const SSEProvider = ({ children }) => {
     }, [user, connect]);
 
     return (
-        <SSEContext.Provider value={{ status, lastEvent, subscribe }}>
+        <SSEContext.Provider value={{ status, subscribe }}>
             {children}
         </SSEContext.Provider>
     );

@@ -1224,3 +1224,41 @@ sql: INSERT INTO condition_reports () VALUES () - parameters:[]
     at processParams (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:582:12)
     at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:291:5)
     at internalNext (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/helmet/index.mjs:527:6) | Meta: {"method":"OPTIONS","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}
+2026-05-27 00:31:09 [error]: Failed to fetch user by ID | Meta: {"action":"READ","resource":"User","userId":"01KQ91VTA5A1RGM1SS01DWBQVK","error":"(conn:5841, no: 1146, SQLState: 42S02) Table 'scratch.users' doesn't exist\nsql: SELECT id, username, role, fname, lname, email, status, current_session_id FROM users WHERE id = ? - parameters:['01KQ91VTA5A1RGM1SS01DWBQVK']"}
+2026-05-27 00:31:09 [error]: SqlError: (conn:5841, no: 1146, SQLState: 42S02) Table 'scratch.users' doesn't exist
+sql: SELECT id, username, role, fname, lname, email, status, current_session_id FROM users WHERE id = ? - parameters:['01KQ91VTA5A1RGM1SS01DWBQVK']
+    at Module.createError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) | Meta: {"method":"GET","url":"/api/v1/auth/check","ip":"::1","user":"Guest"}
+2026-05-27 00:33:12 [error]: Failed to reset password | Meta: {"action":"UPDATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-27 00:33:12 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.resetPassword (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/user/securityService.js:89:18)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.resetPassword (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/user/securityController.js:44:13) | Meta: {"method":"POST","url":"/api/v1/user/reset-password","ip":"::1","user":"Guest"}
+2026-05-27 00:34:25 [error]: Error: Invalid OTP.
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:66:48)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"01KSJJ2HMT9792RBRG6KDB5WZN"}
+2026-05-27 00:34:57 [error]: SqlError: (conn:5847, no: 1406, SQLState: 22001) Data too long for column 'id' at row 1
+sql: 
+            INSERT INTO notifications (id, title, message, type, target_type, target_id, action_url)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+         - parameters:['3a18fa05-1186-4612-83a9-66881b7e5b07','New Intake Created','External submission processed...
+    at Module.createError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) | Meta: {"name":"SqlError","sqlMessage":"Data too long for column 'id' at row 1","sql":"\n            INSERT INTO notifications (id, title, message, type, target_type, target_id, action_url)\n            VALUES (?, ?, ?, ?, ?, ?, ?)\n         - parameters:['3a18fa05-1186-4612-83a9-66881b7e5b07','New Intake Created','External submission processed...","fatal":false,"errno":1406,"sqlState":"22001","code":"ER_DATA_TOO_LONG"}

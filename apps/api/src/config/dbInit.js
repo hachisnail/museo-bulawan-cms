@@ -495,10 +495,9 @@ export async function initMariaDB() {
             )
         `);
 
-        // 12. Notifications
         await conn.query(`
             CREATE TABLE IF NOT EXISTS notifications (
-                id VARCHAR(26) PRIMARY KEY,
+                id VARCHAR(36) PRIMARY KEY,
                 title VARCHAR(255) NOT NULL,
                 message TEXT NOT NULL,
                 type VARCHAR(50) DEFAULT 'info',
@@ -511,17 +510,39 @@ export async function initMariaDB() {
             )
         `);
 
+        // Migration: Safely expand the ID column length for existing tables
+        try {
+            // Need to drop foreign keys before altering primary key columns in MariaDB
+            await conn.query(`ALTER TABLE user_notification_reads DROP FOREIGN KEY user_notification_reads_ibfk_2`);
+        } catch(e) { /* Ignore if it doesn't exist */ }
+
+        try {
+            await conn.query(`ALTER TABLE notifications MODIFY COLUMN id VARCHAR(36)`);
+        } catch(e) { /* Ignore if already altered */ }
+
         // 12.1. Notification Reads (for global/role targets)
         await conn.query(`
             CREATE TABLE IF NOT EXISTS user_notification_reads (
                 user_id VARCHAR(26) NOT NULL,
-                notification_id VARCHAR(26) NOT NULL,
+                notification_id VARCHAR(36) NOT NULL,
                 read_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (user_id, notification_id),
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                 FOREIGN KEY (notification_id) REFERENCES notifications(id) ON DELETE CASCADE
             )
         `);
+
+        // Migration: Safely expand the foreign key column
+        try {
+            await conn.query(`ALTER TABLE user_notification_reads MODIFY COLUMN notification_id VARCHAR(36)`);
+            // Re-apply the constraint if dropped
+            await conn.query(`ALTER TABLE user_notification_reads ADD CONSTRAINT user_notification_reads_ibfk_2 FOREIGN KEY (notification_id) REFERENCES notifications(id) ON DELETE CASCADE`);
+        } catch(e) {
+            // Ignore if already altered or constraint already exists
+            if (!e.message.includes('Unknown column') && !e.message.includes('Duplicate column')) {
+                logger.warn('Failed to alter user_notification_reads schema', { error: e.message });
+            }
+        }
 
         // 13. Accession Approvals
         await conn.query(`

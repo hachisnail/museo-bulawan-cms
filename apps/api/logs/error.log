@@ -1224,3 +1224,20 @@ sql: INSERT INTO condition_reports () VALUES () - parameters:[]
     at processParams (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:582:12)
     at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:291:5)
     at internalNext (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/helmet/index.mjs:527:6) | Meta: {"method":"OPTIONS","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}
+2026-05-26 23:41:35 [error]: SqlError: (conn:32, no: 1406, SQLState: 22001) Data too long for column 'id' at row 1
+sql: 
+            INSERT INTO notifications (id, title, message, type, target_type, target_id, action_url)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+         - parameters:['e5f16572-7a0c-45c5-86d8-e1b13e5571e0','New Intake Created','External submission processed...
+    at Module.createError (file:///C:/Users/Joro/Documents/Programs/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Users/Joro/Documents/Programs/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Users/Joro/Documents/Programs/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Users/Joro/Documents/Programs/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Users/Joro/Documents/Programs/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Users/Joro/Documents/Programs/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) | Meta: {"name":"SqlError","sqlMessage":"Data too long for column 'id' at row 1","sql":"\n            INSERT INTO notifications (id, title, message, type, target_type, target_id, action_url)\n            VALUES (?, ?, ?, ?, ?, ?, ?)\n         - parameters:['e5f16572-7a0c-45c5-86d8-e1b13e5571e0','New Intake Created','External submission processed...","fatal":false,"errno":1406,"sqlState":"22001","code":"ER_DATA_TOO_LONG"}
+2026-05-26 23:44:33 [error]: Failed to auto-provision MinIO bucket after multiple attempts | Meta: {"error":"connect ECONNREFUSED 127.0.0.1:9000"}
+2026-05-26 23:46:17 [error]: Failed to auto-provision MinIO bucket after multiple attempts. Ensure MinIO is running if you need file uploads. | Meta: {"error":"connect ECONNREFUSED 127.0.0.1:9000"}

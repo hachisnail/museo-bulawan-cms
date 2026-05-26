@@ -205,6 +205,16 @@ export default function MainLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isCmsLoading, setIsCmsLoading] = useState(true);
+  const [shouldLoadCms, setShouldLoadCms] = useState(false);
+
+  useEffect(() => {
+    if (location.pathname === '/articles') {
+      setShouldLoadCms(true);
+    } else if (!shouldLoadCms) {
+      const timer = setTimeout(() => setShouldLoadCms(true), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname, shouldLoadCms]);
 
   const isAdmin = user?.role === "admin";
   const userInitials = user?.username
@@ -488,12 +498,14 @@ export default function MainLayout() {
                 <p className="text-sm font-semibold text-zinc-600 tracking-wider uppercase">Loading CMS...</p>
               </div>
             )}
-            <iframe 
-                src="http://localhost:3001/admin/collections/articles" 
-                className="w-full h-full flex-1 border-0"
-                title="Payload CMS Editor Preloaded"
-                onLoad={() => setIsCmsLoading(false)}
-            />
+            {shouldLoadCms && (
+              <iframe 
+                  src="http://localhost:3001/admin/collections/articles" 
+                  className="w-full h-full flex-1 border-0"
+                  title="Payload CMS Editor Preloaded"
+                  onLoad={() => setIsCmsLoading(false)}
+              />
+            )}
           </div>
           <div className={location.pathname === '/articles' ? 'hidden' : 'block h-full'}>
             <Outlet />

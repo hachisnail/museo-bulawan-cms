@@ -39,8 +39,8 @@ export const minioService = {
                 return; // Success, exit the loop
             } catch (error) {
                 if (i === retries - 1) {
-                    logger.error('Failed to auto-provision MinIO bucket after multiple attempts', { error: error.message });
-                    throw error; 
+                    logger.error('Failed to auto-provision MinIO bucket after multiple attempts. Ensure MinIO is running if you need file uploads.', { error: error.message });
+                    return; 
                 }
                 logger.warn(`MinIO connection failed (attempt ${i + 1}/${retries}). Retrying in ${delayMs}ms...`);
                 await new Promise(resolve => setTimeout(resolve, delayMs));

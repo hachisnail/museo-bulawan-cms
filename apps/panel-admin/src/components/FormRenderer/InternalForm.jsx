@@ -113,7 +113,7 @@ const InternalForm = (props) => {
                                     />
                                 ) : (
                                     <input
-                                        type={prop.format === 'date' ? 'date' : prop.type === 'number' ? 'number' : 'text'}
+                                        type={prop.format === 'date' ? 'date' : prop.format === 'time' ? 'time' : prop.type === 'number' ? 'number' : 'text'}
                                         name={key}
                                         required={isRequired}
                                         value={formData[key] || ''}

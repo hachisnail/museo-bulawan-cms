@@ -47,6 +47,76 @@ export const formPipelineService = {
   },
 
   /**
+   * PROCESS: Appointment Form Submission
+   */
+  async processAppointmentForm(staffId, submissionId, files = null) {
+    const { ulid } = await import("ulidx");
+    const { mediaService } = await import("./mediaService.js");
+    return await db.transaction(async (tx) => {
+      // 1. Fetch form submission
+      const [submission] = await tx.query('SELECT * FROM form_submissions WHERE id = ?', [submissionId]);
+      if (!submission) throw new Error("SUBMISSION_NOT_FOUND");
+
+      const data = typeof submission.data === 'string' ? JSON.parse(submission.data) : submission.data;
+
+      // 2. Combine name fields
+      const visitor_name = `${data.firstName || ''} ${data.lastName || ''}`.trim() || 'Walk-in Visitor';
+
+      // 3. Address fields mapped to additional notes
+      let additional_notes = data.additionalNotes || "";
+      if (data.province || data.city || data.barangay) {
+        const addr = `Address: ${data.barangay || ''}, ${data.city || ''}, ${data.province || ''}`.replace(/^Address:\s*,\s*,\s*$/, '').trim();
+        if (addr) {
+          additional_notes = additional_notes ? `${additional_notes}\n${addr}` : addr;
+        }
+      }
+
+      // 4. Resolve media names
+      const submissionMedia = await mediaService.listMedia('form_submissions', submissionId, {}, tx);
+      const requestFiles = (submissionMedia.items || []).map(m => m.file_name);
+
+      // 5. Generate appointment ID and insert record
+      const appointmentId = ulid();
+      const initialStatus = staffId ? 'APPROVED' : 'PENDING';
+
+      const appointmentData = {
+        id: appointmentId,
+        visitor_name,
+        visitor_email: data.email || '',
+        visitor_phone: data.phone || null,
+        organization: data.organization || null,
+        purpose_of_visit: data.purpose || 'Walk-in Visit',
+        preferred_date: data.visitDate,
+        start_time: data.startTime || null,
+        end_time: data.endTime || null,
+        population_count: parseInt(data.populationCount, 10) || 1,
+        additional_notes: additional_notes || null,
+        request_letter_files: JSON.stringify(requestFiles),
+        status: initialStatus,
+        submission_id: submissionId
+      };
+
+      await tx.insertRecord('appointments', appointmentData);
+
+      // 6. Promote submission media to appointments entity
+      await mediaService.promoteSubmissionMedia(staffId, submissionId, 'appointments', appointmentId, tx);
+
+      // 7. Update form submission status to processed
+      await tx.query('UPDATE form_submissions SET status = "processed" WHERE id = ?', [submissionId]);
+
+      // 8. Broadcast event
+      const { appEvents } = await import("../utils/eventBus.js");
+      appEvents.emit('db_change', { resource: 'Appointment', action: 'create', id: appointmentId });
+      appEvents.emit('db_change', { resource: 'AppointmentStatus', action: 'create', id: appointmentId });
+      appEvents.emit('db_change', { resource: 'Submission', action: 'update', id: submissionId });
+
+      logger.info(`Pipeline successfully processed appointment form submission ${submissionId} -> appointment ${appointmentId}`);
+
+      return { appointmentId, status: initialStatus };
+    });
+  },
+
+  /**
    * ADMIN: Reject/Archive Submission
    */
   async rejectSubmission(submissionId) {

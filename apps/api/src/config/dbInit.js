@@ -660,6 +660,59 @@ export async function initMariaDB() {
             )
         `);
 
+        // 16.5 Schedules
+        await conn.query(`
+            CREATE TABLE IF NOT EXISTS schedules (
+                id VARCHAR(26) PRIMARY KEY,
+                title VARCHAR(255) NOT NULL,
+                description TEXT NULL,
+                date DATE NOT NULL,
+                start_time TIME NULL,
+                end_time TIME NULL,
+                availability ENUM('SHARED', 'EXCLUSIVE') DEFAULT 'SHARED',
+                status ENUM('ACTIVE', 'COMPLETED', 'CANCELLED') DEFAULT 'ACTIVE',
+                created_by VARCHAR(26) NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX idx_schedule_date (date),
+                CONSTRAINT fk_schedule_creator FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+            )
+        `);
+
+        // 16.6 Appointments
+        await conn.query(`
+            CREATE TABLE IF NOT EXISTS appointments (
+                id VARCHAR(26) PRIMARY KEY,
+                visitor_name VARCHAR(255) NOT NULL,
+                visitor_email VARCHAR(255) NOT NULL,
+                visitor_phone VARCHAR(100) NULL,
+                organization VARCHAR(255) NULL,
+                purpose_of_visit VARCHAR(255) NOT NULL,
+                preferred_date DATE NOT NULL,
+                start_time TIME NULL,
+                end_time TIME NULL,
+                population_count INT NOT NULL DEFAULT 1,
+                additional_notes TEXT NULL,
+                request_letter_files JSON NULL,
+                status ENUM('PENDING','APPROVED','COMPLETED','REJECTED','FAILED') DEFAULT 'PENDING',
+                present_count INT NULL,
+                message_to_visitor TEXT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                submission_id VARCHAR(26) NULL,
+                INDEX idx_appt_date (preferred_date),
+                INDEX idx_appt_status (status)
+            )
+        `);
+
+        // Safely alter existing appointments table to add submission_id if it was created before we added the new fields
+        try {
+            await conn.query(`ALTER TABLE appointments ADD COLUMN submission_id VARCHAR(26) NULL`);
+        } catch(e) { /* Ignore if column already exists */ }
+        try {
+            await conn.query(`ALTER TABLE appointments ADD CONSTRAINT fk_appt_submission FOREIGN KEY (submission_id) REFERENCES form_submissions(id) ON DELETE SET NULL`);
+        } catch(e) { /* Ignore if constraint already exists */ }
+
         // 16. Default Form Seedings
         const defaultForms = [
             {
@@ -741,6 +794,33 @@ export async function initMariaDB() {
                     type: "object"
                 },
                 settings: { allow_attachments: true, description: "Official conservation and restoration records.", layout: "single_column" },
+                otp: false
+            },
+            {
+                id: '01KQEAAX7RAE9CEYNBV2VF512Q',
+                slug: 'appointment-booking',
+                title: 'Visitor Appointment & Walk-in Form',
+                type: 'appointment',
+                schema_data: {
+                    properties: {
+                        firstName: { title: "First Name", type: "string" },
+                        lastName: { title: "Last Name", type: "string" },
+                        email: { format: "email", title: "Email Address", type: "string" },
+                        phone: { title: "Phone Number", type: "string" },
+                        organization: { title: "Organization (Optional)", type: "string" },
+                        province: { title: "Province", type: "string" },
+                        city: { title: "City / Municipality", type: "string" },
+                        barangay: { title: "Barangay", type: "string" },
+                        purpose: { enum: ["Walk-in Visit", "School Field Trip", "Heritage Research", "Tourism"], title: "Purpose of Visit", type: "string" },
+                        populationCount: { type: "integer", title: "Number of Visitors", minimum: 1, maximum: 30 },
+                        visitDate: { format: "date", title: "Date of Visit", type: "string" },
+                        startTime: { format: "time", title: "Start Time", type: "string" },
+                        endTime: { format: "time", title: "End Time", type: "string" }
+                    },
+                    required: ["firstName", "lastName", "email", "phone", "province", "city", "barangay", "purpose", "populationCount", "visitDate", "startTime", "endTime"],
+                    type: "object"
+                },
+                settings: { allow_attachments: true, description: "Book an official visitor session.", layout: "double_column" },
                 otp: false
             }
         ];

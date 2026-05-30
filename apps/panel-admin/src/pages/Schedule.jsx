@@ -1,491 +1,695 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import {
+  ChevronLeft, ChevronRight, Plus, Users, Clock, CheckCircle2,
+  Ban, Loader2, X, CalendarDays, ArrowRight, Activity,
+} from 'lucide-react';
+import { useAuth } from '../context/authContext';
+import { useSSE } from '../hooks/useSSE';
+import {
+  getLocalDateString, formatTimeTo12H,
+  normalizeSchedule, normalizeAppointment, toFCEvent,
+} from '../utils/scheduleUtils';
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-function getLocalDateString(date) {
-  const d = new Date(date);
-  const yr = d.getFullYear();
-  const mo = String(d.getMonth() + 1).padStart(2, '0');
-  const dy = String(d.getDate()).padStart(2, '0');
-  return `${yr}-${mo}-${dy}`;
-}
+// ─── FullCalendar CSS ─────────────────────────────────────────────────────────
+const FC_STYLES = `
+  .sch-cal .fc { height: 100%; font-family: inherit; }
+  .sch-cal .fc-toolbar { display: none !important; }
+  .sch-cal .fc-theme-standard td,
+  .sch-cal .fc-theme-standard th { border-color: #f4f4f5; }
+  .sch-cal .fc-theme-standard .fc-scrollgrid { border-color: #f4f4f5; border-radius: 0; }
+  .sch-cal .fc-col-header-cell { background: #fafafa; }
+  .sch-cal .fc-col-header-cell-cushion {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.15em; color: #71717a; text-decoration: none !important;
+    padding: 10px 8px; display: block;
+  }
+  .sch-cal .fc-timegrid-slot-label-cushion {
+    font-size: 10px; color: #a1a1aa;
+    font-family: ui-monospace, monospace; padding-right: 10px; font-weight: 500;
+  }
+  .sch-cal .fc-timegrid-slot-minor { border-top-style: dashed !important; border-color: #f9f9f9 !important; }
+  .sch-cal .fc-timegrid-now-indicator-line { border-color: #D4AF37 !important; border-width: 2px !important; }
+  .sch-cal .fc-timegrid-now-indicator-arrow { border-top-color: #D4AF37 !important; border-bottom-color: #D4AF37 !important; }
+  .sch-cal .fc-timegrid-event {
+    border-radius: 4px !important; border-left-width: 3px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+  }
+  .sch-cal .fc-timegrid-event:hover { box-shadow: 0 3px 8px rgba(0,0,0,0.10) !important; z-index: 10 !important; }
+  .sch-cal .fc-timegrid-event .fc-event-main { padding: 0; }
+  .sch-cal .fc-event-title { display: none; }
+  .sch-cal .fc-v-event { border: 1px solid; }
+  .sch-cal .fc-day-today { background: rgba(212,175,55,0.025) !important; }
+  .sch-cal .fc-day-today .fc-col-header-cell-cushion { color: #D4AF37 !important; }
+`;
 
-function formatTimeTo12H(timeStr) {
-  if (!timeStr || timeStr === 'Flexible') return timeStr || '—';
-  const [h, m] = timeStr.split(':').map(Number);
-  const period = h >= 12 ? 'PM' : 'AM';
-  const hour = h % 12 || 12;
-  return `${hour}:${String(m).padStart(2, '0')} ${period}`;
-}
+// ─── Mini Calendar ────────────────────────────────────────────────────────────
+function MiniCal({ value, onChange, allSchedules }) {
+  const [cursor, setCursor] = useState({ m: value.getMonth(), y: value.getFullYear() });
 
-// ─── Mock Data ────────────────────────────────────────────────────────────────
-const TODAY = getLocalDateString(new Date());
-const MOCK_EVENTS = [
-  {
-    id: 'schedule-1',
-    title: 'Morning Tour Slot',
-    start: `${TODAY}T09:00:00`,
-    end: `${TODAY}T11:00:00`,
-    backgroundColor: 'rgba(212,175,55,0.15)',
-    borderColor: '#D4AF37',
-    textColor: '#78600a',
-    extendedProps: { type: 'schedule', availability: 'SHARED', status: 'ACTIVE', isSchedule: true, description: 'General morning tour availability.' },
-  },
-  {
-    id: 'schedule-2',
-    title: 'Afternoon Reserved Block',
-    start: `${TODAY}T13:00:00`,
-    end: `${TODAY}T15:00:00`,
-    backgroundColor: 'rgba(244,63,94,0.12)', // rose
-    borderColor: '#f43f5e',
-    textColor: '#9f1239',
-    extendedProps: { type: 'schedule', availability: 'EXCLUSIVE', status: 'ACTIVE', isSchedule: true, description: 'Exclusive block for private event.' },
-  },
-  {
-    id: 'appointment-1',
-    title: 'Juan dela Cruz',
-    start: `${TODAY}T09:30:00`,
-    end: `${TODAY}T10:30:00`,
-    backgroundColor: 'rgba(99,102,241,0.12)', // indigo
-    borderColor: '#6366f1',
-    textColor: '#3730a3',
-    extendedProps: {
-      type: 'appointment', isAppointment: true, status: 'APPROVED',
-      organizer: 'Juan dela Cruz', purpose: 'School Field Trip',
-      numPeople: '45 visitors', description: 'Group from Bulawan Elementary.',
-    },
-  },
-  {
-    id: 'appointment-2',
-    title: 'Maria Santos',
-    start: `${TODAY}T14:00:00`,
-    end: `${TODAY}T15:00:00`,
-    backgroundColor: 'rgba(99,102,241,0.12)',
-    borderColor: '#6366f1',
-    textColor: '#3730a3',
-    extendedProps: {
-      type: 'appointment', isAppointment: true, status: 'APPROVED',
-      organizer: 'Maria Santos', purpose: 'Heritage Research',
-      numPeople: '3 visitors', description: 'Researcher visit for artifact documentation.',
-    },
-  },
-];
-
-const MOCK_TODAY_TOURS = [
-  { id: 'schedule-1', title: 'Morning Tour Slot', organizer: 'Schedule', startTime: '09:00', endTime: '11:00', isSchedule: true, isDone: false, hasFlexibleTime: false },
-  { id: 'appointment-1', title: 'School Field Trip', organizer: 'Juan dela Cruz', startTime: '09:30', endTime: '10:30', isAppointment: true, isDone: false, hasFlexibleTime: false, numPeople: '45 visitors' },
-  { id: 'schedule-2', title: 'Afternoon Reserved Block', organizer: 'Schedule', startTime: '13:00', endTime: '15:00', isSchedule: true, isDone: false, hasFlexibleTime: false },
-  { id: 'appointment-2', title: 'Heritage Research', organizer: 'Maria Santos', startTime: '14:00', endTime: '15:00', isAppointment: true, isDone: true, hasFlexibleTime: false, numPeople: '3 visitors' },
-];
-
-// ─── Event Content Renderer ───────────────────────────────────────────────────
-function renderEventContent(info) {
-  const { type, organizer, purpose, numPeople } = info.event.extendedProps;
-  const isAppt = type === 'appointment';
-  const color = info.event.textColor || '#78600a';
-
-  return (
-    <div style={{ padding: '4px 8px', height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: '2px' }}>
-      <div style={{ color, fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        {isAppt ? (organizer || info.event.title) : info.event.title}
-      </div>
-      {isAppt && purpose && (
-        <div style={{ color, fontSize: '10px', opacity: 0.85, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{purpose}</div>
-      )}
-      {numPeople && (
-        <div style={{ color, fontSize: '10px', opacity: 0.7 }}>{numPeople}</div>
-      )}
-    </div>
-  );
-}
-
-// ─── Live Clock ───────────────────────────────────────────────────────────────
-function LiveClock() {
-  const [time, setTime] = useState(new Date());
+  // Sync when external value changes (e.g. Dashboard auto-select)
   useEffect(() => {
-    const t = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
+    setCursor({ m: value.getMonth(), y: value.getFullYear() });
+  }, [value.getFullYear(), value.getMonth()]);
+
+  const prev = () => setCursor(c => c.m === 0 ? { m: 11, y: c.y - 1 } : { m: c.m - 1, y: c.y });
+  const next = () => setCursor(c => c.m === 11 ? { m: 0, y: c.y + 1 } : { m: c.m + 1, y: c.y });
+
+  const today = getLocalDateString(new Date());
+  const selectedStr = getLocalDateString(value);
+
+  const disabledSet = useMemo(
+    () => new Set(allSchedules.filter(s => s.isDisabledDay).map(s => s.date)),
+    [allSchedules]
+  );
+  const markedSet = useMemo(
+    () => new Set(allSchedules.filter(s => !s.isDisabledDay && s.status !== 'COMPLETED').map(s => s.date)),
+    [allSchedules]
+  );
+
+  const firstDay = new Date(cursor.y, cursor.m, 1).getDay();
+  const daysInMonth = new Date(cursor.y, cursor.m + 1, 0).getDate();
+  const cells = [
+    ...Array(firstDay).fill(null),
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+  ];
+  while (cells.length % 7 !== 0) cells.push(null);
+
+  const ds = (d) =>
+    `${cursor.y}-${String(cursor.m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
   return (
-    <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-zinc-900 to-zinc-800 p-6 text-center shadow-lg transform transition-transform hover:scale-[1.02]">
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10"></div>
-      <div className="relative z-10">
-        <div className="font-mono text-3xl font-bold text-white tracking-widest drop-shadow-md">
-          {time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-        </div>
-        <div className="text-[10px] uppercase tracking-[0.25em] text-[#D4AF37] mt-2 font-medium">
-          {time.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
-        </div>
+    <div className="px-4 pt-4 pb-3 select-none">
+      <div className="flex items-center justify-between mb-3">
+        <button onClick={prev} className="p-1 rounded hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors">
+          <ChevronLeft className="w-3.5 h-3.5" />
+        </button>
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">
+          {new Date(cursor.y, cursor.m).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+        </span>
+        <button onClick={next} className="p-1 rounded hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors">
+          <ChevronRight className="w-3.5 h-3.5" />
+        </button>
+      </div>
+
+      <div className="grid grid-cols-7 gap-y-0.5">
+        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+          <div key={i} className="text-center text-[9px] font-bold text-zinc-300 pb-1.5">{d}</div>
+        ))}
+        {cells.map((day, i) => {
+          if (!day) return <div key={`e${i}`} />;
+          const dateStr = ds(day);
+          const isSel = dateStr === selectedStr;
+          const isToday = dateStr === today;
+          const isDisabled = disabledSet.has(dateStr);
+          const hasEvent = markedSet.has(dateStr);
+
+          return (
+            <button
+              key={dateStr}
+              onClick={() => onChange(new Date(cursor.y, cursor.m, day))}
+              className={`relative h-7 w-full flex flex-col items-center justify-center rounded text-xs font-medium transition-all
+                ${isSel
+                  ? 'bg-[#D4AF37] text-zinc-900 font-bold shadow-sm'
+                  : isToday
+                    ? 'bg-zinc-900 text-white font-bold'
+                    : isDisabled
+                      ? 'text-rose-400 hover:bg-rose-50'
+                      : 'text-zinc-600 hover:bg-zinc-100'}`}
+            >
+              <span className="leading-none">{day}</span>
+              {(hasEvent || isDisabled) && !isSel && (
+                <span className={`absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${isDisabled ? 'bg-rose-400' : 'bg-[#D4AF37]'}`} />
+              )}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-// ─── Tour Item ────────────────────────────────────────────────────────────────
-function TourItem({ tour, isSelected, onSelect }) {
-  const isAppt = tour.isAppointment;
-  const isExcl = !isAppt && tour.availability === 'EXCLUSIVE';
-  const accentColor = isAppt ? '#6366f1' : isExcl ? '#f43f5e' : '#D4AF37';
-  const subtitle = isAppt ? tour.title : null;
+// ─── Event card (sidebar list item) ──────────────────────────────────────────
+function EventCard({ ev, isSelected, onClick }) {
+  const isAppt    = ev.isAppointment;
+  const isDisabled = ev.isDisabledDay;
+  const isExcl    = ev.availability === 'EXCLUSIVE' && !isDisabled;
+
+  const dot = isDisabled ? 'bg-rose-500' : isAppt ? 'bg-indigo-500' : isExcl ? 'bg-rose-400' : 'bg-[#D4AF37]';
+  const bg  = isSelected ? 'bg-zinc-50 shadow-sm border border-zinc-200' : 'hover:bg-zinc-50 border border-transparent';
+
+  const timeStr = isDisabled
+    ? 'All Day'
+    : ev.hasFlexibleTime
+      ? 'Flexible'
+      : `${formatTimeTo12H(ev.startTime)} – ${formatTimeTo12H(ev.endTime)}`;
+
   return (
-    <div
-      onClick={() => onSelect(tour)}
-      className={`group flex items-start gap-4 p-4 cursor-pointer transition-all duration-300 border-l-4 ${isSelected ? 'bg-white border-[#D4AF37] shadow-md' : 'bg-transparent border-transparent hover:bg-white hover:shadow-sm hover:border-zinc-300'}`}
+    <button
+      onClick={onClick}
+      className={`w-full text-left flex items-start gap-3 px-4 py-3 transition-all rounded-sm ${bg}`}
     >
-      <div style={{ width: '4px', height: '100%', minHeight: '32px', backgroundColor: accentColor, borderRadius: '4px', flexShrink: 0 }} />
+      <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${dot}`} />
       <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between gap-2">
-          <span className={`text-xs font-bold uppercase tracking-wider truncate transition-colors ${isSelected ? 'text-zinc-900' : 'text-zinc-600 group-hover:text-zinc-900'}`}>
-            {isAppt ? tour.organizer : tour.title}
-          </span>
-          {tour.isDone && (
-            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500 flex-shrink-0 flex items-center gap-1">
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-              Done
+        <div className="text-[11px] font-semibold text-zinc-800 truncate">
+          {isAppt ? ev.organizer : ev.title}
+        </div>
+        {isAppt && ev.title && (
+          <div className="text-[10px] text-zinc-400 truncate">{ev.title}</div>
+        )}
+        <div className="flex items-center gap-2 mt-0.5">
+          <span className="text-[10px] font-mono text-zinc-400">{timeStr}</span>
+          {isAppt && ev.numPeople != null && (
+            <span className="flex items-center gap-0.5 text-[10px] text-zinc-400">
+              <Users className="w-2.5 h-2.5" />{ev.numPeople}
             </span>
           )}
         </div>
-        {subtitle && (
-          <div className={`text-[11px] truncate mt-1 transition-colors ${isSelected ? 'text-zinc-500' : 'text-zinc-400 group-hover:text-zinc-500'}`}>{subtitle}</div>
-        )}
-        <div className={`flex items-center gap-1.5 text-[10px] font-mono mt-2 transition-colors ${isSelected ? 'text-zinc-500' : 'text-zinc-400'}`}>
-          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-          {tour.hasFlexibleTime ? 'Flexible' : `${formatTimeTo12H(tour.startTime)} – ${formatTimeTo12H(tour.endTime)}`}
+      </div>
+      {ev.isDone && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />}
+      {isDisabled && <Ban className="w-3.5 h-3.5 text-rose-400 flex-shrink-0 mt-0.5" />}
+    </button>
+  );
+}
+
+// ─── Event detail ─────────────────────────────────────────────────────────────
+function EventDetail({ ev, onClose, onMarkDone, isSubmitting }) {
+  const isAppt = ev.isAppointment;
+  const isDisabled = ev.isDisabledDay;
+  const isExcl = ev.availability === 'EXCLUSIVE';
+  const isDone = ev.isDone || ev.status === 'COMPLETED';
+
+  const tag = isAppt ? 'Appointment' : isDisabled ? 'Date Closed' : isExcl ? 'Exclusive Block' : 'Shared Schedule';
+  const tagColor = isAppt ? 'text-indigo-600 bg-indigo-50 border-indigo-200'
+    : (isExcl || isDisabled) ? 'text-rose-600 bg-rose-50 border-rose-200'
+      : 'text-amber-700 bg-amber-50 border-amber-200';
+
+  const timeStr = isDisabled
+    ? 'All Day — Closed for Appointments'
+    : ev.hasFlexibleTime
+      ? 'Flexible — no fixed time'
+      : `${formatTimeTo12H(ev.startTime)} – ${formatTimeTo12H(ev.endTime)}`;
+
+  return (
+    <div className="flex flex-col flex-1 min-h-0">
+      <div className="px-4 py-3 flex items-center justify-between border-b border-zinc-100 flex-shrink-0">
+        <span className={`text-[9px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded border ${tagColor}`}>{tag}</span>
+        <button onClick={onClose} className="p-1 rounded hover:bg-zinc-100 text-zinc-400 transition-colors">
+          <X className="w-3.5 h-3.5" />
+        </button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div>
+          <h3 className="text-base font-bold text-zinc-900 leading-tight">
+            {isAppt ? ev.organizer : ev.title}
+          </h3>
+          {isAppt && ev.title && (
+            <p className="text-xs text-zinc-500 mt-0.5">{ev.title}</p>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          <DetailRow icon={<Clock className="w-3.5 h-3.5" />} value={timeStr} />
+          {isAppt && ev.numPeople != null && (
+            <DetailRow icon={<Users className="w-3.5 h-3.5" />} value={`${ev.numPeople} visitor${ev.numPeople !== 1 ? 's' : ''}`} />
+          )}
+          {ev.description && (
+            <p className="text-xs text-zinc-500 leading-relaxed pt-1 border-t border-zinc-100">{ev.description}</p>
+          )}
+        </div>
+
+        <div className="pt-2 border-t border-zinc-100">
+          {isDone || isDisabled ? (
+            <div className={`flex items-center justify-center gap-2 py-2.5 rounded text-[10px] font-bold uppercase tracking-widest border
+              ${isDisabled ? 'bg-rose-50 text-rose-600 border-rose-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100'}`}>
+              {isDisabled ? <Ban className="w-3.5 h-3.5" /> : <CheckCircle2 className="w-3.5 h-3.5" />}
+              {isDisabled ? 'Date Closed' : 'Completed'}
+            </div>
+          ) : (
+            <button
+              onClick={onMarkDone}
+              disabled={isSubmitting}
+              className="w-full flex items-center justify-center gap-2 py-2.5 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded hover:bg-[#D4AF37] hover:text-zinc-900 transition-all duration-200 disabled:opacity-50"
+            >
+              {isSubmitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <ArrowRight className="w-3.5 h-3.5" />}
+              {isAppt ? 'Go to Appointment' : 'Mark Completed'}
+            </button>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-// ─── Detail Panel ─────────────────────────────────────────────────────────────
-function DetailPanel({ event, onMarkDone, onMarkScheduleDone }) {
-  if (!event) return (
-    <div className="flex flex-col items-center justify-center h-full text-zinc-400 gap-3 p-6 text-center bg-white rounded-xl shadow-sm border border-zinc-200">
-      <div className="w-16 h-16 rounded-full bg-zinc-50 flex items-center justify-center mb-2 shadow-inner">
-        <svg className="w-8 h-8 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-      </div>
-      <span className="text-sm font-bold uppercase tracking-widest text-zinc-500">No event selected</span>
-      <span className="text-xs text-zinc-400 leading-relaxed">Click an event on the calendar or in the list to view details</span>
+function DetailRow({ icon, value }) {
+  return (
+    <div className="flex items-start gap-2 text-xs text-zinc-600">
+      <span className="text-zinc-400 mt-0.5 flex-shrink-0">{icon}</span>
+      <span>{value}</span>
     </div>
   );
-  const props = event.extendedProps || event;
-  const isAppt = props.isAppointment || props.type === 'appointment';
-  const isExclusive = props.availability === 'EXCLUSIVE';
-  const isDone = props.isDone || props.status === 'COMPLETED';
+}
 
+// ─── FC event content ─────────────────────────────────────────────────────────
+function renderEventContent(info) {
+  const p = info.event.extendedProps;
+  const c = info.event.textColor;
   return (
-    <div className="p-6 space-y-6 flex flex-col h-full bg-white rounded-xl shadow-sm border border-zinc-200">
-      <div>
-        <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#D4AF37] mb-2 flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
-          {isAppt ? 'Appointment' : isExclusive ? 'Exclusive Block' : 'Schedule'}
-        </div>
-        <h3 className="text-xl font-serif font-bold text-zinc-900 leading-tight">
-          {isAppt ? (props.organizer || event.title) : event.title}
-        </h3>
-        {isAppt && props.purpose && <p className="text-sm text-zinc-500 mt-1">{props.purpose}</p>}
+    <div style={{ padding: '3px 7px', height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: '1px' }}>
+      <div style={{ color: c, fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        {p.isAppointment ? (p.organizer || info.event.title) : info.event.title}
       </div>
-
-      <div className="space-y-4 text-sm flex-1">
-        <div className="flex flex-col gap-1">
-          <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">Time</span>
-          <span className="text-zinc-800 font-mono bg-zinc-50 py-1.5 px-3 rounded-md border border-zinc-100 inline-block w-fit">
-            {formatTimeTo12H(event.startTime || getLocalDateString(event.start)?.slice(11, 16))} – {formatTimeTo12H(event.endTime || getLocalDateString(event.end)?.slice(11, 16))}
-          </span>
-        </div>
-        {isAppt && props.numPeople && (
-          <div className="flex flex-col gap-1">
-            <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">Visitors</span>
-            <span className="text-zinc-800 flex items-center gap-2">
-              <svg className="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-              {props.numPeople}
-            </span>
-          </div>
-        )}
-        {!isAppt && (
-          <div className="flex flex-col gap-1">
-            <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">Type</span>
-            <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md border w-fit ${isExclusive ? 'text-rose-700 bg-rose-50 border-rose-200' : 'text-amber-700 bg-amber-50 border-amber-200'}`}>
-              {isExclusive ? 'Exclusive' : 'Shared'}
-            </span>
-          </div>
-        )}
-        {props.description && (
-          <div className="flex flex-col gap-1">
-            <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">Notes</span>
-            <span className="text-zinc-600 text-sm leading-relaxed bg-zinc-50 p-3 rounded-md border border-zinc-100">{props.description}</span>
-          </div>
-        )}
-      </div>
-
-      <div className="pt-4 border-t border-zinc-100 mt-auto">
-        {isDone ? (
-          <div className="flex items-center justify-center gap-2 bg-emerald-50 text-emerald-700 py-3 rounded-md text-xs font-bold uppercase tracking-widest border border-emerald-100">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-            Completed
-          </div>
-        ) : (
-          <button
-            onClick={isAppt ? onMarkDone : onMarkScheduleDone}
-            className="w-full py-3 bg-gradient-to-r from-zinc-900 to-zinc-800 text-white text-xs font-bold uppercase tracking-widest rounded-md shadow-md hover:shadow-lg hover:-translate-y-0.5 hover:from-[#D4AF37] hover:to-[#c29d2b] transition-all duration-300"
-          >
-            Mark as Done
-          </button>
-        )}
-      </div>
+      {p.isAppointment && p.numPeople != null && (
+        <div style={{ color: c, fontSize: '9px', opacity: 0.65 }}>{p.numPeople} visitors</div>
+      )}
     </div>
   );
 }
 
 // ─── Confirm Modal ────────────────────────────────────────────────────────────
-function ConfirmModal({ open, title, message, onConfirm, onCancel, danger }) {
+function ConfirmModal({ open, title, message, onConfirm, onCancel }) {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm transition-opacity" onClick={onCancel} />
-      <div className="relative bg-white border border-zinc-200 rounded-xl shadow-2xl w-full max-w-md mx-4 transform transition-all scale-100 opacity-100 overflow-hidden">
-        <div className="px-6 py-5 border-b border-zinc-100">
-          <h3 className="text-base font-serif font-bold uppercase tracking-widest text-zinc-900">{title}</h3>
+      <div className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm" onClick={onCancel} />
+      <div className="relative bg-white border border-zinc-200 rounded-lg shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+        <div className="px-6 py-4 border-b border-zinc-100">
+          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">{title}</h3>
         </div>
-        <div className="px-6 py-6 text-sm text-zinc-600 leading-relaxed">{message}</div>
-        <div className="px-6 py-5 bg-zinc-50 rounded-b-xl flex gap-3 justify-end">
-          <button onClick={onCancel} className="px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900 transition-colors">Cancel</button>
-          <button onClick={onConfirm} className={`px-6 py-2.5 text-xs font-bold uppercase tracking-widest rounded-md shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 ${danger ? 'bg-gradient-to-r from-rose-500 to-rose-600 text-white hover:from-rose-600 hover:to-rose-700' : 'bg-gradient-to-r from-zinc-900 to-zinc-800 text-white hover:from-[#D4AF37] hover:to-[#c29d2b]'}`}>Confirm</button>
+        <div className="px-6 py-5 text-sm text-zinc-600 leading-relaxed">{message}</div>
+        <div className="px-6 py-4 bg-zinc-50 flex gap-3 justify-end">
+          <button onClick={onCancel} className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900">
+            Cancel
+          </button>
+          <button onClick={onConfirm} className="px-5 py-2 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded hover:bg-[#D4AF37] hover:text-zinc-900 transition-all">
+            Confirm
+          </button>
         </div>
       </div>
     </div>
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+// ─── Main ─────────────────────────────────────────────────────────────────────
 export default function Schedule() {
-  const navigate = useNavigate();
-  const calendarRef = useRef(null);
+  const navigate   = useNavigate();
+  const location   = useLocation();
+  const calRef     = useRef(null);
+  const { apiFetch } = useAuth();
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [selectedTour, setSelectedTour] = useState(null);
-  const [events] = useState(MOCK_EVENTS);
-  const [todayTours] = useState(MOCK_TODAY_TOURS);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [currentView, setCurrentView] = useState('timeGridDay');
-  const [toastMsg, setToastMsg] = useState('');
+  const [selectedDate, setSelectedDate]     = useState(new Date());
+  const [selectedEvent, setSelectedEvent]   = useState(null);
+  const [showConfirm, setShowConfirm]       = useState(false);
+  const [currentView, setCurrentView]       = useState('timeGridDay');
+  const [toast, setToast]                   = useState({ text: '', type: 'success' });
+  const [isLoading, setIsLoading]           = useState(false);
+  const [isSubmitting, setIsSubmitting]     = useState(false);
 
-  const showToast = useCallback((msg) => {
-    setToastMsg(msg);
-    setTimeout(() => setToastMsg(''), 3500);
+  const [allSchedules, setAllSchedules]         = useState([]);
+  const [allAppointments, setAllAppointments]   = useState([]);
+
+  const showToast = useCallback((text, type = 'success') => {
+    setToast({ text, type });
+    setTimeout(() => setToast({ text: '', type: 'success' }), 3500);
   }, []);
 
-  const handleEventClick = useCallback((info) => {
-    const ev = info.event;
-    setSelectedTour(null);
-    setSelectedEvent({
-      id: ev.id,
-      title: ev.title,
-      start: ev.start,
-      end: ev.end,
-      startTime: ev.start ? `${String(ev.start.getHours()).padStart(2, '0')}:${String(ev.start.getMinutes()).padStart(2, '0')}` : '',
-      endTime: ev.end ? `${String(ev.end.getHours()).padStart(2, '0')}:${String(ev.end.getMinutes()).padStart(2, '0')}` : '',
-      extendedProps: ev.extendedProps,
-    });
-  }, []);
+  const dateStr = getLocalDateString(selectedDate);
 
-  const handleTourSelect = useCallback((tour) => {
-    if (selectedTour?.id === tour.id) {
-      setSelectedTour(null);
-      setSelectedEvent(null);
-    } else {
-      setSelectedTour(tour);
-      setSelectedEvent({
-        id: tour.id,
-        title: tour.title,
-        startTime: tour.startTime,
-        endTime: tour.endTime,
-        extendedProps: tour,
-      });
+  // ── SSE ──────────────────────────────────────────────────────────────────────
+  const { events: sseEvents } = useSSE('*');
+  useEffect(() => {
+    if (!sseEvents.length) return;
+    const res = sseEvents[0]?.resource;
+    if (res === 'Schedule' || res === 'Appointment' || res === 'AppointmentStatus') fetchAllData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sseEvents]);
+
+  // ── Fetch ─────────────────────────────────────────────────────────────────────
+  const fetchAllData = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const [sRes, aRes] = await Promise.all([
+        apiFetch('/api/v1/schedules'),
+        apiFetch('/api/v1/appointments'),
+      ]);
+      if (sRes.ok) {
+        const raw = await sRes.json();
+        setAllSchedules((Array.isArray(raw) ? raw : []).map(normalizeSchedule));
+      }
+      if (aRes.ok) {
+        const raw = await aRes.json();
+        setAllAppointments((Array.isArray(raw) ? raw : []).map(normalizeAppointment));
+      }
+    } catch {
+      showToast('Failed to load schedule data', 'error');
+    } finally {
+      setIsLoading(false);
     }
-  }, [selectedTour]);
+  }, [apiFetch, showToast]);
 
-  const handleMarkDone = () => {
+  useEffect(() => { fetchAllData(); }, []);
+
+  // ── Dashboard auto-select ─────────────────────────────────────────────────────
+  useEffect(() => {
+    const state = location.state;
+    if (!state?.selectedScheduleId || !allSchedules.length) return;
+    const match = allSchedules.find(s => s.schedule_id === state.selectedScheduleId);
+    if (match) {
+      const d = new Date(match.date + 'T00:00:00');
+      setSelectedDate(d);
+      calRef.current?.getApi()?.gotoDate(d);
+      setSelectedEvent(match);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state, allSchedules]);
+
+  // ── Derived ───────────────────────────────────────────────────────────────────
+  const allEvents = useMemo(() => [...allSchedules, ...allAppointments], [allSchedules, allAppointments]);
+
+  const todayEvents = useMemo(() => {
+    return allEvents
+      .filter(ev => {
+        if (ev.date !== dateStr) return false;
+        if (ev.isSchedule) return true;
+        return ev.status === 'APPROVED' || ev.status === 'COMPLETED';
+      })
+      .sort((a, b) => {
+        if (a.hasFlexibleTime && !b.hasFlexibleTime) return 1;
+        if (!a.hasFlexibleTime && b.hasFlexibleTime) return -1;
+        const am = (a.startTime || '').split(':').reduce((h, m) => h * 60 + +m, 0);
+        const bm = (b.startTime || '').split(':').reduce((h, m) => h * 60 + +m, 0);
+        return am - bm;
+      });
+  }, [allEvents, dateStr]);
+
+  const fcEvents = useMemo(() => {
+    return allEvents
+      .filter(ev => {
+        if (ev.isSchedule) return ev.status !== 'COMPLETED';
+        return ev.status === 'APPROVED' && !ev.hasFlexibleTime;
+      })
+      .map(ev => toFCEvent(ev))
+      .filter(Boolean);
+  }, [allEvents]);
+
+  const isDateDisabled = useMemo(
+    () => allSchedules.some(s => s.date === dateStr && s.isDisabledDay),
+    [allSchedules, dateStr]
+  );
+
+  const dateStats = useMemo(() => ({
+    schedules: allEvents.filter(e => e.isSchedule && !e.isDisabledDay && e.date === dateStr && e.status !== 'COMPLETED').length,
+    appointments: allEvents.filter(e => e.isAppointment && e.status === 'APPROVED' && e.date === dateStr).length,
+  }), [allEvents, dateStr]);
+
+  // ── Handlers ──────────────────────────────────────────────────────────────────
+  const handleEventClick = useCallback((info) => {
+    setSelectedEvent(info.event.extendedProps);
+  }, []);
+
+  const handleDateChange = useCallback((date) => {
+    setSelectedDate(date);
+    const api = calRef.current?.getApi();
+    if (api) {
+      api.gotoDate(date);
+      if (currentView === 'timeGridWeek') {
+        // Week view stays, just navigate to the week containing the date
+      }
+    }
+  }, [currentView]);
+
+  const handleMarkDone = useCallback(() => {
     if (!selectedEvent) return;
-    const isAppt = selectedEvent.extendedProps?.isAppointment || selectedEvent.extendedProps?.type === 'appointment';
-    if (isAppt) {
-      navigate('/schedule/attendance');
+    if (selectedEvent.isAppointment) {
+      navigate(`/appointments/${selectedEvent.appointment_id}`, { state: { autoAction: 'arrive' } });
     } else {
       setShowConfirm(true);
     }
-  };
+  }, [selectedEvent, navigate]);
 
-  const handleConfirmDone = () => {
+  const handleConfirmDone = useCallback(async () => {
+    if (!selectedEvent?.schedule_id) return;
+    setIsSubmitting(true);
     setShowConfirm(false);
-    showToast('Schedule marked as completed.');
-    setSelectedEvent(null);
-  };
-
-  const goToDate = (dir) => {
-    const api = calendarRef.current?.getApi();
-    if (!api) return;
-    dir === 'prev' ? api.prev() : api.next();
-    setSelectedDate(api.getDate());
-  };
+    try {
+      const res = await apiFetch(`/api/v1/schedules/${selectedEvent.schedule_id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'COMPLETED' }),
+      });
+      if (res.ok) {
+        showToast('Schedule marked as completed');
+        setSelectedEvent(null);
+        await fetchAllData();
+      } else {
+        const err = await res.json().catch(() => ({}));
+        showToast(err.message || 'Failed to update', 'error');
+      }
+    } catch {
+      showToast('Network error — try again', 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [selectedEvent, apiFetch, showToast, fetchAllData]);
 
   const switchView = (view) => {
-    calendarRef.current?.getApi()?.changeView(view);
+    calRef.current?.getApi()?.changeView(view);
     setCurrentView(view);
   };
 
-  const dateLabel = selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  const goDir = (dir) => {
+    const api = calRef.current?.getApi();
+    if (!api) return;
+    dir === 'prev' ? api.prev() : api.next();
+    const d = api.getDate();
+    setSelectedDate(new Date(d));
+  };
 
+  // ── Date label ────────────────────────────────────────────────────────────────
+  const dateLabel = useMemo(() => {
+    if (currentView === 'timeGridWeek') {
+      const api = calRef.current?.getApi();
+      if (api) {
+        const start = api.view.activeStart;
+        const end   = new Date(api.view.activeEnd);
+        end.setDate(end.getDate() - 1);
+        return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+      }
+    }
+    return selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate, currentView]);
+
+  // ── Render ────────────────────────────────────────────────────────────────────
   return (
-    <div className="h-full flex flex-col gap-6" style={{ height: 'calc(100vh - 3.5rem)' }}>
+    <div className="h-full flex flex-col" style={{ height: 'calc(100vh - 3.5rem)' }}>
+      <style>{FC_STYLES}</style>
 
-      {/* ── Toast ── */}
-      {toastMsg && (
-        <div className="fixed top-6 right-6 z-50 bg-gradient-to-r from-zinc-900 to-zinc-800 text-white text-xs font-medium px-6 py-4 rounded-md shadow-xl border border-zinc-700 flex items-center gap-3 animate-in slide-in-from-top-2 fade-in duration-300">
-          <svg className="w-5 h-5 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-          {toastMsg}
+      {/* Toast */}
+      {toast.text && (
+        <div className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2.5 rounded-lg shadow-lg text-xs font-semibold border
+          ${toast.type === 'error' ? 'bg-red-500 text-white border-red-600' : 'bg-zinc-900 text-white border-zinc-800'}`}>
+          <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" /> {toast.text}
         </div>
       )}
 
-      {/* ── Page Header ── */}
-      <div className="flex-shrink-0 flex items-center justify-between">
-        <div>
-          {/* Removed redundant SCHEDULE h1, only displaying the stylized date */}
-          <h2 className="text-2xl font-serif text-zinc-900 tracking-wide">{dateLabel}</h2>
-          <p className="text-xs text-zinc-500 mt-1 uppercase tracking-[0.15em] font-medium">Manage daily museum events and tours</p>
+      {/* ── Header ─────────────────────────────────────────────────────────────── */}
+      <div className="flex-shrink-0 flex items-center gap-3 pb-4 border-b border-zinc-200">
+        {/* Date nav */}
+        <div className="flex items-center gap-1 bg-zinc-100 rounded-lg p-0.5">
+          <button onClick={() => goDir('prev')} className="p-1.5 rounded-md hover:bg-white text-zinc-500 hover:text-zinc-900 hover:shadow-sm transition-all">
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => { calRef.current?.getApi()?.today(); setSelectedDate(new Date()); }}
+            className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-zinc-600 hover:text-zinc-900 hover:bg-white hover:shadow-sm rounded-md transition-all"
+          >
+            Today
+          </button>
+          <button onClick={() => goDir('next')} className="p-1.5 rounded-md hover:bg-white text-zinc-500 hover:text-zinc-900 hover:shadow-sm transition-all">
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
+
+        {/* Date label */}
+        <div className="flex items-center gap-2">
+          <h2 className="text-sm font-bold text-zinc-900">{dateLabel}</h2>
+          {isDateDisabled && currentView === 'timeGridDay' && (
+            <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest bg-rose-50 text-rose-600 border border-rose-200 px-2 py-0.5 rounded-full">
+              <Ban className="w-2.5 h-2.5" /> Closed
+            </span>
+          )}
+        </div>
+
+        <div className="flex-1" />
+
+        {/* Loading indicator */}
+        {isLoading && <Loader2 className="w-4 h-4 text-zinc-400 animate-spin" />}
+
+        {/* View switch */}
+        <div className="flex bg-zinc-100 rounded-lg p-0.5 gap-0.5">
+          {[
+            { key: 'timeGridDay', label: 'Day' },
+            { key: 'timeGridWeek', label: 'Week' },
+          ].map(v => (
+            <button
+              key={v.key}
+              onClick={() => switchView(v.key)}
+              className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-md transition-all
+                ${currentView === v.key ? 'bg-white text-zinc-900 shadow-sm' : 'text-zinc-500 hover:text-zinc-700'}`}
+            >
+              {v.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Add button */}
         <button
           onClick={() => navigate('/schedule/add')}
-          className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-zinc-900 to-zinc-800 text-white text-xs font-bold uppercase tracking-widest rounded-md shadow-md hover:shadow-lg hover:-translate-y-0.5 hover:from-[#D4AF37] hover:to-[#c29d2b] transition-all duration-300"
+          className="flex items-center gap-1.5 px-4 py-2 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-[#D4AF37] hover:text-zinc-900 transition-all shadow-sm"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" /></svg>
-          Add Schedule
+          <Plus className="w-3.5 h-3.5" strokeWidth={2.5} /> Add Schedule
         </button>
       </div>
 
-      {/* ── Main Grid ── */}
-      <div className="flex-1 flex gap-6 min-h-0">
+      {/* ── Body ───────────────────────────────────────────────────────────────── */}
+      <div className="flex-1 flex gap-0 min-h-0 pt-4">
 
-        {/* Left Column */}
-        <div className="flex flex-col gap-6 w-80 flex-shrink-0">
+        {/* ── Sidebar ──────────────────────────────────────────────────────────── */}
+        <div className="w-64 flex-shrink-0 flex flex-col border-r border-zinc-100 mr-4">
 
-          {/* Live Clock */}
-          <LiveClock />
+          {/* Mini Calendar */}
+          <MiniCal value={selectedDate} onChange={handleDateChange} allSchedules={allSchedules} />
 
-          {/* Today's Tours */}
-          <div className="bg-zinc-50/50 rounded-xl border border-zinc-200 flex flex-col flex-1 min-h-0 shadow-sm overflow-hidden">
-            <div className="px-5 py-4 border-b border-zinc-200 bg-white flex-shrink-0 flex items-center justify-between">
-              <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-500">Today's Tours</div>
-              <div className="text-[10px] font-bold bg-zinc-100 text-zinc-600 px-2 py-0.5 rounded-full">{todayTours.length}</div>
+          {/* Stats strip */}
+          <div className="flex border-t border-b border-zinc-100 divide-x divide-zinc-100 flex-shrink-0">
+            <div className="flex-1 flex flex-col items-center py-2.5">
+              <span className="text-lg font-bold text-zinc-900 leading-none">{dateStats.schedules}</span>
+              <span className="text-[9px] uppercase tracking-widest text-zinc-400 font-bold mt-0.5 flex items-center gap-0.5">
+                <CalendarDays className="w-2.5 h-2.5" /> Schedules
+              </span>
             </div>
-            <div className="flex-1 overflow-y-auto divide-y divide-zinc-100 custom-scrollbar bg-white/50">
-              {todayTours.length === 0 ? (
-                <div className="p-8 text-center text-xs text-zinc-400 uppercase tracking-widest">No tours today</div>
-              ) : (
-                todayTours.map(tour => (
-                  <TourItem key={tour.id} tour={tour} isSelected={selectedTour?.id === tour.id} onSelect={handleTourSelect} />
-                ))
-              )}
+            <div className="flex-1 flex flex-col items-center py-2.5">
+              <span className="text-lg font-bold text-zinc-900 leading-none">{dateStats.appointments}</span>
+              <span className="text-[9px] uppercase tracking-widest text-zinc-400 font-bold mt-0.5 flex items-center gap-0.5">
+                <Activity className="w-2.5 h-2.5" /> Appts
+              </span>
             </div>
+          </div>
+
+          {/* Events list OR Event detail */}
+          <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+            {selectedEvent ? (
+              <EventDetail
+                ev={selectedEvent}
+                onClose={() => setSelectedEvent(null)}
+                onMarkDone={handleMarkDone}
+                isSubmitting={isSubmitting}
+              />
+            ) : (
+              <>
+                <div className="px-4 py-3 flex items-center justify-between border-b border-zinc-100 flex-shrink-0">
+                  <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-zinc-400">
+                    {selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </span>
+                  <span className="text-[9px] font-bold bg-zinc-100 text-zinc-500 px-1.5 py-0.5 rounded-full">
+                    {todayEvents.length}
+                  </span>
+                </div>
+                <div className="flex-1 overflow-y-auto py-1">
+                  {isLoading && allEvents.length === 0 ? (
+                    <div className="p-8 flex flex-col items-center gap-2 text-zinc-400">
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    </div>
+                  ) : todayEvents.length === 0 ? (
+                    <div className="p-8 text-center text-[10px] text-zinc-400 uppercase tracking-widest">
+                      No events
+                    </div>
+                  ) : (
+                    todayEvents.map(ev => (
+                      <EventCard
+                        key={ev.id}
+                        ev={ev}
+                        isSelected={false}
+                        onClick={() => setSelectedEvent(ev)}
+                      />
+                    ))
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
 
-        {/* Center — FullCalendar */}
-        <div className="flex-1 min-w-0 flex flex-col gap-4">
-          {/* View Toolbar */}
-          <div className="flex items-center justify-between flex-shrink-0 bg-white p-2 rounded-xl shadow-sm border border-zinc-200">
-            <div className="flex items-center gap-1.5 pl-2">
-              <button onClick={() => goToDate('prev')} className="p-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-md transition-colors">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6" /></svg>
-              </button>
-              <button onClick={() => { calendarRef.current?.getApi()?.today(); setSelectedDate(new Date()); }} className="px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-md transition-all">Today</button>
-              <button onClick={() => goToDate('next')} className="p-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-md transition-colors">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 18l6-6-6-6" /></svg>
-              </button>
+        {/* ── Calendar ─────────────────────────────────────────────────────────── */}
+        <div className={`sch-cal flex-1 min-w-0 bg-white rounded-xl border border-zinc-100 overflow-hidden relative shadow-sm
+          ${isDateDisabled && currentView === 'timeGridDay' ? 'ring-1 ring-rose-200' : ''}`}>
+          {isDateDisabled && currentView === 'timeGridDay' && (
+            <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5 bg-rose-500 text-white text-[9px] font-bold uppercase tracking-widest px-2.5 py-1.5 rounded-full shadow pointer-events-none">
+              <Ban className="w-3 h-3" /> Appointments Disabled
             </div>
-            <div className="flex gap-1 bg-zinc-100 p-1 rounded-lg">
-              {[{ key: 'timeGridDay', label: 'Day' }, { key: 'timeGridWeek', label: 'Week' }, { key: 'dayGridMonth', label: 'Month' }].map(v => (
-                <button key={v.key} onClick={() => switchView(v.key)}
-                  className={`px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest rounded-md transition-all duration-300 ${currentView === v.key ? 'bg-white text-zinc-900 shadow-sm' : 'text-zinc-500 hover:text-zinc-800'}`}
-                >
-                  {v.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Calendar Container */}
-          <div className="flex-1 min-h-0 bg-white rounded-xl shadow-sm border border-zinc-200 overflow-hidden relative p-1">
-            <style>{`
-              .fc { height: 100%; font-family: inherit; }
-              .fc-theme-standard td, .fc-theme-standard th { border-color: #f4f4f5; }
-              .fc-theme-standard .fc-scrollgrid { border-color: transparent; }
-              .fc-col-header-cell { background: #fafafa; padding: 12px 0 !important; }
-              .fc-col-header-cell-cushion { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #52525b; text-decoration: none !important; }
-              .fc-timegrid-slot-label-cushion { font-size: 11px; color: #a1a1aa; font-family: monospace; padding-right: 8px; }
-              .fc-timegrid-now-indicator-line { border-color: #D4AF37; border-width: 2px; }
-              .fc-timegrid-now-indicator-arrow { border-top-color: #D4AF37; border-bottom-color: #D4AF37; }
-              .fc-daygrid-day-number { font-size: 13px; font-weight: 500; color: #52525b; text-decoration: none !important; padding: 8px; }
-              .fc-daygrid-day.fc-day-today { background: rgba(212,175,55,0.03) !important; }
-              .fc-day-today .fc-daygrid-day-number { color: #D4AF37; font-weight: 800; background: rgba(212,175,55,0.1); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; margin: 4px; padding: 0; }
-              .fc-daygrid-event { border-radius: 4px; margin-top: 2px; transition: transform 0.2s; }
-              .fc-daygrid-event:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-              .fc-timegrid-event { border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important; transition: transform 0.2s, box-shadow 0.2s; border-width: 1px; border-left-width: 4px; }
-              .fc-timegrid-event:hover { transform: translateY(-1px); box-shadow: 0 4px 6px rgba(0,0,0,0.08) !important; z-index: 10 !important; }
-              .fc-timegrid-event .fc-event-main { padding: 0; }
-              .fc-event-title { font-size: 11px; display: none; }
-              .fc-toolbar { display: none !important; }
-              .fc-timegrid-slot-minor { border-top-style: dashed !important; border-color: #f4f4f5 !important; }
-              .fc-scrollgrid-sync-inner { scrollbar-width: thin; scrollbar-color: #e4e4e7 transparent; }
-              .fc-v-event { border: 1px solid currentColor; }
-              .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-              .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-              .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #e4e4e7; border-radius: 20px; }
-            `}</style>
-            <FullCalendar
-              ref={calendarRef}
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              initialView="timeGridDay"
-              initialDate={new Date()}
-              events={events}
-              eventContent={renderEventContent}
-              eventClick={handleEventClick}
-              dateClick={(info) => setSelectedDate(new Date(info.date))}
-              datesSet={(info) => setSelectedDate(info.start)}
-              slotMinTime="06:00:00"
-              slotMaxTime="18:00:00"
-              slotDuration="00:30:00"
-              slotLabelInterval="01:00:00"
-              height="100%"
-              allDaySlot={false}
-              nowIndicator={true}
-              scrollTime="08:00:00"
-              headerToolbar={false}
-            />
-          </div>
-        </div>
-
-        {/* Right Column — Detail Panel */}
-        <div className="w-80 flex-shrink-0 flex flex-col min-h-0">
-          <DetailPanel
-            event={selectedEvent}
-            onMarkDone={handleMarkDone}
-            onMarkScheduleDone={() => setShowConfirm(true)}
+          )}
+          <FullCalendar
+            ref={calRef}
+            plugins={[timeGridPlugin, interactionPlugin]}
+            initialView="timeGridDay"
+            initialDate={new Date()}
+            events={fcEvents}
+            eventContent={renderEventContent}
+            eventClick={handleEventClick}
+            dateClick={(info) => {
+              const d = new Date(info.date);
+              setSelectedDate(d);
+            }}
+            datesSet={(info) => {
+              if (currentView === 'timeGridDay') {
+                setSelectedDate(new Date(info.start));
+              }
+            }}
+            slotMinTime="06:00:00"
+            slotMaxTime="18:00:00"
+            slotDuration="00:30:00"
+            slotLabelInterval="01:00:00"
+            height="100%"
+            allDaySlot={false}
+            nowIndicator
+            scrollTime="08:00:00"
+            headerToolbar={false}
+            eventMinHeight={24}
+            expandRows
           />
         </div>
       </div>
 
+      {/* Confirm complete modal */}
       <ConfirmModal
         open={showConfirm}
         title="Mark Schedule Completed"
-        message={`Are you sure you want to mark "${selectedEvent?.title}" as completed? This action cannot be undone.`}
+        message={
+          <>
+            Mark <strong>"{selectedEvent?.title}"</strong> as completed?
+            <br />
+            <span className="text-xs text-zinc-400 mt-1 block">
+              {selectedEvent?.date} · {formatTimeTo12H(selectedEvent?.startTime)} – {formatTimeTo12H(selectedEvent?.endTime)}
+            </span>
+          </>
+        }
         onConfirm={handleConfirmDone}
         onCancel={() => setShowConfirm(false)}
       />
+
+      {isSubmitting && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-900/20 backdrop-blur-sm">
+          <div className="bg-white rounded-xl px-8 py-6 shadow-2xl flex items-center gap-3 border border-zinc-200">
+            <Loader2 className="w-5 h-5 animate-spin text-zinc-600" />
+            <span className="text-sm font-medium text-zinc-700">Updating…</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

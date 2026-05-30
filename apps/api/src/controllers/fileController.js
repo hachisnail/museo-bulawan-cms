@@ -14,7 +14,8 @@ const resourceMap = {
     'articles': 'Article',
     'users': 'User',
     'media_attachments': 'Inventory',
-    'condition_reports': 'Inventory'
+    'condition_reports': 'Inventory',
+    'appointments': 'Appointment'
 };
 
 const getCaslResource = (collection) => {

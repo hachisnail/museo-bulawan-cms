@@ -215,7 +215,7 @@ const ExternalForm = (props) => {
                                                 />
                                             ) : (
                                                 <input
-                                                    type={prop.format === 'email' ? 'email' : prop.format === 'date' ? 'date' : prop.type === 'number' ? 'number' : 'text'}
+                                                    type={prop.format === 'email' ? 'email' : prop.format === 'date' ? 'date' : prop.format === 'time' ? 'time' : prop.type === 'number' ? 'number' : 'text'}
                                                     name={key}
                                                     required={isRequired}
                                                     value={formData[key] || ''}

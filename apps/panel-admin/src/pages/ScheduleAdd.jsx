@@ -1,51 +1,52 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import {
+  ChevronLeft, ChevronRight, Clock, Users, FileText, Ban,
+  CheckCircle2, AlertTriangle, Loader2, Trash2, CalendarDays, Plus,
+} from 'lucide-react';
+import { useAuth } from '../context/authContext';
+import { useSSE } from '../hooks/useSSE';
+import { getLocalDateString, formatTimeTo12H, normalizeSchedule, normalizeAppointment } from '../utils/scheduleUtils';
+import { validateScheduleCreation, validateDateDisabling } from '../utils/scheduleValidation';
 
-function getLocalDateString(date) {
-  const d = new Date(date);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-function fmt12(t) {
-  if (!t) return '';
-  const [h, m] = t.split(':').map(Number);
-  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
-}
+// ─── Input class ──────────────────────────────────────────────────────────────
+const INP = 'w-full border border-zinc-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] transition-colors placeholder:text-zinc-400';
 
-const MOCK_DAY_EVENTS = [
-  { id: 's1', title: 'Morning Tour Slot', startTime: '09:00', endTime: '11:00', isSchedule: true, availability: 'SHARED', status: 'ACTIVE' },
-  { id: 'a1', title: 'School Field Trip', startTime: '09:30', endTime: '10:30', isAppointment: true, organizer: 'Juan dela Cruz', numPeople: '45 visitors' },
-];
-const MOCK_CAL_EVENTS = [
-  { date: getLocalDateString(new Date()), count: 2 }
-];
-
-function Toast({ msg }) {
+// ─── Toast ────────────────────────────────────────────────────────────────────
+function Toast({ msg, type }) {
   if (!msg) return null;
+  const isErr  = type === 'error';
+  const isWarn = type === 'warning';
   return (
-    <div className="fixed top-6 right-6 z-50 bg-gradient-to-r from-zinc-900 to-zinc-800 text-white text-xs font-medium px-6 py-4 rounded-md shadow-xl border border-zinc-700 flex items-center gap-3 animate-in slide-in-from-top-2 fade-in duration-300">
-      <svg className="w-5 h-5 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+    <div className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2.5 rounded-lg shadow-lg text-xs font-semibold border
+      ${isErr ? 'bg-red-500 text-white border-red-600' : isWarn ? 'bg-amber-500 text-white border-amber-600' : 'bg-zinc-900 text-white border-zinc-800'}`}>
+      {isErr || isWarn ? <AlertTriangle className="w-3.5 h-3.5" /> : <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" />}
       {msg}
     </div>
   );
 }
 
+// ─── Confirm Modal ────────────────────────────────────────────────────────────
 function ConfirmModal({ open, title, children, onConfirm, onCancel, confirmDisabled, confirmLabel = 'Confirm', danger }) {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm transition-opacity" onClick={onCancel} />
-      <div className="relative bg-white border border-zinc-200 rounded-xl shadow-2xl w-full max-w-md mx-4 transform transition-all scale-100 opacity-100 overflow-hidden">
-        <div className="px-6 py-5 border-b border-zinc-100">
-          <h3 className="text-base font-serif font-bold uppercase tracking-widest text-zinc-900">{title}</h3>
+      <div className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm" onClick={onCancel} />
+      <div className="relative bg-white border border-zinc-200 rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+        <div className="px-6 py-4 border-b border-zinc-100">
+          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">{title}</h3>
         </div>
-        <div className="px-6 py-6 text-sm text-zinc-600 leading-relaxed space-y-2">{children}</div>
-        <div className="px-6 py-5 bg-zinc-50 rounded-b-xl flex gap-3 justify-end">
-          <button onClick={onCancel} className="px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900 transition-colors">Cancel</button>
-          <button onClick={onConfirm} disabled={confirmDisabled}
-            className={`px-6 py-2.5 text-xs font-bold uppercase tracking-widest rounded-md shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-sm disabled:cursor-not-allowed ${danger ? 'bg-gradient-to-r from-rose-500 to-rose-600 text-white hover:from-rose-600 hover:to-rose-700' : 'bg-gradient-to-r from-zinc-900 to-zinc-800 text-white hover:from-[#D4AF37] hover:to-[#c29d2b]'}`}>
+        <div className="px-6 py-5 text-sm text-zinc-600 leading-relaxed space-y-3">{children}</div>
+        <div className="px-6 py-4 bg-zinc-50 flex gap-3 justify-end">
+          <button onClick={onCancel} className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900">
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            disabled={confirmDisabled}
+            className={`px-5 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all disabled:opacity-40 disabled:cursor-not-allowed
+              ${danger ? 'bg-rose-500 text-white hover:bg-rose-600' : 'bg-zinc-900 text-white hover:bg-[#D4AF37] hover:text-zinc-900'}`}
+          >
             {confirmLabel}
           </button>
         </div>
@@ -54,348 +55,686 @@ function ConfirmModal({ open, title, children, onConfirm, onCancel, confirmDisab
   );
 }
 
-function FieldLabel({ children }) {
-  return <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2 ml-0.5">{children}</label>;
-}
-function TextInput({ value, onChange, placeholder, disabled }) {
+// ─── Delete Modal ─────────────────────────────────────────────────────────────
+function DeleteModal({ open, event, onConfirm, onCancel }) {
+  if (!open || !event) return null;
   return (
-    <input value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} disabled={disabled}
-      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-4 py-3 text-sm text-zinc-800 placeholder-zinc-400 focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20 focus:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed" />
-  );
-}
-function TextArea({ value, onChange, placeholder, rows = 3 }) {
-  return (
-    <textarea value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} rows={rows}
-      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-4 py-3 text-sm text-zinc-800 placeholder-zinc-400 focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20 focus:bg-white transition-all resize-none" />
-  );
-}
-function TimeInput({ value, onChange, label, min = '06:00', max = '18:00' }) {
-  return (
-    <div>
-      <FieldLabel>{label}</FieldLabel>
-      <input type="time" value={value} min={min} max={max} onChange={e => onChange(e.target.value)}
-        className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-4 py-3 text-sm text-zinc-800 focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20 focus:bg-white transition-all font-mono" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm" onClick={onCancel} />
+      <div className="relative bg-white border border-zinc-200 rounded-xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
+        <div className="px-6 py-4 border-b border-zinc-100">
+          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">Delete Schedule</h3>
+        </div>
+        <div className="px-6 py-5 space-y-3 text-sm text-zinc-600">
+          <p>This action cannot be undone:</p>
+          <div className="p-3 bg-rose-50 rounded-lg border border-rose-100">
+            <p className="font-bold text-rose-900 text-sm">{event.title}</p>
+            <p className="text-xs text-rose-600 mt-1 font-mono">
+              {event.isDisabledDay ? 'All Day (Closed)' : `${formatTimeTo12H(event.startTime)} – ${formatTimeTo12H(event.endTime)}`}
+            </p>
+          </div>
+        </div>
+        <div className="px-6 py-4 bg-zinc-50 flex gap-3 justify-end">
+          <button onClick={onCancel} className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900">
+            Cancel
+          </button>
+          <button onClick={onConfirm} className="px-5 py-2 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-rose-600 transition-all">
+            Delete
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
 
+// ─── Mini Calendar ────────────────────────────────────────────────────────────
+function MiniCal({ value, onChange, allSchedules }) {
+  const [cursor, setCursor] = useState({ m: value.getMonth(), y: value.getFullYear() });
+
+  const prev = () => setCursor(c => c.m === 0 ? { m: 11, y: c.y - 1 } : { m: c.m - 1, y: c.y });
+  const next = () => setCursor(c => c.m === 11 ? { m: 0, y: c.y + 1 } : { m: c.m + 1, y: c.y });
+
+  const today      = getLocalDateString(new Date());
+  const selectedStr = getLocalDateString(value);
+
+  const disabledSet = useMemo(
+    () => new Set(allSchedules.filter(s => s.isDisabledDay).map(s => s.date)),
+    [allSchedules]
+  );
+  const markedSet = useMemo(
+    () => new Set(allSchedules.filter(s => !s.isDisabledDay && s.status !== 'COMPLETED').map(s => s.date)),
+    [allSchedules]
+  );
+
+  const firstDay   = new Date(cursor.y, cursor.m, 1).getDay();
+  const daysInMonth = new Date(cursor.y, cursor.m + 1, 0).getDate();
+  const cells = [
+    ...Array(firstDay).fill(null),
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+  ];
+  while (cells.length % 7 !== 0) cells.push(null);
+
+  const ds = (d) =>
+    `${cursor.y}-${String(cursor.m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+  return (
+    <div className="select-none p-4">
+      {/* Month nav */}
+      <div className="flex items-center justify-between mb-4">
+        <button onClick={prev} className="p-1.5 rounded-lg hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors">
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-700">
+          {new Date(cursor.y, cursor.m).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+        </span>
+        <button onClick={next} className="p-1.5 rounded-lg hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors">
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* Grid */}
+      <div className="grid grid-cols-7 gap-y-1">
+        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+          <div key={i} className="text-center text-[9px] font-bold text-zinc-300 pb-1">{d}</div>
+        ))}
+        {cells.map((day, i) => {
+          if (!day) return <div key={`e${i}`} />;
+          const dateStr   = ds(day);
+          const isSel     = dateStr === selectedStr;
+          const isToday   = dateStr === today;
+          const isDisabled = disabledSet.has(dateStr);
+          const hasEvent  = markedSet.has(dateStr);
+
+          return (
+            <button
+              key={dateStr}
+              onClick={() => onChange(new Date(cursor.y, cursor.m, day))}
+              className={`relative h-8 w-full flex flex-col items-center justify-center rounded-lg text-xs font-medium transition-all
+                ${isSel
+                  ? 'bg-[#D4AF37] text-zinc-900 font-bold shadow-sm'
+                  : isToday
+                    ? 'bg-zinc-900 text-white font-bold'
+                    : isDisabled
+                      ? 'text-rose-400 hover:bg-rose-50'
+                      : 'text-zinc-600 hover:bg-zinc-100'}`}
+            >
+              <span className="leading-none">{day}</span>
+              {(hasEvent || isDisabled) && !isSel && (
+                <span className={`absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${isDisabled ? 'bg-rose-400' : 'bg-[#D4AF37]'}`} />
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Legend */}
+      <div className="flex items-center gap-4 mt-4 pt-3 border-t border-zinc-100">
+        <div className="flex items-center gap-1.5 text-[9px] text-zinc-400 font-medium">
+          <span className="w-2 h-2 rounded-full bg-[#D4AF37] inline-block" /> Has schedule
+        </div>
+        <div className="flex items-center gap-1.5 text-[9px] text-zinc-400 font-medium">
+          <span className="w-2 h-2 rounded-full bg-rose-400 inline-block opacity-60" /> Closed
+        </div>
+        <div className="flex items-center gap-1.5 text-[9px] text-zinc-400 font-medium">
+          <span className="w-2 h-2 rounded-full bg-[#D4AF37]/60 border border-[#D4AF37] inline-block" /> Selected
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Row helper (for confirm modals) ─────────────────────────────────────────
+function Row({ k, v, muted }) {
+  return (
+    <div className="flex items-start gap-2 text-xs">
+      <span className="text-zinc-400 font-bold uppercase tracking-widest w-16 flex-shrink-0">{k}</span>
+      <span className={muted ? 'text-zinc-500' : 'text-zinc-800 font-medium'}>{v}</span>
+    </div>
+  );
+}
+
+// ─── Main Component ───────────────────────────────────────────────────────────
 export default function ScheduleAdd() {
   const navigate = useNavigate();
-  const calRef = useRef(null);
+  const { apiFetch } = useAuth();
+
+  // ── Form state ────────────────────────────────────────────────────────────────
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [mode, setMode] = useState('add');       // 'add' | 'close'
-  const [closeType, setCloseType] = useState('day'); // 'day' | 'time'
-  const [title, setTitle] = useState('');
-  const [desc, setDesc] = useState('');
-  const [reason, setReason] = useState('');
-  const [closeTitle, setCloseTitle] = useState('');
+  const [mode, setMode] = useState('add'); // 'add' | 'close'
+  const [closeType, setCloseType] = useState('day');
+  const [availability, setAvailability] = useState('SHARED');
+
+  // Add schedule fields
+  const [title, setTitle]         = useState('');
+  const [desc, setDesc]           = useState('');
   const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [isDirty, setIsDirty] = useState(false);
-  const [showAddConfirm, setShowAddConfirm] = useState(false);
+  const [endTime, setEndTime]     = useState('');
+
+  // Close date fields
+  const [reason, setReason]               = useState('');
+  const [closeTitle, setCloseTitle]       = useState('');
+  const [closeStartTime, setCloseStartTime] = useState('');
+  const [closeEndTime, setCloseEndTime]   = useState('');
+
+  // UI state
+  const [showAddConfirm, setShowAddConfirm]     = useState(false);
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
-  const [countdown, setCountdown] = useState(5);
-  const [canConfirm, setCanConfirm] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [toast, setToast] = useState('');
-  const [selectedSchedule, setSelectedSchedule] = useState(null);
+  const [showDeleteModal, setShowDeleteModal]   = useState(false);
+  const [deletingEvent, setDeletingEvent]       = useState(null);
+  const [countdown, setCountdown]               = useState(5);
+  const [canConfirm, setCanConfirm]             = useState(false);
+  const [isLoading, setIsLoading]               = useState(false);
+  const [isDeleting, setIsDeleting]             = useState(false);
+  const [toast, setToast]                       = useState({ msg: '', type: 'success' });
 
-  const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(''), 3500); };
+  // Data
+  const [daySchedules, setDaySchedules]     = useState([]);
+  const [dayAppointments, setDayAppointments] = useState([]);
+  const [allSchedules, setAllSchedules]     = useState([]);
 
+  const showToast = useCallback((msg, type = 'success') => {
+    setToast({ msg, type });
+    setTimeout(() => setToast({ msg: '', type: 'success' }), 3500);
+  }, []);
+
+  const dateStr   = getLocalDateString(selectedDate);
+  const dateLabel = selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+  // ── SSE ───────────────────────────────────────────────────────────────────────
+  const { events: sseEvents } = useSSE('*');
   useEffect(() => {
-    setIsDirty(title !== '' || desc !== '' || startTime !== '' || endTime !== '');
-  }, [title, desc, startTime, endTime]);
-
-  const switchMode = (m) => {
-    if (isDirty) {
-      if (!window.confirm('You have unsaved changes. Discard them?')) return;
+    if (!sseEvents.length) return;
+    const res = sseEvents[0]?.resource;
+    if (res === 'Schedule' || res === 'Appointment' || res === 'AppointmentStatus') {
+      fetchDayEvents(selectedDate);
+      fetchAllSchedules();
     }
-    setMode(m); setTitle(''); setDesc(''); setReason(''); setCloseTitle(''); setStartTime(''); setEndTime(''); setIsDirty(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sseEvents]);
+
+  // ── Fetch ─────────────────────────────────────────────────────────────────────
+  const fetchDayEvents = useCallback(async (date) => {
+    const ds = getLocalDateString(date);
+    try {
+      const [sRes, aRes] = await Promise.all([
+        apiFetch(`/api/v1/schedules?date=${ds}`),
+        apiFetch('/api/v1/appointments'),
+      ]);
+      if (sRes.ok) {
+        const raw = await sRes.json();
+        setDaySchedules((Array.isArray(raw) ? raw : []).map(normalizeSchedule));
+      }
+      if (aRes.ok) {
+        const raw = await aRes.json();
+        setDayAppointments(
+          (Array.isArray(raw) ? raw : []).map(normalizeAppointment).filter(a => a.date === ds)
+        );
+      }
+    } catch (err) {
+      console.error('fetchDayEvents:', err);
+    }
+  }, [apiFetch]);
+
+  const fetchAllSchedules = useCallback(async () => {
+    try {
+      const res = await apiFetch('/api/v1/schedules');
+      if (res.ok) {
+        const raw = await res.json();
+        setAllSchedules((Array.isArray(raw) ? raw : []).map(normalizeSchedule));
+      }
+    } catch (err) {
+      console.error('fetchAllSchedules:', err);
+    }
+  }, [apiFetch]);
+
+  useEffect(() => { fetchDayEvents(selectedDate); }, [selectedDate]);
+  useEffect(() => { fetchAllSchedules(); }, []);
+
+  const dayEvents = useMemo(() => [...daySchedules, ...dayAppointments], [daySchedules, dayAppointments]);
+
+  // ── Mode switch ───────────────────────────────────────────────────────────────
+  const switchMode = (m) => {
+    setMode(m);
+    setTitle(''); setDesc(''); setStartTime(''); setEndTime('');
+    setReason(''); setCloseTitle(''); setCloseStartTime(''); setCloseEndTime('');
   };
 
+  // ── Validation ────────────────────────────────────────────────────────────────
   const handleAddSubmit = (e) => {
     e.preventDefault();
-    if (!title.trim()) { showToast('Title is required'); return; }
-    if (!startTime || !endTime) { showToast('Please select start and end times'); return; }
-    if (startTime >= endTime) { showToast('End time must be after start time'); return; }
+    if (!title.trim()) { showToast('Title is required', 'error'); return; }
+    if (!startTime || !endTime) { showToast('Select start and end times', 'error'); return; }
+    const v = validateScheduleCreation({ date: dateStr, startTime, endTime }, dayEvents);
+    if (!v.isValid) { showToast(v.error, 'error'); return; }
     setShowAddConfirm(true);
   };
 
   const handleCloseSubmit = (e) => {
     e.preventDefault();
-    if (closeType === 'time' && (!startTime || !endTime)) { showToast('Please select start and end times'); return; }
-    if (closeType === 'time' && startTime >= endTime) { showToast('End time must be after start time'); return; }
+    if (closeType === 'time' && (!closeStartTime || !closeEndTime)) {
+      showToast('Select start and end times', 'error'); return;
+    }
+    const v = validateDateDisabling({ date: dateStr, type: closeType, startTime: closeStartTime, endTime: closeEndTime }, dayEvents);
+    if (!v.isValid) { showToast(v.error, 'error'); return; }
+    if (v.warning) showToast(v.warning, 'warning');
     setCountdown(5); setCanConfirm(false); setShowCloseConfirm(true);
-    const iv = setInterval(() => setCountdown(p => { if (p <= 1) { clearInterval(iv); setCanConfirm(true); return 0; } return p - 1; }), 1000);
+    const iv = setInterval(() => setCountdown(p => {
+      if (p <= 1) { clearInterval(iv); setCanConfirm(true); return 0; }
+      return p - 1;
+    }), 1000);
   };
 
+  // ── API calls ─────────────────────────────────────────────────────────────────
   const confirmAdd = async () => {
     setIsLoading(true); setShowAddConfirm(false);
-    await new Promise(r => setTimeout(r, 800));
-    setIsLoading(false);
-    showToast('Schedule added successfully!');
-    setTitle(''); setDesc(''); setStartTime(''); setEndTime(''); setIsDirty(false);
+    try {
+      const res = await apiFetch('/api/v1/schedules', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: title.trim(), description: desc.trim() || null, date: dateStr, start_time: startTime, end_time: endTime, availability }),
+      });
+      if (res.ok) {
+        showToast('Schedule added!');
+        setTitle(''); setDesc(''); setStartTime(''); setEndTime(''); setAvailability('SHARED');
+        await Promise.all([fetchDayEvents(selectedDate), fetchAllSchedules()]);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        showToast(err.message || 'Failed to add schedule', 'error');
+      }
+    } catch { showToast('Network error', 'error'); }
+    finally { setIsLoading(false); }
   };
 
   const confirmClose = async () => {
     setIsLoading(true); setShowCloseConfirm(false);
-    await new Promise(r => setTimeout(r, 800));
-    setIsLoading(false);
-    showToast(closeType === 'day' ? 'Date disabled successfully!' : 'Time slot closed successfully!');
-    setReason(''); setCloseTitle(''); setStartTime(''); setEndTime(''); setIsDirty(false);
+    try {
+      const body = closeType === 'day'
+        ? { title: 'DATE_DISABLED', description: reason.trim() || null, date: dateStr, start_time: '00:00', end_time: '23:59', availability: 'EXCLUSIVE' }
+        : { title: closeTitle.trim() || 'Reserved Block', description: reason.trim() || null, date: dateStr, start_time: closeStartTime, end_time: closeEndTime, availability: 'EXCLUSIVE' };
+      const res = await apiFetch('/api/v1/schedules', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+      });
+      if (res.ok) {
+        showToast(closeType === 'day' ? 'Date blocked!' : 'Time slot blocked!');
+        setReason(''); setCloseTitle(''); setCloseStartTime(''); setCloseEndTime('');
+        await Promise.all([fetchDayEvents(selectedDate), fetchAllSchedules()]);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        showToast(err.message || 'Failed to block', 'error');
+      }
+    } catch { showToast('Network error', 'error'); }
+    finally { setIsLoading(false); }
   };
 
-  const dateLabel = selectedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const confirmDelete = async () => {
+    if (!deletingEvent?.schedule_id) return;
+    setIsDeleting(true); setShowDeleteModal(false);
+    try {
+      const res = await apiFetch(`/api/v1/schedules/${deletingEvent.schedule_id}`, { method: 'DELETE' });
+      if (res.ok) {
+        showToast('Schedule deleted');
+        await Promise.all([fetchDayEvents(selectedDate), fetchAllSchedules()]);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        showToast(err.message || 'Failed to delete', 'error');
+      }
+    } catch { showToast('Network error', 'error'); }
+    finally { setIsDeleting(false); setDeletingEvent(null); }
+  };
 
-  const existingDisabledDay = false; // TODO: check from real data
-
+  // ── Render ────────────────────────────────────────────────────────────────────
   return (
-    <div className="flex flex-col gap-6" style={{ height: 'calc(100vh - 3.5rem)' }}>
-      <Toast msg={toast} />
+    <div className="flex flex-col gap-4" style={{ height: 'calc(100vh - 3.5rem)' }}>
+      <Toast msg={toast.msg} type={toast.type} />
 
       {/* Header */}
       <div className="flex-shrink-0 flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-serif text-zinc-900 tracking-wide">Configure Dates & Times</h2>
-          <p className="text-xs text-zinc-500 mt-1 uppercase tracking-[0.15em] font-medium">Add new blocks or set dates as unavailable</p>
+          <h2 className="text-xl font-bold text-zinc-900 tracking-tight">Configure Schedule</h2>
+          <p className="text-[10px] text-zinc-400 mt-0.5 uppercase tracking-[0.15em]">
+            Add schedule blocks or set date closures
+          </p>
         </div>
-        <button onClick={() => navigate('/schedule')}
-          className="flex items-center gap-2 px-5 py-2.5 bg-white border border-zinc-200 text-zinc-600 text-xs font-bold uppercase tracking-widest rounded-md hover:border-zinc-300 hover:text-zinc-900 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6" /></svg>
-          Back to Schedule
+        <button
+          onClick={() => navigate('/schedule')}
+          className="flex items-center gap-1.5 px-4 py-2 bg-white border border-zinc-200 text-zinc-600 text-[10px] font-bold uppercase tracking-widest rounded-lg hover:border-zinc-300 hover:text-zinc-900 shadow-sm transition-all"
+        >
+          <ChevronLeft className="w-3.5 h-3.5" /> Back to Schedule
         </button>
       </div>
 
-      <div className="flex-1 grid grid-cols-12 gap-6 min-h-0">
+      {/* Body */}
+      <div className="flex-1 grid grid-cols-12 gap-4 min-h-0">
 
-        {/* Left — Calendar */}
-        <div className="col-span-5 bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col min-h-0 overflow-hidden">
-          <div className="px-6 py-5 border-b border-zinc-100 flex-shrink-0 bg-zinc-50/50">
-            <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400">Select Date to Edit</div>
-            <div className="text-lg font-serif font-bold text-zinc-800 mt-1">{dateLabel}</div>
-          </div>
-          <div className="flex-1 min-h-0 overflow-hidden p-4">
-            <style>{`
-              .fc { height: 100%; font-family: inherit; }
-              .fc-toolbar { display:none !important; }
-              .fc-theme-standard td,.fc-theme-standard th { border-color: #f4f4f5; }
-              .fc-theme-standard .fc-scrollgrid { border-color: transparent; }
-              .fc-col-header-cell-cushion { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.15em; color:#52525b; padding: 12px 0; text-decoration:none !important; }
-              .fc-daygrid-day-number { font-size:13px; font-weight:500; color:#52525b; text-decoration:none !important; padding: 8px; }
-              .fc-daygrid-day.fc-day-today { background:rgba(212,175,55,.03) !important; }
-              .fc-day-today .fc-daygrid-day-number { color:#D4AF37; font-weight:800; background:rgba(212,175,55,.1); border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; margin:4px; padding:0; }
-              .fc-daygrid-day-frame { cursor: pointer; transition: background-color 0.2s; }
-              .fc-daygrid-day-frame:hover { background-color: #fafafa; }
-              .add-sched-selected-day .fc-daygrid-day-frame { background: rgba(212,175,55,.08) !important; }
-              .add-sched-selected-day .fc-daygrid-day-top { border-radius: 4px; }
-              .add-sched-selected-day .fc-daygrid-day-number { color: #92750a; font-weight: 700; }
-            `}</style>
-            <FullCalendar
-              ref={calRef}
-              plugins={[dayGridPlugin, interactionPlugin]}
-              initialView="dayGridMonth"
-              headerToolbar={false}
-              height="100%"
-              dateClick={(info) => setSelectedDate(new Date(info.date))}
-              dayCellClassNames={(arg) => getLocalDateString(arg.date) === getLocalDateString(selectedDate) ? ['add-sched-selected-day'] : []}
-              events={MOCK_CAL_EVENTS.map(e => ({
-                start: e.date, allDay: true, display: 'background',
-                backgroundColor: 'rgba(212,175,55,0.15)',
-              }))}
-              showNonCurrentDates={false}
+        {/* ── Left: Calendar + Events ────────────────────────────────────────── */}
+        <div className="col-span-5 flex flex-col gap-4 min-h-0">
+
+          {/* Mini Calendar */}
+          <div className="bg-white rounded-xl border border-zinc-200 shadow-sm flex-shrink-0">
+            <MiniCal
+              value={selectedDate}
+              onChange={setSelectedDate}
+              allSchedules={allSchedules}
             />
           </div>
-        </div>
 
-        {/* Middle — Day Events */}
-        <div className="col-span-3 bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col min-h-0 overflow-hidden">
-          <div className="px-6 py-5 border-b border-zinc-100 flex-shrink-0 bg-zinc-50/50">
-            <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400">Events Overview</div>
-            <div className="text-lg font-serif font-bold text-zinc-800 mt-1">{dateLabel}</div>
-          </div>
-          <div className="flex-1 overflow-y-auto divide-y divide-zinc-100">
-            {MOCK_DAY_EVENTS.length === 0 ? (
-              <div className="p-8 text-center text-xs text-zinc-400 uppercase tracking-widest font-medium">No events scheduled</div>
-            ) : MOCK_DAY_EVENTS.map(ev => {
-              const isAppt = ev.isAppointment;
-              const isExcl = ev.availability === 'EXCLUSIVE';
-              const accent = isAppt ? '#6366f1' : isExcl ? '#f43f5e' : '#D4AF37';
-              const tagCls = isAppt ? 'text-indigo-700 bg-indigo-50 border-indigo-200' : isExcl ? 'text-rose-700 bg-rose-50 border-rose-200' : 'text-[#92750a] bg-[#D4AF37]/10 border-[#D4AF37]/30';
-              return (
-                <div key={ev.id} onClick={() => setSelectedSchedule(ev)}
-                  className={`group p-4 cursor-pointer transition-all duration-300 flex gap-3 ${selectedSchedule?.id === ev.id ? 'bg-[#D4AF37]/5' : 'hover:bg-zinc-50'}`}>
-                  <div style={{ width: '4px', backgroundColor: accent, borderRadius: '4px', flexShrink: 0, alignSelf: 'stretch' }} />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <span className="text-xs font-bold text-zinc-800 truncate">{isAppt ? ev.organizer : ev.title}</span>
-                      <span className={`text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-md border flex-shrink-0 ${tagCls}`}>{isAppt ? 'Appt' : isExcl ? 'Excl' : 'Shared'}</span>
+          {/* Events for selected date */}
+          <div className="bg-white rounded-xl border border-zinc-200 shadow-sm flex flex-col flex-1 min-h-0 overflow-hidden">
+            <div className="px-5 py-4 border-b border-zinc-100 flex items-center justify-between flex-shrink-0">
+              <div>
+                <div className="text-[9px] uppercase tracking-[0.2em] font-bold text-zinc-400">Events on Date</div>
+                <div className="text-sm font-semibold text-zinc-800 mt-0.5">
+                  {selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </div>
+              </div>
+              <span className="text-[10px] font-bold bg-zinc-100 text-zinc-500 px-2 py-1 rounded-full">
+                {dayEvents.length}
+              </span>
+            </div>
+
+            <div className="flex-1 overflow-y-auto divide-y divide-zinc-50">
+              {dayEvents.length === 0 ? (
+                <div className="p-10 text-center flex flex-col items-center gap-2 text-zinc-400">
+                  <CalendarDays className="w-6 h-6 opacity-30" />
+                  <span className="text-[10px] uppercase tracking-widest">No events on this date</span>
+                </div>
+              ) : (
+                dayEvents.map(ev => {
+                  const isAppt    = ev.isAppointment;
+                  const isDisabled = ev.isDisabledDay;
+                  const isExcl    = ev.availability === 'EXCLUSIVE' && !isDisabled;
+                  const dot = isDisabled ? 'bg-rose-500' : isAppt ? 'bg-indigo-500' : isExcl ? 'bg-rose-400' : 'bg-[#D4AF37]';
+
+                  return (
+                    <div key={ev.id} className="flex items-start gap-3 px-4 py-3 hover:bg-zinc-50 transition-colors group">
+                      <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${dot}`} />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-[11px] font-semibold text-zinc-800 truncate">
+                          {isAppt ? ev.organizer : ev.title}
+                        </div>
+                        {isAppt && ev.title && (
+                          <div className="text-[10px] text-zinc-400 truncate">{ev.title}</div>
+                        )}
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-[10px] font-mono text-zinc-400 flex items-center gap-1">
+                            <Clock className="w-2.5 h-2.5" />
+                            {isDisabled ? 'All Day' : ev.hasFlexibleTime ? 'Flexible' : `${formatTimeTo12H(ev.startTime)} – ${formatTimeTo12H(ev.endTime)}`}
+                          </span>
+                          {isAppt && ev.numPeople != null && (
+                            <span className="text-[10px] text-zinc-400 flex items-center gap-0.5">
+                              <Users className="w-2.5 h-2.5" />{ev.numPeople}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      {ev.isSchedule && (
+                        <button
+                          onClick={() => { setDeletingEvent(ev); setShowDeleteModal(true); }}
+                          className="opacity-0 group-hover:opacity-100 p-1 rounded-lg text-zinc-300 hover:text-rose-500 hover:bg-rose-50 transition-all"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      )}
                     </div>
-                    {isAppt && <div className="text-[11px] text-zinc-500 truncate mt-1">{ev.title}</div>}
-                    <div className="text-[11px] font-mono text-zinc-500 mt-2 bg-zinc-100 inline-block px-2 py-0.5 rounded-sm">{fmt12(ev.startTime)} – {fmt12(ev.endTime)}</div>
-                    {isAppt && ev.numPeople && <div className="text-[11px] text-zinc-400 mt-1.5 flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>{ev.numPeople}</div>}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          {/* Selected event detail preview */}
-          {selectedSchedule && (
-            <div className="border-t border-zinc-200 p-5 bg-zinc-50 flex-shrink-0">
-              <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400 mb-2">Event Preview</div>
-              <div className="text-sm font-bold text-zinc-800">{selectedSchedule.isAppointment ? selectedSchedule.organizer : selectedSchedule.title}</div>
-              {selectedSchedule.isAppointment && <div className="text-xs text-zinc-500 mt-1">{selectedSchedule.title}</div>}
-              <div className="text-xs font-mono text-zinc-600 mt-2">{fmt12(selectedSchedule.startTime)} – {fmt12(selectedSchedule.endTime)}</div>
+                  );
+                })
+              )}
             </div>
-          )}
+          </div>
         </div>
 
-        {/* Right — Form */}
-        <div className="col-span-4 bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col min-h-0 overflow-y-auto relative">
-          <div className="flex-shrink-0 bg-white sticky top-0 z-10">
-            {/* Mode tabs */}
-            <div className="flex border-b border-zinc-200">
-              <button onClick={() => switchMode('add')}
-                className={`flex-1 py-4 text-xs font-bold uppercase tracking-widest transition-all duration-300 ${mode === 'add' ? 'bg-gradient-to-r from-zinc-900 to-zinc-800 text-white shadow-inner' : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50'}`}>
-                Add Schedule
-              </button>
-              <button onClick={() => switchMode('close')}
-                className={`flex-1 py-4 text-xs font-bold uppercase tracking-widest transition-all duration-300 ${mode === 'close' ? 'bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-inner' : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50'}`}>
-                Close Date
-              </button>
-            </div>
+        {/* ── Right: Form ─────────────────────────────────────────────────────── */}
+        <div className="col-span-7 bg-white rounded-xl border border-zinc-200 shadow-sm flex flex-col min-h-0 overflow-hidden">
+
+          {/* Mode tabs */}
+          <div className="flex border-b border-zinc-200 flex-shrink-0">
+            <button
+              onClick={() => switchMode('add')}
+              className={`flex-1 py-4 text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-1.5
+                ${mode === 'add' ? 'bg-zinc-900 text-white' : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50'}`}
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Schedule
+            </button>
+            <button
+              onClick={() => switchMode('close')}
+              className={`flex-1 py-4 text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-1.5
+                ${mode === 'close' ? 'bg-rose-500 text-white' : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50'}`}
+            >
+              <Ban className="w-3.5 h-3.5" /> Close Date
+            </button>
           </div>
 
-          <div className="flex-1 p-6 space-y-6">
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            {/* Selected date label */}
             <div>
-              <div className="text-xl font-serif font-bold text-zinc-900">
-                {mode === 'add' ? 'New Schedule Block' : `Manage Closure`}
-              </div>
-              <div className="text-xs font-medium uppercase tracking-[0.15em] text-[#D4AF37] mt-1">{dateLabel}</div>
+              <div className="text-[9px] uppercase tracking-[0.2em] text-zinc-400 font-bold">Selected Date</div>
+              <div className="text-lg font-bold text-zinc-900 mt-1">{dateLabel}</div>
             </div>
 
-            {/* Add Schedule mode */}
+            {/* ── ADD SCHEDULE FORM ──────────────────────────────────────────── */}
             {mode === 'add' && (
-              <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                <div className="p-4 mb-6 border border-[#D4AF37]/30 bg-[#D4AF37]/5 rounded-lg space-y-2 shadow-sm">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-[#92750a] mb-2 flex items-center gap-1.5">
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    Guidelines
+              <form onSubmit={handleAddSubmit} className="space-y-5">
+                {/* Guidelines */}
+                <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200/60 rounded-xl">
+                  <FileText className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                  <div className="space-y-0.5">
+                    {['6:00 AM – 6:00 PM window', '15 min minimum duration', 'Max 10 concurrent events'].map(r => (
+                      <div key={r} className="text-[11px] text-amber-700">{r}</div>
+                    ))}
                   </div>
-                  {['Operating hours: 6:00 AM – 6:00 PM', 'Minimum duration: 15 minutes', 'Added schedules allow visitor appointments'].map(r => (
-                    <div key={r} className="text-xs text-[#92750a] flex gap-2 items-start"><span className="text-[10px] mt-0.5 opacity-60">●</span><span>{r}</span></div>
-                  ))}
                 </div>
-                <form onSubmit={handleAddSubmit} className="space-y-5">
-                  <div><FieldLabel>Schedule Title *</FieldLabel><TextInput value={title} onChange={setTitle} placeholder="e.g. Morning Heritage Tour" /></div>
-                  <div><FieldLabel>Description</FieldLabel><TextArea value={desc} onChange={setDesc} placeholder="Optional detailed description…" /></div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <TimeInput value={startTime} onChange={setStartTime} label="Start Time" />
-                    <TimeInput value={endTime} onChange={setEndTime} label="End Time" />
+
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">
+                    Title *
+                  </label>
+                  <input
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                    placeholder="e.g. Morning Heritage Tour"
+                    className={INP}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">
+                    Description
+                  </label>
+                  <textarea
+                    value={desc}
+                    onChange={e => setDesc(e.target.value)}
+                    placeholder="Optional description…"
+                    rows={3}
+                    className={`${INP} resize-none`}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">Start Time</label>
+                    <input type="time" value={startTime} min="06:00" max="18:00" onChange={e => setStartTime(e.target.value)} className={`${INP} font-mono`} />
                   </div>
-                  <div className="pt-2 border-t border-zinc-100 flex items-center gap-2 text-[11px] text-zinc-500 font-medium">
-                    <span className="w-2 h-2 rounded-full bg-[#D4AF37]"></span>
-                    This block will be open for shared appointments
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">End Time</label>
+                    <input type="time" value={endTime} min="06:00" max="18:00" onChange={e => setEndTime(e.target.value)} className={`${INP} font-mono`} />
                   </div>
-                  <button type="submit" disabled={isLoading}
-                    className="w-full mt-4 py-3 bg-gradient-to-r from-zinc-900 to-zinc-800 text-white text-xs font-bold uppercase tracking-widest rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 hover:from-[#D4AF37] hover:to-[#c29d2b] transition-all duration-300 disabled:opacity-50 disabled:transform-none">
-                    {isLoading ? 'Saving...' : 'Add Schedule to Calendar'}
-                  </button>
-                </form>
-              </div>
+                </div>
+
+                {/* Availability */}
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2">
+                    Availability *
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { val: 'SHARED', label: 'Shared', sub: 'Appointments allowed during this block', color: 'border-amber-300 bg-amber-50 text-amber-800' },
+                      { val: 'EXCLUSIVE', label: 'Exclusive', sub: 'No new appointments during this block', color: 'border-rose-300 bg-rose-50 text-rose-800' },
+                    ].map(({ val, label, sub, color }) => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => setAvailability(val)}
+                        className={`p-3.5 border-2 rounded-xl text-left transition-all
+                          ${availability === val ? color : 'border-zinc-200 hover:border-zinc-300 bg-white text-zinc-600'}`}
+                      >
+                        <div className="text-[10px] font-bold uppercase tracking-widest">{label}</div>
+                        <div className="text-[9px] mt-1 opacity-70 leading-relaxed">{sub}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full py-3 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-[#D4AF37] hover:text-zinc-900 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {isLoading
+                    ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving…</>
+                    : <><Plus className="w-3.5 h-3.5" /> Add Schedule</>}
+                </button>
+              </form>
             )}
 
-            {/* Close a Date mode */}
+            {/* ── CLOSE DATE FORM ────────────────────────────────────────────── */}
             {mode === 'close' && (
-              <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                {/* Sub-type tabs */}
-                <div className="flex bg-zinc-100 p-1 rounded-lg mb-6 shadow-inner">
-                  <button onClick={() => setCloseType('day')}
-                    className={`flex-1 py-2.5 text-[11px] font-bold uppercase tracking-widest rounded-md transition-all duration-300 ${closeType === 'day' ? 'bg-white text-zinc-900 shadow-sm' : 'text-zinc-500 hover:text-zinc-800'}`}>
-                    Full Day
-                  </button>
-                  <button onClick={() => setCloseType('time')}
-                    className={`flex-1 py-2.5 text-[11px] font-bold uppercase tracking-widest rounded-md transition-all duration-300 ${closeType === 'time' ? 'bg-white text-rose-600 shadow-sm' : 'text-zinc-500 hover:text-zinc-800'}`}>
-                    Time Slot
-                  </button>
+              <form onSubmit={handleCloseSubmit} className="space-y-5">
+                {/* Day / Time slot toggle */}
+                <div className="flex bg-zinc-100 p-1 rounded-xl">
+                  {['day', 'time'].map(t => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setCloseType(t)}
+                      className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all
+                        ${closeType === t ? 'bg-white text-rose-600 shadow-sm' : 'text-zinc-500 hover:text-zinc-700'}`}
+                    >
+                      {t === 'day' ? 'Full Day' : 'Time Slot'}
+                    </button>
+                  ))}
                 </div>
 
-                {existingDisabledDay && closeType === 'day' && (
-                  <div className="p-4 mb-5 border border-amber-200 bg-amber-50 rounded-lg text-xs font-medium text-amber-800 flex items-start gap-2">
-                    <svg className="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                    This date is already completely blocked.
+                {/* Warning */}
+                <div className="flex items-start gap-3 p-4 bg-rose-50 border border-rose-200/60 rounded-xl">
+                  <AlertTriangle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
+                  <div className="space-y-0.5">
+                    <div className="text-[11px] text-rose-700 font-semibold">
+                      {closeType === 'day' ? 'Blocks the entire day — no new appointments' : 'Blocks a specific time range'}
+                    </div>
+                    <div className="text-[11px] text-rose-600">Existing approved appointments are NOT affected.</div>
+                  </div>
+                </div>
+
+                {closeType === 'time' && (
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">Block Title *</label>
+                    <input
+                      value={closeTitle}
+                      onChange={e => setCloseTitle(e.target.value)}
+                      placeholder="e.g. Facility Maintenance"
+                      className={INP}
+                    />
                   </div>
                 )}
 
-                <div className="p-4 mb-6 border border-rose-200 bg-rose-50 rounded-lg space-y-2 shadow-sm">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-rose-700 mb-2 flex items-center gap-1.5">
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                    Warning
-                  </div>
-                  {[
-                    closeType === 'day' ? 'Closes entire date (24 hours)' : 'Closes specific hours only',
-                    'Does not affect already-scheduled appointments',
-                  ].map(r => (
-                    <div key={r} className="text-xs text-rose-700 flex gap-2 items-start"><span className="text-[10px] mt-0.5 opacity-60">●</span><span>{r}</span></div>
-                  ))}
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">
+                    {closeType === 'day' ? 'Reason (Optional)' : 'Description (Optional)'}
+                  </label>
+                  <textarea
+                    value={reason}
+                    onChange={e => setReason(e.target.value)}
+                    placeholder={closeType === 'day' ? 'Why is this date unavailable?' : 'Optional notes…'}
+                    rows={3}
+                    className={`${INP} resize-none`}
+                  />
                 </div>
 
-                <form onSubmit={handleCloseSubmit} className="space-y-5">
-                  {closeType === 'time' && (
-                    <div><FieldLabel>Block Title *</FieldLabel><TextInput value={closeTitle} onChange={setCloseTitle} placeholder="e.g. Facility Maintenance" /></div>
-                  )}
-                  <div>
-                    <FieldLabel>{closeType === 'day' ? 'Reason for Closure' : 'Description'}</FieldLabel>
-                    <TextArea value={reason} onChange={setReason} placeholder={closeType === 'day' ? 'Why is this date unavailable?' : 'Optional details…'} />
-                  </div>
-                  {closeType === 'time' && (
-                    <div className="grid grid-cols-2 gap-4">
-                      <TimeInput value={startTime} onChange={setStartTime} label="Start Time" />
-                      <TimeInput value={endTime} onChange={setEndTime} label="End Time" />
+                {closeType === 'time' && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">Start</label>
+                      <input type="time" value={closeStartTime} min="06:00" max="18:00" onChange={e => setCloseStartTime(e.target.value)} className={`${INP} font-mono`} />
                     </div>
-                  )}
-                  <button type="submit" disabled={isLoading}
-                    className="w-full mt-4 py-3 bg-gradient-to-r from-rose-500 to-rose-600 text-white text-xs font-bold uppercase tracking-widest rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 hover:from-rose-600 hover:to-rose-700 transition-all duration-300 disabled:opacity-50 disabled:transform-none">
-                    {isLoading ? 'Processing…' : closeType === 'day' ? 'Block Entire Day' : 'Block Time Slot'}
-                  </button>
-                </form>
-              </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">End</label>
+                      <input type="time" value={closeEndTime} min="06:00" max="18:00" onChange={e => setCloseEndTime(e.target.value)} className={`${INP} font-mono`} />
+                    </div>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full py-3 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-rose-600 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {isLoading
+                    ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Processing…</>
+                    : <><Ban className="w-3.5 h-3.5" /> {closeType === 'day' ? 'Block Entire Day' : 'Block Time Slot'}</>}
+                </button>
+              </form>
             )}
           </div>
         </div>
       </div>
 
-      {/* Add confirm modal */}
-      <ConfirmModal open={showAddConfirm} title="Confirm Schedule Details" onConfirm={confirmAdd} onCancel={() => setShowAddConfirm(false)}>
-        <p className="font-medium text-zinc-800">You are about to add a new schedule block:</p>
-        <div className="mt-4 p-4 bg-zinc-50 rounded-lg border border-zinc-100 space-y-2 text-sm">
-          <div className="flex items-start gap-3"><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 w-16 mt-0.5">Title</span> <span className="font-medium text-zinc-900">{title}</span></div>
-          <div className="flex items-start gap-3"><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 w-16 mt-0.5">Date</span> <span className="text-zinc-700">{dateLabel}</span></div>
-          <div className="flex items-start gap-3"><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 w-16 mt-0.5">Time</span> <span className="text-zinc-700 font-mono">{fmt12(startTime)} – {fmt12(endTime)}</span></div>
-          {desc && <div className="flex items-start gap-3"><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 w-16 mt-0.5">Desc</span> <span className="text-zinc-600 text-xs mt-0.5 leading-relaxed">{desc}</span></div>}
+      {/* ── Modals ──────────────────────────────────────────────────────────────── */}
+      <ConfirmModal
+        open={showAddConfirm}
+        title="Confirm Schedule"
+        onConfirm={confirmAdd}
+        onCancel={() => setShowAddConfirm(false)}
+      >
+        <p className="text-zinc-700 font-medium">Adding a new schedule block:</p>
+        <div className="mt-1 p-4 bg-zinc-50 rounded-lg border border-zinc-100 space-y-2">
+          <Row k="Title" v={title} />
+          <Row k="Date"  v={dateLabel} />
+          <Row k="Time"  v={`${formatTimeTo12H(startTime)} – ${formatTimeTo12H(endTime)}`} />
+          <Row k="Type"  v={availability} />
+          {desc && <Row k="Notes" v={desc} muted />}
         </div>
       </ConfirmModal>
 
-      {/* Close confirm modal with countdown */}
-      <ConfirmModal open={showCloseConfirm} title={closeType === 'day' ? 'Block Entire Date' : 'Block Time Slot'}
-        onConfirm={canConfirm ? confirmClose : undefined} onCancel={() => setShowCloseConfirm(false)}
-        confirmDisabled={!canConfirm} confirmLabel={canConfirm ? 'Confirm Block' : `Wait ${countdown}s`} danger>
-        <div className="text-rose-600 font-bold text-sm mb-4">⚠️ This action will prevent new appointments during this block.</div>
-        <div className="p-4 bg-rose-50 rounded-lg border border-rose-100 space-y-2 text-sm">
-          <div className="flex items-start gap-3"><span className="text-[10px] font-bold uppercase tracking-widest text-rose-400 w-16 mt-0.5">Date</span> <span className="font-medium text-rose-900">{dateLabel}</span></div>
-          {closeType === 'time' && <>
-            <div className="flex items-start gap-3"><span className="text-[10px] font-bold uppercase tracking-widest text-rose-400 w-16 mt-0.5">Time</span> <span className="text-rose-800 font-mono">{fmt12(startTime)} – {fmt12(endTime)}</span></div>
-            {closeTitle && <div className="flex items-start gap-3"><span className="text-[10px] font-bold uppercase tracking-widest text-rose-400 w-16 mt-0.5">Title</span> <span className="text-rose-800">{closeTitle}</span></div>}
-          </>}
-          {closeType === 'day' && <div className="flex items-start gap-3"><span className="text-[10px] font-bold uppercase tracking-widest text-rose-400 w-16 mt-0.5">Coverage</span> <span className="text-rose-800 font-medium">All Day (24h)</span></div>}
-          {reason && <div className="flex items-start gap-3"><span className="text-[10px] font-bold uppercase tracking-widest text-rose-400 w-16 mt-0.5">Reason</span> <span className="text-rose-700 text-xs mt-0.5 leading-relaxed">{reason}</span></div>}
+      <ConfirmModal
+        open={showCloseConfirm}
+        title={closeType === 'day' ? 'Block Entire Date' : 'Block Time Slot'}
+        onConfirm={canConfirm ? confirmClose : undefined}
+        onCancel={() => setShowCloseConfirm(false)}
+        confirmDisabled={!canConfirm}
+        confirmLabel={canConfirm ? 'Confirm Block' : `Wait ${countdown}s`}
+        danger
+      >
+        <div className="text-rose-600 font-semibold text-sm">⚠ This will prevent new appointment bookings.</div>
+        <div className="p-4 bg-rose-50 rounded-lg border border-rose-100 space-y-2">
+          <Row k="Date"     v={dateLabel} />
+          {closeType === 'time' && (
+            <Row k="Time" v={`${formatTimeTo12H(closeStartTime)} – ${formatTimeTo12H(closeEndTime)}`} />
+          )}
+          <Row k="Coverage" v={closeType === 'day' ? 'All Day' : 'Time Range'} />
+          {reason && <Row k="Reason" v={reason} muted />}
         </div>
         {!canConfirm && (
-          <div className="mt-5 flex items-center gap-3 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
-            <svg className="w-4 h-4 animate-spin text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-            Review details carefully. Please wait {countdown}s...
+          <div className="flex items-center gap-2 text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+            <Clock className="w-3.5 h-3.5 animate-pulse" /> Wait {countdown}s to confirm…
           </div>
         )}
       </ConfirmModal>
+
+      <DeleteModal
+        open={showDeleteModal}
+        event={deletingEvent}
+        onConfirm={confirmDelete}
+        onCancel={() => { setShowDeleteModal(false); setDeletingEvent(null); }}
+      />
+
+      {isDeleting && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-900/20 backdrop-blur-sm">
+          <div className="bg-white rounded-xl px-8 py-6 shadow-2xl flex items-center gap-3 border border-zinc-200">
+            <Loader2 className="w-5 h-5 animate-spin text-zinc-600" />
+            <span className="text-sm font-medium text-zinc-700">Deleting…</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

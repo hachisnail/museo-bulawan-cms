@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
  */
 export const useFormLogic = ({ 
     slug, 
-    apiBaseUrl = import.meta.env.VITE_API_BASE_URL, 
+    apiBaseUrl = '', 
     customFetch = fetch,
     onSuccess,
     onError,
@@ -24,8 +24,6 @@ export const useFormLogic = ({
     const [otp, setOtp] = useState('');
     const [otpLoading, setOtpLoading] = useState(false);
     const [otpEmail, setOtpEmail] = useState('');
-
-
 
     const fetchDefinition = useCallback(async () => {
         if (!slug) {

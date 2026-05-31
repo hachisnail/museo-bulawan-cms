@@ -7,8 +7,7 @@ import {
     FileText, 
     Upload, 
     Mail, 
-    Key,
-    Send
+    Key
 } from 'lucide-react';
 
 const ExternalForm = (props) => {
@@ -142,17 +141,19 @@ const ExternalForm = (props) => {
     }, [steps, formData]);
 
     if (loading) return (
-        <div className="min-h-screen min-w-screen bg-[#f7f7f7] flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+        <div className={`flex flex-col w-full max-w-4xl min-w-[320px] md:min-w-[600px] mx-auto font-sans ${className}`}>
+            <div className="w-full bg-white rounded-2xl  shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-20 flex items-center justify-center min-h-[400px]">
+                <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+            </div>
         </div>
     );
 
     if (apiError && !definition) return (
-        <div className="min-h-screen bg-[#f7f7f7] flex items-center justify-center p-4">
-            <div className="max-w-xl w-full p-12 bg-white shadow-lg text-center">
+        <div className={`flex flex-col w-full max-w-4xl min-w-[320px]w md:min-w-[600px] mx-auto font-sans ${className}`}>
+            <div className="w-full bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-12 text-center min-h-[400px] flex flex-col justify-center items-center">
                 <AlertCircle className="w-10 h-10 text-red-500 mx-auto mb-4" />
                 <h3 className="text-2xl font-serif text-black tracking-wide mb-2">Error</h3>
-                <p className="text-sm text-gray-500 mb-8">{apiError}</p>
+                <p className="text-sm text-gray-500 mb-8 max-w-md">{apiError}</p>
                 <button onClick={() => window.location.reload()} className="px-8 py-3 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-sm">Retry</button>
             </div>
         </div>
@@ -162,8 +163,8 @@ const ExternalForm = (props) => {
 
     if (isSubmitted) {
         return (
-            <div className="min-h-screen bg-[#f7f7f7] flex flex-col items-center justify-center p-4">
-                <div className="max-w-3xl w-full p-16 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.05)] text-center animate-in fade-in duration-500">
+            <div className={`flex flex-col w-full max-w-4xl min-w-[320px] md:min-w-[600px] mx-auto font-sans ${className}`}>
+                <div className="w-full bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-16 text-center animate-in fade-in duration-500 min-h-[400px] flex flex-col justify-center items-center">
                     <h3 className="text-4xl font-serif text-black tracking-wide mb-4 uppercase">Success!</h3>
                     <hr className="border-t border-gray-300 w-32 mx-auto mb-8" />
                     <p className="text-sm text-gray-600 font-light max-w-md mx-auto leading-relaxed mb-8">
@@ -294,10 +295,10 @@ const ExternalForm = (props) => {
     };
 
     return (
-        <div className={`min-h-screen bg-[#f7f7f7] flex flex-col items-center justify-center p-4 py-12 font-sans ${className}`}>
+        <div className={`flex flex-col w-full max-w-4xl min-w-[320px] md:min-w-[600px] mx-auto font-sans ${className}`}>
             
-            {/* MAIN CARD */}
-            <div className="w-full max-w-4xl bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-10 md:p-16 lg:p-20 relative">
+            {/* MAIN INNER CARD */}
+            <div className="w-full bg-white rounded-2xl border-r-4 border-b-4 border-l-2 border-t-1 border-gray-300 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-10 md:p-16 lg:p-20 relative">
                 
                 {/* Header Section */}
                 <header className="mb-10">
@@ -321,6 +322,7 @@ const ExternalForm = (props) => {
                 </header>
 
                 <form 
+                    className="min-h-[240px] flex flex-col"
                     onSubmit={(e) => {
                         e.preventDefault();
                         if (currentVisibleIdx < visibleSteps.length - 1) nextStep();
@@ -332,14 +334,14 @@ const ExternalForm = (props) => {
                 >
                     {/* ── FIELD STEPS ── */}
                     {activeStep?.type === 'fields' && (
-                        <div className="w-full animate-in fade-in duration-500">
+                        <div className="w-full animate-in fade-in duration-500 flex-1">
                             {activeStep.fields.map(([key, prop]) => renderField(key, prop))}
                         </div>
                     )}
 
                     {/* ── MEDIA STEP ── */}
                     {activeStep?.type === 'media' && (
-                        <div className="w-full animate-in fade-in duration-500 space-y-8">
+                        <div className="w-full animate-in fade-in duration-500 space-y-8 flex-1">
                             <label className="border border-dashed border-gray-400 rounded-sm p-12 flex flex-col items-center justify-center gap-4 hover:border-black hover:bg-gray-50 transition-all cursor-pointer">
                                 <Upload className="w-8 h-8 text-gray-400" />
                                 <div className="text-[11px] font-bold uppercase tracking-widest text-gray-600">Select Files to Upload</div>
@@ -367,7 +369,7 @@ const ExternalForm = (props) => {
 
                     {/* ── OTP VERIFY STEP ── */}
                     {activeStep?.type === 'verify' && (
-                        <div className="w-full animate-in fade-in duration-500">
+                        <div className="w-full animate-in fade-in duration-500 flex-1 flex flex-col justify-center">
                             {!otpSent ? (
                                 <div className="text-center py-8">
                                     <Mail className="w-10 h-10 text-gray-400 mx-auto mb-6" />
@@ -408,15 +410,15 @@ const ExternalForm = (props) => {
 
             {/* ERROR DISPLAY */}
             {displayError && (
-                <div className="w-full max-w-4xl mt-6">
+                <div className="w-full mt-6">
                     <div className="p-4 bg-red-50 text-red-600 border border-red-100 text-[11px] font-bold uppercase tracking-widest flex items-center justify-center gap-3 rounded-sm">
                         <AlertCircle className="w-4 h-4" /> {displayError}
                     </div>
                 </div>
             )}
 
-            {/* BOTTOM NAVIGATION */}
-            <div className="w-full max-w-4xl flex items-center justify-between mt-6 px-2 md:px-0">
+            {/* BOTTOM NAVIGATION (Outside Card) */}
+            <div className="w-full flex items-center justify-between mt-6 px-2 md:px-0">
                 <button
                     type="button"
                     onClick={prevStep}

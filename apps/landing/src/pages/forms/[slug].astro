@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FormRenderer from '../../components/FormRenderer';
+
+const { slug } = Astro.params;
+const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
+---
+
+<BaseLayout title="Form Submissions Portal | Museo Bulawan" >
+  <div class="w-screen py-10 mt-2 bg-white">
+      {slug ? (
+        <FormRenderer 
+          client:only="react" 
+          slug={slug} 
+          apiBaseUrl={API_URL} 
+        />
+      ) : (
+        <div class="text-center py-20 text-zinc-500 font-serif text-xl">
+          Form not found.
+        </div>
+      )}
+  </div>
+</BaseLayout>

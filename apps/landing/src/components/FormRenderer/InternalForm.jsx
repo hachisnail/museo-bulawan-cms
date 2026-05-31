@@ -6,6 +6,7 @@ const InternalForm = (props) => {
     const { 
         className = "",
         hideHeader = false,
+        infoBlock,
     } = props;
 
     const {
@@ -40,6 +41,7 @@ const InternalForm = (props) => {
     const { schema, settings } = definition;
     const properties = schema?.properties || {};
     const required = schema?.required || [];
+    const finalInfoBlock = infoBlock || settings?.info_block || settings?.infoBlock || settings?.intro_block || settings?.introBlock;
 
     const isFieldVisible = (key, prop) => {
         const dependency = prop['ui:dependsOn'] || prop['dependsOn'];
@@ -64,6 +66,21 @@ const InternalForm = (props) => {
                         </p>
                     )}
                 </header>
+            )}
+
+            {finalInfoBlock && (finalInfoBlock.header || finalInfoBlock.title || finalInfoBlock.description || finalInfoBlock.text) && (
+                <div className="mb-6 p-4 bg-zinc-50 border border-zinc-200 rounded-sm">
+                    {(finalInfoBlock.header || finalInfoBlock.title) && (
+                        <h3 className="text-xs font-bold uppercase tracking-wider text-black mb-1">
+                            {finalInfoBlock.header || finalInfoBlock.title}
+                        </h3>
+                    )}
+                    {(finalInfoBlock.description || finalInfoBlock.text) && (
+                        <p className="text-[11px] text-zinc-500 leading-relaxed font-light">
+                            {finalInfoBlock.description || finalInfoBlock.text}
+                        </p>
+                    )}
+                </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-8">

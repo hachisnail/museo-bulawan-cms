@@ -47,6 +47,11 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
   ),
+  Forms: () => (
+    <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+    </svg>
+  ),
   Logout: () => (
     <svg className="w-6 h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
       <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636a9 9 0 11-12.728 0M12 3v9" />
@@ -171,6 +176,7 @@ export default function MainLayout() {
     { name: "Acquisitions", path: "/intakes", icon: <Icons.Acquisitions />, show: true },
     { name: "Accessions", path: "/accessions", icon: <Icons.Accessions />, show: true },
     { name: "Inventory", path: "/inventory", icon: <Icons.Inventory />, show: true },
+    { name: "Forms Manager", path: "/forms", icon: <Icons.Forms />, show: isAdmin },
     { name: "Management", path: "/management", icon: <Icons.Management />, show: isAdmin },
     { name: "Audit Logs", path: "/audit-logs", icon: <Icons.AuditLogs />, show: isAdmin },
     { name: "Settings", path: "/settings", icon: <Icons.Settings />, show: true },
@@ -327,7 +333,7 @@ export default function MainLayout() {
               />
             )}
           </div>
-          <div className={location.pathname === '/articles' ? 'hidden' : 'block h-full'}>
+          <div className={location.pathname === '/articles' ? 'hidden' : 'block h-full pt-5'}>
             <Outlet />
           </div>
         </section>

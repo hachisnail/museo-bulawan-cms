@@ -25,19 +25,63 @@ export const auditService = {
     },
 
     async fetchAll(query = {}) {
-        const page = query.page || 1;
-        const perPage = query.perPage || 50;
+        const page = parseInt(query.page) || 1;
+        const perPage = parseInt(query.perPage) || parseInt(query.limit) || 20;
         const offset = (page - 1) * perPage;
+        const search = query.search || '';
+        const action = query.action || '';
+        const userId = query.userId || '';
         
-        const rows = await db.query(`
+        let sql = `
             SELECT a.*, u.email as user_email, u.fname, u.lname 
             FROM audit_logs a 
             LEFT JOIN users u ON a.user_id = u.id 
-            ORDER BY a.created_at DESC 
-            LIMIT ? OFFSET ?
-        `, [perPage, offset]);
+            WHERE 1=1
+        `;
+        let countSql = `
+            SELECT COUNT(*) as total 
+            FROM audit_logs a 
+            LEFT JOIN users u ON a.user_id = u.id 
+            WHERE 1=1
+        `;
+        const params = [];
         
-        return { page, perPage, items: rows };
+        if (userId) {
+            sql += ` AND a.user_id = ?`;
+            countSql += ` AND a.user_id = ?`;
+            params.push(userId);
+        }
+        
+        if (action && action.toLowerCase() !== 'all') {
+            if (action.toLowerCase() === 'security') {
+                sql += ` AND a.action IN ('LOGIN', 'LOGOUT', 'FORCE_LOGOUT', 'DEACTIVATE', 'CHANGE_PASSWORD', 'INVITE', 'ONBOARD', 'SETUP')`;
+                countSql += ` AND a.action IN ('LOGIN', 'LOGOUT', 'FORCE_LOGOUT', 'DEACTIVATE', 'CHANGE_PASSWORD', 'INVITE', 'ONBOARD', 'SETUP')`;
+            } else {
+                sql += ` AND a.action = ?`;
+                countSql += ` AND a.action = ?`;
+                params.push(action.toUpperCase());
+            }
+        }
+        
+        if (search) {
+            sql += ` AND (a.resource LIKE ? OR a.action LIKE ? OR u.email LIKE ? OR u.fname LIKE ? OR u.lname LIKE ? OR a.details LIKE ?)`;
+            countSql += ` AND (a.resource LIKE ? OR a.action LIKE ? OR u.email LIKE ? OR u.fname LIKE ? OR u.lname LIKE ? OR a.details LIKE ?)`;
+            const searchParam = `%${search}%`;
+            params.push(searchParam, searchParam, searchParam, searchParam, searchParam, searchParam);
+        }
+        
+        const countParams = [...params];
+        
+        sql += ` ORDER BY a.created_at DESC LIMIT ? OFFSET ?`;
+        params.push(perPage, offset);
+        
+        const countResult = await db.query(countSql, countParams);
+        const total = Number((countResult && countResult[0] && (countResult[0].total ?? countResult[0]['COUNT(*)'])) || 0);
+        const rows = await db.query(sql, params);
+        
+        const totalPages = Math.ceil(total / perPage);
+        
+        return { page, perPage, totalItems: total, totalPages, items: rows };
     },
 
     async exportAuditLogs(format = 'json', dateFrom, dateTo) {

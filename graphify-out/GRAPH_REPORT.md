@@ -1,16 +1,16 @@
-# Graph Report - museo-bulawan-cms  (2026-05-31)
+# Graph Report - museo-bulawan-cms  (2026-06-01)
 
 ## Corpus Check
-- 268 files · ~141,347 words
+- 284 files · ~154,209 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1217 nodes · 1859 edges · 116 communities (91 shown, 25 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.8)
+- 1275 nodes · 1959 edges · 115 communities (91 shown, 24 thin omitted)
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 3 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `da8297b4`
+- Built from commit: `59979bf9`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -85,54 +85,53 @@
 - [[_COMMUNITY_Community 106|Community 106]]
 - [[_COMMUNITY_Community 107|Community 107]]
 - [[_COMMUNITY_Community 108|Community 108]]
-- [[_COMMUNITY_Community 109|Community 109]]
-- [[_COMMUNITY_Community 110|Community 110]]
-- [[_COMMUNITY_Community 111|Community 111]]
 - [[_COMMUNITY_Community 112|Community 112]]
 - [[_COMMUNITY_Community 113|Community 113]]
 - [[_COMMUNITY_Community 114|Community 114]]
 - [[_COMMUNITY_Community 115|Community 115]]
+- [[_COMMUNITY_Community 117|Community 117]]
+- [[_COMMUNITY_Community 118|Community 118]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `useAuth()` - 45 edges
+1. `useAuth()` - 53 edges
 2. `logger` - 42 edges
-3. `db` - 40 edges
-4. `env` - 21 edges
-5. `10. Additional Article Builder recommendations (Payload-specific)` - 18 edges
-6. `compilerOptions` - 16 edges
-7. `useSSE()` - 16 edges
+3. `db` - 41 edges
+4. `useSSE()` - 22 edges
+5. `env` - 21 edges
+6. `10. Additional Article Builder recommendations (Payload-specific)` - 18 edges
+7. `compilerOptions` - 16 edges
 8. `Review of `payload_cms_astro_integration.md`` - 15 edges
 9. `userService` - 13 edges
 10. `auditService` - 12 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Analytics()` --calls--> `useAuth()`  [EXTRACTED]
-  apps/panel-admin/src/pages/Analytics.jsx → apps/panel-admin/src/context/authContext.jsx
+- `AccessionItem()` --calls--> `useAuth()`  [EXTRACTED]
+  apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx → apps/panel-admin/src/context/authContext.jsx
+- `IntakeItem()` --calls--> `useAuth()`  [EXTRACTED]
+  apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx → apps/panel-admin/src/context/authContext.jsx
 - `IntakeManualNew()` --calls--> `useAuth()`  [EXTRACTED]
   apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx → apps/panel-admin/src/context/authContext.jsx
+- `ManagementUser()` --calls--> `useAuth()`  [EXTRACTED]
+  apps/panel-admin/src/pages/management/pages/ManagementUser.jsx → apps/panel-admin/src/context/authContext.jsx
 - `OfferItem()` --calls--> `useAuth()`  [EXTRACTED]
   apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx → apps/panel-admin/src/context/authContext.jsx
-- `Intakes()` --calls--> `getSidebarStats()`  [INFERRED]
-  apps/panel-admin/src/pages/Intakes.jsx → apps/panel-admin/src/pages/intakes/components/IntakeStats.jsx
-- `startServer()` --calls--> `initMariaDB()`  [EXTRACTED]
-  apps/api/server.js → apps/api/src/config/dbInit.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (116 total, 25 thin omitted)
+## Communities (115 total, 24 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.06
-Nodes (61): accessionService, baseService, constituentService, exhibitionService, intakeService, inventoryService, loanService, locationService (+53 more)
+Cohesion: 0.05
+Nodes (63): accessionService, baseService, constituentService, exhibitionService, intakeService, inventoryService, loanService, locationService (+55 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.12
-Nodes (17): ProtectedRoute(), AuthContext, AuthProvider(), useAuth(), SSEContext, SSEProvider(), AuditLogs(), Constituents() (+9 more)
+Cohesion: 0.08
+Nodes (16): App(), ProtectedRoute(), AuthContext, AuthProvider(), useAuth(), Analytics(), COLORS, AuditLogsIndex() (+8 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.06
-Nodes (36): router, upload, defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES, acquisitionController, getCaslResource() (+28 more)
+Nodes (37): router, upload, defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES, acquisitionController, analyticsController (+29 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.04
@@ -163,8 +162,8 @@ Cohesion: 0.07
 Nodes (27): ../layouts/Layout.astro, ../styles/global.css, connectSSE(), deliverySlipContainer, detailDate, detailId, detailMethodBadge, detailsContent (+19 more)
 
 ### Community 10 - "Community 10"
-Cohesion: 0.10
-Nodes (20): accessionController, complianceController, VALID_ENTITY_TYPES, intakeController, inventoryController, schemas, analyticsController, loansController (+12 more)
+Cohesion: 0.11
+Nodes (19): accessionController, complianceController, VALID_ENTITY_TYPES, intakeController, inventoryController, schemas, loansController, acquisitionService (+11 more)
 
 ### Community 11 - "Community 11"
 Cohesion: 0.07
@@ -180,11 +179,11 @@ Nodes (24): Article, ArticlesSelect, Auth, Author, AuthorsSelect, CategoriesSele
 
 ### Community 14 - "Community 14"
 Cohesion: 0.08
-Nodes (23): AllValuesOf, CollectionEntry, CollectionKey, ContentConfig, DataEntryMap, ExtractCollectionFilterType, ExtractEntryFilterType, ExtractErrorType (+15 more)
+Nodes (24): AllValuesOf, CollectionEntry, CollectionKey, ContentConfig, DataEntryMap, ExtractCollectionFilterType, ExtractDataType, ExtractEntryFilterType (+16 more)
 
 ### Community 15 - "Community 15"
 Cohesion: 0.08
-Nodes (24): AllValuesOf, CollectionEntry, CollectionKey, ContentConfig, DataEntryMap, ExtractCollectionFilterType, ExtractEntryFilterType, ExtractErrorType (+16 more)
+Nodes (25): AllValuesOf, CollectionEntry, CollectionKey, ContentConfig, DataEntryMap, ExtractCollectionFilterType, ExtractDataType, ExtractEntryFilterType (+17 more)
 
 ### Community 16 - "Community 16"
 Cohesion: 0.09
@@ -207,8 +206,8 @@ Cohesion: 0.10
 Nodes (19): 1. Acceptance, 1. Confirm Delivery, 1. Create Accession Record, 1. Finalize to Inventory, 1. Initial Intake Creation, 1. Internal Movement (Transfer), 1. Update Research Data, 2. Attaching Initial Media (The Multi-Step Upload) (+11 more)
 
 ### Community 21 - "Community 21"
-Cohesion: 0.12
-Nodes (12): ../components/ui/Footer.astro, ../components/ui/Header.astro, ../components/ui/Nav.astro, ../../layouts/BaseLayout.astro, escapeHtml(), renderLexicalNode(), ../../assets/LOGO.png, ../styles/global.css (+4 more)
+Cohesion: 0.05
+Nodes (19): ExternalForm(), InternalForm(), ../components/ui/Footer.astro, ../components/ui/Header.astro, ../components/ui/Nav.astro, ../../layouts/BaseLayout.astro, escapeHtml(), renderLexicalNode() (+11 more)
 
 ### Community 22 - "Community 22"
 Cohesion: 0.11
@@ -226,10 +225,6 @@ Nodes (15): dependencies, astro, @astrojs/node, tailwindcss, @tailwindcss/vite, 
 Cohesion: 0.15
 Nodes (12): 1. Directory Structure and Architectural Roles, 2. API Routing Reference, 3. Step-by-Step Donation Submission Guide, 4. Processing Submissions into Intakes, 5. Under-the-Hood: The Donation Pipeline Workflow, A. Public Forms Endpoints, API Routing Guide: Forms Service & Donation Form Lifecycle, B. Staff Administration Endpoints (+4 more)
 
-### Community 27 - "Community 27"
-Cohesion: 0.41
-Nodes (6): userService, identityController, lifecycleController, managementController, schemas, securityController
-
 ### Community 28 - "Community 28"
 Cohesion: 0.18
 Nodes (10): 1. Acquisition Lifecycle (Intake → Accession → Inventory), 2. Dynamic Forms & Submissions, 3. Media & Attachments, 4. Compliance & Museum Standards, 5. Authority Control & Management, 6. Authentication, Accessions (The Registry), Intakes (The Pipeline) (+2 more)
@@ -243,8 +238,8 @@ Cohesion: 0.27
 Nodes (3): MemoryQueueAdapter, NativeRedisQueueAdapter, processTask()
 
 ### Community 32 - "Community 32"
-Cohesion: 0.15
-Nodes (6): App(), Icons, MainLayout(), useSSEGlobal(), useSSE(), Dashboard()
+Cohesion: 0.16
+Nodes (9): getManagementSidebarCount(), getManagementSidebarStats(), getManagementSidebarTitle(), ManagementIndex(), ROLE_STYLES, STATUS_STYLES, ManagementUser(), ROLE_STYLES (+1 more)
 
 ### Community 33 - "Community 33"
 Cohesion: 0.22
@@ -307,48 +302,52 @@ Cohesion: 0.50
 Nodes (3): exclude, extends, include
 
 ### Community 51 - "Community 51"
-Cohesion: 0.18
-Nodes (3): STATUS_STYLES, Accessions(), STATUS_STYLES
+Cohesion: 0.19
+Nodes (7): AccessionsIndex(), activeColumns, archiveColumns, getAccessionSidebarCount(), getAccessionSidebarStats(), getAccessionSidebarTitle(), STATUS_STYLES
 
 ### Community 61 - "Community 61"
-Cohesion: 0.14
-Nodes (9): getIntakeDonorEmail(), getIntakeDonorPhone(), IntakeDetail(), STATUS_STYLES, getIntakeDonorEmail(), getIntakeDonorPhone(), Intakes(), STATUS_STYLES (+1 more)
+Cohesion: 0.09
+Nodes (7): getIntakeDonorEmail(), getIntakeDonorPhone(), IntakeDetail(), STATUS_STYLES, IntakeItem(), IntakeManualNew(), OfferItem()
 
 ### Community 105 - "Community 105"
-Cohesion: 0.24
-Nodes (3): ITEM_STATUS_COLORS, Inventory(), ITEM_STATUS_COLORS
+Cohesion: 0.15
+Nodes (6): getStatusStyles(), INVENTORY_DATA, InventoryIndex(), STATS, getStatusStyles(), InventoryItem()
 
 ### Community 106 - "Community 106"
-Cohesion: 0.33
-Nodes (6): formController, queryController, queryService, schemas, submissionController, formService
+Cohesion: 0.35
+Nodes (6): formController, definitionController, queryController, schemas, submissionController, formService
 
 ### Community 107 - "Community 107"
-Cohesion: 0.48
-Nodes (4): ExternalForm(), STEP_ICONS, InternalForm(), useFormLogic()
+Cohesion: 0.16
+Nodes (9): Icons, MainLayout(), SSEContext, SSEProvider(), useSSEGlobal(), useSSE(), Dashboard(), CHART_COLORS (+1 more)
 
 ### Community 108 - "Community 108"
-Cohesion: 0.22
-Nodes (7): archiveColumns, intakesColumns, offersColumns, getSidebarCount(), getSidebarStats(), getSidebarTitle(), IntakesIndex()
+Cohesion: 0.35
+Nodes (8): archiveColumns, intakesColumns, offersColumns, getSidebarCount(), getSidebarStats(), getSidebarTitle(), Intakes(), IntakesIndex()
+
+### Community 115 - "Community 115"
+Cohesion: 0.42
+Nodes (5): identityController, lifecycleController, managementController, schemas, securityController
 
 ## Knowledge Gaps
-- **589 isolated node(s):** `version`, `records`, `fired`, `falsePositive`, `precision` (+584 more)
+- **599 isolated node(s):** `version`, `records`, `fired`, `falsePositive`, `precision` (+594 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **25 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **24 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Why does `useAuth()` connect `Community 1` to `Community 32`, `Community 105`, `Community 107`, `Community 108`, `Community 51`, `Community 117`, `Community 61`?**
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **Why does `logger` connect `Community 0` to `Community 10`?**
   _High betweenness centrality (0.009) - this node is a cross-community bridge._
-- **Why does `db` connect `Community 0` to `Community 10`, `Community 2`, `Community 111`?**
+- **Why does `db` connect `Community 0` to `Community 10`, `Community 2`, `Community 118`, `Community 106`?**
   _High betweenness centrality (0.007) - this node is a cross-community bridge._
-- **Why does `NativeRedisQueueAdapter` connect `Community 31` to `Community 0`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **What connects `version`, `records`, `fired` to the rest of the system?**
-  _589 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _599 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.05574949751401671 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0547112462006079 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.12121212121212122 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08478513356562137 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.058699101004759384 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05654761904761905 - nodes in this community are weakly interconnected._

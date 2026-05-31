@@ -1338,3 +1338,57 @@ sql: UPDATE `accessions` SET dimensions = ?, materials = ?, research_notes = ?, 
 2026-05-31 20:41:55 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
     at getCollectionHealth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/analyticsController.js:112:126)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/analytics/collection-health","ip":"::1","user":"01KSY8H2YMWAP1WPBTR9540JC3"}
+2026-06-01 01:18:46 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:18:46 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:18:53 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=security","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:19:01 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:19:01 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:19:05 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:19:05 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:21:29 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:21:29 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:21:32 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=security","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:22:24 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:22:24 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:46:52 [error]: Form definition not found: test-form
+2026-06-01 01:47:33 [error]: Form submission validation failed for test-form. Errors: data.email should match format "email". Payload: {"email":"jefferson","name":"asdadsasda"}
+2026-06-01 01:47:33 [error]: Error: VALIDATION_FAILED: data.email should match format "email"
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/test-form/submit","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}

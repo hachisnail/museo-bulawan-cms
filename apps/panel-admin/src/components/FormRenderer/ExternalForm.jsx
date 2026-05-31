@@ -13,7 +13,8 @@ import {
 const ExternalForm = (props) => {
     const { 
         className = "",
-        hideHeader = false
+        hideHeader = false,
+        infoBlock
     } = props;
 
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -64,6 +65,7 @@ const ExternalForm = (props) => {
     const properties = schema?.properties || {};
     const required = schema?.required || [];
     const stepGroups = settings?.step_groups || [];
+    const finalInfoBlock = infoBlock || settings?.info_block || settings?.infoBlock || settings?.intro_block || settings?.introBlock;
 
     // ── Visibility Logic ──
     const isFieldVisible = (key, prop) => {
@@ -81,6 +83,15 @@ const ExternalForm = (props) => {
     // ── Build Steps ──
     const steps = useMemo(() => {
         const result = [];
+
+        if (finalInfoBlock && (finalInfoBlock.header || finalInfoBlock.title || finalInfoBlock.description || finalInfoBlock.text)) {
+            result.push({
+                id: 'intro_notice',
+                label: finalInfoBlock.header || finalInfoBlock.title || 'Notice',
+                type: 'info_block',
+                fields: []
+            });
+        }
 
         if (stepGroups.length > 0) {
             for (const group of stepGroups) {
@@ -130,7 +141,7 @@ const ExternalForm = (props) => {
         }
 
         return result;
-    }, [properties, stepGroups, settings, definition?.otp]);
+    }, [properties, stepGroups, settings, definition?.otp, finalInfoBlock]);
 
     const visibleStepIndices = useMemo(() => {
         return steps.map((step, idx) => {
@@ -302,7 +313,18 @@ const ExternalForm = (props) => {
                 
                 {/* Header Section */}
                 <header className="mb-10">
-                    {currentVisibleIdx === 0 && !hideHeader ? (
+                    {activeStep?.type === 'info_block' ? (
+                        <div className="text-left animate-in fade-in duration-500">
+                            <h2 className="text-3xl md:text-4xl font-serif text-black tracking-wide">
+                                {finalInfoBlock.header || finalInfoBlock.title || "Notice"}
+                            </h2>
+                            {(finalInfoBlock.description || finalInfoBlock.text) && (
+                                <p className="text-sm text-gray-500 mt-4 leading-relaxed font-light whitespace-pre-wrap">
+                                    {finalInfoBlock.description || finalInfoBlock.text}
+                                </p>
+                            )}
+                        </div>
+                    ) : currentVisibleIdx === 0 && !hideHeader ? (
                         <div className={activeStep?.type !== 'fields' ? 'text-center' : 'text-left'}>
                             <h2 className="text-3xl md:text-4xl font-serif text-black tracking-wide">
                                 {definition.title || "NOTICE"}
@@ -321,8 +343,9 @@ const ExternalForm = (props) => {
                     <hr className="border-t border-gray-300 mt-6" />
                 </header>
 
+
                 <form 
-                    className="min-h-[240px] flex flex-col"
+                    className={`flex flex-col ${activeStep?.type !== 'info_block' ? 'min-h-[240px]' : ''}`}
                     onSubmit={(e) => {
                         e.preventDefault();
                         if (currentVisibleIdx < visibleSteps.length - 1) nextStep();
@@ -332,6 +355,7 @@ const ExternalForm = (props) => {
                         if (e.key === 'Enter') e.preventDefault();
                     }}
                 >
+
                     {/* ── FIELD STEPS ── */}
                     {activeStep?.type === 'fields' && (
                         <div className="w-full animate-in fade-in duration-500 flex-1">

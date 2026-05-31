@@ -1179,7 +1179,7 @@
       "source_file": "apps/api/scratch/check_media.js",
       "source_location": "L1",
       "id": "apps_api_scratch_check_media_js",
-      "community": 111,
+      "community": 118,
       "norm_label": "check_media.js"
     },
     {
@@ -1188,7 +1188,7 @@
       "source_file": "apps/api/scratch/check_media.js",
       "source_location": "L3",
       "id": "scratch_check_media_serialize",
-      "community": 111,
+      "community": 118,
       "norm_label": "serialize()"
     },
     {
@@ -1197,7 +1197,7 @@
       "source_file": "apps/api/scratch/check_media.js",
       "source_location": "L9",
       "id": "scratch_check_media_checkmedia",
-      "community": 111,
+      "community": 118,
       "norm_label": "checkmedia()"
     },
     {
@@ -1467,7 +1467,7 @@
       "source_file": "apps/api/src/controllers/analyticsController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_analyticscontroller_js",
-      "community": 10,
+      "community": 2,
       "norm_label": "analyticscontroller.js"
     },
     {
@@ -1476,7 +1476,7 @@
       "source_file": "apps/api/src/controllers/analyticsController.js",
       "source_location": "L4",
       "id": "controllers_analyticscontroller_analyticscontroller",
-      "community": 10,
+      "community": 2,
       "norm_label": "analyticscontroller"
     },
     {
@@ -1600,7 +1600,7 @@
       "label": "formController",
       "file_type": "code",
       "source_file": "apps/api/src/controllers/formController.js",
-      "source_location": "L15",
+      "source_location": "L17",
       "id": "controllers_formcontroller_formcontroller",
       "community": 106,
       "norm_label": "formcontroller"
@@ -1692,7 +1692,7 @@
       "source_file": "apps/api/src/controllers/userController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_usercontroller_js",
-      "community": 27,
+      "community": 115,
       "norm_label": "usercontroller.js"
     },
     {
@@ -1755,7 +1755,7 @@
       "source_file": "apps/api/src/controllers/acquisition/intakeController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_acquisition_intakecontroller_js",
-      "community": 0,
+      "community": 10,
       "norm_label": "intakecontroller.js"
     },
     {
@@ -1802,6 +1802,24 @@
       "id": "acquisition_schemas_schemas",
       "community": 10,
       "norm_label": "schemas"
+    },
+    {
+      "label": "definitionController.js",
+      "file_type": "code",
+      "source_file": "apps/api/src/controllers/form/definitionController.js",
+      "source_location": "L1",
+      "id": "apps_api_src_controllers_form_definitioncontroller_js",
+      "community": 106,
+      "norm_label": "definitioncontroller.js"
+    },
+    {
+      "label": "definitionController",
+      "file_type": "code",
+      "source_file": "apps/api/src/controllers/form/definitionController.js",
+      "source_location": "L5",
+      "id": "form_definitioncontroller_definitioncontroller",
+      "community": 106,
+      "norm_label": "definitioncontroller"
     },
     {
       "label": "queryController.js",
@@ -1863,7 +1881,7 @@
       "source_file": "apps/api/src/controllers/user/identityController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_user_identitycontroller_js",
-      "community": 27,
+      "community": 115,
       "norm_label": "identitycontroller.js"
     },
     {
@@ -1872,7 +1890,7 @@
       "source_file": "apps/api/src/controllers/user/identityController.js",
       "source_location": "L9",
       "id": "user_identitycontroller_identitycontroller",
-      "community": 27,
+      "community": 115,
       "norm_label": "identitycontroller"
     },
     {
@@ -1881,7 +1899,7 @@
       "source_file": "apps/api/src/controllers/user/lifecycleController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_user_lifecyclecontroller_js",
-      "community": 27,
+      "community": 115,
       "norm_label": "lifecyclecontroller.js"
     },
     {
@@ -1890,7 +1908,7 @@
       "source_file": "apps/api/src/controllers/user/lifecycleController.js",
       "source_location": "L9",
       "id": "user_lifecyclecontroller_lifecyclecontroller",
-      "community": 27,
+      "community": 115,
       "norm_label": "lifecyclecontroller"
     },
     {
@@ -1899,7 +1917,7 @@
       "source_file": "apps/api/src/controllers/user/managementController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_user_managementcontroller_js",
-      "community": 27,
+      "community": 115,
       "norm_label": "managementcontroller.js"
     },
     {
@@ -1908,7 +1926,7 @@
       "source_file": "apps/api/src/controllers/user/managementController.js",
       "source_location": "L9",
       "id": "user_managementcontroller_managementcontroller",
-      "community": 27,
+      "community": 115,
       "norm_label": "managementcontroller"
     },
     {
@@ -1917,7 +1935,7 @@
       "source_file": "apps/api/src/controllers/user/schemas.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_user_schemas_js",
-      "community": 27,
+      "community": 115,
       "norm_label": "schemas.js"
     },
     {
@@ -1926,7 +1944,7 @@
       "source_file": "apps/api/src/controllers/user/schemas.js",
       "source_location": "L8",
       "id": "user_schemas_schemas",
-      "community": 27,
+      "community": 115,
       "norm_label": "schemas"
     },
     {
@@ -1935,7 +1953,7 @@
       "source_file": "apps/api/src/controllers/user/securityController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_user_securitycontroller_js",
-      "community": 27,
+      "community": 115,
       "norm_label": "securitycontroller.js"
     },
     {
@@ -1944,7 +1962,7 @@
       "source_file": "apps/api/src/controllers/user/securityController.js",
       "source_location": "L9",
       "id": "user_securitycontroller_securitycontroller",
-      "community": 27,
+      "community": 115,
       "norm_label": "securitycontroller"
     },
     {
@@ -2529,7 +2547,7 @@
       "source_file": "apps/api/src/services/formService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_formservice_js",
-      "community": 106,
+      "community": 0,
       "norm_label": "formservice.js"
     },
     {
@@ -2799,7 +2817,7 @@
       "source_file": "apps/api/src/services/userService.js",
       "source_location": "L18",
       "id": "services_userservice_userservice",
-      "community": 27,
+      "community": 0,
       "norm_label": "userservice"
     },
     {
@@ -2992,10 +3010,19 @@
       "norm_label": "definitionservice.js"
     },
     {
+      "label": "parseJsonFields()",
+      "file_type": "code",
+      "source_file": "apps/api/src/services/form/definitionService.js",
+      "source_location": "L5",
+      "id": "form_definitionservice_parsejsonfields",
+      "community": 0,
+      "norm_label": "parsejsonfields()"
+    },
+    {
       "label": "definitionService",
       "file_type": "code",
       "source_file": "apps/api/src/services/form/definitionService.js",
-      "source_location": "L4",
+      "source_location": "L13",
       "id": "form_definitionservice_definitionservice",
       "community": 0,
       "norm_label": "definitionservice"
@@ -3024,7 +3051,7 @@
       "source_file": "apps/api/src/services/form/queryService.js",
       "source_location": "L10",
       "id": "form_queryservice_queryservice",
-      "community": 106,
+      "community": 0,
       "norm_label": "queryservice"
     },
     {
@@ -3555,7 +3582,7 @@
       "source_file": "apps/api/src/utils/mutex.js",
       "source_location": "L1",
       "id": "utils_mutex_asyncmutex",
-      "community": 50,
+      "community": 27,
       "norm_label": "asyncmutex"
     },
     {
@@ -3564,7 +3591,7 @@
       "source_file": "apps/api/src/utils/mutex.js",
       "source_location": "L2",
       "id": "utils_mutex_asyncmutex_constructor",
-      "community": 50,
+      "community": 27,
       "norm_label": ".constructor()"
     },
     {
@@ -3573,7 +3600,7 @@
       "source_file": "apps/api/src/utils/mutex.js",
       "source_location": "L6",
       "id": "utils_mutex_asyncmutex_acquire",
-      "community": 50,
+      "community": 27,
       "norm_label": ".acquire()"
     },
     {
@@ -3582,7 +3609,7 @@
       "source_file": "apps/api/src/utils/mutex.js",
       "source_location": "L27",
       "id": "utils_mutex_asyncmutex_runexclusive",
-      "community": 50,
+      "community": 27,
       "norm_label": ".runexclusive()"
     },
     {
@@ -3735,7 +3762,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L5",
       "id": "utils_redisclient_redismanager",
-      "community": 115,
+      "community": 50,
       "norm_label": "redismanager"
     },
     {
@@ -3744,7 +3771,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L6",
       "id": "utils_redisclient_redismanager_constructor",
-      "community": 115,
+      "community": 50,
       "norm_label": ".constructor()"
     },
     {
@@ -3753,7 +3780,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L15",
       "id": "utils_redisclient_redismanager_getclient",
-      "community": 115,
+      "community": 50,
       "norm_label": ".getclient()"
     },
     {
@@ -3762,7 +3789,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L40",
       "id": "utils_redisclient_redismanager_getworkerclient",
-      "community": 115,
+      "community": 50,
       "norm_label": ".getworkerclient()"
     },
     {
@@ -5647,10 +5674,19 @@
       "norm_label": "extracterrortype"
     },
     {
+      "label": "ExtractDataType",
+      "file_type": "code",
+      "source_file": "apps/landing/.astro/content.d.ts",
+      "source_location": "L137",
+      "id": "apps_landing_astro_content_d_ts_astro_content_d_extractdatatype",
+      "community": 14,
+      "norm_label": "extractdatatype"
+    },
+    {
       "label": "LiveLoaderDataType",
       "file_type": "code",
       "source_file": "apps/landing/.astro/content.d.ts",
-      "source_location": "L138",
+      "source_location": "L139",
       "id": "apps_landing_astro_content_d_ts_astro_content_d_liveloaderdatatype",
       "community": 14,
       "norm_label": "liveloaderdatatype"
@@ -5659,7 +5695,7 @@
       "label": "LiveLoaderEntryFilterType",
       "file_type": "code",
       "source_file": "apps/landing/.astro/content.d.ts",
-      "source_location": "L144",
+      "source_location": "L145",
       "id": "apps_landing_astro_content_d_ts_astro_content_d_liveloaderentryfiltertype",
       "community": 14,
       "norm_label": "liveloaderentryfiltertype"
@@ -5668,7 +5704,7 @@
       "label": "LiveLoaderCollectionFilterType",
       "file_type": "code",
       "source_file": "apps/landing/.astro/content.d.ts",
-      "source_location": "L146",
+      "source_location": "L147",
       "id": "apps_landing_astro_content_d_ts_astro_content_d_liveloadercollectionfiltertype",
       "community": 14,
       "norm_label": "liveloadercollectionfiltertype"
@@ -5677,7 +5713,7 @@
       "label": "LiveLoaderErrorType",
       "file_type": "code",
       "source_file": "apps/landing/.astro/content.d.ts",
-      "source_location": "L148",
+      "source_location": "L149",
       "id": "apps_landing_astro_content_d_ts_astro_content_d_liveloadererrortype",
       "community": 14,
       "norm_label": "liveloadererrortype"
@@ -5686,7 +5722,7 @@
       "label": "ContentConfig",
       "file_type": "code",
       "source_file": "apps/landing/.astro/content.d.ts",
-      "source_location": "L152",
+      "source_location": "L153",
       "id": "apps_landing_astro_content_d_ts_astro_content_d_contentconfig",
       "community": 14,
       "norm_label": "contentconfig"
@@ -5695,7 +5731,7 @@
       "label": "LiveContentConfig",
       "file_type": "code",
       "source_file": "apps/landing/.astro/content.d.ts",
-      "source_location": "L153",
+      "source_location": "L154",
       "id": "apps_landing_astro_content_d_ts_astro_content_d_livecontentconfig",
       "community": 14,
       "norm_label": "livecontentconfig"
@@ -5789,6 +5825,78 @@
       "id": "apps_landing_vscode_launch_json_vscode_launch_configurations",
       "community": 56,
       "norm_label": "configurations"
+    },
+    {
+      "label": "ExternalForm.jsx",
+      "file_type": "code",
+      "source_file": "apps/landing/src/components/FormRenderer/ExternalForm.jsx",
+      "source_location": "L1",
+      "id": "apps_landing_src_components_formrenderer_externalform_jsx",
+      "community": 21,
+      "norm_label": "externalform.jsx"
+    },
+    {
+      "label": "ExternalForm()",
+      "file_type": "code",
+      "source_file": "apps/landing/src/components/FormRenderer/ExternalForm.jsx",
+      "source_location": "L13",
+      "id": "apps_landing_src_components_formrenderer_externalform_jsx_formrenderer_externalform_externalform",
+      "community": 21,
+      "norm_label": "externalform()"
+    },
+    {
+      "label": "index.jsx",
+      "file_type": "code",
+      "source_file": "apps/landing/src/components/FormRenderer/index.jsx",
+      "source_location": "L1",
+      "id": "apps_landing_src_components_formrenderer_index_jsx",
+      "community": 21,
+      "norm_label": "index.jsx"
+    },
+    {
+      "label": "FormRenderer()",
+      "file_type": "code",
+      "source_file": "apps/landing/src/components/FormRenderer/index.jsx",
+      "source_location": "L11",
+      "id": "apps_landing_src_components_formrenderer_index_jsx_formrenderer_index_formrenderer",
+      "community": 21,
+      "norm_label": "formrenderer()"
+    },
+    {
+      "label": "InternalForm.jsx",
+      "file_type": "code",
+      "source_file": "apps/landing/src/components/FormRenderer/InternalForm.jsx",
+      "source_location": "L1",
+      "id": "apps_landing_src_components_formrenderer_internalform_jsx",
+      "community": 21,
+      "norm_label": "internalform.jsx"
+    },
+    {
+      "label": "InternalForm()",
+      "file_type": "code",
+      "source_file": "apps/landing/src/components/FormRenderer/InternalForm.jsx",
+      "source_location": "L5",
+      "id": "apps_landing_src_components_formrenderer_internalform_jsx_formrenderer_internalform_internalform",
+      "community": 21,
+      "norm_label": "internalform()"
+    },
+    {
+      "label": "useFormLogic.js",
+      "file_type": "code",
+      "source_file": "apps/landing/src/components/FormRenderer/useFormLogic.js",
+      "source_location": "L1",
+      "id": "apps_landing_src_components_formrenderer_useformlogic_js",
+      "community": 21,
+      "norm_label": "useformlogic.js"
+    },
+    {
+      "label": "useFormLogic()",
+      "file_type": "code",
+      "source_file": "apps/landing/src/components/FormRenderer/useFormLogic.js",
+      "source_location": "L6",
+      "id": "apps_landing_src_components_formrenderer_useformlogic_js_formrenderer_useformlogic_useformlogic",
+      "community": 21,
+      "norm_label": "useformlogic()"
     },
     {
       "label": "../components/ui/Footer.astro",
@@ -5932,11 +6040,29 @@
     {
       "label": "support.astro",
       "file_type": "code",
-      "source_file": "apps/landing/src/pages/support.astro",
+      "source_file": "apps/landing/src/pages/about/support.astro",
       "source_location": "L1",
-      "id": "apps_landing_src_pages_support_astro",
+      "id": "apps_landing_src_pages_about_support_astro",
       "community": 21,
       "norm_label": "support.astro"
+    },
+    {
+      "label": "contribution-form.astro",
+      "file_type": "code",
+      "source_file": "apps/landing/src/pages/about/support/contribution-form.astro",
+      "source_location": "L1",
+      "id": "apps_landing_src_pages_about_support_contribution_form_astro",
+      "community": 21,
+      "norm_label": "contribution-form.astro"
+    },
+    {
+      "label": "../../components/FormRenderer",
+      "file_type": "code",
+      "source_file": "apps/landing/src/components/FormRenderer",
+      "confidence": "EXTRACTED",
+      "id": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_components_formrenderer",
+      "community": 21,
+      "norm_label": "../../components/formrenderer"
     },
     {
       "label": "[slug].astro",
@@ -5964,6 +6090,15 @@
       "id": "articles_slug_renderlexicalnode",
       "community": 21,
       "norm_label": "renderlexicalnode()"
+    },
+    {
+      "label": "[slug].astro",
+      "file_type": "code",
+      "source_file": "apps/landing/src/pages/forms/[slug].astro",
+      "source_location": "L1",
+      "id": "apps_landing_src_pages_forms_slug_astro",
+      "community": 21,
+      "norm_label": "[slug].astro"
     },
     {
       "label": "validators.ts",
@@ -6295,16 +6430,16 @@
       "source_file": "apps/panel-admin/src/App.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_app_jsx",
-      "community": 32,
+      "community": 1,
       "norm_label": "app.jsx"
     },
     {
       "label": "App()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/App.jsx",
-      "source_location": "L31",
+      "source_location": "L33",
       "id": "apps_panel_admin_src_app_jsx_src_app_app",
-      "community": 32,
+      "community": 1,
       "norm_label": "app()"
     },
     {
@@ -6313,7 +6448,7 @@
       "source_file": "apps/panel-admin/src/main.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_main_jsx",
-      "community": 1,
+      "community": 107,
       "norm_label": "main.jsx"
     },
     {
@@ -6322,7 +6457,7 @@
       "source_file": "apps/panel-admin/src/components/DataTable.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_datatable_jsx",
-      "community": 108,
+      "community": 51,
       "norm_label": "datatable.jsx"
     },
     {
@@ -6331,7 +6466,7 @@
       "source_file": "apps/panel-admin/src/components/DataTable.jsx",
       "source_location": "L5",
       "id": "components_datatable_datatable",
-      "community": 108,
+      "community": 51,
       "norm_label": "datatable()"
     },
     {
@@ -6358,7 +6493,7 @@
       "source_file": "apps/panel-admin/src/components/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_index_js",
-      "community": 108,
+      "community": 51,
       "norm_label": "index.js"
     },
     {
@@ -6367,25 +6502,25 @@
       "source_file": "apps/panel-admin/src/components/MainLayout.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_mainlayout_jsx",
-      "community": 32,
+      "community": 107,
       "norm_label": "mainlayout.jsx"
     },
     {
       "label": "Icons",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/components/MainLayout.jsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "id": "components_mainlayout_icons",
-      "community": 32,
+      "community": 107,
       "norm_label": "icons"
     },
     {
       "label": "MainLayout()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/components/MainLayout.jsx",
-      "source_location": "L76",
+      "source_location": "L77",
       "id": "components_mainlayout_mainlayout",
-      "community": 32,
+      "community": 107,
       "norm_label": "mainlayout()"
     },
     {
@@ -6394,7 +6529,7 @@
       "source_file": "apps/panel-admin/src/components/Modal.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_modal_jsx",
-      "community": 1,
+      "community": 61,
       "norm_label": "modal.jsx"
     },
     {
@@ -6403,7 +6538,7 @@
       "source_file": "apps/panel-admin/src/components/Modal.jsx",
       "source_location": "L12",
       "id": "components_modal_modal",
-      "community": 1,
+      "community": 61,
       "norm_label": "modal()"
     },
     {
@@ -6430,7 +6565,7 @@
       "source_file": "apps/panel-admin/src/components/SidebarDashboard.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_sidebardashboard_jsx",
-      "community": 108,
+      "community": 51,
       "norm_label": "sidebardashboard.jsx"
     },
     {
@@ -6439,71 +6574,8 @@
       "source_file": "apps/panel-admin/src/components/SidebarDashboard.jsx",
       "source_location": "L3",
       "id": "components_sidebardashboard_sidebardashboard",
-      "community": 108,
+      "community": 51,
       "norm_label": "sidebardashboard()"
-    },
-    {
-      "label": "AccessionDetail.jsx",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Accessions/AccessionDetail.jsx",
-      "source_location": "L1",
-      "id": "apps_panel_admin_src_components_accessions_accessiondetail_jsx",
-      "community": 51,
-      "norm_label": "accessiondetail.jsx"
-    },
-    {
-      "label": "STATUS_STYLES",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Accessions/AccessionDetail.jsx",
-      "source_location": "L5",
-      "id": "accessions_accessiondetail_status_styles",
-      "community": 51,
-      "norm_label": "status_styles"
-    },
-    {
-      "label": "AccessionDetail()",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Accessions/AccessionDetail.jsx",
-      "source_location": "L12",
-      "id": "accessions_accessiondetail_accessiondetail",
-      "community": 51,
-      "norm_label": "accessiondetail()"
-    },
-    {
-      "label": "AccessionList.jsx",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Accessions/AccessionList.jsx",
-      "source_location": "L1",
-      "id": "apps_panel_admin_src_components_accessions_accessionlist_jsx",
-      "community": 51,
-      "norm_label": "accessionlist.jsx"
-    },
-    {
-      "label": "AccessionList()",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Accessions/AccessionList.jsx",
-      "source_location": "L3",
-      "id": "accessions_accessionlist_accessionlist",
-      "community": 51,
-      "norm_label": "accessionlist()"
-    },
-    {
-      "label": "FinalizeModal.jsx",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Accessions/FinalizeModal.jsx",
-      "source_location": "L1",
-      "id": "apps_panel_admin_src_components_accessions_finalizemodal_jsx",
-      "community": 51,
-      "norm_label": "finalizemodal.jsx"
-    },
-    {
-      "label": "FinalizeModal()",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Accessions/FinalizeModal.jsx",
-      "source_location": "L3",
-      "id": "accessions_finalizemodal_finalizemodal",
-      "community": 51,
-      "norm_label": "finalizemodal()"
     },
     {
       "label": "ExternalForm.jsx",
@@ -6511,25 +6583,16 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_formrenderer_externalform_jsx",
-      "community": 107,
+      "community": 21,
       "norm_label": "externalform.jsx"
-    },
-    {
-      "label": "STEP_ICONS",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
-      "source_location": "L19",
-      "id": "formrenderer_externalform_step_icons",
-      "community": 107,
-      "norm_label": "step_icons"
     },
     {
       "label": "ExternalForm()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
-      "source_location": "L27",
-      "id": "formrenderer_externalform_externalform",
-      "community": 107,
+      "source_location": "L13",
+      "id": "apps_panel_admin_src_components_formrenderer_externalform_jsx_formrenderer_externalform_externalform",
+      "community": 21,
       "norm_label": "externalform()"
     },
     {
@@ -6538,7 +6601,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/index.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_formrenderer_index_jsx",
-      "community": 51,
+      "community": 21,
       "norm_label": "index.jsx"
     },
     {
@@ -6546,8 +6609,8 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/components/FormRenderer/index.jsx",
       "source_location": "L11",
-      "id": "formrenderer_index_formrenderer",
-      "community": 51,
+      "id": "apps_panel_admin_src_components_formrenderer_index_jsx_formrenderer_index_formrenderer",
+      "community": 21,
       "norm_label": "formrenderer()"
     },
     {
@@ -6556,7 +6619,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/InternalForm.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_formrenderer_internalform_jsx",
-      "community": 107,
+      "community": 21,
       "norm_label": "internalform.jsx"
     },
     {
@@ -6564,8 +6627,8 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/components/FormRenderer/InternalForm.jsx",
       "source_location": "L5",
-      "id": "formrenderer_internalform_internalform",
-      "community": 107,
+      "id": "apps_panel_admin_src_components_formrenderer_internalform_jsx_formrenderer_internalform_internalform",
+      "community": 21,
       "norm_label": "internalform()"
     },
     {
@@ -6574,7 +6637,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/useFormLogic.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_formrenderer_useformlogic_js",
-      "community": 107,
+      "community": 21,
       "norm_label": "useformlogic.js"
     },
     {
@@ -6582,8 +6645,8 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/components/FormRenderer/useFormLogic.js",
       "source_location": "L6",
-      "id": "formrenderer_useformlogic_useformlogic",
-      "community": 107,
+      "id": "apps_panel_admin_src_components_formrenderer_useformlogic_js_formrenderer_useformlogic_useformlogic",
+      "community": 21,
       "norm_label": "useformlogic()"
     },
     {
@@ -6655,7 +6718,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/ManualIntakeForm.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_intakes_manualintakeform_jsx",
-      "community": 109,
+      "community": 61,
       "norm_label": "manualintakeform.jsx"
     },
     {
@@ -6664,7 +6727,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/ManualIntakeForm.jsx",
       "source_location": "L3",
       "id": "intakes_manualintakeform_manualintakeform",
-      "community": 109,
+      "community": 61,
       "norm_label": "manualintakeform()"
     },
     {
@@ -6684,69 +6747,6 @@
       "id": "intakes_moadialog_moadialog",
       "community": 61,
       "norm_label": "moadialog()"
-    },
-    {
-      "label": "InventoryDetail.jsx",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Inventory/InventoryDetail.jsx",
-      "source_location": "L1",
-      "id": "apps_panel_admin_src_components_inventory_inventorydetail_jsx",
-      "community": 105,
-      "norm_label": "inventorydetail.jsx"
-    },
-    {
-      "label": "ITEM_STATUS_COLORS",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Inventory/InventoryDetail.jsx",
-      "source_location": "L16",
-      "id": "inventory_inventorydetail_item_status_colors",
-      "community": 105,
-      "norm_label": "item_status_colors"
-    },
-    {
-      "label": "InventoryDetail()",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Inventory/InventoryDetail.jsx",
-      "source_location": "L24",
-      "id": "inventory_inventorydetail_inventorydetail",
-      "community": 105,
-      "norm_label": "inventorydetail()"
-    },
-    {
-      "label": "InventoryList.jsx",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Inventory/InventoryList.jsx",
-      "source_location": "L1",
-      "id": "apps_panel_admin_src_components_inventory_inventorylist_jsx",
-      "community": 105,
-      "norm_label": "inventorylist.jsx"
-    },
-    {
-      "label": "InventoryList()",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Inventory/InventoryList.jsx",
-      "source_location": "L4",
-      "id": "inventory_inventorylist_inventorylist",
-      "community": 105,
-      "norm_label": "inventorylist()"
-    },
-    {
-      "label": "MovementForm.jsx",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Inventory/MovementForm.jsx",
-      "source_location": "L1",
-      "id": "apps_panel_admin_src_components_inventory_movementform_jsx",
-      "community": 105,
-      "norm_label": "movementform.jsx"
-    },
-    {
-      "label": "MovementForm()",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/components/Inventory/MovementForm.jsx",
-      "source_location": "L3",
-      "id": "inventory_movementform_movementform",
-      "community": 105,
-      "norm_label": "movementform()"
     },
     {
       "label": "authContext.jsx",
@@ -6790,7 +6790,7 @@
       "source_file": "apps/panel-admin/src/context/sseContext.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_context_ssecontext_jsx",
-      "community": 1,
+      "community": 107,
       "norm_label": "ssecontext.jsx"
     },
     {
@@ -6799,7 +6799,7 @@
       "source_file": "apps/panel-admin/src/context/sseContext.jsx",
       "source_location": "L4",
       "id": "context_ssecontext_ssecontext",
-      "community": 1,
+      "community": 107,
       "norm_label": "ssecontext"
     },
     {
@@ -6808,7 +6808,7 @@
       "source_file": "apps/panel-admin/src/context/sseContext.jsx",
       "source_location": "L6",
       "id": "context_ssecontext_sseprovider",
-      "community": 1,
+      "community": 107,
       "norm_label": "sseprovider()"
     },
     {
@@ -6817,7 +6817,7 @@
       "source_file": "apps/panel-admin/src/context/sseContext.jsx",
       "source_location": "L93",
       "id": "context_ssecontext_usesseglobal",
-      "community": 32,
+      "community": 107,
       "norm_label": "usesseglobal()"
     },
     {
@@ -6826,7 +6826,7 @@
       "source_file": "apps/panel-admin/src/hooks/useSSE.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_hooks_usesse_js",
-      "community": 32,
+      "community": 107,
       "norm_label": "usesse.js"
     },
     {
@@ -6835,26 +6835,8 @@
       "source_file": "apps/panel-admin/src/hooks/useSSE.js",
       "source_location": "L11",
       "id": "hooks_usesse_usesse",
-      "community": 32,
+      "community": 107,
       "norm_label": "usesse()"
-    },
-    {
-      "label": "Accessions.jsx",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L1",
-      "id": "apps_panel_admin_src_pages_accessions_jsx",
-      "community": 51,
-      "norm_label": "accessions.jsx"
-    },
-    {
-      "label": "Accessions()",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L11",
-      "id": "pages_accessions_accessions",
-      "community": 51,
-      "norm_label": "accessions()"
     },
     {
       "label": "Analytics.jsx",
@@ -6862,7 +6844,7 @@
       "source_file": "apps/panel-admin/src/pages/Analytics.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_analytics_jsx",
-      "community": 110,
+      "community": 1,
       "norm_label": "analytics.jsx"
     },
     {
@@ -6871,7 +6853,7 @@
       "source_file": "apps/panel-admin/src/pages/Analytics.jsx",
       "source_location": "L13",
       "id": "pages_analytics_colors",
-      "community": 110,
+      "community": 1,
       "norm_label": "colors"
     },
     {
@@ -6880,7 +6862,7 @@
       "source_file": "apps/panel-admin/src/pages/Analytics.jsx",
       "source_location": "L15",
       "id": "pages_analytics_analytics",
-      "community": 110,
+      "community": 1,
       "norm_label": "analytics()"
     },
     {
@@ -6889,7 +6871,7 @@
       "source_file": "apps/panel-admin/src/pages/Analytics.jsx",
       "source_location": "L243",
       "id": "pages_analytics_kpicard",
-      "community": 110,
+      "community": 1,
       "norm_label": "kpicard()"
     },
     {
@@ -6898,7 +6880,7 @@
       "source_file": "apps/panel-admin/src/pages/ArticlesCMS.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_articlescms_jsx",
-      "community": 32,
+      "community": 1,
       "norm_label": "articlescms.jsx"
     },
     {
@@ -6907,26 +6889,8 @@
       "source_file": "apps/panel-admin/src/pages/ArticlesCMS.jsx",
       "source_location": "L3",
       "id": "pages_articlescms_articlescms",
-      "community": 32,
+      "community": 1,
       "norm_label": "articlescms()"
-    },
-    {
-      "label": "AuditLogs.jsx",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/AuditLogs.jsx",
-      "source_location": "L1",
-      "id": "apps_panel_admin_src_pages_auditlogs_jsx",
-      "community": 1,
-      "norm_label": "auditlogs.jsx"
-    },
-    {
-      "label": "AuditLogs()",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/AuditLogs.jsx",
-      "source_location": "L17",
-      "id": "pages_auditlogs_auditlogs",
-      "community": 1,
-      "norm_label": "auditlogs()"
     },
     {
       "label": "Constituents.jsx",
@@ -6952,16 +6916,16 @@
       "source_file": "apps/panel-admin/src/pages/Dashboard.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_dashboard_jsx",
-      "community": 32,
+      "community": 107,
       "norm_label": "dashboard.jsx"
     },
     {
       "label": "Dashboard()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/Dashboard.jsx",
-      "source_location": "L5",
+      "source_location": "L7",
       "id": "pages_dashboard_dashboard",
-      "community": 32,
+      "community": 107,
       "norm_label": "dashboard()"
     },
     {
@@ -6988,7 +6952,7 @@
       "source_file": "apps/panel-admin/src/pages/ForgotPassword.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_forgotpassword_jsx",
-      "community": 32,
+      "community": 1,
       "norm_label": "forgotpassword.jsx"
     },
     {
@@ -6997,7 +6961,7 @@
       "source_file": "apps/panel-admin/src/pages/ForgotPassword.jsx",
       "source_location": "L5",
       "id": "pages_forgotpassword_forgotpassword",
-      "community": 32,
+      "community": 1,
       "norm_label": "forgotpassword()"
     },
     {
@@ -7006,7 +6970,7 @@
       "source_file": "apps/panel-admin/src/pages/Home.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_home_jsx",
-      "community": 51,
+      "community": 21,
       "norm_label": "home.jsx"
     },
     {
@@ -7015,44 +6979,8 @@
       "source_file": "apps/panel-admin/src/pages/Home.jsx",
       "source_location": "L3",
       "id": "pages_home_home",
-      "community": 51,
+      "community": 21,
       "norm_label": "home()"
-    },
-    {
-      "label": "Intakes.jsx",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L1",
-      "id": "apps_panel_admin_src_pages_intakes_jsx",
-      "community": 61,
-      "norm_label": "intakes.jsx"
-    },
-    {
-      "label": "Intakes()",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L12",
-      "id": "pages_intakes_intakes",
-      "community": 61,
-      "norm_label": "intakes()"
-    },
-    {
-      "label": "Inventory.jsx",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
-      "source_location": "L1",
-      "id": "apps_panel_admin_src_pages_inventory_jsx",
-      "community": 105,
-      "norm_label": "inventory.jsx"
-    },
-    {
-      "label": "Inventory()",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
-      "source_location": "L10",
-      "id": "pages_inventory_inventory",
-      "community": 105,
-      "norm_label": "inventory()"
     },
     {
       "label": "Locations.jsx",
@@ -7100,30 +7028,12 @@
       "norm_label": "login()"
     },
     {
-      "label": "Management.jsx",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Management.jsx",
-      "source_location": "L1",
-      "id": "apps_panel_admin_src_pages_management_jsx",
-      "community": 1,
-      "norm_label": "management.jsx"
-    },
-    {
-      "label": "Management()",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Management.jsx",
-      "source_location": "L19",
-      "id": "pages_management_management",
-      "community": 1,
-      "norm_label": "management()"
-    },
-    {
       "label": "Onboard.jsx",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/Onboard.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_onboard_jsx",
-      "community": 32,
+      "community": 1,
       "norm_label": "onboard.jsx"
     },
     {
@@ -7132,7 +7042,7 @@
       "source_file": "apps/panel-admin/src/pages/Onboard.jsx",
       "source_location": "L5",
       "id": "pages_onboard_onboard",
-      "community": 32,
+      "community": 1,
       "norm_label": "onboard()"
     },
     {
@@ -7154,12 +7064,30 @@
       "norm_label": "profile()"
     },
     {
+      "label": "PublicFormViewer.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/PublicFormViewer.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_publicformviewer_jsx",
+      "community": 21,
+      "norm_label": "publicformviewer.jsx"
+    },
+    {
+      "label": "PublicFormViewer()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/PublicFormViewer.jsx",
+      "source_location": "L5",
+      "id": "pages_publicformviewer_publicformviewer",
+      "community": 21,
+      "norm_label": "publicformviewer()"
+    },
+    {
       "label": "ResetPassword.jsx",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/ResetPassword.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_resetpassword_jsx",
-      "community": 32,
+      "community": 1,
       "norm_label": "resetpassword.jsx"
     },
     {
@@ -7168,26 +7096,8 @@
       "source_file": "apps/panel-admin/src/pages/ResetPassword.jsx",
       "source_location": "L4",
       "id": "pages_resetpassword_resetpassword",
-      "community": 32,
+      "community": 1,
       "norm_label": "resetpassword()"
-    },
-    {
-      "label": "Settings.jsx",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Settings.jsx",
-      "source_location": "L1",
-      "id": "apps_panel_admin_src_pages_settings_jsx",
-      "community": 1,
-      "norm_label": "settings.jsx"
-    },
-    {
-      "label": "Settings()",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Settings.jsx",
-      "source_location": "L16",
-      "id": "pages_settings_settings",
-      "community": 1,
-      "norm_label": "settings()"
     },
     {
       "label": "SetupAccount.jsx",
@@ -7195,7 +7105,7 @@
       "source_file": "apps/panel-admin/src/pages/SetupAccount.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_setupaccount_jsx",
-      "community": 32,
+      "community": 1,
       "norm_label": "setupaccount.jsx"
     },
     {
@@ -7204,7 +7114,7 @@
       "source_file": "apps/panel-admin/src/pages/SetupAccount.jsx",
       "source_location": "L5",
       "id": "pages_setupaccount_setupaccount",
-      "community": 32,
+      "community": 1,
       "norm_label": "setupaccount()"
     },
     {
@@ -7224,6 +7134,159 @@
       "id": "pages_submissionviewer_submissionviewer",
       "community": 1,
       "norm_label": "submissionviewer()"
+    },
+    {
+      "label": "[D]Intakes.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_d_intakes_jsx",
+      "community": 61,
+      "norm_label": "[d]intakes.jsx"
+    },
+    {
+      "label": "Intakes()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
+      "source_location": "L12",
+      "id": "pages_d_intakes_intakes",
+      "community": 108,
+      "norm_label": "intakes()"
+    },
+    {
+      "label": "index.js",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/index.js",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_accessions_index_js",
+      "community": 117,
+      "norm_label": "index.js"
+    },
+    {
+      "label": "FinalizeModal.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/components/FinalizeModal.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_accessions_components_finalizemodal_jsx",
+      "community": 117,
+      "norm_label": "finalizemodal.jsx"
+    },
+    {
+      "label": "FinalizeModal()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/components/FinalizeModal.jsx",
+      "source_location": "L3",
+      "id": "components_finalizemodal_finalizemodal",
+      "community": 117,
+      "norm_label": "finalizemodal()"
+    },
+    {
+      "label": "AccessionItem.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_accessions_pages_accessionitem_jsx",
+      "community": 117,
+      "norm_label": "accessionitem.jsx"
+    },
+    {
+      "label": "STATUS_STYLES",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx",
+      "source_location": "L12",
+      "id": "pages_accessionitem_status_styles",
+      "community": 117,
+      "norm_label": "status_styles"
+    },
+    {
+      "label": "AccessionItemSkeleton()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx",
+      "source_location": "L22",
+      "id": "pages_accessionitem_accessionitemskeleton",
+      "community": 117,
+      "norm_label": "accessionitemskeleton()"
+    },
+    {
+      "label": "AccessionItem()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx",
+      "source_location": "L49",
+      "id": "pages_accessionitem_accessionitem",
+      "community": 117,
+      "norm_label": "accessionitem()"
+    },
+    {
+      "label": "AccessionsIndex.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
+      "community": 51,
+      "norm_label": "accessionsindex.jsx"
+    },
+    {
+      "label": "STATUS_STYLES",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L12",
+      "id": "pages_accessionsindex_status_styles",
+      "community": 51,
+      "norm_label": "status_styles"
+    },
+    {
+      "label": "activeColumns",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L22",
+      "id": "pages_accessionsindex_activecolumns",
+      "community": 51,
+      "norm_label": "activecolumns"
+    },
+    {
+      "label": "archiveColumns",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L38",
+      "id": "pages_accessionsindex_archivecolumns",
+      "community": 51,
+      "norm_label": "archivecolumns"
+    },
+    {
+      "label": "getAccessionSidebarStats()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L48",
+      "id": "pages_accessionsindex_getaccessionsidebarstats",
+      "community": 51,
+      "norm_label": "getaccessionsidebarstats()"
+    },
+    {
+      "label": "getAccessionSidebarTitle()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L65",
+      "id": "pages_accessionsindex_getaccessionsidebartitle",
+      "community": 51,
+      "norm_label": "getaccessionsidebartitle()"
+    },
+    {
+      "label": "getAccessionSidebarCount()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L70",
+      "id": "pages_accessionsindex_getaccessionsidebarcount",
+      "community": 51,
+      "norm_label": "getaccessionsidebarcount()"
+    },
+    {
+      "label": "AccessionsIndex()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L78",
+      "id": "pages_accessionsindex_accessionsindex",
+      "community": 51,
+      "norm_label": "accessionsindex()"
     },
     {
       "label": "index.js",
@@ -7309,10 +7372,109 @@
     {
       "label": "index.js",
       "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/audit-logs/index.js",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_audit_logs_index_js",
+      "community": 1,
+      "norm_label": "index.js"
+    },
+    {
+      "label": "AuditLogsIndex.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/audit-logs/pages/AuditLogsIndex.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_audit_logs_pages_auditlogsindex_jsx",
+      "community": 1,
+      "norm_label": "auditlogsindex.jsx"
+    },
+    {
+      "label": "getActionColor()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/audit-logs/pages/AuditLogsIndex.jsx",
+      "source_location": "L11",
+      "id": "pages_auditlogsindex_getactioncolor",
+      "community": 1,
+      "norm_label": "getactioncolor()"
+    },
+    {
+      "label": "AuditLogsIndex()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/audit-logs/pages/AuditLogsIndex.jsx",
+      "source_location": "L31",
+      "id": "pages_auditlogsindex_auditlogsindex",
+      "community": 1,
+      "norm_label": "auditlogsindex()"
+    },
+    {
+      "label": "index.js",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/forms/index.js",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_forms_index_js",
+      "community": 107,
+      "norm_label": "index.js"
+    },
+    {
+      "label": "FormsIndex.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx",
+      "community": 107,
+      "norm_label": "formsindex.jsx"
+    },
+    {
+      "label": "CHART_COLORS",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L14",
+      "id": "pages_formsindex_chart_colors",
+      "community": 107,
+      "norm_label": "chart_colors"
+    },
+    {
+      "label": "FormsIndex()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L16",
+      "id": "pages_formsindex_formsindex",
+      "community": 107,
+      "norm_label": "formsindex()"
+    },
+    {
+      "label": "SubmissionsTab()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L140",
+      "id": "pages_formsindex_submissionstab",
+      "community": 107,
+      "norm_label": "submissionstab()"
+    },
+    {
+      "label": "FormBuilderTab()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L342",
+      "id": "pages_formsindex_formbuildertab",
+      "community": 107,
+      "norm_label": "formbuildertab()"
+    },
+    {
+      "label": "FeedbackAnalyticsTab()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L926",
+      "id": "pages_formsindex_feedbackanalyticstab",
+      "community": 107,
+      "norm_label": "feedbackanalyticstab()"
+    },
+    {
+      "label": "index.js",
+      "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/intakes/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_intakes_index_js",
-      "community": 109,
+      "community": 61,
       "norm_label": "index.js"
     },
     {
@@ -7393,16 +7555,52 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
-      "community": 1,
+      "community": 61,
       "norm_label": "intakeitem.jsx"
+    },
+    {
+      "label": "IntakeItemSkeleton()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L12",
+      "id": "pages_intakeitem_intakeitemskeleton",
+      "community": 61,
+      "norm_label": "intakeitemskeleton()"
+    },
+    {
+      "label": "Field()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L48",
+      "id": "pages_intakeitem_field",
+      "community": 61,
+      "norm_label": "field()"
+    },
+    {
+      "label": "Section()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L60",
+      "id": "pages_intakeitem_section",
+      "community": 61,
+      "norm_label": "section()"
+    },
+    {
+      "label": "TextBlock()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L73",
+      "id": "pages_intakeitem_textblock",
+      "community": 61,
+      "norm_label": "textblock()"
     },
     {
       "label": "IntakeItem()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
-      "source_location": "L8",
+      "source_location": "L88",
       "id": "pages_intakeitem_intakeitem",
-      "community": 1,
+      "community": 61,
       "norm_label": "intakeitem()"
     },
     {
@@ -7411,16 +7609,16 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
-      "community": 109,
+      "community": 61,
       "norm_label": "intakemanualnew.jsx"
     },
     {
       "label": "IntakeManualNew()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "id": "pages_intakemanualnew_intakemanualnew",
-      "community": 109,
+      "community": 61,
       "norm_label": "intakemanualnew()"
     },
     {
@@ -7451,10 +7649,19 @@
       "norm_label": "offeritem.jsx"
     },
     {
+      "label": "OfferItemSkeleton()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L12",
+      "id": "pages_offeritem_offeritemskeleton",
+      "community": 61,
+      "norm_label": "offeritemskeleton()"
+    },
+    {
       "label": "Field()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
-      "source_location": "L11",
+      "source_location": "L48",
       "id": "pages_offeritem_field",
       "community": 61,
       "norm_label": "field()"
@@ -7463,7 +7670,7 @@
       "label": "Section()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
-      "source_location": "L23",
+      "source_location": "L60",
       "id": "pages_offeritem_section",
       "community": 61,
       "norm_label": "section()"
@@ -7472,7 +7679,7 @@
       "label": "TextBlock()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
-      "source_location": "L36",
+      "source_location": "L73",
       "id": "pages_offeritem_textblock",
       "community": 61,
       "norm_label": "textblock()"
@@ -7481,10 +7688,271 @@
       "label": "OfferItem()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
-      "source_location": "L51",
+      "source_location": "L88",
       "id": "pages_offeritem_offeritem",
       "community": 61,
       "norm_label": "offeritem()"
+    },
+    {
+      "label": "index.js",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/index.js",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_inventory_index_js",
+      "community": 105,
+      "norm_label": "index.js"
+    },
+    {
+      "label": "MovementForm.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/components/MovementForm.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_inventory_components_movementform_jsx",
+      "community": 105,
+      "norm_label": "movementform.jsx"
+    },
+    {
+      "label": "MovementForm()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/components/MovementForm.jsx",
+      "source_location": "L3",
+      "id": "components_movementform_movementform",
+      "community": 105,
+      "norm_label": "movementform()"
+    },
+    {
+      "label": "InventoryIndex.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_inventory_pages_inventoryindex_jsx",
+      "community": 105,
+      "norm_label": "inventoryindex.jsx"
+    },
+    {
+      "label": "getStatusStyles()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
+      "source_location": "L9",
+      "id": "pages_inventoryindex_getstatusstyles",
+      "community": 105,
+      "norm_label": "getstatusstyles()"
+    },
+    {
+      "label": "InventoryIndex()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
+      "source_location": "L24",
+      "id": "pages_inventoryindex_inventoryindex",
+      "community": 105,
+      "norm_label": "inventoryindex()"
+    },
+    {
+      "label": "InventoryItem.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
+      "community": 105,
+      "norm_label": "inventoryitem.jsx"
+    },
+    {
+      "label": "getStatusStyles()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L22",
+      "id": "pages_inventoryitem_getstatusstyles",
+      "community": 105,
+      "norm_label": "getstatusstyles()"
+    },
+    {
+      "label": "InventoryItemSkeleton()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L40",
+      "id": "pages_inventoryitem_inventoryitemskeleton",
+      "community": 105,
+      "norm_label": "inventoryitemskeleton()"
+    },
+    {
+      "label": "Field()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L70",
+      "id": "pages_inventoryitem_field",
+      "community": 105,
+      "norm_label": "field()"
+    },
+    {
+      "label": "Section()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L82",
+      "id": "pages_inventoryitem_section",
+      "community": 105,
+      "norm_label": "section()"
+    },
+    {
+      "label": "TextBlock()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L95",
+      "id": "pages_inventoryitem_textblock",
+      "community": 105,
+      "norm_label": "textblock()"
+    },
+    {
+      "label": "InventoryItem()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L110",
+      "id": "pages_inventoryitem_inventoryitem",
+      "community": 105,
+      "norm_label": "inventoryitem()"
+    },
+    {
+      "label": "index.js",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/index.js",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_management_index_js",
+      "community": 32,
+      "norm_label": "index.js"
+    },
+    {
+      "label": "EditModal.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/components/EditModal.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_management_components_editmodal_jsx",
+      "community": 32,
+      "norm_label": "editmodal.jsx"
+    },
+    {
+      "label": "EditModal()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/components/EditModal.jsx",
+      "source_location": "L5",
+      "id": "components_editmodal_editmodal",
+      "community": 32,
+      "norm_label": "editmodal()"
+    },
+    {
+      "label": "InviteModal.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/components/InviteModal.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_management_components_invitemodal_jsx",
+      "community": 32,
+      "norm_label": "invitemodal.jsx"
+    },
+    {
+      "label": "InviteModal()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/components/InviteModal.jsx",
+      "source_location": "L5",
+      "id": "components_invitemodal_invitemodal",
+      "community": 32,
+      "norm_label": "invitemodal()"
+    },
+    {
+      "label": "ManagementIndex.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
+      "community": 32,
+      "norm_label": "managementindex.jsx"
+    },
+    {
+      "label": "ROLE_STYLES",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L14",
+      "id": "pages_managementindex_role_styles",
+      "community": 32,
+      "norm_label": "role_styles"
+    },
+    {
+      "label": "STATUS_STYLES",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L27",
+      "id": "pages_managementindex_status_styles",
+      "community": 32,
+      "norm_label": "status_styles"
+    },
+    {
+      "label": "ManagementIndex()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L34",
+      "id": "pages_managementindex_managementindex",
+      "community": 32,
+      "norm_label": "managementindex()"
+    },
+    {
+      "label": "ManagementUser.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_management_pages_managementuser_jsx",
+      "community": 32,
+      "norm_label": "managementuser.jsx"
+    },
+    {
+      "label": "ROLE_STYLES",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L10",
+      "id": "pages_managementuser_role_styles",
+      "community": 32,
+      "norm_label": "role_styles"
+    },
+    {
+      "label": "STATUS_STYLES",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L23",
+      "id": "pages_managementuser_status_styles",
+      "community": 32,
+      "norm_label": "status_styles"
+    },
+    {
+      "label": "ManagementUser()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L30",
+      "id": "pages_managementuser_managementuser",
+      "community": 32,
+      "norm_label": "managementuser()"
+    },
+    {
+      "label": "index.js",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/settings/index.js",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_settings_index_js",
+      "community": 1,
+      "norm_label": "index.js"
+    },
+    {
+      "label": "SettingsIndex.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_settings_pages_settingsindex_jsx",
+      "community": 1,
+      "norm_label": "settingsindex.jsx"
+    },
+    {
+      "label": "SettingsIndex()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
+      "source_location": "L7",
+      "id": "pages_settingsindex_settingsindex",
+      "community": 1,
+      "norm_label": "settingsindex()"
     },
     {
       "label": "astro.config.mjs",
@@ -7842,7 +8310,7 @@
       "file_type": "code",
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L137",
-      "id": "astro_content_d_extractdatatype",
+      "id": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractdatatype",
       "community": 15,
       "norm_label": "extractdatatype"
     },
@@ -10917,49 +11385,103 @@
       "norm_label": "\ud83d\udc40 want to learn more?"
     },
     {
-      "label": "STATUS_STYLES",
+      "label": "getManagementSidebarStats()",
       "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L9",
-      "community": 51,
-      "norm_label": "status_styles",
-      "id": "pages_accessions_status_styles"
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L38",
+      "community": 32,
+      "norm_label": "getmanagementsidebarstats()",
+      "id": "pages_managementindex_getmanagementsidebarstats"
     },
     {
-      "label": "getIntakeDonorEmail()",
+      "label": "getManagementSidebarTitle()",
       "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L10",
-      "community": 61,
-      "norm_label": "getintakedonoremail()",
-      "id": "pages_intakes_getintakedonoremail"
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L69",
+      "community": 32,
+      "norm_label": "getmanagementsidebartitle()",
+      "id": "pages_managementindex_getmanagementsidebartitle"
     },
     {
-      "label": "getIntakeDonorPhone()",
+      "label": "getManagementSidebarCount()",
       "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L22",
-      "community": 61,
-      "norm_label": "getintakedonorphone()",
-      "id": "pages_intakes_getintakedonorphone"
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L75",
+      "community": 32,
+      "norm_label": "getmanagementsidebarcount()",
+      "id": "pages_managementindex_getmanagementsidebarcount"
     },
     {
-      "label": "STATUS_STYLES",
+      "label": "STATS",
       "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L35",
-      "community": 61,
-      "norm_label": "status_styles",
-      "id": "pages_intakes_status_styles"
-    },
-    {
-      "label": "ITEM_STATUS_COLORS",
-      "file_type": "code",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
-      "source_location": "L27",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
+      "source_location": "L7",
       "community": 105,
-      "norm_label": "item_status_colors",
-      "id": "pages_inventory_item_status_colors"
+      "norm_label": "stats",
+      "id": "pages_inventoryindex_stats"
+    },
+    {
+      "label": "INVENTORY_DATA",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
+      "source_location": "L16",
+      "community": 105,
+      "norm_label": "inventory_data",
+      "id": "pages_inventoryindex_inventory_data"
+    },
+    {
+      "label": "ExtractDataType",
+      "file_type": "code",
+      "source_file": "apps/panel-visitor/.astro/content.d.ts",
+      "source_location": "L137",
+      "community": 15,
+      "norm_label": "extractdatatype",
+      "id": "astro_content_d_extractdatatype"
+    },
+    {
+      "label": "STEP_ICONS",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
+      "source_location": "L19",
+      "community": 21,
+      "norm_label": "step_icons",
+      "id": "formrenderer_externalform_step_icons"
+    },
+    {
+      "label": "ExternalForm()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
+      "source_location": "L27",
+      "community": 21,
+      "norm_label": "externalform()",
+      "id": "formrenderer_externalform_externalform"
+    },
+    {
+      "label": "FormRenderer()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/components/FormRenderer/index.jsx",
+      "source_location": "L11",
+      "community": 21,
+      "norm_label": "formrenderer()",
+      "id": "formrenderer_index_formrenderer"
+    },
+    {
+      "label": "InternalForm()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/components/FormRenderer/InternalForm.jsx",
+      "source_location": "L5",
+      "community": 21,
+      "norm_label": "internalform()",
+      "id": "formrenderer_internalform_internalform"
+    },
+    {
+      "label": "useFormLogic()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/components/FormRenderer/useFormLogic.js",
+      "source_location": "L6",
+      "community": 21,
+      "norm_label": "useformlogic()",
+      "id": "formrenderer_useformlogic_useformlogic"
     }
   ],
   "links": [
@@ -12881,6 +13403,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/controllers/form/definitionController.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_controllers_form_definitioncontroller_js",
+      "target": "apps_api_src_config_db_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/api/src/controllers/notificationController.js",
       "source_location": "L1",
       "weight": 1.0,
@@ -13260,6 +13793,17 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_api_src_controllers_filecontroller_js",
+      "target": "config_db_db"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/controllers/form/definitionController.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_controllers_form_definitioncontroller_js",
       "target": "config_db_db"
     },
     {
@@ -14647,6 +15191,17 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/controllers/formController.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_controllers_formcontroller_js",
+      "target": "apps_api_src_controllers_form_definitioncontroller_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/controllers/formController.js",
       "source_location": "L2",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -14684,6 +15239,17 @@
       "confidence_score": 1.0,
       "source": "apps_api_src_controllers_formcontroller_js",
       "target": "controllers_formcontroller_formcontroller"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/controllers/formController.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_controllers_formcontroller_js",
+      "target": "form_definitioncontroller_definitioncontroller"
     },
     {
       "relation": "imports",
@@ -15342,6 +15908,60 @@
       "confidence_score": 1.0,
       "source": "apps_api_src_controllers_acquisition_schemas_js",
       "target": "acquisition_schemas_schemas"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/controllers/form/definitionController.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_controllers_form_definitioncontroller_js",
+      "target": "apps_api_src_controllers_form_schemas_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/controllers/form/definitionController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_controllers_form_definitioncontroller_js",
+      "target": "apps_api_src_services_form_definitionservice_js"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/controllers/form/definitionController.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_controllers_form_definitioncontroller_js",
+      "target": "form_definitioncontroller_definitioncontroller"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/controllers/form/definitionController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_controllers_form_definitioncontroller_js",
+      "target": "form_definitionservice_definitionservice"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/controllers/form/definitionController.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_controllers_form_definitioncontroller_js",
+      "target": "form_schemas_schemas"
     },
     {
       "relation": "imports_from",
@@ -19736,6 +20356,16 @@
       "target": "form_definitionservice_definitionservice"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/form/definitionService.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_services_form_definitionservice_js",
+      "target": "form_definitionservice_parsejsonfields"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -23359,6 +23989,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/landing/.astro/content.d.ts",
+      "source_location": "L137",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_astro_content_d_ts",
+      "target": "apps_landing_astro_content_d_ts_astro_content_d_extractdatatype"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/.astro/content.d.ts",
       "source_location": "L134",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -23586,6 +24226,156 @@
       "target": "apps_landing_vscode_launch_json_vscode_launch_version"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/components/FormRenderer/ExternalForm.jsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_components_formrenderer_externalform_jsx",
+      "target": "apps_landing_src_components_formrenderer_externalform_jsx_formrenderer_externalform_externalform"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/components/FormRenderer/ExternalForm.jsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_components_formrenderer_externalform_jsx",
+      "target": "apps_landing_src_components_formrenderer_useformlogic_js"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/components/FormRenderer/ExternalForm.jsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_components_formrenderer_externalform_jsx",
+      "target": "formrenderer_useformlogic_useformlogic"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/components/FormRenderer/index.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_components_formrenderer_index_jsx",
+      "target": "apps_landing_src_components_formrenderer_externalform_jsx"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/components/FormRenderer/ExternalForm.jsx",
+      "source_location": "L40",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_components_formrenderer_externalform_jsx_formrenderer_externalform_externalform",
+      "target": "formrenderer_useformlogic_useformlogic"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/components/FormRenderer/index.jsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_components_formrenderer_index_jsx",
+      "target": "apps_landing_src_components_formrenderer_index_jsx_formrenderer_index_formrenderer"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/components/FormRenderer/index.jsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_components_formrenderer_index_jsx",
+      "target": "apps_landing_src_components_formrenderer_internalform_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/about/support/contribution-form.astro",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_landing_src_pages_about_support_contribution_form_astro",
+      "target": "apps_landing_src_components_formrenderer_index_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/forms/[slug].astro",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_landing_src_pages_forms_slug_astro",
+      "target": "apps_landing_src_components_formrenderer_index_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/components/FormRenderer/InternalForm.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_components_formrenderer_internalform_jsx",
+      "target": "apps_landing_src_components_formrenderer_internalform_jsx_formrenderer_internalform_internalform"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/components/FormRenderer/InternalForm.jsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_components_formrenderer_internalform_jsx",
+      "target": "apps_landing_src_components_formrenderer_useformlogic_js"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/components/FormRenderer/InternalForm.jsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_components_formrenderer_internalform_jsx",
+      "target": "formrenderer_useformlogic_useformlogic"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/components/FormRenderer/InternalForm.jsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_components_formrenderer_internalform_jsx_formrenderer_internalform_internalform",
+      "target": "formrenderer_useformlogic_useformlogic"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/components/FormRenderer/useFormLogic.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_components_formrenderer_useformlogic_js",
+      "target": "apps_landing_src_components_formrenderer_useformlogic_js_formrenderer_useformlogic_useformlogic"
+    },
+    {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "apps/landing/src/components/ui/Footer.astro",
@@ -23703,6 +24493,22 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/about/support.astro",
+      "source": "apps_landing_src_pages_about_support_astro",
+      "target": "apps_landing_src_layouts_baselayout_astro",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/about/support/contribution-form.astro",
+      "source": "apps_landing_src_pages_about_support_contribution_form_astro",
+      "target": "apps_landing_src_layouts_baselayout_astro",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
       "source_file": "apps/landing/src/pages/articles.astro",
       "confidence_score": 1.0,
       "source": "apps_landing_src_pages_articles_astro",
@@ -23722,17 +24528,17 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
-      "source_file": "apps/landing/src/pages/index.astro",
-      "confidence_score": 1.0,
-      "source": "apps_landing_src_pages_index_astro",
-      "target": "apps_landing_src_layouts_baselayout_astro"
+      "source_file": "apps/landing/src/pages/forms/[slug].astro",
+      "source": "apps_landing_src_pages_forms_slug_astro",
+      "target": "apps_landing_src_layouts_baselayout_astro",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
-      "source_file": "apps/landing/src/pages/support.astro",
+      "source_file": "apps/landing/src/pages/index.astro",
       "confidence_score": 1.0,
-      "source": "apps_landing_src_pages_support_astro",
+      "source": "apps_landing_src_pages_index_astro",
       "target": "apps_landing_src_layouts_baselayout_astro"
     },
     {
@@ -23744,6 +24550,22 @@
       "confidence_score": 1.0,
       "source": "apps_landing_src_pages_articles_astro",
       "target": "pages_articles_getcoverurl"
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/about/support/contribution-form.astro",
+      "source": "apps_landing_src_pages_about_support_contribution_form_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_components_formrenderer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/forms/[slug].astro",
+      "source": "apps_landing_src_pages_forms_slug_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_components_formrenderer",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -24159,7 +24981,7 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_app_jsx",
-      "target": "apps_panel_admin_src_pages_accessions_jsx"
+      "target": "apps_panel_admin_src_pages_accessions_index_js"
     },
     {
       "relation": "imports_from",
@@ -24203,7 +25025,7 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_app_jsx",
-      "target": "apps_panel_admin_src_pages_auditlogs_jsx"
+      "target": "apps_panel_admin_src_pages_audit_logs_index_js"
     },
     {
       "relation": "imports_from",
@@ -24254,6 +25076,17 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/App.jsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_app_jsx",
+      "target": "apps_panel_admin_src_pages_forms_index_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/App.jsx",
       "source_location": "L19",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -24267,20 +25100,9 @@
       "source_file": "apps/panel-admin/src/App.jsx",
       "source_location": "L16",
       "weight": 1.0,
-      "source": "apps_panel_admin_src_app_jsx",
-      "target": "apps_panel_admin_src_pages_intakes_index_js",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/App.jsx",
-      "source_location": "L16",
-      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_app_jsx",
-      "target": "apps_panel_admin_src_pages_intakes_jsx"
+      "target": "apps_panel_admin_src_pages_intakes_index_js"
     },
     {
       "relation": "imports_from",
@@ -24291,7 +25113,7 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_app_jsx",
-      "target": "apps_panel_admin_src_pages_inventory_jsx"
+      "target": "apps_panel_admin_src_pages_inventory_index_js"
     },
     {
       "relation": "imports_from",
@@ -24324,7 +25146,7 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_app_jsx",
-      "target": "apps_panel_admin_src_pages_management_jsx"
+      "target": "apps_panel_admin_src_pages_management_index_js"
     },
     {
       "relation": "imports_from",
@@ -24353,6 +25175,17 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/App.jsx",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_app_jsx",
+      "target": "apps_panel_admin_src_pages_publicformviewer_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/App.jsx",
       "source_location": "L12",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -24368,7 +25201,7 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_app_jsx",
-      "target": "apps_panel_admin_src_pages_settings_jsx"
+      "target": "apps_panel_admin_src_pages_settings_index_js"
     },
     {
       "relation": "imports_from",
@@ -24534,17 +25367,6 @@
       "target": "apps_panel_admin_src_components_docxpreview_jsx"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
-      "target": "apps_panel_admin_src_components_docxpreview_jsx"
-    },
-    {
       "relation": "re_exports",
       "context": "export",
       "confidence": "EXTRACTED",
@@ -24554,6 +25376,17 @@
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_components_index_js",
       "target": "apps_panel_admin_src_components_sidebardashboard_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
+      "target": "apps_panel_admin_src_components_index_js"
     },
     {
       "relation": "imports_from",
@@ -24570,11 +25403,22 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
+      "source_file": "apps/panel-admin/src/pages/audit-logs/pages/AuditLogsIndex.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_audit_logs_pages_auditlogsindex_jsx",
+      "target": "apps_panel_admin_src_components_index_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
       "source_location": "L7",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
+      "source": "apps_panel_admin_src_pages_d_intakes_jsx",
       "target": "apps_panel_admin_src_components_index_js"
     },
     {
@@ -24584,9 +25428,42 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "apps_panel_admin_src_components_index_js",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_components_index_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
+      "target": "apps_panel_admin_src_components_index_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementuser_jsx",
+      "target": "apps_panel_admin_src_components_index_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_settings_pages_settingsindex_jsx",
+      "target": "apps_panel_admin_src_components_index_js"
     },
     {
       "relation": "imports_from",
@@ -24688,22 +25565,44 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L6",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx",
+      "source_location": "L5",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_accessions_jsx",
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionitem_jsx",
       "target": "apps_panel_admin_src_components_modal_jsx"
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/AuditLogs.jsx",
-      "source_location": "L15",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_auditlogs_jsx",
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
+      "target": "apps_panel_admin_src_components_modal_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/audit-logs/pages/AuditLogsIndex.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_audit_logs_pages_auditlogsindex_jsx",
+      "target": "apps_panel_admin_src_components_modal_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_d_intakes_jsx",
       "target": "apps_panel_admin_src_components_modal_jsx"
     },
     {
@@ -24721,23 +25620,12 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
-      "target": "apps_panel_admin_src_components_modal_jsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
-      "target": "apps_panel_admin_src_components_modal_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_components_modal_jsx"
     },
     {
       "relation": "imports_from",
@@ -24746,9 +25634,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
-      "target": "apps_panel_admin_src_components_modal_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_components_modal_jsx"
     },
     {
       "relation": "imports_from",
@@ -24757,9 +25645,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "apps_panel_admin_src_components_modal_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_components_modal_jsx"
     },
     {
       "relation": "imports_from",
@@ -24768,19 +25656,19 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
-      "target": "apps_panel_admin_src_components_modal_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_components_modal_jsx"
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
-      "source_location": "L24",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L5",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_inventory_jsx",
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
       "target": "apps_panel_admin_src_components_modal_jsx"
     },
     {
@@ -24798,22 +25686,33 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Management.jsx",
-      "source_location": "L17",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_management_jsx",
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
       "target": "apps_panel_admin_src_components_modal_jsx"
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Settings.jsx",
-      "source_location": "L14",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_settings_jsx",
+      "source": "apps_panel_admin_src_pages_management_pages_managementuser_jsx",
+      "target": "apps_panel_admin_src_components_modal_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_settings_pages_settingsindex_jsx",
       "target": "apps_panel_admin_src_components_modal_jsx"
     },
     {
@@ -24872,108 +25771,12 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Accessions/AccessionDetail.jsx",
-      "source_location": "L12",
+      "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
+      "source_location": "L13",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_accessions_accessiondetail_jsx",
-      "target": "accessions_accessiondetail_accessiondetail"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Accessions/AccessionDetail.jsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_accessions_accessiondetail_jsx",
-      "target": "accessions_accessiondetail_status_styles"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Accessions/AccessionDetail.jsx",
-      "source_location": "L2",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_accessions_accessiondetail_jsx",
-      "target": "apps_panel_admin_src_components_formrenderer_index_jsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Accessions/AccessionList.jsx",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_accessions_accessionlist_jsx",
-      "target": "apps_panel_admin_src_components_accessions_accessiondetail_jsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_accessions_jsx",
-      "target": "apps_panel_admin_src_components_accessions_accessiondetail_jsx"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Accessions/AccessionList.jsx",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_accessions_accessionlist_jsx",
-      "target": "accessions_accessiondetail_status_styles"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Accessions/AccessionList.jsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_accessions_accessionlist_jsx",
-      "target": "accessions_accessionlist_accessionlist"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_accessions_jsx",
-      "target": "apps_panel_admin_src_components_accessions_accessionlist_jsx"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Accessions/FinalizeModal.jsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_accessions_finalizemodal_jsx",
-      "target": "accessions_finalizemodal_finalizemodal"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_accessions_jsx",
-      "target": "apps_panel_admin_src_components_accessions_finalizemodal_jsx"
+      "source": "apps_panel_admin_src_components_formrenderer_externalform_jsx",
+      "target": "apps_panel_admin_src_components_formrenderer_externalform_jsx_formrenderer_externalform_externalform"
     },
     {
       "relation": "imports_from",
@@ -25029,15 +25832,14 @@
       "target": "apps_panel_admin_src_components_formrenderer_externalform_jsx"
     },
     {
-      "relation": "calls",
-      "context": "call",
+      "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
-      "source_location": "L54",
+      "source_file": "apps/panel-admin/src/components/FormRenderer/index.jsx",
+      "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "formrenderer_externalform_externalform",
-      "target": "formrenderer_useformlogic_useformlogic"
+      "source": "apps_panel_admin_src_components_formrenderer_index_jsx",
+      "target": "apps_panel_admin_src_components_formrenderer_index_jsx_formrenderer_index_formrenderer"
     },
     {
       "relation": "imports_from",
@@ -25064,22 +25866,11 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Inventory/InventoryDetail.jsx",
-      "source_location": "L13",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx",
+      "source_location": "L7",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_inventory_inventorydetail_jsx",
-      "target": "apps_panel_admin_src_components_formrenderer_index_jsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_accessions_jsx",
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionitem_jsx",
       "target": "apps_panel_admin_src_components_formrenderer_index_jsx"
     },
     {
@@ -25097,12 +25888,33 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
-      "source_location": "L25",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_inventory_jsx",
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
       "target": "apps_panel_admin_src_components_formrenderer_index_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/PublicFormViewer.jsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_publicformviewer_jsx",
+      "target": "apps_panel_admin_src_components_formrenderer_index_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/components/FormRenderer/InternalForm.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_components_formrenderer_internalform_jsx",
+      "target": "apps_panel_admin_src_components_formrenderer_internalform_jsx_formrenderer_internalform_internalform"
     },
     {
       "relation": "imports_from",
@@ -25137,15 +25949,14 @@
       "target": "formrenderer_useformlogic_useformlogic"
     },
     {
-      "relation": "calls",
-      "context": "call",
+      "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/FormRenderer/InternalForm.jsx",
-      "source_location": "L22",
+      "source_file": "apps/panel-admin/src/components/FormRenderer/useFormLogic.js",
+      "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "formrenderer_internalform_internalform",
-      "target": "formrenderer_useformlogic_useformlogic"
+      "source": "apps_panel_admin_src_components_formrenderer_useformlogic_js",
+      "target": "apps_panel_admin_src_components_formrenderer_useformlogic_js_formrenderer_useformlogic_useformlogic"
     },
     {
       "relation": "contains",
@@ -25212,22 +26023,22 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
-      "source_location": "L1",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
+      "source_location": "L8",
       "weight": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
-      "target": "apps_panel_admin_src_components_intakes_intakedetail_jsx",
-      "confidence_score": 1.0
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_d_intakes_jsx",
+      "target": "apps_panel_admin_src_components_intakes_intakedetail_jsx"
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L8",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
+      "source_location": "L1",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
+      "source": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
       "target": "apps_panel_admin_src_components_intakes_intakedetail_jsx"
     },
     {
@@ -25237,9 +26048,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
-      "target": "apps_panel_admin_src_components_intakes_intakedetail_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_components_intakes_intakedetail_jsx"
     },
     {
       "relation": "imports_from",
@@ -25248,9 +26059,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
-      "target": "apps_panel_admin_src_components_intakes_intakedetail_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_components_intakes_intakedetail_jsx"
     },
     {
       "relation": "imports",
@@ -25267,22 +26078,33 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
-      "source_location": "L1",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
+      "source_location": "L8",
       "weight": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
-      "target": "intakes_intakedetail_status_styles",
-      "confidence_score": 1.0
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_d_intakes_jsx",
+      "target": "intakes_intakedetail_status_styles"
     },
     {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L8",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
+      "source_location": "L1",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
+      "source": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
+      "target": "intakes_intakedetail_status_styles"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
       "target": "intakes_intakedetail_status_styles"
     },
     {
@@ -25292,9 +26114,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
-      "target": "intakes_intakedetail_status_styles",
-      "confidence_score": 1.0
+      "target": "intakes_intakedetail_status_styles"
     },
     {
       "relation": "calls",
@@ -25329,17 +26151,6 @@
       "target": "intakes_intakelist_intakelist"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
-      "target": "apps_panel_admin_src_components_intakes_intakelist_jsx"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/components/Intakes/ManualIntakeForm.jsx",
@@ -25353,11 +26164,11 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
       "source_location": "L9",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
+      "source": "apps_panel_admin_src_pages_d_intakes_jsx",
       "target": "apps_panel_admin_src_components_intakes_manualintakeform_jsx"
     },
     {
@@ -25367,9 +26178,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
-      "target": "apps_panel_admin_src_components_intakes_manualintakeform_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_components_intakes_manualintakeform_jsx"
     },
     {
       "relation": "contains",
@@ -25385,11 +26196,11 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
       "source_location": "L10",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
+      "source": "apps_panel_admin_src_pages_d_intakes_jsx",
       "target": "apps_panel_admin_src_components_intakes_moadialog_jsx"
     },
     {
@@ -25399,9 +26210,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
-      "target": "apps_panel_admin_src_components_intakes_moadialog_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_components_intakes_moadialog_jsx"
     },
     {
       "relation": "imports_from",
@@ -25410,9 +26221,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "apps_panel_admin_src_components_intakes_moadialog_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_components_intakes_moadialog_jsx"
     },
     {
       "relation": "imports_from",
@@ -25421,104 +26232,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
-      "target": "apps_panel_admin_src_components_intakes_moadialog_jsx",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Inventory/InventoryDetail.jsx",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_inventory_inventorydetail_jsx",
-      "target": "apps_panel_admin_src_components_inventory_movementform_jsx"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Inventory/InventoryDetail.jsx",
-      "source_location": "L24",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_inventory_inventorydetail_jsx",
-      "target": "inventory_inventorydetail_inventorydetail"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Inventory/InventoryDetail.jsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_inventory_inventorydetail_jsx",
-      "target": "inventory_inventorydetail_item_status_colors"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Inventory/InventoryList.jsx",
-      "source_location": "L2",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_inventory_inventorylist_jsx",
-      "target": "apps_panel_admin_src_components_inventory_inventorydetail_jsx"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_inventory_jsx",
-      "target": "apps_panel_admin_src_components_inventory_inventorydetail_jsx"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Inventory/InventoryList.jsx",
-      "source_location": "L2",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_inventory_inventorylist_jsx",
-      "target": "inventory_inventorydetail_item_status_colors"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Inventory/InventoryList.jsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_inventory_inventorylist_jsx",
-      "target": "inventory_inventorylist_inventorylist"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_inventory_jsx",
-      "target": "apps_panel_admin_src_components_inventory_inventorylist_jsx"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/components/Inventory/MovementForm.jsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_components_inventory_movementform_jsx",
-      "target": "inventory_movementform_movementform"
+      "target": "apps_panel_admin_src_components_intakes_moadialog_jsx"
     },
     {
       "relation": "contains",
@@ -25565,11 +26281,22 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L3",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx",
+      "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_accessions_jsx",
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionitem_jsx",
+      "target": "apps_panel_admin_src_context_authcontext_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
       "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
@@ -25587,11 +26314,11 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/AuditLogs.jsx",
-      "source_location": "L2",
+      "source_file": "apps/panel-admin/src/pages/audit-logs/pages/AuditLogsIndex.jsx",
+      "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_auditlogs_jsx",
+      "source": "apps_panel_admin_src_pages_audit_logs_pages_auditlogsindex_jsx",
       "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
@@ -25603,6 +26330,17 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_constituents_jsx",
+      "target": "apps_panel_admin_src_context_authcontext_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_d_intakes_jsx",
       "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
@@ -25631,11 +26369,11 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L3",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L2",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
+      "source": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx",
       "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
@@ -25645,9 +26383,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
-      "target": "apps_panel_admin_src_context_authcontext_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
       "relation": "imports_from",
@@ -25656,9 +26394,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
-      "target": "apps_panel_admin_src_context_authcontext_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
       "relation": "imports_from",
@@ -25667,9 +26405,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "apps_panel_admin_src_context_authcontext_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
       "relation": "imports_from",
@@ -25678,19 +26416,30 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
-      "target": "apps_panel_admin_src_context_authcontext_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
       "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_inventory_jsx",
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryindex_jsx",
+      "target": "apps_panel_admin_src_context_authcontext_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
       "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
@@ -25719,11 +26468,22 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Management.jsx",
-      "source_location": "L2",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_management_jsx",
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
+      "target": "apps_panel_admin_src_context_authcontext_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementuser_jsx",
       "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
@@ -25741,11 +26501,11 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Settings.jsx",
-      "source_location": "L2",
+      "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
+      "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_settings_jsx",
+      "source": "apps_panel_admin_src_pages_settings_pages_settingsindex_jsx",
       "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
@@ -25774,11 +26534,22 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L3",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx",
+      "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_accessions_jsx",
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionitem_jsx",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
       "target": "context_authcontext_useauth"
     },
     {
@@ -25796,11 +26567,11 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/AuditLogs.jsx",
-      "source_location": "L2",
+      "source_file": "apps/panel-admin/src/pages/audit-logs/pages/AuditLogsIndex.jsx",
+      "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_auditlogs_jsx",
+      "source": "apps_panel_admin_src_pages_audit_logs_pages_auditlogsindex_jsx",
       "target": "context_authcontext_useauth"
     },
     {
@@ -25812,6 +26583,17 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_constituents_jsx",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_d_intakes_jsx",
       "target": "context_authcontext_useauth"
     },
     {
@@ -25840,11 +26622,11 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L3",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L2",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
+      "source": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx",
       "target": "context_authcontext_useauth"
     },
     {
@@ -25854,9 +26636,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
-      "target": "context_authcontext_useauth",
-      "confidence_score": 1.0
+      "target": "context_authcontext_useauth"
     },
     {
       "relation": "imports",
@@ -25865,9 +26647,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
-      "target": "context_authcontext_useauth",
-      "confidence_score": 1.0
+      "target": "context_authcontext_useauth"
     },
     {
       "relation": "imports",
@@ -25876,9 +26658,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "context_authcontext_useauth",
-      "confidence_score": 1.0
+      "target": "context_authcontext_useauth"
     },
     {
       "relation": "imports",
@@ -25887,19 +26669,30 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
-      "target": "context_authcontext_useauth",
-      "confidence_score": 1.0
+      "target": "context_authcontext_useauth"
     },
     {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
       "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_inventory_jsx",
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryindex_jsx",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
       "target": "context_authcontext_useauth"
     },
     {
@@ -25928,11 +26721,22 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Management.jsx",
-      "source_location": "L2",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_management_jsx",
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementuser_jsx",
       "target": "context_authcontext_useauth"
     },
     {
@@ -25950,11 +26754,11 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Settings.jsx",
-      "source_location": "L2",
+      "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
+      "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_settings_jsx",
+      "source": "apps_panel_admin_src_pages_settings_pages_settingsindex_jsx",
       "target": "context_authcontext_useauth"
     },
     {
@@ -25984,10 +26788,21 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L17",
+      "source_file": "apps/panel-admin/src/pages/AccessionItem.jsx",
+      "source_location": "L44",
       "weight": 1.0,
-      "source": "pages_accessions_accessions",
+      "source": "pages_accessionitem_accessionitem",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "pages_accessionsindex_accessionsindex",
       "target": "context_authcontext_useauth"
     },
     {
@@ -26006,10 +26821,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "apps/panel-admin/src/pages/AuditLogs.jsx",
-      "source_location": "L18",
+      "source_file": "apps/panel-admin/src/pages/audit-logs/pages/AuditLogsIndex.jsx",
+      "source_location": "L33",
       "weight": 1.0,
-      "source": "pages_auditlogs_auditlogs",
+      "source": "pages_auditlogsindex_auditlogsindex",
       "target": "context_authcontext_useauth"
     },
     {
@@ -26021,6 +26836,17 @@
       "source_location": "L5",
       "weight": 1.0,
       "source": "pages_constituents_constituents",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "pages_d_intakes_intakes",
       "target": "context_authcontext_useauth"
     },
     {
@@ -26050,6 +26876,17 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "pages_formsindex_formsindex",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
       "source_location": "L12",
       "weight": 1.0,
@@ -26072,17 +26909,6 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L48",
-      "weight": 1.0,
-      "source": "pages_intakes_intakes",
-      "target": "context_authcontext_useauth"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L13",
       "weight": 1.0,
@@ -26094,10 +26920,21 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
-      "source_location": "L36",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
+      "source_location": "L25",
       "weight": 1.0,
-      "source": "pages_inventory_inventory",
+      "source": "pages_inventoryindex_inventoryindex",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L114",
+      "weight": 1.0,
+      "source": "pages_inventoryitem_inventoryitem",
       "target": "context_authcontext_useauth"
     },
     {
@@ -26127,10 +26964,21 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "apps/panel-admin/src/pages/Management.jsx",
-      "source_location": "L20",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L89",
       "weight": 1.0,
-      "source": "pages_management_management",
+      "source": "pages_managementindex_managementindex",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "pages_managementuser_managementuser",
       "target": "context_authcontext_useauth"
     },
     {
@@ -26160,10 +27008,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "apps/panel-admin/src/pages/Settings.jsx",
-      "source_location": "L17",
+      "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
+      "source_location": "L9",
       "weight": 1.0,
-      "source": "pages_settings_settings",
+      "source": "pages_settingsindex_settingsindex",
       "target": "context_authcontext_useauth"
     },
     {
@@ -26254,11 +27102,22 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
+      "target": "apps_panel_admin_src_hooks_usesse_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_accessions_jsx",
+      "source": "apps_panel_admin_src_pages_d_intakes_jsx",
       "target": "apps_panel_admin_src_hooks_usesse_js"
     },
     {
@@ -26276,11 +27135,11 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L4",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
+      "source": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx",
       "target": "apps_panel_admin_src_hooks_usesse_js"
     },
     {
@@ -26290,30 +27149,63 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "apps_panel_admin_src_hooks_usesse_js",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_hooks_usesse_js"
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_inventory_jsx",
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryindex_jsx",
+      "target": "apps_panel_admin_src_hooks_usesse_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
+      "target": "apps_panel_admin_src_hooks_usesse_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
       "target": "apps_panel_admin_src_hooks_usesse_js"
     },
     {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
+      "target": "hooks_usesse_usesse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_accessions_jsx",
+      "source": "apps_panel_admin_src_pages_d_intakes_jsx",
       "target": "hooks_usesse_usesse"
     },
     {
@@ -26331,11 +27223,11 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L4",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
+      "source": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx",
       "target": "hooks_usesse_usesse"
     },
     {
@@ -26345,19 +27237,41 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "hooks_usesse_usesse",
-      "confidence_score": 1.0
+      "target": "hooks_usesse_usesse"
     },
     {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_inventory_jsx",
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryindex_jsx",
+      "target": "hooks_usesse_usesse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
+      "target": "hooks_usesse_usesse"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
       "target": "hooks_usesse_usesse"
     },
     {
@@ -26365,10 +27279,21 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L19",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L82",
       "weight": 1.0,
-      "source": "pages_accessions_accessions",
+      "source": "pages_accessionsindex_accessionsindex",
+      "target": "hooks_usesse_usesse"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "pages_d_intakes_intakes",
       "target": "hooks_usesse_usesse"
     },
     {
@@ -26387,10 +27312,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L50",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L18",
       "weight": 1.0,
-      "source": "pages_intakes_intakes",
+      "source": "pages_formsindex_formsindex",
       "target": "hooks_usesse_usesse"
     },
     {
@@ -26409,31 +27334,33 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
-      "source_location": "L38",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
+      "source_location": "L27",
       "weight": 1.0,
-      "source": "pages_inventory_inventory",
+      "source": "pages_inventoryindex_inventoryindex",
       "target": "hooks_usesse_usesse"
     },
     {
-      "relation": "contains",
+      "relation": "calls",
+      "context": "call",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L16",
-      "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_accessions_jsx",
-      "target": "pages_accessions_accessions"
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L115",
+      "weight": 1.0,
+      "source": "pages_inventoryitem_inventoryitem",
+      "target": "hooks_usesse_usesse"
     },
     {
-      "relation": "contains",
+      "relation": "calls",
+      "context": "call",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Accessions.jsx",
-      "source_location": "L9",
-      "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_accessions_jsx",
-      "target": "pages_accessions_status_styles"
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "pages_managementindex_managementindex",
+      "target": "hooks_usesse_usesse"
     },
     {
       "relation": "contains",
@@ -26474,16 +27401,6 @@
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_articlescms_jsx",
       "target": "pages_articlescms_articlescms"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/AuditLogs.jsx",
-      "source_location": "L17",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_auditlogs_jsx",
-      "target": "pages_auditlogs_auditlogs"
     },
     {
       "relation": "contains",
@@ -26538,99 +27455,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
-      "target": "pages_intakes_getintakedonoremail"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L22",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
-      "target": "pages_intakes_getintakedonorphone"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L47",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
-      "target": "pages_intakes_intakes"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L35",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_intakes_jsx",
-      "target": "pages_intakes_status_styles"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L639",
-      "weight": 1.0,
-      "source": "pages_intakes_intakes",
-      "target": "components_intakestats_getsidebarstats"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L665",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_intakes_intakes",
-      "target": "pages_intakes_getintakedonoremail"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
-      "source_location": "L670",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_intakes_intakes",
-      "target": "pages_intakes_getintakedonorphone"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
-      "source_location": "L35",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_inventory_jsx",
-      "target": "pages_inventory_inventory"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
-      "source_location": "L27",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_inventory_jsx",
-      "target": "pages_inventory_item_status_colors"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/Locations.jsx",
       "source_location": "L13",
       "weight": 1.0,
@@ -26661,16 +27485,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Management.jsx",
-      "source_location": "L19",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_management_jsx",
-      "target": "pages_management_management"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/Onboard.jsx",
       "source_location": "L5",
       "weight": 1.0,
@@ -26691,22 +27505,22 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/PublicFormViewer.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_publicformviewer_jsx",
+      "target": "pages_publicformviewer_publicformviewer"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/ResetPassword.jsx",
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_resetpassword_jsx",
       "target": "pages_resetpassword_resetpassword"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/panel-admin/src/pages/Settings.jsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_panel_admin_src_pages_settings_jsx",
-      "target": "pages_settings_settings"
     },
     {
       "relation": "contains",
@@ -26727,6 +27541,203 @@
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_submissionviewer_jsx",
       "target": "pages_submissionviewer_submissionviewer"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_d_intakes_jsx",
+      "target": "pages_d_intakes_intakes"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "apps/panel-admin/src/pages/[D]Intakes.jsx",
+      "source_location": "L639",
+      "weight": 1.0,
+      "source": "pages_d_intakes_intakes",
+      "target": "components_intakestats_getsidebarstats"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/index.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_index_js",
+      "target": "apps_panel_admin_src_pages_accessions_pages_accessionitem_jsx"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/index.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_index_js",
+      "target": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/components/FinalizeModal.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_components_finalizemodal_jsx",
+      "target": "components_finalizemodal_finalizemodal"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionitem_jsx",
+      "target": "apps_panel_admin_src_pages_accessions_components_finalizemodal_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx",
+      "source_location": "L49",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionitem_jsx",
+      "target": "pages_accessionitem_accessionitem"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionitem_jsx",
+      "target": "pages_accessionitem_accessionitemskeleton"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionitem_jsx",
+      "target": "pages_accessionitem_status_styles"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L78",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
+      "target": "pages_accessionsindex_accessionsindex"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
+      "target": "pages_accessionsindex_activecolumns"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
+      "target": "pages_accessionsindex_archivecolumns"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L70",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
+      "target": "pages_accessionsindex_getaccessionsidebarcount"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L48",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
+      "target": "pages_accessionsindex_getaccessionsidebarstats"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L65",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
+      "target": "pages_accessionsindex_getaccessionsidebartitle"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_accessions_pages_accessionsindex_jsx",
+      "target": "pages_accessionsindex_status_styles"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L281",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_accessionsindex_accessionsindex",
+      "target": "pages_accessionsindex_getaccessionsidebarstats"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L282",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_accessionsindex_accessionsindex",
+      "target": "pages_accessionsindex_getaccessionsidebartitle"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/accessions/pages/AccessionsIndex.jsx",
+      "source_location": "L283",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_accessionsindex_accessionsindex",
+      "target": "pages_accessionsindex_getaccessionsidebarcount"
     },
     {
       "relation": "re_exports",
@@ -26814,12 +27825,104 @@
       "relation": "re_exports",
       "context": "export",
       "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/audit-logs/index.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_audit_logs_index_js",
+      "target": "apps_panel_admin_src_pages_audit_logs_pages_auditlogsindex_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/audit-logs/pages/AuditLogsIndex.jsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_audit_logs_pages_auditlogsindex_jsx",
+      "target": "pages_auditlogsindex_auditlogsindex"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/audit-logs/pages/AuditLogsIndex.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_audit_logs_pages_auditlogsindex_jsx",
+      "target": "pages_auditlogsindex_getactioncolor"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/forms/index.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_forms_index_js",
+      "target": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx",
+      "target": "pages_formsindex_chart_colors"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L926",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx",
+      "target": "pages_formsindex_feedbackanalyticstab"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L342",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx",
+      "target": "pages_formsindex_formbuildertab"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx",
+      "target": "pages_formsindex_formsindex"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
+      "source_location": "L140",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx",
+      "target": "pages_formsindex_submissionstab"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/intakes/index.js",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_index_js",
-      "target": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx"
     },
     {
       "relation": "re_exports",
@@ -26828,9 +27931,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/index.js",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_index_js",
-      "target": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx"
     },
     {
       "relation": "re_exports",
@@ -26839,9 +27942,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/index.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_index_js",
-      "target": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx"
     },
     {
       "relation": "re_exports",
@@ -26850,9 +27953,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/index.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_index_js",
-      "target": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx"
     },
     {
       "relation": "contains",
@@ -26860,9 +27963,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
-      "target": "components_intakecolumns_archivecolumns",
-      "confidence_score": 1.0
+      "target": "components_intakecolumns_archivecolumns"
     },
     {
       "relation": "contains",
@@ -26870,9 +27973,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
-      "target": "components_intakecolumns_intakescolumns",
-      "confidence_score": 1.0
+      "target": "components_intakecolumns_intakescolumns"
     },
     {
       "relation": "contains",
@@ -26880,9 +27983,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
-      "target": "components_intakecolumns_offerscolumns",
-      "confidence_score": 1.0
+      "target": "components_intakecolumns_offerscolumns"
     },
     {
       "relation": "imports_from",
@@ -26891,9 +27994,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx"
     },
     {
       "relation": "imports",
@@ -26902,9 +28005,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "components_intakecolumns_offerscolumns",
-      "confidence_score": 1.0
+      "target": "components_intakecolumns_offerscolumns"
     },
     {
       "relation": "imports",
@@ -26913,9 +28016,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "components_intakecolumns_intakescolumns",
-      "confidence_score": 1.0
+      "target": "components_intakecolumns_intakescolumns"
     },
     {
       "relation": "imports",
@@ -26924,9 +28027,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "components_intakecolumns_archivecolumns",
-      "confidence_score": 1.0
+      "target": "components_intakecolumns_archivecolumns"
     },
     {
       "relation": "contains",
@@ -26934,9 +28037,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeStats.jsx",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_components_intakestats_jsx",
-      "target": "components_intakestats_getsidebarcount",
-      "confidence_score": 1.0
+      "target": "components_intakestats_getsidebarcount"
     },
     {
       "relation": "contains",
@@ -26944,9 +28047,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeStats.jsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_components_intakestats_jsx",
-      "target": "components_intakestats_getsidebarstats",
-      "confidence_score": 1.0
+      "target": "components_intakestats_getsidebarstats"
     },
     {
       "relation": "contains",
@@ -26954,9 +28057,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeStats.jsx",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_components_intakestats_jsx",
-      "target": "components_intakestats_getsidebartitle",
-      "confidence_score": 1.0
+      "target": "components_intakestats_getsidebartitle"
     },
     {
       "relation": "imports_from",
@@ -26965,9 +28068,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "apps_panel_admin_src_pages_intakes_components_intakestats_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_pages_intakes_components_intakestats_jsx"
     },
     {
       "relation": "imports",
@@ -26976,9 +28079,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "components_intakestats_getsidebarstats",
-      "confidence_score": 1.0
+      "target": "components_intakestats_getsidebarstats"
     },
     {
       "relation": "calls",
@@ -26998,9 +28101,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "components_intakestats_getsidebartitle",
-      "confidence_score": 1.0
+      "target": "components_intakestats_getsidebartitle"
     },
     {
       "relation": "calls",
@@ -27020,9 +28123,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "components_intakestats_getsidebarcount",
-      "confidence_score": 1.0
+      "target": "components_intakestats_getsidebarcount"
     },
     {
       "relation": "calls",
@@ -27039,11 +28142,51 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L48",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
+      "target": "pages_intakeitem_field"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
-      "target": "pages_intakeitem_intakeitem",
-      "confidence_score": 1.0
+      "target": "pages_intakeitem_intakeitem"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
+      "target": "pages_intakeitem_intakeitemskeleton"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L60",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
+      "target": "pages_intakeitem_section"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L73",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
+      "target": "pages_intakeitem_textblock"
     },
     {
       "relation": "contains",
@@ -27051,9 +28194,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
-      "target": "pages_intakemanualnew_intakemanualnew",
-      "confidence_score": 1.0
+      "target": "pages_intakemanualnew_intakemanualnew"
     },
     {
       "relation": "contains",
@@ -27061,9 +28204,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
-      "target": "pages_intakesindex_intakesindex",
-      "confidence_score": 1.0
+      "target": "pages_intakesindex_intakesindex"
     },
     {
       "relation": "contains",
@@ -27071,9 +28214,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
-      "target": "pages_offeritem_field",
-      "confidence_score": 1.0
+      "target": "pages_offeritem_field"
     },
     {
       "relation": "contains",
@@ -27081,9 +28224,19 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
-      "target": "pages_offeritem_offeritem",
-      "confidence_score": 1.0
+      "target": "pages_offeritem_offeritem"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "target": "pages_offeritem_offeritemskeleton"
     },
     {
       "relation": "contains",
@@ -27091,9 +28244,9 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
-      "target": "pages_offeritem_section",
-      "confidence_score": 1.0
+      "target": "pages_offeritem_section"
     },
     {
       "relation": "contains",
@@ -27101,9 +28254,393 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
-      "target": "pages_offeritem_textblock",
-      "confidence_score": 1.0
+      "target": "pages_offeritem_textblock"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/index.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_index_js",
+      "target": "apps_panel_admin_src_pages_inventory_pages_inventoryindex_jsx"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/index.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_index_js",
+      "target": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/components/MovementForm.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_components_movementform_jsx",
+      "target": "components_movementform_movementform"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
+      "target": "apps_panel_admin_src_pages_inventory_components_movementform_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryindex_jsx",
+      "target": "pages_inventoryindex_getstatusstyles"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryindex_jsx",
+      "target": "pages_inventoryindex_inventory_data"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
+      "source_location": "L41",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryindex_jsx",
+      "target": "pages_inventoryindex_inventoryindex"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryindex_jsx",
+      "target": "pages_inventoryindex_stats"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L133",
+      "weight": 1.0,
+      "source": "pages_inventoryitem_inventoryitem",
+      "target": "pages_inventoryindex_getstatusstyles"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L41",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
+      "target": "pages_inventoryitem_field"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
+      "target": "pages_inventoryitem_getstatusstyles"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L81",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
+      "target": "pages_inventoryitem_inventoryitem"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
+      "target": "pages_inventoryitem_inventoryitemskeleton"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L53",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
+      "target": "pages_inventoryitem_section"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L66",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
+      "target": "pages_inventoryitem_textblock"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
+      "source_location": "L392",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_inventoryitem_inventoryitem",
+      "target": "pages_inventoryitem_getstatusstyles"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/index.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_index_js",
+      "target": "apps_panel_admin_src_pages_management_pages_managementindex_jsx"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/index.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_index_js",
+      "target": "apps_panel_admin_src_pages_management_pages_managementuser_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/components/EditModal.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_components_editmodal_jsx",
+      "target": "components_editmodal_editmodal"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
+      "target": "apps_panel_admin_src_pages_management_components_editmodal_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementuser_jsx",
+      "target": "apps_panel_admin_src_pages_management_components_editmodal_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/components/InviteModal.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_components_invitemodal_jsx",
+      "target": "components_invitemodal_invitemodal"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
+      "target": "apps_panel_admin_src_pages_management_components_invitemodal_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L75",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
+      "target": "pages_managementindex_getmanagementsidebarcount"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
+      "target": "pages_managementindex_getmanagementsidebarstats"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L69",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
+      "target": "pages_managementindex_getmanagementsidebartitle"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L88",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
+      "target": "pages_managementindex_managementindex"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
+      "target": "pages_managementindex_role_styles"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementindex_jsx",
+      "target": "pages_managementindex_status_styles"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L490",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_managementindex_managementindex",
+      "target": "pages_managementindex_getmanagementsidebarcount"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L488",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_managementindex_managementindex",
+      "target": "pages_managementindex_getmanagementsidebarstats"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementIndex.jsx",
+      "source_location": "L489",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_managementindex_managementindex",
+      "target": "pages_managementindex_getmanagementsidebartitle"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementuser_jsx",
+      "target": "pages_managementuser_managementuser"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementuser_jsx",
+      "target": "pages_managementuser_role_styles"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/management/pages/ManagementUser.jsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_management_pages_managementuser_jsx",
+      "target": "pages_managementuser_status_styles"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/settings/index.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_settings_index_js",
+      "target": "apps_panel_admin_src_pages_settings_pages_settingsindex_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_settings_pages_settingsindex_jsx",
+      "target": "pages_settingsindex_settingsindex"
     },
     {
       "relation": "contains",
@@ -27344,6 +28881,16 @@
       "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
       "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractcollectionfiltertype"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-visitor/.astro/content.d.ts",
+      "source_location": "L137",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_visitor_astro_content_d_ts",
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractdatatype"
     },
     {
       "relation": "contains",
@@ -30431,8 +31978,30 @@
       "confidence_score": 1.0,
       "source": "panel_visitor_readme_astro_starter_kit_minimal",
       "target": "panel_visitor_readme_want_to_learn_more"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
+      "source_location": "L54",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "formrenderer_externalform_externalform",
+      "target": "formrenderer_useformlogic_useformlogic"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/components/FormRenderer/InternalForm.jsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "formrenderer_internalform_internalform",
+      "target": "formrenderer_useformlogic_useformlogic"
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "da8297b4c065a27c85a4da104f321bfc205eadef"
+  "built_at_commit": "59979bf97e8c7497c4a9829b26e1a66cd9dc6f2c"
 }

@@ -692,6 +692,69 @@ export async function initMariaDB() {
         // 16. Default Form Seedings
         const defaultForms = [
             {
+                id: '01KQEFB1FEEDBACKFORMSEED00',
+                slug: 'user-feedback',
+                title: 'User Feedback Form',
+                type: 'feedback',
+                schema_data: {
+                    properties: {
+                        name: {
+                            title: "Full Name",
+                            type: "string",
+                            description: "Your name (optional)",
+                            "ui:group": "visitor_feedback"
+                        },
+                        email: {
+                            format: "email",
+                            title: "Email Address",
+                            type: "string",
+                            description: "Your email address",
+                            "ui:group": "visitor_feedback"
+                        },
+                        feedback_type: {
+                            enum: ["Website Experience", "Museum Visit", "Visitor Services", "Other"],
+                            title: "Feedback Category",
+                            type: "string",
+                            description: "What is this feedback about?",
+                            "ui:group": "visitor_feedback"
+                        },
+                        rating: {
+                            title: "Overall Rating",
+                            type: "integer",
+                            minimum: 1,
+                            maximum: 5,
+                            description: "Rate us from 1 to 5",
+                            "ui:group": "visitor_feedback"
+                        },
+                        comments: {
+                            format: "textarea",
+                            title: "Your Comments",
+                            type: "string",
+                            description: "Please share details about your experience...",
+                            "ui:group": "visitor_feedback"
+                        },
+                        visit_date: {
+                            format: "date",
+                            title: "Date of Visit",
+                            type: "string",
+                            description: "When did you visit? (optional)",
+                            "ui:group": "visitor_feedback"
+                        }
+                    },
+                    required: ["email", "feedback_type", "rating", "comments"],
+                    type: "object"
+                },
+                settings: {
+                    allow_attachments: false,
+                    description: "We value your feedback. Let us know how we can improve our website, museum, and visitor services.",
+                    layout: "single_column",
+                    step_groups: [
+                        { id: "visitor_feedback", label: "Visitor Feedback", icon: "message-square" }
+                    ]
+                },
+                otp: false
+            },
+            {
                 id: '01KQE81CSDZ6D68JYXB34JXZX5',
                 slug: 'donation-form',
                 title: 'Artifact Donation & Temporary Loan Form',
@@ -780,6 +843,10 @@ export async function initMariaDB() {
                 settings: {
                     allow_attachments: true,
                     description: "Official Artifact Donation & Temporary Loan Form",
+                    info_block: {
+                        header: "Notice",
+                        description: "In addition to preserving your historic objects it is important to remember to preserve the history or story that goes with them. For example, the uniform worn by your great grandfather is just a uniform if the story is lost. Take the time to write down the story that goes with your objects; include any background details that would help our team understand the significance of the item.\n\n\"The Story Matters as Much as the Artifact\""
+                    },
                     field_mapping: {
                         acquisitionType: "acquisition_type",
                         description: "artifact_description",

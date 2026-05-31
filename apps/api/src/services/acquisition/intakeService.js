@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import { baseService } from './baseService.js';
 import { globalMutex } from '../../utils/mutex.js';
 import { logger } from '../../utils/logger.js';
-import { sendEmail } from '../../utils/mailer.js';
+import { sendEmail, sendEmailWithRetry } from '../../utils/mailer.js';
 import { assertTransition } from '../../utils/stateMachine.js';
 import { documentService } from '../documentService.js';
 import { notificationService } from '../notificationService.js';
@@ -143,7 +143,6 @@ export const intakeService = {
             try {
                 const intake = await baseService._getRecord('intakes', intakeId, { expand: 'donor_account_id,donation_item_id' });
                 assertTransition('intake', intake.status, 'awaiting_delivery');
-
                 const finalDonorName = overrides.donorName || intake.donor_info;
                 let finalLoanDuration = 'N/A (Permanent Transfer)';
                 
@@ -152,6 +151,51 @@ export const intakeService = {
                 }
 
                 const contractType = getContractType(intake.acquisition_method);
+
+                // Fetch donor details from the linked submission if present
+                let donorEmail = intake.expand?.donor_account_id?.email || '';
+                let donorName = finalDonorName;
+                let isAnonymous = false;
+                let donorExtras = { title: "", phone: "", address: "" };
+
+                if (intake.submission_id) {
+                    const [submission] = await db.query(`
+                        SELECT s.*, f.settings as form_settings
+                        FROM form_submissions s
+                        JOIN form_definitions f ON s.form_id = f.id
+                        WHERE s.id = ?
+                    `, [intake.submission_id]);
+                    if (submission) {
+                        let subData, settings;
+                        try {
+                            subData = typeof submission.data === 'string' ? JSON.parse(submission.data) : submission.data;
+                            settings = typeof submission.form_settings === 'string' ? JSON.parse(submission.form_settings) : submission.form_settings;
+                        } catch (parseErr) {
+                            throw new Error(`MALFORMED_SUBMISSION_DATA: Submission or form settings JSON is malformed: ${parseErr.message}`);
+                        }
+                        const mapping = settings?.field_mapping || {};
+
+                        isAnonymous = subData.is_anonymous === true || subData.is_anonymous === 'true' || subData.is_anonymous === 1 || subData.is_anonymous === '1';
+                        const firstName = isAnonymous ? "Anonymous" : (subData[mapping.firstName] || subData.donor_first_name || subData.firstName || "Anonymous");
+                        const lastName = isAnonymous ? "Donor" : (subData[mapping.lastName] || subData.donor_last_name || subData.lastName || "");
+                        
+                        donorName = (subData[mapping.donorName] || `${firstName} ${lastName}`).trim();
+                        if (!donorEmail) {
+                            donorEmail = subData[mapping.donorEmail] || subData.donor_email || subData.email;
+                        }
+
+                        donorExtras = isAnonymous ? { title: "", phone: "", address: "" } : {
+                            title: subData.donor_title || subData[mapping.donorTitle] || subData.title || "",
+                            phone: subData.donor_phone || subData[mapping.donorPhone] || subData.phone || "",
+                            address: subData.donor_address || subData[mapping.donorAddress] || subData.address || ""
+                        };
+                    }
+                }
+
+                // If we retrieved an address from the submission and there's no override address, use it
+                if (donorExtras.address && !overrides.address) {
+                    overrides.address = donorExtras.address;
+                }
 
                 const docHtml = await documentService.generateMOA(intake, 'html', overrides);
                 const docDocx = await documentService.generateMOA(intake, 'docx', overrides);
@@ -173,39 +217,6 @@ export const intakeService = {
                         light: '#FFFFFF'
                     }
                 });
-
-                // Fetch donor details from the linked submission if not already provisioned
-                let donorEmail = intake.expand?.donor_account_id?.email || '';
-                let donorName = finalDonorName;
-                let isAnonymous = false;
-                let donorExtras = { title: "", phone: "", address: "" };
-
-                if (!donorEmail && intake.submission_id) {
-                    const [submission] = await db.query(`
-                        SELECT s.*, f.settings as form_settings
-                        FROM form_submissions s
-                        JOIN form_definitions f ON s.form_id = f.id
-                        WHERE s.id = ?
-                    `, [intake.submission_id]);
-                    if (submission) {
-                        const subData = typeof submission.data === 'string' ? JSON.parse(submission.data) : submission.data;
-                        const settings = typeof submission.form_settings === 'string' ? JSON.parse(submission.form_settings) : submission.form_settings;
-                        const mapping = settings?.field_mapping || {};
-
-                        isAnonymous = subData.is_anonymous === true || subData.is_anonymous === 'true' || subData.is_anonymous === 1 || subData.is_anonymous === '1';
-                        const firstName = isAnonymous ? "Anonymous" : (subData[mapping.firstName] || subData.donor_first_name || subData.firstName || "Anonymous");
-                        const lastName = isAnonymous ? "Donor" : (subData[mapping.lastName] || subData.donor_last_name || subData.lastName || "");
-                        
-                        donorName = (subData[mapping.donorName] || `${firstName} ${lastName}`).trim();
-                        donorEmail = subData[mapping.donorEmail] || subData.donor_email || subData.email;
-
-                        donorExtras = isAnonymous ? { title: "", phone: "", address: "" } : {
-                            title: subData.donor_title || "",
-                            phone: subData.donor_phone || "",
-                            address: subData.donor_address || ""
-                        };
-                    }
-                }
 
                 // Provision visitor account on intake approval if email is present
                 let donorAccountId = intake.donor_account_id;
@@ -236,13 +247,16 @@ export const intakeService = {
                     donorAccountId = accountDetails.userId;
                 }
 
+                // C-1 FIX: Only store the hash — never persist the raw token in the database.
+                // The raw token is returned one-time in this response and sent via email.
+                // NOTE: We restore qr_token to allow the visitor portal to render the QR code.
                 const updatedIntake = await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'awaiting_delivery', {
                     donor_name_override: finalDonorName,
                     loan_duration_override: finalLoanDuration !== 'N/A (Permanent Transfer)' ? finalLoanDuration : null,
                     delivery_slip_id: deliverySlipId,
                     moa_status: 'generated',
-                    qr_token_hash: tokenHash,
                     qr_token: rawToken,
+                    qr_token_hash: tokenHash,
                     qr_token_expires: tokenExpires,
                     donor_account_id: donorAccountId
                 });
@@ -250,8 +264,9 @@ export const intakeService = {
                 let visitorSetupUrl = null;
                 if (donorEmail) {
                     const isStaff = accountDetails && !['donor', 'visitor'].includes(accountDetails.role) && !accountDetails.isNew;
-                    const portalUrl = isStaff ? "http://localhost:3001" : "http://localhost:4321";
-                    visitorSetupUrl = accountDetails?.setupUrl ? accountDetails.setupUrl.replace('http://localhost:5173', 'http://localhost:4321') : null;
+                    // H-1 FIX: Use env-driven URLs instead of hardcoded localhost.
+                    const portalUrl = isStaff ? env.adminPanelUrl : env.visitorPortalUrl;
+                    visitorSetupUrl = accountDetails?.setupUrl ? accountDetails.setupUrl.replace(env.frontendUrl, env.visitorPortalUrl) : null;
                     let portalSection = "";
                     if (accountDetails?.isNew && visitorSetupUrl) {
                         portalSection = `
@@ -302,7 +317,7 @@ export const intakeService = {
                     }
 
                     try {
-                        await sendEmail({
+                        await sendEmailWithRetry({
                             to: donorEmail,
                             subject: `Museum Acquisition Documents: ${intake.proposed_item_name}`,
                             html: `
@@ -418,6 +433,7 @@ export const intakeService = {
         return await globalMutex.runExclusive(`intake_${intakeId}`, async () => {
             return await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'under_review', {
                 delivery_slip_id: null,
+                qr_token: null,
                 qr_token_hash: null,
                 qr_token_expires: null,
                 moa_status: 'pending'
@@ -467,9 +483,10 @@ export const intakeService = {
 
                 // Artifact is now physically in the museum — set Receiving Bay as the initial location.
                 // This is the first point at which a donation artifact has a real physical location.
-                const updated = await baseService._updateRecord(staffId, 'intakes', intakeId, {
-                    status: 'in_custody',
+                // C-2 FIX: Use _transitionRecord so the state machine audit trail is preserved.
+                const updated = await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'in_custody', {
                     current_location: 'Receiving Bay',
+                    qr_token: null,
                     qr_token_hash: null,
                     qr_token_expires: null
                 });
@@ -495,6 +512,8 @@ export const intakeService = {
     },
 
     async listVisitorDonations(donorUserId) {
+        // C-1/H-4 FIX: Restored i.qr_token and i.qr_token_expires to allow the visitor portal
+        // to render the QR code so the visitor can present it for physical handover.
         const rows = await db.query(`
             SELECT 
                 i.id as intake_id,
@@ -543,7 +562,13 @@ export const intakeService = {
                 stageDescription = `Cataloged and stored in ${row.inventory_location || 'Storage'}`;
             } else if (row.accession_id) {
                 stage = 'accession';
-                stageDescription = `Formally accessioned into the collection (Acc No: ${row.accession_number})`;
+                if (row.accession_status === 'pending_approval') {
+                    stageDescription = `Accession pending approval (Acc No: ${row.accession_number})`;
+                } else if (row.accession_status === 'in_research') {
+                    stageDescription = `In curatorial research (Acc No: ${row.accession_number})`;
+                } else {
+                    stageDescription = `Formally accessioned into the collection (Acc No: ${row.accession_number})`;
+                }
             } else if (row.intake_status === 'in_custody') {
                 stage = 'receive_artifact';
                 stageDescription = 'Physically received by the museum';
@@ -571,6 +596,7 @@ export const intakeService = {
                 stageDescription,
                 intakeStatus: row.intake_status,
                 accessionNumber: row.accession_number,
+                accessionStatus: row.accession_status,
                 catalogNumber: row.catalog_number,
                 exhibitionTitle: row.exhibition_title,
                 exhibitionVenue: row.exhibition_venue

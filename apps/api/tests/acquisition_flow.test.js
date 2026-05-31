@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { db } from '../src/config/db.js';
 import { initMariaDB as initDb } from '../src/config/dbInit.js';
 import { userService } from '../src/services/userService.js';
@@ -5,6 +6,8 @@ import { submissionService } from '../src/services/form/submissionService.js';
 import { formPipelineService } from '../src/services/formPipelineService.js';
 import { acquisitionService } from '../src/services/acquisitionService.js';
 import { ulid } from 'ulidx';
+
+jest.setTimeout(30000);
 
 describe('Acquisition Pipeline Flow & Consolidation Tests', () => {
     let testUserId;

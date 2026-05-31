@@ -1,6 +1,7 @@
 import { db } from './db.js';
 import { logger } from '../utils/logger.js';
 import { baseService } from '../services/acquisition/baseService.js';
+import { env } from './env.js';
 
 /**
  * Initializes all required MariaDB tables if they do not exist.
@@ -871,6 +872,20 @@ export async function initMariaDB() {
                     otp = VALUES(otp)
             `, [f.id, f.slug, f.title, f.type, JSON.stringify(f.schema_data), JSON.stringify(f.settings), f.otp]);
         }
+
+        // L-4 Health check: Verify DATABASE() returns a value
+        const dbNameResult = await conn.query('SELECT DATABASE() as dbName');
+        const dbName = dbNameResult[0]?.dbName;
+        if (!dbName && !env.db.name) {
+            throw new Error('DATABASE_NOT_CONFIGURED: Active database name could not be resolved from connection or env.db.name.');
+        }
+
+        // L-4 Health check: Verify core tables exist
+        const coreTables = ['users', 'donation_items', 'intakes', 'locations', 'accessions', 'inventory', 'condition_reports'];
+        for (const t of coreTables) {
+            await conn.query(`SELECT 1 FROM \`${t}\` LIMIT 1`);
+        }
+        logger.info('Database startup health check passed: core tables verified.');
 
         await conn.query('COMMIT');
         logger.info('MariaDB Schema initialized & seeded successfully.');

@@ -119,6 +119,11 @@ export const accessionService = {
         return await globalMutex.runExclusive(`accession_${accessionId}`, async () => {
             try {
                 return await db.transaction(async (tx) => {
+                    const accession = await baseService._getRecord('accessions', accessionId, {}, tx);
+                    if (accession.status === 'in_research' || accession.status === 'finalized') {
+                        return accession;
+                    }
+
                     await baseService._createRecord(staffId, 'accession_approvals', {
                         accession_id: accessionId,
                         approved_by: staffId,
@@ -130,7 +135,6 @@ export const accessionService = {
 
                     const result = await baseService._transitionRecord(staffId, 'accession', 'accessions', accessionId, 'in_research', {}, tx);
                     
-                    const accession = await baseService._getRecord('accessions', accessionId, {}, tx);
                     notificationService.sendToRole('curator', 'Accession Approved', 
                         `Record ${accession.accession_number} has been approved and is ready for research.`, 'success', { actionUrl: `/accessions?id=${accessionId}` });
                     

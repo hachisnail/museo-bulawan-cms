@@ -29,8 +29,9 @@ const envSchema = Joi.object({
 
     // App & CORS Config
     FRONTEND_URL: Joi.string().default('http://localhost:5173'), // Used for email links
+    ADMIN_PANEL_URL: Joi.string().default('http://localhost:3001'), // Staff management panel
+    VISITOR_PORTAL_URL: Joi.string().default('http://localhost:4321'), // Donor/visitor portal
     CORS_ORIGINS: Joi.string().default('http://localhost:5173'),  // Comma-separated list for CORS
-        // Add this inside envSchema in api/src/config/env.js
 
 
     // ==========================================
@@ -59,9 +60,11 @@ export const env = {
     isProd: envVars.NODE_ENV === 'production',
     port: envVars.PORT,
     
-    frontendUrl: envVars.FRONTEND_URL, // String
+    frontendUrl: envVars.FRONTEND_URL,
+    adminPanelUrl: envVars.ADMIN_PANEL_URL,
+    visitorPortalUrl: envVars.VISITOR_PORTAL_URL,
     // Parse the comma-separated string into an array and trim whitespace
-    corsOrigins: envVars.CORS_ORIGINS.split(',').map(origin => origin.trim()), 
+    corsOrigins: envVars.CORS_ORIGINS.split(',').map(origin => origin.trim()),
 
     db: {
         host: envVars.DB_HOST,

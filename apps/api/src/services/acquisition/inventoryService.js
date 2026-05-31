@@ -294,13 +294,19 @@ export const inventoryService = {
         });
     },
 
-    // ==========================================
-    // MOVEMENT HISTORY & CONSERVATION (SPECTRUM: Location & Movement Control)
-    // ==========================================
     async getMovementHistory(inventoryId, connection = null) {
-        return await baseService._listRecords('location_history', {
-            filter: `inventory_item_id="${inventoryId}"`
-        }, connection);
+        const rows = await db.query(
+            'SELECT * FROM location_history WHERE inventory_item_id = ? ORDER BY created_at DESC, id DESC',
+            [inventoryId],
+            connection
+        );
+        return {
+            page: 1,
+            perPage: rows.length,
+            totalItems: rows.length,
+            totalPages: 1,
+            items: rows
+        };
     },
 
     async createConservationLog(staffId, inventoryId, treatment, findings, recommendations, submissionId = null, extra = {}) {
@@ -631,11 +637,20 @@ export const inventoryService = {
 
         let derivedStatus = 'active';
 
-        if (latestMovement) {
+        // M-5 FIX: Query loans table to check if there is an active outbound loan for this inventory item.
+        const activeLoans = await db.query(
+            `SELECT 1 FROM loans l 
+             INNER JOIN loan_artifacts la ON la.loan_id = l.id 
+             WHERE la.inventory_id = ? AND l.status = 'active' LIMIT 1`,
+            [inventoryId],
+            connection
+        );
+
+        if (activeLoans.length > 0) {
+            derivedStatus = 'loan';
+        } else if (latestMovement) {
             const loc = (latestMovement.to_location || '').toLowerCase();
-            if (loc.includes('loan')) {
-                derivedStatus = 'loan';
-            } else if (loc.includes('storage') || loc.includes('vault')) {
+            if (loc.includes('storage') || loc.includes('vault')) {
                 derivedStatus = 'storage';
             }
         }

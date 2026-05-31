@@ -1,6 +1,8 @@
 import { acquisitionService } from '../../services/acquisitionService.js';
 import { formPipelineService } from '../../services/formPipelineService.js';
 import { mapDTO } from '../../utils/dtoMapper.js';
+import { db } from '../../config/db.js';
+import { logger } from '../../utils/logger.js';
 
 /**
  * IntakeController
@@ -163,10 +165,22 @@ export const intakeController = {
             // Step 2 & 3: Approve + generate MOA for each intake
             // For multi-item submissions we handle all, return the last MOA result for display
             let lastMoaResult = null;
-            for (const intake of processResult.intakes) {
-                await acquisitionService.approveIntake(staffId, intake.id);
-                const overrides = req.body || {};
-                lastMoaResult = await acquisitionService.generateDynamicMOA(staffId, intake.id, overrides);
+            try {
+                for (const intake of processResult.intakes) {
+                    await acquisitionService.approveIntake(staffId, intake.id);
+                    const overrides = req.body || {};
+                    lastMoaResult = await acquisitionService.generateDynamicMOA(staffId, intake.id, overrides);
+                }
+            } catch (innerError) {
+                logger.error(`Error during batch approval/MOA generation for submission ${submissionId}. Rolling back created intakes.`, { error: innerError.message });
+                try {
+                    await db.query('DELETE FROM intakes WHERE submission_id = ?', [submissionId]);
+                    await db.query('DELETE FROM donation_items WHERE submission_id = ?', [submissionId]);
+                    await db.query('UPDATE form_submissions SET status = "pending" WHERE id = ?', [submissionId]);
+                } catch (rollbackErr) {
+                    logger.error(`Failed to execute rollback for failed submission processing: ${rollbackErr.message}`);
+                }
+                throw innerError;
             }
 
             res.status(200).json({

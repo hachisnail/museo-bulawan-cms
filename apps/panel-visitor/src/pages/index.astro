@@ -314,8 +314,8 @@ import Layout from '../layouts/Layout.astro';
             titleText.textContent = item.itemName;
             
             const stageBadge = document.createElement('span');
-            stageBadge.className = `px-2 py-0.5 rounded-sm text-[8px] font-bold uppercase tracking-wider border ${getStageBadgeClass(item.stage)}`;
-            stageBadge.textContent = item.stage.replace(/_/g, ' ');
+            stageBadge.className = `px-2 py-0.5 rounded-sm text-[8px] font-bold uppercase tracking-wider border ${getStageBadgeClass(item.stage, item.accessionStatus)}`;
+            stageBadge.textContent = getStageBadgeText(item.stage, item.accessionStatus);
 
             titleRow.appendChild(titleText);
             titleRow.appendChild(stageBadge);
@@ -332,7 +332,15 @@ import Layout from '../layouts/Layout.astro';
         });
     }
 
-    function getStageBadgeClass(stage: string) {
+    function getStageBadgeClass(stage: string, accessionStatus?: string) {
+        if (stage === 'accession') {
+            if (accessionStatus === 'pending_approval') {
+                return 'text-amber-700 bg-amber-50 border-amber-200';
+            }
+            if (accessionStatus === 'in_research') {
+                return 'text-blue-700 bg-blue-50 border-blue-200';
+            }
+        }
         switch (stage) {
             case 'on_display': return 'text-green-700 bg-green-50 border-green-200';
             case 'inventory': return 'text-black bg-zinc-200 border-black';
@@ -340,6 +348,18 @@ import Layout from '../layouts/Layout.astro';
             case 'receive_artifact': return 'text-amber-700 bg-amber-50 border-amber-200';
             default: return 'text-[#A68A27] bg-[#D4AF37]/10 border-[#D4AF37]/30';
         }
+    }
+
+    function getStageBadgeText(stage: string, accessionStatus?: string) {
+        if (stage === 'accession') {
+            if (accessionStatus === 'pending_approval') {
+                return 'Accession Pending';
+            }
+            if (accessionStatus === 'in_research') {
+                return 'In Research';
+            }
+        }
+        return stage.replace(/_/g, ' ');
     }
 
     function selectDonation(item: any) {
@@ -373,7 +393,19 @@ import Layout from '../layouts/Layout.astro';
             metaLocation.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> ${item.location || 'Receiving Bay'}`;
         }
         
-        metaAccession.textContent = item.accessionNumber || 'Not Accessioned Yet';
+        if (item.accessionNumber) {
+            let statusText = '';
+            if (item.accessionStatus === 'pending_approval') {
+                statusText = ' (Pending Approval)';
+            } else if (item.accessionStatus === 'in_research') {
+                statusText = ' (In Research)';
+            } else if (item.accessionStatus === 'finalized') {
+                statusText = ' (Finalized)';
+            }
+            metaAccession.textContent = `${item.accessionNumber}${statusText}`;
+        } else {
+            metaAccession.textContent = 'Not Accessioned Yet';
+        }
         metaCatalog.textContent = item.catalogNumber || 'Not Cataloged Yet';
 
         if (item.exhibitionTitle) {
@@ -386,6 +418,7 @@ import Layout from '../layouts/Layout.astro';
         // Stepper updates
         const stages = ['intake', 'receive_artifact', 'accession', 'inventory', 'on_display'];
         const currentStageIndex = stages.indexOf(item.stage);
+        const defaultLabels = ['Intake', 'Receive Artifact', 'Accession', 'Inventory', 'On Display'];
 
         for (let i = 1; i <= 5; i++) {
             const stepEl = document.getElementById(`step-${i}`) as HTMLDivElement;
@@ -396,6 +429,7 @@ import Layout from '../layouts/Layout.astro';
             // Reset
             circle.className = 'step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors border-2 ';
             label.className = 'text-[10px] uppercase font-bold tracking-wider mt-2 step-label ';
+            label.textContent = defaultLabels[i - 1];
 
             if (i - 1 < currentStageIndex) {
                 // Completed
@@ -405,8 +439,23 @@ import Layout from '../layouts/Layout.astro';
                 if (line) line.className = 'hidden sm:block h-0.5 flex-1 -mt-4 transition-colors bg-green-600';
             } else if (i - 1 === currentStageIndex) {
                 // Active
-                circle.classList.add('bg-black', 'text-white', 'border-[#D4AF37]');
-                circle.textContent = i.toString();
+                if (item.stage === 'accession' && item.accessionStatus === 'pending_approval') {
+                    circle.classList.add('bg-amber-500', 'text-white', 'border-amber-600');
+                    label.textContent = 'Accession Pending';
+                } else if (item.stage === 'accession' && item.accessionStatus === 'in_research') {
+                    circle.classList.add('bg-blue-600', 'text-white', 'border-blue-700');
+                    label.textContent = 'In Research';
+                } else {
+                    circle.classList.add('bg-black', 'text-white', 'border-[#D4AF37]');
+                }
+                
+                // Avoid displaying checkmark if active
+                if (circle.innerHTML === '✓') {
+                    circle.innerHTML = i.toString();
+                } else {
+                    circle.textContent = i.toString();
+                }
+                
                 label.classList.add('text-black', 'font-black');
                 if (line) line.className = 'hidden sm:block h-0.5 flex-1 -mt-4 transition-colors bg-zinc-200';
             } else {

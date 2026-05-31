@@ -32,7 +32,13 @@ export const donationPipeline = {
                 assertTransition("submission", submission.status, "processed");
 
                 // Parse JSON fields
-                const data = typeof submission.data === 'string' ? JSON.parse(submission.data) : submission.data;
+                // L-6: Wrap JSON.parse in try/catch to handle malformed submission data gracefully.
+                let data;
+                try {
+                    data = typeof submission.data === 'string' ? JSON.parse(submission.data) : submission.data;
+                } catch (parseErr) {
+                    throw new Error(`MALFORMED_SUBMISSION_DATA: Submission data JSON is malformed: ${parseErr.message}`);
+                }
                 const settings = typeof submission.form_settings === 'string' ? JSON.parse(submission.form_settings) : submission.form_settings;
                 const mapping = settings?.field_mapping || {};
 

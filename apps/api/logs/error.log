@@ -1239,3 +1239,48 @@ sql:
     at addChunk (node:internal/streams/readable:561:12)
     at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
     at Readable.push (node:internal/streams/readable:392:5) | Meta: {"name":"SqlError","sqlMessage":"Data too long for column 'id' at row 1","sql":"\n            INSERT INTO notifications (id, title, message, type, target_type, target_id, action_url)\n            VALUES (?, ?, ?, ?, ?, ?, ?)\n         - parameters:['3a18fa05-1186-4612-83a9-66881b7e5b07','New Intake Created','External submission processed...","fatal":false,"errno":1406,"sqlState":"22001","code":"ER_DATA_TOO_LONG"}
+2026-05-31 12:48:09 [error]: Error processing external intake: UNAUTHORIZED_PIPELINE_ACTION: Only donation submissions can be processed into the acquisition system.
+2026-05-31 12:48:09 [error]: Error processing accession: Record not found in intakes with id undefined
+2026-05-31 12:48:09 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780202888017@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 12:48:09 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780202888017@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 12:48:12 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 12:49:44 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780202982918@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 12:49:44 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780202982918@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 12:50:27 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780203025992@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 12:50:27 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780203025992@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 12:50:31 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 12:51:04 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780203063501@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 12:51:04 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780203063501@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 12:51:08 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:02:52 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780203770828@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:02:52 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780203770828@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:03:00 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:05:42 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780203940831@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:05:42 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780203940831@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:05:43 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:21:39 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780204898388@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:21:39 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780204898388@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:21:39 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:22:09 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780204928387@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:22:09 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780204928387@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:22:10 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:29:06 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780205345770@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:29:06 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780205345770@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:29:08 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:31:43 [error]: Error approving accession: Invalid transition: 'accession' cannot move from 'in_research' → 'in_research'. Allowed: [finalized]
+2026-05-31 13:31:43 [error]: Error: Invalid transition: 'accession' cannot move from 'in_research' → 'in_research'. Allowed: [finalized]
+    at assertTransition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/stateMachine.js:99:15)
+    at Object._transitionRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/baseService.js:327:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:131:36
+    at async Object.transaction (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/config/db.js:53:28)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:121:24
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.approveAccession (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:119:16)
+    at async Object.approveAccession (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/accessionController.js:71:31) | Meta: {"method":"POST","url":"/api/v1/acquisitions/accessions/01KSY7ZHAVF38VHFXBS6W7RTGP/approve","ip":"::1","user":"01KSJJ2HMT9792RBRG6KDB5WZN"}
+2026-05-31 13:33:00 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780205579566@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:33:00 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780205579566@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:33:01 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:33:26 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780205602461@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:33:26 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780205602461@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:33:26 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.

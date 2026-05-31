@@ -16,6 +16,7 @@
     "@headlessui/react": "^2.2.10",
     "ajv": "^6.15.0",
     "bcrypt": "^6.0.0",
+    "connect-redis": "^9.0.0",
     "cors": "^2.8.6",
     "docx": "^9.6.1",
     "docxtemplater": "^3.68.6",

@@ -194,9 +194,9 @@ export const acquisitionController = {
     // ==========================================
     // LOAN ACTIONS (Outbound)
     // ==========================================
-    listLoans: (req, res) => loansController.listLoans(req, res),
-    createLoan: (req, res) => loansController.createLoan(req, res),
-    activateLoan: (req, res) => loansController.activateLoan(req, res),
-    returnLoan: (req, res) => loansController.returnLoan(req, res),
-    exportLoanAgreement: (req, res) => loansController.exportLoanAgreement(req, res)
+    listLoans: (req, res, next) => loansController.listLoans(req, res, next),
+    createLoan: (req, res, next) => loansController.createLoan(req, res, next),
+    activateLoan: (req, res, next) => loansController.activateLoan(req, res, next),
+    returnLoan: (req, res, next) => loansController.returnLoan(req, res, next),
+    exportLoanAgreement: (req, res, next) => loansController.exportLoanAgreement(req, res, next)
 };

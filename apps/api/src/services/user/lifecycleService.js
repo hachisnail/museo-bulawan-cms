@@ -156,9 +156,9 @@ export const lifecycleService = {
             const tokenExpires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days for donors
 
             await db.query(
-                `INSERT INTO users (id, fname, lname, email, role, status, action_token, action_token_expires) 
-                 VALUES (?, ?, ?, ?, 'donor', 'invited', ?, ?)`,
-                [userId, fname, lname, email, actionToken, tokenExpires]
+                `INSERT INTO users (id, fname, lname, email, role, status, action_token, action_token_expires, title, phone, address) 
+                 VALUES (?, ?, ?, ?, 'donor', 'invited', ?, ?, ?, ?, ?)`,
+                [userId, fname, lname, email, actionToken, tokenExpires, title || null, phone || null, address || null]
             );
 
 
@@ -166,7 +166,7 @@ export const lifecycleService = {
             logger.info('Donor provisioned successfully', { userId, email });
 
             const setupUrl = `${env.frontendUrl}/setup?token=${actionToken}`;
-            const visitorSetupUrl = setupUrl.replace('http://localhost:5173', 'http://localhost:4321');
+            const visitorSetupUrl = setupUrl.replace(env.frontendUrl, env.visitorPortalUrl);
 
             try {
                 await sendEmail({

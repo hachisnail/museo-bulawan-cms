@@ -26,32 +26,39 @@ export const documentService = {
         const donationItem = intake.expand?.donation_item_id || {};
         
         // Extract city/province from address if possible
+        const address = overrides.address || donorAccount.address || '';
         let city = 'Daet';
         let province = 'Camarines Norte';
-        if (donorAccount.address) {
-            const parts = donorAccount.address.split(',').map(s => s.trim());
+        if (address) {
+            const parts = address.split(',').map(s => s.trim());
             if (parts.length >= 2) {
                 province = parts[parts.length - 1];
                 city = parts[parts.length - 2];
+            } else if (parts.length === 1) {
+                city = parts[0];
             }
         }
 
+        const totalValue = intake.acquisition_method === 'loan'
+            ? (overrides.loanDuration || intake.loan_duration_override || (intake.loan_end_date ? 'Until ' + new Date(intake.loan_end_date).toLocaleDateString(undefined, { dateStyle: 'long' }) : 'Standard 6 Months'))
+            : (donationItem.quantity || 1);
+
         const data = {
             // New mappings for [[ ]] templates
-            name: overrides.donorName || intake.donor_name_override || intake.donor_info || donorAccount.fname + ' ' + donorAccount.lname || 'Valued Donor',
+            name: overrides.donorName || intake.donor_name_override || intake.donor_info || (donorAccount.fname ? (donorAccount.fname + ' ' + (donorAccount.lname || '')) : 'Valued Donor'),
             artifact: intake.proposed_item_name,
             method: intake.acquisition_method,
             date: new Date().toLocaleDateString(undefined, { dateStyle: 'long' }),
-            total: donationItem.quantity || 1,
+            total: totalValue,
             start: new Date().toLocaleDateString(undefined, { dateStyle: 'long' }),
             end: intake.loan_end_date ? new Date(intake.loan_end_date).toLocaleDateString(undefined, { dateStyle: 'long' }) : 'Permanent',
             province,
             city,
             // Legacy mappings for HTML preview
-            donorName: overrides.donorName || intake.donor_name_override || intake.donor_info,
+            donorName: overrides.donorName || intake.donor_name_override || intake.donor_info || (donorAccount.fname ? (donorAccount.fname + ' ' + (donorAccount.lname || '')) : 'Valued Donor'),
             itemName: intake.proposed_item_name,
             artifactName: intake.proposed_item_name,
-            loanDuration: overrides.loanDuration || intake.loan_duration_override || 'N/A'
+            loanDuration: overrides.loanDuration || intake.loan_duration_override || (intake.acquisition_method === 'loan' ? totalValue : 'N/A')
         };
 
         if (format === 'docx') {

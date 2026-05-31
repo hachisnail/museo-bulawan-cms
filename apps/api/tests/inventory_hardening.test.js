@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { db } from '../src/config/db.js';
 import { initMariaDB as initDb } from '../src/config/dbInit.js';
 import { userService } from '../src/services/userService.js';
@@ -9,6 +10,8 @@ import { valuationService } from '../src/services/acquisition/valuationService.j
 import { exhibitionService } from '../src/services/acquisition/exhibitionService.js';
 import { loanService } from '../src/services/acquisition/loanService.js';
 import { ulid } from 'ulidx';
+
+jest.setTimeout(30000);
 
 describe('Inventory, Location and Valuation Hardening Tests', () => {
     let testUserId;

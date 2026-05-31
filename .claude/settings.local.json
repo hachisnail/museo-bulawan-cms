@@ -14,7 +14,8 @@
       "Bash(curl -s -o /dev/null -w \"MinIO \\(9000\\): HTTP %{http_code}\\\\n\" http://127.0.0.1:9000/minio/health/live)",
       "Bash(curl -s \"http://127.0.0.1:3001/api/articles?where[_status][equals]=published&limit=3\")",
       "Bash(xargs grep -l \"articles\")",
-      "Bash(npx astro --version)"
+      "Bash(npx astro --version)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }

@@ -1,5 +1,5 @@
 // apps/panel-admin/src/components/MainLayout.jsx
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { useSSE } from "../hooks/useSSE";
@@ -83,6 +83,8 @@ export default function MainLayout() {
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isCmsLoading, setIsCmsLoading] = useState(true);
   const [shouldLoadCms, setShouldLoadCms] = useState(false);
+  const [isInEditor, setIsInEditor] = useState(false);
+  const cmsIframeRef = useRef(null);
 
   useEffect(() => {
     if (location.pathname === '/articles') {
@@ -92,6 +94,26 @@ export default function MainLayout() {
       return () => clearTimeout(timer);
     }
   }, [location.pathname, shouldLoadCms]);
+
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data?.type === 'PAYLOAD_ROUTE_CHANGE') {
+        const { pathname } = event.data;
+        // The articles list is exactly '/admin/collections/articles'
+        // Anything deeper like '/admin/collections/articles/create' or '/admin/collections/articles/[id]' is the editor
+        if (pathname && pathname.startsWith('/admin/collections/articles/')) {
+           // We are in the editor if there's a segment after '/articles'
+           const remainingPath = pathname.replace('/admin/collections/articles', '');
+           setIsInEditor(remainingPath.length > 1); // length > 1 covers '/something' vs just '' or '/'
+        } else {
+           setIsInEditor(false);
+        }
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   const isAdmin = user?.role === "admin";
   const userInitials = user?.username
@@ -324,8 +346,10 @@ export default function MainLayout() {
                 <p className="text-sm font-semibold text-gray-500 tracking-widest uppercase">Loading CMS...</p>
               </div>
             )}
+            {/* The Payload CMS iframe handles its own back button internally now */}
             {shouldLoadCms && (
               <iframe 
+                  ref={cmsIframeRef}
                   src="http://localhost:3001/admin/collections/articles" 
                   className="w-full h-full flex-1 border-0"
                   title="Payload CMS Editor Preloaded"

@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import { ulid } from 'ulid';
 import { db } from '../config/db.js';
 import { sseManager } from '../utils/sseFactory.js';
 import { logger } from '../utils/logger.js';
@@ -6,7 +6,7 @@ import { logger } from '../utils/logger.js';
 class NotificationService {
     
     async _saveAndBroadcast(targetType, targetId, channel, title, message, type = 'info', metadata = {}) {
-        const id = crypto.randomUUID();
+        const id = ulid();
         const actionUrl = metadata.actionUrl || null;
 
         const sql = `

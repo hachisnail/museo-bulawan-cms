@@ -119,6 +119,11 @@ export const accessionService = {
         return await globalMutex.runExclusive(`accession_${accessionId}`, async () => {
             try {
                 return await db.transaction(async (tx) => {
+                    const accession = await baseService._getRecord('accessions', accessionId, {}, tx);
+                    if (accession.status === 'in_research' || accession.status === 'finalized') {
+                        return accession;
+                    }
+
                     await baseService._createRecord(staffId, 'accession_approvals', {
                         accession_id: accessionId,
                         approved_by: staffId,
@@ -130,7 +135,6 @@ export const accessionService = {
 
                     const result = await baseService._transitionRecord(staffId, 'accession', 'accessions', accessionId, 'in_research', {}, tx);
                     
-                    const accession = await baseService._getRecord('accessions', accessionId, {}, tx);
                     notificationService.sendToRole('curator', 'Accession Approved', 
                         `Record ${accession.accession_number} has been approved and is ready for research.`, 'success', { actionUrl: `/accessions?id=${accessionId}` });
                     
@@ -148,11 +152,27 @@ export const accessionService = {
     // ==========================================
     async updateAccessionResearch(staffId, accessionId, researchData) {
         return await globalMutex.runExclusive(`accession_${accessionId}`, async () => {
-            const accession = await baseService._getRecord('accessions', accessionId);
-            if (accession.status === 'finalized') {
-                throw new Error("Cannot modify research data for a finalized accession record.");
-            }
-            return await baseService._updateRecord(staffId, 'accessions', accessionId, researchData);
+            return await db.transaction(async (tx) => { // <-- ADD TRANSACTION WRAPPER
+                const accession = await baseService._getRecord('accessions', accessionId, {}, tx); // <-- PASS TX
+                
+                if (accession.status === 'finalized') {
+                    throw new Error("Cannot modify research data for a finalized accession record.");
+                }
+
+                const updateData = { ...researchData };
+                if (updateData.tags !== undefined) {
+                    if (typeof updateData.tags === 'string') {
+                        updateData.tags = updateData.tags
+                            .split(',')
+                            .map(t => t.trim())
+                            .filter(t => t.length > 0);
+                    } else if (!Array.isArray(updateData.tags)) {
+                        updateData.tags = [];
+                    }
+                }
+                
+                return await baseService._updateRecord(staffId, 'accessions', accessionId, updateData, tx); // <-- PASS TX
+            });
         });
     },
 

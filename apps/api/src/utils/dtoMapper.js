@@ -27,6 +27,17 @@ export const mapDTO = (data, options = {}) => {
     return transformRecord(data, options);
 };
 
+function formatTags(tags) {
+    if (!tags) return '';
+    try {
+        const parsed = typeof tags === 'string' ? JSON.parse(tags) : tags;
+        if (Array.isArray(parsed)) {
+            return parsed.join(', ');
+        }
+    } catch (e) {}
+    return typeof tags === 'string' ? tags : '';
+}
+
 /**
  * Transforms a single record
  */
@@ -34,6 +45,10 @@ function transformRecord(record, options) {
     if (!record || typeof record !== 'object') return record;
 
     const clean = { ...record };
+
+    if (clean.tags !== undefined) {
+        clean.tags = formatTags(clean.tags);
+    }
 
     // Handle expanded relations recursively
     if (clean.expand && typeof clean.expand === 'object') {

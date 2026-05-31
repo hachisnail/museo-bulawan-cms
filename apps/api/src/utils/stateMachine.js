@@ -44,7 +44,7 @@ const INVENTORY_TRANSITIONS = {
 // ==========================================
 const SUBMISSION_TRANSITIONS = {
     'pending':    ['processed', 'archived'],
-    'processed':  ['archived'],
+    'processed':  ['processed', 'archived'],
     'archived':   ['pending']                              // allow reopen
 };
 

@@ -24,6 +24,8 @@ export const csrfProtection = (req, res, next) => {
     const path = req.originalUrl.split('?')[0];
     const exemptPaths = [
         '/api/v1/auth/login',
+        '/api/v1/auth/login-visitor',
+        '/api/v1/auth/logout',
         '/api/v1/user/onboard',
         '/api/v1/user/setup',
         '/api/v1/user/forgot-password',

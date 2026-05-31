@@ -1,4 +1,5 @@
 import { db } from '../../config/db.js';
+import { env } from '../../config/env.js';
 import { auditService } from '../auditService.js';
 import { logger } from '../../utils/logger.js';
 import { assertTransition } from '../../utils/stateMachine.js';
@@ -23,17 +24,22 @@ export const baseService = {
     tableColumnsCache: {},
 
     async _getTableColumns(table, connection = null) {
-        if (this.tableColumnsCache[table] && this.tableColumnsCache[table].size > 0) {
-            return this.tableColumnsCache[table];
+        const cacheEntry = this.tableColumnsCache[table];
+        const cacheTTL = 5 * 60 * 1000; // 5-minute cache TTL
+        if (cacheEntry && cacheEntry.columns && cacheEntry.columns.size > 0 && (Date.now() - cacheEntry.timestamp < cacheTTL)) {
+            return cacheEntry.columns;
         }
         const rows = await db.query(
-            'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
-            [table],
+            'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = COALESCE(DATABASE(), ?) AND TABLE_NAME = ?',
+            [env.db.name, table],
             connection
         );
         const columns = new Set(rows.map(r => r.COLUMN_NAME || r.column_name));
         if (columns.size > 0) {
-            this.tableColumnsCache[table] = columns;
+            this.tableColumnsCache[table] = {
+                columns,
+                timestamp: Date.now()
+            };
         } else {
             logger.warn(`[baseService] No columns found for table '${table}'. Columns cache NOT updated.`);
         }
@@ -264,7 +270,37 @@ export const baseService = {
             }
         }
 
-        const updated = await db.updateRecord(table, id, filteredData, connection);
+        // H-5 FIX: Optimistic concurrency control.
+        // If the table has a version column, include it in the WHERE clause so that
+        // concurrent updates are detected. If another process updated the record
+        // between our SELECT and UPDATE, affectedRows will be 0.
+        let updated;
+        if (columns.has('version') && existing.version !== undefined) {
+            const processedData = {};
+            for (const [k, v] of Object.entries(filteredData)) {
+                if (k === 'id') continue;
+                processedData[k] = (typeof v === 'object' && v !== null && !(v instanceof Date))
+                    ? JSON.stringify(v, (key, value) => typeof value === 'bigint' ? value.toString() : value)
+                    : v;
+            }
+            const keys = Object.keys(processedData);
+            const values = Object.values(processedData);
+            const assignments = keys.map(k => `${k} = ?`).join(', ');
+            const sql = `UPDATE \`${table}\` SET ${assignments} WHERE id = ? AND version = ?`;
+            const result = await db.query(sql, [...values, id, existing.version], connection);
+
+            if (result.affectedRows === 0) {
+                // Re-fetch to get the current state for the caller
+                const [currentRecord] = await db.query(`SELECT * FROM \`${table}\` WHERE id = ?`, [id], connection);
+                const err = new Error(`VERSION_CONFLICT: Record '${id}' in '${table}' was modified by another process. Expected version ${existing.version}.`);
+                err.status = 409;
+                err.currentRecord = currentRecord || null;
+                throw err;
+            }
+            updated = { id, ...filteredData };
+        } else {
+            updated = await db.updateRecord(table, id, filteredData, connection);
+        }
 
         await auditService.log({
             collection: table,
@@ -312,9 +348,17 @@ export const baseService = {
     },
 
     async getConditionReports(entityType, entityId, connection = null) {
-        // Use parameterized filter instead of string interpolation
-        return await this._listRecords('condition_reports', {
-            filter: `entity_type="${entityType}" && entity_id="${entityId}"`
-        }, connection);
+        const rows = await db.query(
+            'SELECT * FROM condition_reports WHERE entity_type = ? AND entity_id = ? ORDER BY created_at DESC, id DESC',
+            [entityType, entityId],
+            connection
+        );
+        return {
+            page: 1,
+            perPage: rows.length,
+            totalItems: rows.length,
+            totalPages: 1,
+            items: rows
+        };
     }
 };

@@ -13,18 +13,81 @@ async function seedForms() {
                 type: 'donation',
                 schema_data: {
                     properties: {
-                        acquisition_type: { enum: ["Gift", "Loan", "Bequest"], title: "Acquisition Type", type: "string" },
-                        artifact_description: { format: "textarea", title: "Physical Description", type: "string" },
-                        artifact_name: { description: "The formal title or name of the object", title: "Artifact Name", type: "string" },
-                        artifact_provenance: { description: "How did you acquire this item?", format: "textarea", title: "Provenance / History", type: "string" },
-                        donor_address: { format: "textarea", title: "Home/Office Address", type: "string" },
-                        donor_email: { format: "email", title: "Email Address", type: "string" },
-                        donor_first_name: { title: "First Name", type: "string" },
-                        donor_last_name: { title: "Last Name", type: "string" },
-                        donor_phone: { title: "Phone Number", type: "string" },
-                        donor_title: { enum: ["Mr.", "Ms.", "Mrs.", "Dr.", "Prof."], title: "Title", type: "string" },
-                        loan_end_date: { dependsOn: { field: "acquisition_type", value: "Loan" }, format: "date", title: "Loan Return Date", type: "string" },
-                        supporting_documents: { format: "file", title: "Photos / Documents", type: "string" }
+                        // ── Step 1: Donor Information ──
+                        is_anonymous: {
+                            title: "Submit Anonymously",
+                            type: "boolean",
+                            description: "Check to hide your name and contact details. Only your email is required.",
+                            "ui:group": "donor_info"
+                        },
+                        donor_first_name: {
+                            title: "First Name",
+                            type: "string",
+                            dependsOn: { field: "is_anonymous", value: true, operator: "neq" },
+                            "ui:group": "donor_info"
+                        },
+                        donor_last_name: {
+                            title: "Last Name",
+                            type: "string",
+                            dependsOn: { field: "is_anonymous", value: true, operator: "neq" },
+                            "ui:group": "donor_info"
+                        },
+                        donor_email: {
+                            format: "email",
+                            title: "Email Address",
+                            type: "string",
+                            "ui:group": "donor_info"
+                        },
+                        donor_phone: {
+                            title: "Phone Number",
+                            type: "string",
+                            dependsOn: { field: "is_anonymous", value: true, operator: "neq" },
+                            "ui:group": "donor_info"
+                        },
+
+                        // ── Step 2: Donation Type ──
+                        acquisition_type: {
+                            enum: ["Gift", "Loan", "Bequest"],
+                            title: "Donation Type",
+                            type: "string",
+                            "ui:group": "donation_type"
+                        },
+                        loan_end_date: {
+                            format: "date",
+                            title: "Loan Return Date",
+                            type: "string",
+                            description: "When should the loaned artifact be returned?",
+                            dependsOn: { field: "acquisition_type", value: "Loan" },
+                            "ui:group": "donation_type"
+                        },
+
+                        // ── Step 3: Artifact Information ──
+                        artifact_name: {
+                            title: "Artifact Name",
+                            type: "string",
+                            description: "The formal title or name of the object",
+                            "ui:group": "artifact_info"
+                        },
+                        artifact_description: {
+                            format: "textarea",
+                            title: "Physical Description",
+                            type: "string",
+                            "ui:group": "artifact_info"
+                        },
+                        artifact_provenance: {
+                            format: "textarea",
+                            title: "Provenance / History",
+                            type: "string",
+                            description: "How did you acquire this item?",
+                            "ui:group": "artifact_info"
+                        },
+                        supporting_documents: {
+                            format: "file",
+                            title: "Photos / Supporting Documents",
+                            type: "string",
+                            description: "Upload photos of the artifact, certificates, or provenance documents",
+                            "ui:group": "artifact_info"
+                        }
                     },
                     required: ["donor_first_name", "donor_last_name", "donor_email", "artifact_name", "acquisition_type"],
                     type: "object"
@@ -40,7 +103,12 @@ async function seedForms() {
                         itemName: "artifact_name",
                         lastName: "donor_last_name"
                     },
-                    layout: "double_column"
+                    step_groups: [
+                        { id: "donor_info", label: "Donor Information", icon: "user" },
+                        { id: "donation_type", label: "Donation Type", icon: "gift" },
+                        { id: "artifact_info", label: "Artifact Details", icon: "archive" }
+                    ],
+                    layout: "wizard"
                 },
                 otp: 1
             },

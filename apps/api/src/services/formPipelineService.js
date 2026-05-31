@@ -48,25 +48,29 @@ export const formPipelineService = {
 
   /**
    * ADMIN: Reject/Archive Submission
+   * H-3 FIX: Use audited update path instead of raw SQL to maintain audit trail.
    */
   async rejectSubmission(submissionId) {
+    const { baseService } = await import('./acquisition/baseService.js');
     const [submission] = await db.query('SELECT status FROM form_submissions WHERE id = ?', [submissionId]);
     if (!submission) throw new Error("SUBMISSION_NOT_FOUND");
 
     assertTransition('submission', submission.status, 'archived');
-    await db.query('UPDATE form_submissions SET status = "archived" WHERE id = ?', [submissionId]);
+    const updated = await baseService._updateRecord('system', 'form_submissions', submissionId, { status: 'archived' });
     return { id: submissionId, status: 'archived' };
   },
 
   /**
    * ADMIN: Reopen/Restore Submission
+   * H-3 FIX: Use audited update path instead of raw SQL to maintain audit trail.
    */
   async reopenSubmission(submissionId) {
+    const { baseService } = await import('./acquisition/baseService.js');
     const [submission] = await db.query('SELECT status FROM form_submissions WHERE id = ?', [submissionId]);
     if (!submission) throw new Error("SUBMISSION_NOT_FOUND");
 
     assertTransition('submission', submission.status, 'pending');
-    await db.query('UPDATE form_submissions SET status = "pending" WHERE id = ?', [submissionId]);
+    const updated = await baseService._updateRecord('system', 'form_submissions', submissionId, { status: 'pending' });
     return { id: submissionId, status: 'pending' };
   },
 

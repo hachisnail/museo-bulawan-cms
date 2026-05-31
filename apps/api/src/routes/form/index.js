@@ -34,6 +34,41 @@ router.post('/:slug/submit', publicFormLimiter, formUpload.array('attachments', 
 // ==========================================
 // ADMIN/STAFF ROUTES
 // ==========================================
+router.get('/admin/definitions',
+    requireAuth,
+    buildAbility,
+    checkPermission('read', 'Intake'),
+    formController.listDefinitions
+);
+
+router.post('/admin/definitions',
+    requireAuth,
+    buildAbility,
+    checkPermission('read', 'Intake'),
+    formController.createDefinition
+);
+
+router.patch('/admin/definitions/:id',
+    requireAuth,
+    buildAbility,
+    checkPermission('read', 'Intake'),
+    formController.updateDefinition
+);
+
+router.delete('/admin/definitions/:id',
+    requireAuth,
+    buildAbility,
+    checkPermission('read', 'Intake'),
+    formController.deleteDefinition
+);
+
+router.get('/admin/submissions/export',
+    requireAuth,
+    buildAbility,
+    checkPermission('read', 'Intake'),
+    formController.exportSubmissions
+);
+
 router.get('/admin/submissions', 
     requireAuth, 
     buildAbility, 
@@ -56,3 +91,4 @@ router.get('/:slug/submissions',
 );
 
 export default router;
+

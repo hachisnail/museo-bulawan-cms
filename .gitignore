@@ -106,3 +106,4 @@ apps/service-collections/pb_data/auxiliary.db-shm
 apps/service-collections/pb_data/auxiliary.db-wal
 apps/service-collections/pb_data/
 apps/minio/minio.windows-amd64.RELEASE.2025-09-07T16-13-09Z.exe
+package-lock.json

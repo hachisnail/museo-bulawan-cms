@@ -50,7 +50,10 @@ const initialText = theme === "dark" ? "text-white" : "text-black";
         )}
       </div>
 
-      <a href="/login" class={`mx-2 my-auto ${currentPath === "/login" ? "hidden" : ""}`}>
+     <a
+        href={import.meta.env.PUBLIC_LOGIN_URL}
+        class={`mx-2 my-auto ${currentPath === "/login" ? "hidden" : ""}`}
+      >
         <span
           id="login-btn"
           class={`${initialText} px-1 hover:text-gray-400 border border-gray-700 font-semibold rounded-sm text-xs transition-colors duration-300`}

@@ -13,20 +13,24 @@ import Dashboard from './pages/Dashboard';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import MainLayout from './components/MainLayout';
-import Management from './pages/Management';
+import { ManagementPage, ManagementUserPage } from './pages/management/index.js';
 import Profile from './pages/Profile';
-import Intakes from './pages/Intakes';
-import Accessions from './pages/Accessions';
-import Inventory from './pages/Inventory';
+import { IntakesPage, IntakePage, OfferPage, IntakeManualNewPage } from './pages/intakes/index.js';
+import { AccessionsPage, AccessionPage } from './pages/accessions';
+import { InventoryPage, InventoryItemPage } from './pages/inventory';
 import Home from './pages/Home';
 import Analytics from './pages/Analytics';
 import SubmissionViewer from './pages/SubmissionViewer';
 import Constituents from './pages/Constituents';
 import Exhibitions from './pages/Exhibitions';
 import ArticlesCMS from './pages/ArticlesCMS';
-import Settings from './pages/Settings';
-import AuditLogs from './pages/AuditLogs';
+import { SettingsPage } from './pages/settings/index.js';
+import { AuditLogsPage } from './pages/audit-logs/index.js';
 import Locations from './pages/Locations';
+
+import { AcquisitionsPage } from './pages/acquisitions';
+import { FormsPage } from './pages/forms';
+import PublicFormViewer from './pages/PublicFormViewer';
 
 function App() {
     const navigate = useNavigate();
@@ -64,24 +68,34 @@ function App() {
             <Route path="/setup" element={<SetupAccount />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/forms/display/:slug" element={<PublicFormViewer />} />
 
             {/* Protected Shell */}
             <Route element={<ProtectedRoute />}>
                 <Route element={<MainLayout />}>
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/intakes" element={<Intakes />} />
-                    <Route path="/accessions" element={<Accessions />} />
-                    <Route path="/inventory" element={<Inventory />} />
-                    <Route path="/management" element={<Management />} />
+                    {/* <Route path="/dashboard" element={<AcquisitionsPage />} /> */}
+
+                    <Route path="/intakes" element={<IntakesPage />} />
+                    <Route path="/intakes/new" element={<IntakeManualNewPage />} />
+                    <Route path="/intakes/offers/:id" element={<OfferPage />} />
+                    <Route path="/intakes/:id" element={<IntakePage />} />
+                    <Route path="/accessions" element={<AccessionsPage />} />
+                    <Route path="/accessions/:id" element={<AccessionPage />} />
+                    <Route path="/inventory" element={<InventoryPage />} />
+                    <Route path="/inventory/:id" element={<InventoryItemPage />} />
+                    <Route path="/management" element={<ManagementPage />} />
+                    <Route path="/management/:id" element={<ManagementUserPage />} />
                     <Route path="/constituents" element={<Constituents />} />
                     <Route path="/exhibitions" element={<Exhibitions />} />
                     <Route path="/locations" element={<Locations />} />
                     <Route path="/articles" element={<ArticlesCMS />} />
-                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/settings" element={<SettingsPage />} />
                     <Route path="/analytics" element={<Analytics />} />
+                    <Route path="/forms" element={<FormsPage />} />
                     <Route path="/admin/forms/submissions/:id" element={<SubmissionViewer />} />
                     <Route path="/forms/proof/:id" element={<SubmissionViewer />} />
-                    <Route path="/audit-logs" element={<AuditLogs />} />
+                    <Route path="/audit-logs" element={<AuditLogsPage />} />
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />
                 </Route>
             </Route>

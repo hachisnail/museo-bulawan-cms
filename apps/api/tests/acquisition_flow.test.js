@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { db } from '../src/config/db.js';
 import { initMariaDB as initDb } from '../src/config/dbInit.js';
 import { userService } from '../src/services/userService.js';
@@ -5,6 +6,8 @@ import { submissionService } from '../src/services/form/submissionService.js';
 import { formPipelineService } from '../src/services/formPipelineService.js';
 import { acquisitionService } from '../src/services/acquisitionService.js';
 import { ulid } from 'ulidx';
+
+jest.setTimeout(30000);
 
 describe('Acquisition Pipeline Flow & Consolidation Tests', () => {
     let testUserId;
@@ -53,6 +56,18 @@ describe('Acquisition Pipeline Flow & Consolidation Tests', () => {
         const sub2 = await submissionService.submitForm('donation-test', payload2, null);
         await formPipelineService.processExternalIntake(testUserId, sub2.id);
 
+        testSubmissionId = sub1.id;
+        testIntakeId = (await db.query('SELECT id FROM intakes WHERE submission_id = ?', [sub1.id]))[0].id;
+        const testIntake2Id = (await db.query('SELECT id FROM intakes WHERE submission_id = ?', [sub2.id]))[0].id;
+
+        // Approve and generate MOA for intake 1 (triggers first account provisioning)
+        await acquisitionService.approveIntake(testUserId, testIntakeId);
+        await acquisitionService.generateDynamicMOA(testUserId, testIntakeId);
+
+        // Approve and generate MOA for intake 2 (should link to existing account without duplication)
+        await acquisitionService.approveIntake(testUserId, testIntake2Id);
+        await acquisitionService.generateDynamicMOA(testUserId, testIntake2Id);
+
         // 3. Verify only one user account exists for this email
         const [userCount] = await db.query('SELECT COUNT(*) as count FROM users WHERE email = ?', [donorEmail]);
         expect(Number(userCount.count)).toBe(1);
@@ -61,24 +76,26 @@ describe('Acquisition Pipeline Flow & Consolidation Tests', () => {
         const intakes = await db.query('SELECT donor_account_id FROM intakes WHERE submission_id IN (?, ?)', [sub1.id, sub2.id]);
         expect(intakes.length).toBe(2);
         expect(intakes[0].donor_account_id).toBe(intakes[1].donor_account_id);
-        
-        testSubmissionId = sub1.id;
-        testIntakeId = (await db.query('SELECT id FROM intakes WHERE submission_id = ?', [sub1.id]))[0].id;
     });
 
     test('Unified Legal & Rights Management Consolidation', async () => {
+        const payload = { fname: 'Alice', lname: 'Smith', email: `alice_${Date.now()}@jest.com`, item: 'Relic C', method: 'gift' };
+        const sub = await submissionService.submitForm('donation-test', payload, null);
+        await formPipelineService.processExternalIntake(testUserId, sub.id);
+        const intakeId = (await db.query('SELECT id FROM intakes WHERE submission_id = ?', [sub.id]))[0].id;
+
         // Step 1: Approve Intake (under_review -> approved)
-        await acquisitionService.approveIntake(testUserId, testIntakeId);
+        await acquisitionService.approveIntake(testUserId, intakeId);
 
         // Step 2: Generate MOA (approved -> awaiting_delivery)
-        const moaRes = await acquisitionService.generateDynamicMOA(testUserId, testIntakeId);
+        const moaRes = await acquisitionService.generateDynamicMOA(testUserId, intakeId);
         const token = moaRes.qrPayload.token;
 
         // Step 3: Confirm Delivery (awaiting_delivery -> in_custody)
-        await acquisitionService.confirmPhysicalDelivery(testUserId, testIntakeId, token);
+        await acquisitionService.confirmPhysicalDelivery(testUserId, intakeId, token);
 
         // Step 4: Process Accession (in_custody -> accessioned)
-        const accession = await acquisitionService.processAccession(testUserId, testIntakeId, {
+        const accession = await acquisitionService.processAccession(testUserId, intakeId, {
             accessionNumber: 'ACC-' + ulid(),
             isMoaSigned: true
         });
@@ -122,5 +139,29 @@ describe('Acquisition Pipeline Flow & Consolidation Tests', () => {
 
         const [final] = await db.query('SELECT research_notes, version FROM accessions WHERE id = ?', [testAccessionId]);
         expect(final.version).toBeGreaterThan(5); // Initial + updates
+    });
+
+    test('Tags handling in Research Update and DTO Mapping', async () => {
+        // 1. Update research with tags string
+        await acquisitionService.updateAccessionResearch(testUserId, testAccessionId, {
+            tags: 'Pre-colonial, Ceramic, Ritual'
+        });
+
+        // 2. Retrieve raw record from database and verify it is a JSON array
+        const [dbRecord] = await db.query('SELECT tags FROM accessions WHERE id = ?', [testAccessionId]);
+        
+        let tagsJson = dbRecord.tags;
+        if (typeof tagsJson === 'string') {
+            tagsJson = JSON.parse(tagsJson);
+        }
+        expect(Array.isArray(tagsJson)).toBe(true);
+        expect(tagsJson).toContain('Pre-colonial');
+        expect(tagsJson).toContain('Ceramic');
+        expect(tagsJson).toContain('Ritual');
+
+        // 3. Verify DTO mapping maps the JSON array back to a comma-separated string
+        const { mapDTO } = await import('../src/utils/dtoMapper.js');
+        const mapped = mapDTO(dbRecord);
+        expect(mapped.tags).toBe('Pre-colonial, Ceramic, Ritual');
     });
 });

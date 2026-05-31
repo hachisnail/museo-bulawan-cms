@@ -20,11 +20,32 @@ export const submissionService = {
     async submitForm(slug, payload, otp, files = null, requestMeta = {}, actingStaffId = null) {
         const definition = await definitionService.getFormDefinition(slug);
         
-        // 1. JSON Schema Validation
+        // 1. JSON Schema Validation (with conditional required adjustments)
         if (definition.schema && Object.keys(definition.schema).length > 0) {
-            const validate = ajv.compile(definition.schema);
+            // Clone schema to avoid mutating the cached definition
+            const schemaForValidation = JSON.parse(JSON.stringify(definition.schema));
+
+            // Anonymous donor: relax name requirements
+            const isAnonymous = payload.is_anonymous === true || payload.is_anonymous === 'true' || payload.is_anonymous === 1 || payload.is_anonymous === '1';
+            if (isAnonymous) {
+                schemaForValidation.required = (schemaForValidation.required || [])
+                    .filter(f => !['donor_first_name', 'donor_last_name'].includes(f));
+            }
+
+            // Strip custom keywords that AJV doesn't understand (dependsOn, ui:group, ui:widget)
+            if (schemaForValidation.properties) {
+                for (const prop of Object.values(schemaForValidation.properties)) {
+                    delete prop.dependsOn;
+                    delete prop['ui:dependsOn'];
+                    delete prop['ui:group'];
+                    delete prop['ui:widget'];
+                }
+            }
+
+            const validate = ajv.compile(schemaForValidation);
             const valid = validate(payload);
             if (!valid) {
+                logger.error(`Form submission validation failed for ${slug}. Errors: ${ajv.errorsText(validate.errors)}. Payload: ${JSON.stringify(payload)}`);
                 throw new Error(`VALIDATION_FAILED: ${ajv.errorsText(validate.errors)}`);
             }
         }

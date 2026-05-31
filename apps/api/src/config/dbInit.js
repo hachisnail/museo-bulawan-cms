@@ -1,11 +1,16 @@
 import { db } from './db.js';
 import { logger } from '../utils/logger.js';
+import { baseService } from '../services/acquisition/baseService.js';
+import { env } from './env.js';
 
 /**
  * Initializes all required MariaDB tables if they do not exist.
  * This file replaces the legacy PocketBase schema with native relational tables.
  */
 export async function initMariaDB() {
+    // Clear static column metadata caches so migrations reflect immediately
+    baseService.tableColumnsCache = {};
+
     let conn;
     try {
         conn = await db.getConnection(); // Get a connection for transaction
@@ -186,6 +191,9 @@ export async function initMariaDB() {
         try {
             await conn.query(`ALTER TABLE intakes MODIFY COLUMN qr_token_expires DATETIME NULL`);
             await conn.query(`ALTER TABLE intakes ADD COLUMN current_location VARCHAR(255) NULL AFTER delivery_slip_id`);
+        } catch(e) {}
+        try {
+            await conn.query(`ALTER TABLE intakes ADD COLUMN qr_token VARCHAR(255) NULL AFTER qr_token_hash`);
         } catch(e) {}
         
         await conn.query(`
@@ -488,10 +496,9 @@ export async function initMariaDB() {
             )
         `);
 
-        // 12. Notifications
         await conn.query(`
             CREATE TABLE IF NOT EXISTS notifications (
-                id VARCHAR(26) PRIMARY KEY,
+                id VARCHAR(36) PRIMARY KEY,
                 title VARCHAR(255) NOT NULL,
                 message TEXT NOT NULL,
                 type VARCHAR(50) DEFAULT 'info',
@@ -504,17 +511,39 @@ export async function initMariaDB() {
             )
         `);
 
+        // Migration: Safely expand the ID column length for existing tables
+        try {
+            // Need to drop foreign keys before altering primary key columns in MariaDB
+            await conn.query(`ALTER TABLE user_notification_reads DROP FOREIGN KEY user_notification_reads_ibfk_2`);
+        } catch(e) { /* Ignore if it doesn't exist */ }
+
+        try {
+            await conn.query(`ALTER TABLE notifications MODIFY COLUMN id VARCHAR(36)`);
+        } catch(e) { /* Ignore if already altered */ }
+
         // 12.1. Notification Reads (for global/role targets)
         await conn.query(`
             CREATE TABLE IF NOT EXISTS user_notification_reads (
                 user_id VARCHAR(26) NOT NULL,
-                notification_id VARCHAR(26) NOT NULL,
+                notification_id VARCHAR(36) NOT NULL,
                 read_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (user_id, notification_id),
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                 FOREIGN KEY (notification_id) REFERENCES notifications(id) ON DELETE CASCADE
             )
         `);
+
+        // Migration: Safely expand the foreign key column
+        try {
+            await conn.query(`ALTER TABLE user_notification_reads MODIFY COLUMN notification_id VARCHAR(36)`);
+            // Re-apply the constraint if dropped
+            await conn.query(`ALTER TABLE user_notification_reads ADD CONSTRAINT user_notification_reads_ibfk_2 FOREIGN KEY (notification_id) REFERENCES notifications(id) ON DELETE CASCADE`);
+        } catch(e) {
+            // Ignore if already altered or constraint already exists
+            if (!e.message.includes('Unknown column') && !e.message.includes('Duplicate column')) {
+                logger.warn('Failed to alter user_notification_reads schema', { error: e.message });
+            }
+        }
 
         // 13. Accession Approvals
         await conn.query(`
@@ -663,23 +692,176 @@ export async function initMariaDB() {
         // 16. Default Form Seedings
         const defaultForms = [
             {
+                id: '01KQEFB1FEEDBACKFORMSEED00',
+                slug: 'user-feedback',
+                title: 'User Feedback Form',
+                type: 'feedback',
+                schema_data: {
+                    properties: {
+                        name: {
+                            title: "Full Name",
+                            type: "string",
+                            description: "Your name (optional)",
+                            "ui:group": "visitor_feedback"
+                        },
+                        email: {
+                            format: "email",
+                            title: "Email Address",
+                            type: "string",
+                            description: "Your email address",
+                            "ui:group": "visitor_feedback"
+                        },
+                        feedback_type: {
+                            enum: ["Website Experience", "Museum Visit", "Visitor Services", "Other"],
+                            title: "Feedback Category",
+                            type: "string",
+                            description: "What is this feedback about?",
+                            "ui:group": "visitor_feedback"
+                        },
+                        rating: {
+                            title: "Overall Rating",
+                            type: "integer",
+                            minimum: 1,
+                            maximum: 5,
+                            description: "Rate us from 1 to 5",
+                            "ui:group": "visitor_feedback"
+                        },
+                        comments: {
+                            format: "textarea",
+                            title: "Your Comments",
+                            type: "string",
+                            description: "Please share details about your experience...",
+                            "ui:group": "visitor_feedback"
+                        },
+                        visit_date: {
+                            format: "date",
+                            title: "Date of Visit",
+                            type: "string",
+                            description: "When did you visit? (optional)",
+                            "ui:group": "visitor_feedback"
+                        }
+                    },
+                    required: ["email", "feedback_type", "rating", "comments"],
+                    type: "object"
+                },
+                settings: {
+                    allow_attachments: false,
+                    description: "We value your feedback. Let us know how we can improve our website, museum, and visitor services.",
+                    layout: "single_column",
+                    step_groups: [
+                        { id: "visitor_feedback", label: "Visitor Feedback", icon: "message-square" }
+                    ]
+                },
+                otp: false
+            },
+            {
                 id: '01KQE81CSDZ6D68JYXB34JXZX5',
                 slug: 'donation-form',
                 title: 'Artifact Donation & Temporary Loan Form',
                 type: 'donation',
                 schema_data: {
                     properties: {
-                        acquisition_type: { enum: ["Gift", "Loan", "Bequest"], title: "Acquisition Type", type: "string" },
-                        artifact_description: { format: "textarea", title: "Physical Description", type: "string" },
-                        artifact_name: { title: "Artifact Name", type: "string" },
-                        donor_email: { format: "email", title: "Email Address", type: "string" },
-                        donor_first_name: { title: "First Name", type: "string" },
-                        donor_last_name: { title: "Last Name", type: "string" }
+                        // ── Step 1: Donor Information ──
+                        is_anonymous: {
+                            title: "Submit Anonymously",
+                            type: "boolean",
+                            description: "Check to hide your name and contact details. Only your email is required.",
+                            "ui:group": "donor_info"
+                        },
+                        donor_first_name: {
+                            title: "First Name",
+                            type: "string",
+                            dependsOn: { field: "is_anonymous", value: true, operator: "neq" },
+                            "ui:group": "donor_info"
+                        },
+                        donor_last_name: {
+                            title: "Last Name",
+                            type: "string",
+                            dependsOn: { field: "is_anonymous", value: true, operator: "neq" },
+                            "ui:group": "donor_info"
+                        },
+                        donor_email: {
+                            format: "email",
+                            title: "Email Address",
+                            type: "string",
+                            "ui:group": "donor_info"
+                        },
+                        donor_phone: {
+                            title: "Phone Number",
+                            type: "string",
+                            dependsOn: { field: "is_anonymous", value: true, operator: "neq" },
+                            "ui:group": "donor_info"
+                        },
+
+                        // ── Step 2: Donation Type ──
+                        acquisition_type: {
+                            enum: ["Gift", "Loan", "Bequest"],
+                            title: "Donation Type",
+                            type: "string",
+                            "ui:group": "donation_type"
+                        },
+                        loan_end_date: {
+                            format: "date",
+                            title: "Loan Return Date",
+                            type: "string",
+                            description: "When should the loaned artifact be returned?",
+                            dependsOn: { field: "acquisition_type", value: "Loan" },
+                            "ui:group": "donation_type"
+                        },
+
+                        // ── Step 3: Artifact Information ──
+                        artifact_name: {
+                            title: "Artifact Name",
+                            type: "string",
+                            description: "The formal title or name of the object",
+                            "ui:group": "artifact_info"
+                        },
+                        artifact_description: {
+                            format: "textarea",
+                            title: "Physical Description",
+                            type: "string",
+                            "ui:group": "artifact_info"
+                        },
+                        artifact_provenance: {
+                            format: "textarea",
+                            title: "Provenance / History",
+                            type: "string",
+                            description: "How did you acquire this item?",
+                            "ui:group": "artifact_info"
+                        },
+                        supporting_documents: {
+                            format: "file",
+                            title: "Photos / Supporting Documents",
+                            type: "string",
+                            description: "Upload photos of the artifact, certificates, or provenance documents",
+                            "ui:group": "artifact_info"
+                        }
                     },
                     required: ["donor_first_name", "donor_last_name", "donor_email", "artifact_name", "acquisition_type"],
                     type: "object"
                 },
-                settings: { allow_attachments: true, description: "Official Artifact Donation Form", layout: "double_column" },
+                settings: {
+                    allow_attachments: true,
+                    description: "Official Artifact Donation & Temporary Loan Form",
+                    info_block: {
+                        header: "Notice",
+                        description: "In addition to preserving your historic objects it is important to remember to preserve the history or story that goes with them. For example, the uniform worn by your great grandfather is just a uniform if the story is lost. Take the time to write down the story that goes with your objects; include any background details that would help our team understand the significance of the item.\n\n\"The Story Matters as Much as the Artifact\""
+                    },
+                    field_mapping: {
+                        acquisitionType: "acquisition_type",
+                        description: "artifact_description",
+                        donorEmail: "donor_email",
+                        firstName: "donor_first_name",
+                        itemName: "artifact_name",
+                        lastName: "donor_last_name"
+                    },
+                    step_groups: [
+                        { id: "donor_info", label: "Donor Information", icon: "user" },
+                        { id: "donation_type", label: "Donation Type", icon: "gift" },
+                        { id: "artifact_info", label: "Artifact Details", icon: "archive" }
+                    ],
+                    layout: "wizard"
+                },
                 otp: true
             },
             {
@@ -747,10 +929,30 @@ export async function initMariaDB() {
 
         for (const f of defaultForms) {
             await conn.query(`
-                INSERT IGNORE INTO form_definitions (id, slug, title, type, schema_data, settings, otp)
+                INSERT INTO form_definitions (id, slug, title, type, schema_data, settings, otp)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                    title = VALUES(title),
+                    type = VALUES(type),
+                    schema_data = VALUES(schema_data),
+                    settings = VALUES(settings),
+                    otp = VALUES(otp)
             `, [f.id, f.slug, f.title, f.type, JSON.stringify(f.schema_data), JSON.stringify(f.settings), f.otp]);
         }
+
+        // L-4 Health check: Verify DATABASE() returns a value
+        const dbNameResult = await conn.query('SELECT DATABASE() as dbName');
+        const dbName = dbNameResult[0]?.dbName;
+        if (!dbName && !env.db.name) {
+            throw new Error('DATABASE_NOT_CONFIGURED: Active database name could not be resolved from connection or env.db.name.');
+        }
+
+        // L-4 Health check: Verify core tables exist
+        const coreTables = ['users', 'donation_items', 'intakes', 'locations', 'accessions', 'inventory', 'condition_reports'];
+        for (const t of coreTables) {
+            await conn.query(`SELECT 1 FROM \`${t}\` LIMIT 1`);
+        }
+        logger.info('Database startup health check passed: core tables verified.');
 
         await conn.query('COMMIT');
         logger.info('MariaDB Schema initialized & seeded successfully.');

@@ -1,6 +1,7 @@
 import { mediaService } from "../../mediaService.js";
 import { acquisitionService } from "../../acquisitionService.js";
 import { logger } from "../../../utils/logger.js";
+import { db } from "../../../config/db.js";
 
 /**
  * CompliancePipeline
@@ -20,8 +21,15 @@ export const compliancePipeline = {
 
                 let reporterName = reporter?.trim() || (await helpers._resolveReporterName(staffId)) || "System";
 
+                // Resolve entity type dynamically based on where the artifact_id is located.
+                let entityType = "inventory";
+                const [accessionRows] = await db.query("SELECT id FROM accessions WHERE id = ?", [artifact_id]);
+                if (accessionRows && accessionRows.length > 0) {
+                    entityType = "accession";
+                }
+
                 const report = await acquisitionService.createConditionReport(
-                    staffId, "inventory", artifact_id, condition, detailed_notes, submissionId, reporterName,
+                    staffId, entityType, artifact_id, condition, detailed_notes, submissionId, reporterName,
                     { stability, hazards, immediate_action_required }
                 );
 

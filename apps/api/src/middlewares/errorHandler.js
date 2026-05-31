@@ -13,6 +13,7 @@ const errorMessages = {
     'NOT_AN_INVITED_USER': { status: 400, message: 'This user is not in an invited state.' },
     'NO_FIELDS_TO_UPDATE': { status: 400, message: 'No fields provided to update.' },
     'FORM_NOT_FOUND': { status: 404, message: 'Form definition not found.' },
+    'SUBMISSION_NOT_FOUND': { status: 404, message: 'Submission not found.' },
     'OTP_EXPIRED_OR_NOT_FOUND': { status: 400, message: 'OTP not found or expired. Please request a new one.' },
     'OTP_EXPIRED': { status: 400, message: 'OTP has expired.' },
     'INVALID_OTP': { status: 400, message: 'Invalid OTP.' },
@@ -38,6 +39,22 @@ export const errorHandler = (err, req, res, next) => {
         statusCode = 400;
         errorMessage = err.message.split(': ').slice(1).join(': ');
         errorCode = 'VALIDATION_FAILED';
+    } else if (err.message?.startsWith('MALFORMED_SUBMISSION_DATA:')) {
+        statusCode = 400;
+        errorMessage = err.message.split(': ').slice(1).join(': ');
+        errorCode = 'MALFORMED_SUBMISSION_DATA';
+    } else if (err.message?.startsWith('VERSION_CONFLICT:')) {
+        statusCode = 409;
+        errorMessage = err.message.split(': ').slice(1).join(': ');
+        errorCode = 'VERSION_CONFLICT';
+    } else if (
+        err.message?.startsWith('Invalid transition:') || 
+        err.message?.startsWith('Unknown status ') || 
+        err.message?.startsWith('Unknown entity type:')
+    ) {
+        statusCode = 400;
+        errorMessage = err.message;
+        errorCode = 'STATE_TRANSITION_FAILED';
     }
 
     // 1. Log the error with Winston
@@ -50,8 +67,12 @@ export const errorHandler = (err, req, res, next) => {
     });
 
     // 2. Send the sanitized response to the client
-    res.status(statusCode).json({
+    const responsePayload = {
         error: errorCode,
         message: errorMessage
-    });
+    };
+    if (err.currentRecord) {
+        responsePayload.currentRecord = err.currentRecord;
+    }
+    res.status(statusCode).json(responsePayload);
 };

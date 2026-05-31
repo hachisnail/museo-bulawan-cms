@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { acquisitionController } from "../../controllers/acquisitionController.js";
 import { validate } from "../../middlewares/validateRequest.js";
-import { requireAuth, checkPermission } from "../../middlewares/authorizationHandler.js";
+import { requireAuth, checkPermission, requireVisitorAuth } from "../../middlewares/authorizationHandler.js";
+import { strictActionLimiter } from "../../middlewares/rateLimiter.js";
 import multer from 'multer';
 import os from 'os';
 
@@ -19,6 +20,7 @@ const schemas = acquisitionController.schemas;
 // LISTING & RETRIEVAL
 // ==========================================
 router.get('/intakes', requireAuth, acquisitionController.listIntakes);
+router.get('/visitor/my-donations', requireVisitorAuth, acquisitionController.listVisitorDonations);
 router.get('/intakes/:intakeId', requireAuth, acquisitionController.getIntakeItem);
 router.get('/accessions', requireAuth, acquisitionController.listAccessions);
 router.get('/inventory', requireAuth, acquisitionController.listInventory);
@@ -75,7 +77,14 @@ router.post('/intakes/:intakeId/rollback',
     acquisitionController.rollbackIntake
 );
 
-router.get('/delivery/verify/:token', acquisitionController.verifyDeliveryToken);
+// C-3 FIX: Rate-limit public token verification to prevent brute-force attacks on 8-hex-char tokens.
+router.get('/delivery/verify/:token', strictActionLimiter, acquisitionController.verifyDeliveryToken);
+router.post('/intakes/external/:submissionId/accept-and-issue',
+    requireAuth,
+    checkPermission('create', 'Intake'),
+    acquisitionController.acceptAndIssueExternal
+);
+
 router.post('/intakes/external/:submissionId', 
     requireAuth, 
     checkPermission('create', 'Intake'),
@@ -143,7 +152,7 @@ router.patch('/accessions/:accessionId/research',
     acquisitionController.updateResearch
 );
 
-router.get('/intakes/:intakeId/export-moa', requireAuth, acquisitionController.exportMOA);
+// L-1 FIX: Removed duplicate /intakes/:intakeId/export-moa route (already registered on line 69).
 router.get('/accessions/:accessionId/report', requireAuth, acquisitionController.generateReport);
 router.get('/accessions/:accessionId/export', requireAuth, acquisitionController.exportReport);
 
@@ -186,6 +195,7 @@ router.post('/inventory/:inventoryId/cancel-deaccession',
 router.post('/inventory/batch-transfer', 
     requireAuth, 
     checkPermission('update', 'Inventory'),
+    validate(schemas.batchTransfer),
     acquisitionController.batchTransfer
 );
 

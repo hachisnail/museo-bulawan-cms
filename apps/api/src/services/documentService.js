@@ -26,32 +26,39 @@ export const documentService = {
         const donationItem = intake.expand?.donation_item_id || {};
         
         // Extract city/province from address if possible
+        const address = overrides.address || donorAccount.address || '';
         let city = 'Daet';
         let province = 'Camarines Norte';
-        if (donorAccount.address) {
-            const parts = donorAccount.address.split(',').map(s => s.trim());
+        if (address) {
+            const parts = address.split(',').map(s => s.trim());
             if (parts.length >= 2) {
                 province = parts[parts.length - 1];
                 city = parts[parts.length - 2];
+            } else if (parts.length === 1) {
+                city = parts[0];
             }
         }
 
+        const totalValue = intake.acquisition_method === 'loan'
+            ? (overrides.loanDuration || intake.loan_duration_override || (intake.loan_end_date ? 'Until ' + new Date(intake.loan_end_date).toLocaleDateString(undefined, { dateStyle: 'long' }) : 'Standard 6 Months'))
+            : (donationItem.quantity || 1);
+
         const data = {
             // New mappings for [[ ]] templates
-            name: overrides.donorName || intake.donor_name_override || intake.donor_info || donorAccount.fname + ' ' + donorAccount.lname || 'Valued Donor',
+            name: overrides.donorName || intake.donor_name_override || intake.donor_info || (donorAccount.fname ? (donorAccount.fname + ' ' + (donorAccount.lname || '')) : 'Valued Donor'),
             artifact: intake.proposed_item_name,
             method: intake.acquisition_method,
             date: new Date().toLocaleDateString(undefined, { dateStyle: 'long' }),
-            total: donationItem.quantity || 1,
+            total: totalValue,
             start: new Date().toLocaleDateString(undefined, { dateStyle: 'long' }),
             end: intake.loan_end_date ? new Date(intake.loan_end_date).toLocaleDateString(undefined, { dateStyle: 'long' }) : 'Permanent',
             province,
             city,
             // Legacy mappings for HTML preview
-            donorName: overrides.donorName || intake.donor_name_override || intake.donor_info,
+            donorName: overrides.donorName || intake.donor_name_override || intake.donor_info || (donorAccount.fname ? (donorAccount.fname + ' ' + (donorAccount.lname || '')) : 'Valued Donor'),
             itemName: intake.proposed_item_name,
             artifactName: intake.proposed_item_name,
-            loanDuration: overrides.loanDuration || intake.loan_duration_override || 'N/A'
+            loanDuration: overrides.loanDuration || intake.loan_duration_override || (intake.acquisition_method === 'loan' ? totalValue : 'N/A')
         };
 
         if (format === 'docx') {
@@ -399,7 +406,7 @@ export const documentService = {
     // 3. INVENTORY STATUS REPORT
     // ==========================================
 
-    async generateInventoryReport(inventory, accession, intake, movement = [], format = 'html') {
+    async generateInventoryReport(inventory, accession, intake, movement = [], format = 'html', extra = {}) {
         const data = {
             catNum: inventory.catalog_number,
             status: inventory.status.replace(/_/g, ' ').toUpperCase(),
@@ -414,6 +421,42 @@ export const documentService = {
                 date: new Date(m.created_at).toLocaleDateString(),
                 to: m.to_location,
                 reason: m.reason || 'General Rotation'
+            })),
+            valuations: (extra.valuations || []).map(v => ({
+                date: new Date(v.valuation_date).toLocaleDateString(),
+                amount: v.amount,
+                currency: v.currency || 'PHP',
+                reason: v.valuation_reason || 'Insurance',
+                valuer: v.valuer || 'Internal Curatorial Team',
+                notes: v.notes || ''
+            })),
+            audits: (extra.audits || []).map(a => ({
+                date: new Date(a.created_at).toLocaleDateString(),
+                type: (a.audit_type || 'spot_check').replace(/_/g, ' ').toUpperCase(),
+                locationVerified: a.location_verified ? 'YES' : 'NO',
+                objectFound: a.object_found ? 'YES' : 'NO',
+                numberLegible: a.number_legible ? 'YES' : 'NO',
+                conditionConsistent: a.condition_consistent ? 'YES' : 'NO',
+                auditor: a.audited_by_name || 'System Auditor',
+                notes: a.discrepancy_notes || 'None'
+            })),
+            conditionLogs: (extra.conditionLogs || []).map(c => ({
+                date: new Date(c.created_at).toLocaleDateString(),
+                status: c.condition_status,
+                stability: c.stability || 'Unknown',
+                hazards: c.hazards || 'None',
+                actionRequired: c.immediate_action_required ? 'YES - URGENT' : 'NO',
+                reporter: c.reporter_name || 'Staff Reporter',
+                notes: c.notes || ''
+            })),
+            conservationLogs: (extra.conservationLogs || []).map(cl => ({
+                date: new Date(cl.created_at).toLocaleDateString(),
+                objective: cl.treatment_objective || 'General Conservation',
+                treatment: cl.treatment,
+                findings: cl.findings,
+                recommendations: cl.recommendations || 'None',
+                nextReview: cl.next_review_date ? new Date(cl.next_review_date).toLocaleDateString() : 'N/A',
+                conservator: cl.conservator_name_resolved || cl.conservator_name || 'Staff Conservator'
             }))
         };
 
@@ -493,6 +536,129 @@ export const documentService = {
                         </tbody>
                     </table>
                 </div>
+
+                <div class="section">
+                    <div class="section-title">IV. Appraisal & Valuation History</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Valuer</th>
+                                <th>Amount</th>
+                                <th>Reason</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.valuations.map(v => `
+                                <tr>
+                                    <td>${v.date}</td>
+                                    <td>${v.valuer}</td>
+                                    <td style="font-weight: bold;">${v.currency} ${Number(v.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                    <td>${v.reason}</td>
+                                    <td>${v.notes}</td>
+                                </tr>
+                            `).join('')}
+                            ${data.valuations.length === 0 ? '<tr><td colspan="5" style="text-align:center; color:#999; padding:20px;">No valuation history recorded.</td></tr>' : ''}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">V. Physical Audits & Inspections</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Auditor</th>
+                                <th>Status (Checks)</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.audits.map(a => `
+                                <tr>
+                                    <td>${a.date}</td>
+                                    <td>${a.type}</td>
+                                    <td>${a.auditor}</td>
+                                    <td style="font-size: 11px; line-height: 1.3;">
+                                        Found: ${a.objectFound} | Loc Verified: ${a.locationVerified}<br/>
+                                        No. Legible: ${a.numberLegible} | Cond Consistent: ${a.conditionConsistent}
+                                    </td>
+                                    <td>${a.notes}</td>
+                                </tr>
+                            `).join('')}
+                            ${data.audits.length === 0 ? '<tr><td colspan="5" style="text-align:center; color:#999; padding:20px;">No audit history recorded.</td></tr>' : ''}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">VI. Condition History & Reports</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Reporter</th>
+                                <th>Status / Stability</th>
+                                <th>Hazards / Action</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.conditionLogs.map(c => `
+                                <tr>
+                                    <td>${c.date}</td>
+                                    <td>${c.reporter}</td>
+                                    <td>
+                                        Status: <span style="font-weight: bold;">${c.status}</span><br/>
+                                        Stability: ${c.stability}
+                                    </td>
+                                    <td>
+                                        Hazards: ${c.hazards}<br/>
+                                        Action: <span style="font-weight: bold; color: ${c.actionRequired.includes('YES') ? '#c00' : '#000'}">${c.actionRequired}</span>
+                                    </td>
+                                    <td>${c.notes}</td>
+                                </tr>
+                            `).join('')}
+                            ${data.conditionLogs.length === 0 ? '<tr><td colspan="5" style="text-align:center; color:#999; padding:20px;">No condition reports recorded.</td></tr>' : ''}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">VII. Conservation Logs</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Conservator / Objective</th>
+                                <th>Treatment & Findings</th>
+                                <th>Recommendations</th>
+                                <th>Next Review</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.conservationLogs.map(cl => `
+                                <tr>
+                                    <td>${cl.date}</td>
+                                    <td>
+                                        Conservator: ${cl.conservator}<br/>
+                                        Obj: <span style="font-weight: bold;">${cl.objective}</span>
+                                    </td>
+                                    <td style="font-size: 12px; line-height: 1.3;">
+                                        <strong>Treatment:</strong> ${cl.treatment}<br/>
+                                        <strong>Findings:</strong> ${cl.findings}
+                                    </td>
+                                    <td>${cl.recommendations}</td>
+                                    <td>${cl.nextReview}</td>
+                                </tr>
+                            `).join('')}
+                            ${data.conservationLogs.length === 0 ? '<tr><td colspan="5" style="text-align:center; color:#999; padding:20px;">No conservation history recorded.</td></tr>' : ''}
+                        </tbody>
+                    </table>
+                </div>
             </body>
             </html>
         `;
@@ -543,13 +709,161 @@ export const documentService = {
                                     new TableCell({ children: [new Paragraph({ text: "Reason", bold: true })] }),
                                 ],
                             }),
-                            ...data.movement.map(m => new TableRow({
+                            ...(data.movement.length > 0 ? data.movement.map(m => new TableRow({
                                 children: [
                                     new TableCell({ children: [new Paragraph({ text: m.date })] }),
                                     new TableCell({ children: [new Paragraph({ text: m.to })] }),
                                     new TableCell({ children: [new Paragraph({ text: m.reason })] }),
                                 ],
-                            })),
+                            })) : [
+                                new TableRow({
+                                    children: [
+                                        new TableCell({ children: [new Paragraph({ text: "No movement history recorded." })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                    ]
+                                })
+                            ]),
+                        ],
+                    }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: "IV. APPRAISAL & VALUATION HISTORY", bold: true })] }),
+                    new Table({
+                        width: { size: 100, type: WidthType.PERCENTAGE },
+                        rows: [
+                            new TableRow({
+                                children: [
+                                    new TableCell({ children: [new Paragraph({ text: "Date", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Valuer", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Amount", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Reason", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Notes", bold: true })] }),
+                                ],
+                            }),
+                            ...(data.valuations.length > 0 ? data.valuations.map(v => new TableRow({
+                                children: [
+                                    new TableCell({ children: [new Paragraph({ text: v.date })] }),
+                                    new TableCell({ children: [new Paragraph({ text: v.valuer })] }),
+                                    new TableCell({ children: [new Paragraph({ text: `${v.currency} ${Number(v.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: v.reason })] }),
+                                    new TableCell({ children: [new Paragraph({ text: v.notes })] }),
+                                ],
+                            })) : [
+                                new TableRow({
+                                    children: [
+                                        new TableCell({ children: [new Paragraph({ text: "No valuation history recorded." })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                    ]
+                                })
+                            ]),
+                        ],
+                    }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: "V. PHYSICAL AUDITS & INSPECTIONS", bold: true })] }),
+                    new Table({
+                        width: { size: 100, type: WidthType.PERCENTAGE },
+                        rows: [
+                            new TableRow({
+                                children: [
+                                    new TableCell({ children: [new Paragraph({ text: "Date", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Type", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Auditor", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Status Checks", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Notes", bold: true })] }),
+                                ],
+                            }),
+                            ...(data.audits.length > 0 ? data.audits.map(a => new TableRow({
+                                children: [
+                                    new TableCell({ children: [new Paragraph({ text: a.date })] }),
+                                    new TableCell({ children: [new Paragraph({ text: a.type })] }),
+                                    new TableCell({ children: [new Paragraph({ text: a.auditor })] }),
+                                    new TableCell({ children: [new Paragraph({ text: `Found: ${a.objectFound}\nLoc Ver: ${a.locationVerified}\nNo Leg: ${a.numberLegible}\nCond Con: ${a.conditionConsistent}` })] }),
+                                    new TableCell({ children: [new Paragraph({ text: a.notes })] }),
+                                ],
+                            })) : [
+                                new TableRow({
+                                    children: [
+                                        new TableCell({ children: [new Paragraph({ text: "No audit history recorded." })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                    ]
+                                })
+                            ]),
+                        ],
+                    }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: "VI. CONDITION HISTORY & REPORTS", bold: true })] }),
+                    new Table({
+                        width: { size: 100, type: WidthType.PERCENTAGE },
+                        rows: [
+                            new TableRow({
+                                children: [
+                                    new TableCell({ children: [new Paragraph({ text: "Date", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Reporter", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Status / Stability", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Hazards / Action", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Notes", bold: true })] }),
+                                ],
+                            }),
+                            ...(data.conditionLogs.length > 0 ? data.conditionLogs.map(c => new TableRow({
+                                children: [
+                                    new TableCell({ children: [new Paragraph({ text: c.date })] }),
+                                    new TableCell({ children: [new Paragraph({ text: c.reporter })] }),
+                                    new TableCell({ children: [new Paragraph({ text: `Status: ${c.status}\nStability: ${c.stability}` })] }),
+                                    new TableCell({ children: [new Paragraph({ text: `Hazards: ${c.hazards}\nAction: ${c.actionRequired}` })] }),
+                                    new TableCell({ children: [new Paragraph({ text: c.notes })] }),
+                                ],
+                            })) : [
+                                new TableRow({
+                                    children: [
+                                        new TableCell({ children: [new Paragraph({ text: "No condition reports recorded." })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                    ]
+                                })
+                            ]),
+                        ],
+                    }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: "VII. CONSERVATION LOGS", bold: true })] }),
+                    new Table({
+                        width: { size: 100, type: WidthType.PERCENTAGE },
+                        rows: [
+                            new TableRow({
+                                children: [
+                                    new TableCell({ children: [new Paragraph({ text: "Date", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Conservator / Obj", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Treatment & Findings", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Recommendations", bold: true })] }),
+                                    new TableCell({ children: [new Paragraph({ text: "Next Review", bold: true })] }),
+                                ],
+                            }),
+                            ...(data.conservationLogs.length > 0 ? data.conservationLogs.map(cl => new TableRow({
+                                children: [
+                                    new TableCell({ children: [new Paragraph({ text: cl.date })] }),
+                                    new TableCell({ children: [new Paragraph({ text: `Conservator: ${cl.conservator}\nObj: ${cl.objective}` })] }),
+                                    new TableCell({ children: [new Paragraph({ text: `Treatment: ${cl.treatment}\nFindings: ${cl.findings}` })] }),
+                                    new TableCell({ children: [new Paragraph({ text: cl.recommendations })] }),
+                                    new TableCell({ children: [new Paragraph({ text: cl.nextReview })] }),
+                                ],
+                            })) : [
+                                new TableRow({
+                                    children: [
+                                        new TableCell({ children: [new Paragraph({ text: "No conservation history recorded." })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                        new TableCell({ children: [new Paragraph({ text: "" })] }),
+                                    ]
+                                })
+                            ]),
                         ],
                     }),
                 ],

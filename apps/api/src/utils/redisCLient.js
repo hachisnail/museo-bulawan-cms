@@ -4,7 +4,7 @@ import { logger } from './logger.js';
 
 class RedisManager {
     constructor() {
-        this.url = env.redis?.url || 'redis://localhost:6379';
+        this.url = env.redisUrl || 'redis://localhost:6379';
         this.client = null;
         this.isConnecting = false;
     }

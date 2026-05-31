@@ -32,60 +32,43 @@ export const donationPipeline = {
                 assertTransition("submission", submission.status, "processed");
 
                 // Parse JSON fields
-                const data = typeof submission.data === 'string' ? JSON.parse(submission.data) : submission.data;
+                // L-6: Wrap JSON.parse in try/catch to handle malformed submission data gracefully.
+                let data;
+                try {
+                    data = typeof submission.data === 'string' ? JSON.parse(submission.data) : submission.data;
+                } catch (parseErr) {
+                    throw new Error(`MALFORMED_SUBMISSION_DATA: Submission data JSON is malformed: ${parseErr.message}`);
+                }
                 const settings = typeof submission.form_settings === 'string' ? JSON.parse(submission.form_settings) : submission.form_settings;
                 const mapping = settings?.field_mapping || {};
 
-                // Extract donor info
-                const firstName = data[mapping.firstName] || data.donor_first_name || data.firstName || "Anonymous";
-                const lastName = data[mapping.lastName] || data.donor_last_name || data.lastName || "";
+                // Extract donor info (with anonymous donor support)
+                const isAnonymous = data.is_anonymous === true || data.is_anonymous === 'true' || data.is_anonymous === 1 || data.is_anonymous === '1';
+                const firstName = isAnonymous ? "Anonymous" : (data[mapping.firstName] || data.donor_first_name || data.firstName || "Anonymous");
+                const lastName = isAnonymous ? "Donor" : (data[mapping.lastName] || data.donor_last_name || data.lastName || "");
                 const donorName = (data[mapping.donorName] || `${firstName} ${lastName}`).trim();
                 const donorEmail = data[mapping.donorEmail] || data.donor_email || data.email;
                 const acquisitionMethod = data[mapping.acquisitionType] || data.acquisition_type || "gift";
 
-                const donorExtras = {
+                const donorExtras = isAnonymous ? { title: "", phone: "", address: "" } : {
                     title: data.donor_title || "",
                     phone: data.donor_phone || "",
                     address: data.donor_address || ""
                 };
 
-                // ==========================================
-                // PHASE 1: Provision donor account (outside transaction — has external side effects)
-                // ==========================================
-                let donorAccountId = null;
-                if (donorEmail) {
-                    const accountDetails = await helpers._provisionDonorAccount(donorEmail, donorName, donorExtras);
-                    donorAccountId = accountDetails.userId;
-                    const portalUrl = env.frontendUrl ? `${env.frontendUrl}/portal-visitor` : "http://localhost:5173/portal-visitor";
-
-                    if (accountDetails.isNew) {
-                        await sendEmail({
-                            to: donorEmail,
-                            subject: "Donation Accepted - Set Up Your Account",
-                            html: `
-                                <h2>Thank you, ${donorName}!</h2>
-                                <p>Your proposed donation has passed our initial screening and is now in formal review.</p>
-                                <p>We have created a secure Visitor Portal account for you. Please set up your account by clicking the link below:</p>
-                                <hr/>
-                                <p style="text-align: center; margin: 24px 0;">
-                                    <a href="${accountDetails.setupUrl}" style="background: #4f46e5; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">Set Up Your Account</a>
-                                </p>
-                                <p style="font-size: 12px; color: #6b7280;">This link expires in 7 days. If it expires, please contact us for a new one.</p>
-                                <p>Once your account is set up, you can track your donation at: <a href="${portalUrl}">${portalUrl}</a></p>
-                            `
-                        });
-                    } else {
-                        await sendEmail({
-                            to: donorEmail,
-                            subject: "Donation Update - Items Accepted for Review",
-                            html: `
-                                <h2>Hello again, ${donorName}!</h2>
-                                <p>Your new donation has passed our initial screening.</p>
-                                <p>Track progress in your Visitor Portal: <a href="${portalUrl}">${portalUrl}</a></p>
-                            `
-                        });
+                // Extract loan end date for loan-type acquisitions
+                let loanEndDate = null;
+                if (acquisitionMethod.toLowerCase() === "loan" && data.loan_end_date) {
+                    loanEndDate = data.loan_end_date;
+                    // Edge case: validate loan end date is not in the past
+                    const parsedDate = new Date(loanEndDate);
+                    if (parsedDate < new Date() && !isNaN(parsedDate.getTime())) {
+                        logger.warn(`Loan end date ${loanEndDate} is in the past for submission ${submissionId}. Proceeding anyway — staff can override.`);
                     }
                 }
+
+                // Visitor account provisioning is deferred to the intake approval (MOA generation) step.
+                const donorAccountId = null;
 
                 // ==========================================
                 // PHASE 2: Create intake records in a transaction for atomicity
@@ -98,10 +81,10 @@ export const donationPipeline = {
 
                     for (const item of parsedItems) {
                         let method = acquisitionMethod?.toLowerCase() || "gift";
-                        if (!["gift", "loan", "purchase", "existing"].includes(method)) method = "gift";
+                        if (!["gift", "loan", "purchase", "existing", "bequest"].includes(method)) method = "gift";
 
                         const result = await acquisitionService.registerExternalIntake(
-                            staffId, submission.id, donorAccountId, donorName, method, item, tx
+                            staffId, submission.id, donorAccountId, donorName, method, item, loanEndDate, tx
                         );
                         
                         txIntakes.push(result.intake);

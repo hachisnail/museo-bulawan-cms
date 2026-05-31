@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useFormLogic } from './useFormLogic';
 import { 
     ChevronRight, 
-    ChevronLeft, 
     Check, 
     AlertCircle, 
     FileText, 
     Upload, 
-    Shield, 
     Mail, 
-    Key,
-    Send
+    Key
 } from 'lucide-react';
 
 const ExternalForm = (props) => {
     const { 
         className = "",
-        hideHeader = false
+        hideHeader = false,
+        infoBlock
     } = props;
+
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [submittedId, setSubmittedId] = useState(null);
 
     const {
         definition,
@@ -25,7 +26,7 @@ const ExternalForm = (props) => {
         files,
         loading,
         submitting,
-        error,
+        error: apiError,
         otpSent,
         otp,
         otpLoading,
@@ -37,39 +38,41 @@ const ExternalForm = (props) => {
         handleSubmit,
         setOtp,
         setOtpSent
-    } = useFormLogic(props);
+    } = useFormLogic({
+        ...props,
+        onSuccess: (result) => {
+            setIsSubmitted(true);
+            setSubmittedId(result.id);
+            if (props.onSuccess) props.onSuccess(result);
+        }
+    });
 
-    const [currentStep, setCurrentStep] = useState(0);
+    const [currentStepIdx, setCurrentStepIdx] = useState(0);
+    const [localError, setLocalError] = useState(null);
 
-    if (loading) return (
-        <div className="p-40 text-center flex flex-col items-center justify-center gap-6 animate-in fade-in duration-700">
-            <div className="w-12 h-12 border-2 border-zinc-100 border-t-[#D4AF37] rounded-full animate-spin"></div>
-            <div className="text-[11px] font-black uppercase tracking-[0.4em] text-zinc-300">Initializing Official Portal...</div>
-        </div>
-    );
+    const handleResetForm = () => {
+        setIsSubmitted(false);
+        setSubmittedId(null);
+        setCurrentStepIdx(0);
+        setLocalError(null);
+        setOtp('');
+        setOtpSent(false);
+    };
 
-    if (error && !definition) return (
-        <div className="max-w-2xl mx-auto p-12 bg-white border border-zinc-200 rounded-sm shadow-2xl flex flex-col items-center text-center">
-            <div className="w-16 h-16 bg-rose-50 rounded-sm flex items-center justify-center text-rose-500 mb-6">
-                <AlertCircle className="w-8 h-8" />
-            </div>
-            <h3 className="text-xl font-serif text-black uppercase tracking-widest mb-2">Access Resticted</h3>
-            <p className="text-sm text-zinc-500 font-light italic mb-8">{error}</p>
-            <button onClick={() => window.location.reload()} className="px-8 py-3 bg-black text-[#D4AF37] text-[10px] font-black uppercase tracking-widest rounded-sm">Retry Connection</button>
-        </div>
-    );
+    const displayError = localError || apiError;
 
-    if (!definition) return null;
-
-    const { schema, settings } = definition;
+    const { schema, settings } = definition || {};
     const properties = schema?.properties || {};
     const required = schema?.required || [];
+    const stepGroups = settings?.step_groups || [];
+    const finalInfoBlock = infoBlock || settings?.info_block || settings?.infoBlock || settings?.intro_block || settings?.introBlock;
 
+    // ── Visibility Logic ──
     const isFieldVisible = (key, prop) => {
         const dependency = prop['ui:dependsOn'] || prop['dependsOn'];
         if (!dependency) return true;
         const { field, value, values, operator = 'eq' } = dependency;
-        const actualValue = formData[field];
+        const actualValue = formData?.[field];
         if (operator === 'eq') return actualValue === value;
         if (operator === 'neq') return actualValue !== value;
         if (operator === 'in') return values?.includes(actualValue);
@@ -77,291 +80,405 @@ const ExternalForm = (props) => {
         return true;
     };
 
-    const visibleFields = Object.entries(properties).filter(([key, prop]) => isFieldVisible(key, prop));
-    
-    // Pagination logic
-    const fieldsPerStep = 4;
-    const totalFieldSteps = Math.ceil(visibleFields.length / fieldsPerStep);
-    const paginatedFields = [];
-    for (let i = 0; i < visibleFields.length; i += fieldsPerStep) {
-        paginatedFields.push(visibleFields.slice(i, i + fieldsPerStep));
+    // ── Build Steps ──
+    const steps = useMemo(() => {
+        const result = [];
+
+        if (finalInfoBlock && (finalInfoBlock.header || finalInfoBlock.title || finalInfoBlock.description || finalInfoBlock.text)) {
+            result.push({
+                id: 'intro_notice',
+                label: finalInfoBlock.header || finalInfoBlock.title || 'Notice',
+                type: 'info_block',
+                fields: []
+            });
+        }
+
+        if (stepGroups.length > 0) {
+            for (const group of stepGroups) {
+                const groupFields = Object.entries(properties)
+                    .filter(([, prop]) => prop['ui:group'] === group.id);
+                
+                if (groupFields.length > 0) {
+                    result.push({
+                        id: group.id,
+                        label: group.label,
+                        type: 'fields',
+                        fields: groupFields
+                    });
+                }
+            }
+
+            const groupedIds = new Set(stepGroups.map(g => g.id));
+            const ungroupedFields = Object.entries(properties)
+                .filter(([, prop]) => !prop['ui:group'] || !groupedIds.has(prop['ui:group']))
+                .filter(([, prop]) => prop['ui:widget'] !== 'hidden');
+            
+            if (ungroupedFields.length > 0) {
+                result.push({
+                    id: 'additional',
+                    label: 'Additional Details',
+                    type: 'fields',
+                    fields: ungroupedFields
+                });
+            }
+        } else {
+            const allFields = Object.entries(properties).filter(([, prop]) => prop['ui:widget'] !== 'hidden');
+            if (allFields.length > 0) {
+                result.push({
+                    id: `fields-main`,
+                    label: 'Tell us about yourself.',
+                    type: 'fields',
+                    fields: allFields
+                });
+            }
+        }
+
+        if (settings?.allow_attachments) {
+            result.push({ id: 'media', label: 'Media Documentation', type: 'media', fields: [] });
+        }
+        if (definition?.otp) {
+            result.push({ id: 'verify', label: 'Verification', type: 'verify', fields: [] });
+        }
+
+        return result;
+    }, [properties, stepGroups, settings, definition?.otp, finalInfoBlock]);
+
+    const visibleStepIndices = useMemo(() => {
+        return steps.map((step, idx) => {
+            if (step.type !== 'fields') return idx;
+            const hasVisible = step.fields.some(([key, prop]) => isFieldVisible(key, prop));
+            return hasVisible ? idx : null;
+        }).filter(idx => idx !== null);
+    }, [steps, formData]);
+
+    if (loading) return (
+        <div className={`flex flex-col w-full max-w-4xl min-w-[320px] md:min-w-[600px] mx-auto font-sans ${className}`}>
+            <div className="w-full bg-white rounded-2xl  shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-20 flex items-center justify-center min-h-[400px]">
+                <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+            </div>
+        </div>
+    );
+
+    if (apiError && !definition) return (
+        <div className={`flex flex-col w-full max-w-4xl min-w-[320px]w md:min-w-[600px] mx-auto font-sans ${className}`}>
+            <div className="w-full bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-12 text-center min-h-[400px] flex flex-col justify-center items-center">
+                <AlertCircle className="w-10 h-10 text-red-500 mx-auto mb-4" />
+                <h3 className="text-2xl font-serif text-black tracking-wide mb-2">Error</h3>
+                <p className="text-sm text-gray-500 mb-8 max-w-md">{apiError}</p>
+                <button onClick={() => window.location.reload()} className="px-8 py-3 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-sm">Retry</button>
+            </div>
+        </div>
+    );
+
+    if (!definition) return null;
+
+    if (isSubmitted) {
+        return (
+            <div className={`flex flex-col w-full max-w-4xl min-w-[320px] md:min-w-[600px] mx-auto font-sans ${className}`}>
+                <div className="w-full bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-16 text-center animate-in fade-in duration-500 min-h-[400px] flex flex-col justify-center items-center">
+                    <h3 className="text-4xl font-serif text-black tracking-wide mb-4 uppercase">Success!</h3>
+                    <hr className="border-t border-gray-300 w-32 mx-auto mb-8" />
+                    <p className="text-sm text-gray-600 font-light max-w-md mx-auto leading-relaxed mb-8">
+                        Your submission has been successfully transmitted. A representative will review your documentation shortly.
+                    </p>
+                    {submittedId && (
+                        <div className="mb-10">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-1">Receipt ID</span>
+                            <code className="text-sm font-mono text-black">{submittedId}</code>
+                        </div>
+                    )}
+                    <button
+                        onClick={handleResetForm}
+                        className="px-10 py-3 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-gray-800 transition-all"
+                    >
+                        Submit Another
+                    </button>
+                </div>
+            </div>
+        );
     }
 
-    const steps = [...paginatedFields.map((_, i) => ({ id: `fields-${i}`, label: `Step ${i + 1}`, type: 'fields' }))];
-    if (settings?.allow_attachments) steps.push({ id: 'media', label: 'Media Documentation', type: 'media' });
-    if (definition.otp) steps.push({ id: 'verify', label: 'Verification', type: 'verify' });
+    const visibleSteps = visibleStepIndices.map(i => steps[i]);
+    const currentVisibleIdx = Math.min(currentStepIdx, visibleSteps.length - 1);
+    const activeStep = visibleSteps[currentVisibleIdx];
 
-    const totalStepsCount = steps.length;
-
+    // ── Navigation ──
     const nextStep = (e) => {
-        e.preventDefault();
-        if (currentStep < totalStepsCount - 1) setCurrentStep(currentStep + 1);
+        if (e) e.preventDefault();
+        setLocalError(null);
+
+        if (activeStep?.type === 'fields') {
+            for (const [key, prop] of activeStep.fields) {
+                if (!isFieldVisible(key, prop)) continue;
+                if (prop['ui:widget'] === 'hidden') continue;
+                const isRequired = required.includes(key);
+                if (formData.is_anonymous === true && ['donor_first_name', 'donor_last_name'].includes(key)) continue;
+                
+                const value = formData[key];
+                if (isRequired && (value === undefined || value === null || (typeof value === 'string' && value.trim() === ''))) {
+                    setLocalError(`"${prop.title || key}" is required.`);
+                    return;
+                }
+            }
+        }
+
+        if (currentVisibleIdx < visibleSteps.length - 1) {
+            setCurrentStepIdx(currentVisibleIdx + 1);
+        }
     };
 
     const prevStep = (e) => {
-        e.preventDefault();
-        if (currentStep > 0) setCurrentStep(currentStep - 1);
+        if (e) e.preventDefault();
+        setLocalError(null);
+        if (currentVisibleIdx > 0) {
+            setCurrentStepIdx(currentVisibleIdx - 1);
+        }
     };
 
-    const activeStepType = steps[currentStep].type;
+    const onInputChange = (e) => {
+        setLocalError(null);
+        handleInputChange(e);
+    };
+
+    // ── Render a single form field ──
+    const renderField = (key, prop) => {
+        if (prop['ui:widget'] === 'hidden') {
+            return <input key={key} type="hidden" name={key} value={formData[key] || ''} />;
+        }
+        if (!isFieldVisible(key, prop)) return null;
+
+        const isRequired = required.includes(key);
+        const showRequired = isRequired && !(formData.is_anonymous === true && ['donor_first_name', 'donor_last_name'].includes(key));
+
+        return (
+            <div key={key} className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 mb-5">
+                <label className="text-[11px] font-medium text-gray-800 w-32 shrink-0 capitalize">
+                    {prop.title || key}
+                    {showRequired && <span className="text-red-500 ml-1">*</span>}
+                </label>
+
+                <div className="flex-1">
+                    {prop.type === 'boolean' ? (
+                        <label className="flex items-center cursor-pointer py-2">
+                            <input type="checkbox" name={key} checked={!!formData[key]} onChange={onInputChange} className="w-4 h-4 text-black border-gray-400 rounded-sm focus:ring-black" />
+                            <span className="ml-3 text-sm text-gray-600">{prop.description || 'Confirmed'}</span>
+                        </label>
+                    ) : prop.enum ? (
+                        <div className="relative">
+                            <select
+                                name={key}
+                                required={showRequired}
+                                value={formData[key] || ''}
+                                onChange={onInputChange}
+                                className="w-full bg-transparent border border-gray-400 rounded-full px-5 py-2.5 text-sm text-black focus:outline-none focus:border-black transition-colors appearance-none"
+                            >
+                                <option value="" disabled>Select...</option>
+                                {prop.enum.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                            </select>
+                            <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-500">
+                                <ChevronRight className="w-4 h-4 rotate-90" />
+                            </div>
+                        </div>
+                    ) : prop.format === 'textarea' ? (
+                        <textarea
+                            name={key}
+                            required={showRequired}
+                            value={formData[key] || ''}
+                            onChange={onInputChange}
+                            rows={3}
+                            placeholder={prop.description}
+                            className="w-full bg-transparent border border-gray-400 rounded-2xl px-5 py-3 text-sm text-black focus:outline-none focus:border-black transition-colors resize-none placeholder:text-gray-300"
+                        />
+                    ) : (
+                        <input
+                            type={prop.format === 'email' ? 'email' : prop.format === 'date' ? 'date' : prop.type === 'number' ? 'number' : 'text'}
+                            name={key}
+                            required={showRequired}
+                            value={formData[key] || ''}
+                            onChange={onInputChange}
+                            placeholder={prop.description}
+                            className="w-full bg-transparent border border-gray-400 rounded-full px-5 py-2 text-sm text-black focus:outline-none focus:border-black transition-colors placeholder:text-gray-300"
+                        />
+                    )}
+                </div>
+            </div>
+        );
+    };
 
     return (
-        <div className={`external-form-modern flex flex-col lg:flex-row bg-white border border-zinc-300 rounded-sm shadow-[0_40px_100px_rgba(0,0,0,0.1)] overflow-hidden min-h-[600px] max-w-6xl mx-auto ${className}`}>
+        <div className={`flex flex-col w-full max-w-4xl min-w-[320px] md:min-w-[600px] mx-auto font-sans ${className}`}>
             
-            {/* PUBLIC PORTAL SIDEBAR */}
-            <aside className="lg:w-80 bg-zinc-950 text-white p-10 flex flex-col justify-between relative">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/5 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            {/* MAIN INNER CARD */}
+            <div className="w-full bg-white rounded-2xl border border-gray-300 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-10 md:p-16 lg:p-20 relative">
                 
-                <div className="relative z-10">
-                    <div className="flex items-center gap-3 text-[#D4AF37] mb-12">
-                        <Shield className="w-5 h-5" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">Official Portal</span>
-                    </div>
-                    
-                    <div className="space-y-8">
-                        {steps.map((step, idx) => (
-                            <div key={step.id} className="flex items-center gap-5">
-                                <div className={`w-8 h-8 rounded-sm flex items-center justify-center text-[11px] font-black transition-all ${
-                                    currentStep === idx ? 'bg-[#D4AF37] text-black shadow-[0_0_20px_rgba(212,175,55,0.3)]' : 
-                                    currentStep > idx ? 'bg-green-500 text-white' : 'bg-zinc-900 text-zinc-600 border border-zinc-800'
-                                }`}>
-                                    {currentStep > idx ? <Check className="w-4 h-4" /> : idx + 1}
-                                </div>
-                                <div className="flex flex-col">
-                                    <span className={`text-[10px] uppercase font-black tracking-widest ${currentStep === idx ? 'text-white' : 'text-zinc-600'}`}>
-                                        {step.label}
-                                    </span>
-                                    <div className="h-0.5 bg-zinc-900 mt-1 w-12 rounded-full overflow-hidden">
-                                        <div className={`h-full bg-[#D4AF37] transition-all duration-500 ${currentStep >= idx ? 'w-full' : 'w-0'}`}></div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="relative z-10 pt-10 border-t border-zinc-900">
-                    <div className="text-[9px] text-zinc-600 uppercase font-black tracking-widest mb-2">Legal Compliance</div>
-                    <p className="text-[10px] text-zinc-500 font-light italic leading-relaxed">By submitting, you agree to the museum's curatorial standards and terms of provenance.</p>
-                </div>
-            </aside>
-
-            {/* PUBLIC PORTAL CONTENT */}
-            <div className="flex-1 p-10 md:p-20 relative">
-                {!hideHeader && currentStep === 0 && (
-                    <header className="mb-16 animate-in fade-in slide-in-from-top-4 duration-700">
-                        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#A68A27] mb-4">Museo Bulawan Submission</div>
-                        <h2 className="text-4xl font-serif text-black uppercase tracking-tight mb-4 leading-tight">
-                            {definition.title}
+                {/* Header Section */}
+                <header className="mb-10">
+                    {activeStep?.type === 'info_block' ? (
+                        <div className="text-left animate-in fade-in duration-500">
+                            <h2 className="text-3xl md:text-4xl font-serif text-black tracking-wide">
+                                {finalInfoBlock.header || finalInfoBlock.title || "Notice"}
+                            </h2>
+                            {(finalInfoBlock.description || finalInfoBlock.text) && (
+                                <p className="text-sm text-gray-500 mt-4 leading-relaxed font-light whitespace-pre-wrap">
+                                    {finalInfoBlock.description || finalInfoBlock.text}
+                                </p>
+                            )}
+                        </div>
+                    ) : currentVisibleIdx === 0 && !hideHeader ? (
+                        <div className={activeStep?.type !== 'fields' ? 'text-center' : 'text-left'}>
+                            <h2 className="text-3xl md:text-4xl font-serif text-black tracking-wide">
+                                {definition.title || "NOTICE"}
+                            </h2>
+                            {settings?.description && (
+                                <p className="text-sm text-gray-500 mt-4 leading-relaxed max-w-2xl mx-auto md:mx-0">
+                                    {settings.description}
+                                </p>
+                            )}
+                        </div>
+                    ) : (
+                        <h2 className="text-3xl md:text-4xl font-serif text-black tracking-wide">
+                            {activeStep?.label}
                         </h2>
-                        {settings?.description && (
-                            <p className="text-sm text-zinc-500 font-light italic max-w-xl leading-relaxed">
-                                {settings.description}
-                            </p>
-                        )}
-                    </header>
-                )}
+                    )}
+                    <hr className="border-t border-gray-300 mt-6" />
+                </header>
 
-                <form onSubmit={handleSubmit} className="space-y-12">
-                    <div className="min-h-[350px]">
-                        {activeStepType === 'fields' && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-12 animate-in fade-in slide-in-from-right-8 duration-700">
-                                {paginatedFields[currentStep].map(([key, prop]) => {
-                                    if (prop['ui:widget'] === 'hidden') {
-                                        return <input key={key} type="hidden" name={key} value={formData[key] || ''} />;
-                                    }
 
-                                    const isRequired = required.includes(key);
-                                    const isFullWidth = (prop.type === 'string' && prop.format === 'textarea') || settings?.layout === 'single_column';
+                <form 
+                    className={`flex flex-col ${activeStep?.type !== 'info_block' ? 'min-h-[240px]' : ''}`}
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        if (currentVisibleIdx < visibleSteps.length - 1) nextStep();
+                        else handleSubmit(e);
+                    }} 
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') e.preventDefault();
+                    }}
+                >
 
-                                    return (
-                                        <div key={key} className={`${isFullWidth ? 'md:col-span-2' : ''} space-y-4 group`}>
-                                            <label className="text-[11px] font-black uppercase tracking-[0.1em] text-zinc-500 flex items-center gap-2 group-focus-within:text-black transition-colors">
-                                                {prop.title || key}
-                                                {isRequired && <span className="text-[#D4AF37]">•</span>}
-                                            </label>
-
-                                            {prop.type === 'boolean' ? (
-                                                <label className="relative inline-flex items-center cursor-pointer group/toggle py-2">
-                                                    <input type="checkbox" name={key} checked={!!formData[key]} onChange={handleInputChange} className="sr-only peer" />
-                                                    <div className="w-12 h-6 bg-zinc-100 rounded-sm peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-zinc-500 after:rounded-sm after:h-4.5 after:w-5 after:transition-all peer-checked:bg-black after:peer-checked:bg-[#D4AF37]"></div>
-                                                    <span className="ml-4 text-xs text-zinc-600 group-hover/toggle:text-black transition-colors">{prop.description || 'Confirmed'}</span>
-                                                </label>
-                                            ) : prop.enum ? (
-                                                <div className="relative">
-                                                    <select
-                                                        name={key}
-                                                        required={isRequired}
-                                                        value={formData[key] || ''}
-                                                        onChange={handleInputChange}
-                                                        className="w-full bg-zinc-100 border border-zinc-300 rounded-sm px-6 py-5 text-[13px] text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all appearance-none font-medium"
-                                                    >
-                                                        <option value="" disabled>Please select an option...</option>
-                                                        {prop.enum.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                                                    </select>
-                                                    <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-zinc-300">
-                                                        <ChevronRight className="w-4 h-4 rotate-90" />
-                                                    </div>
-                                                </div>
-                                            ) : prop.format === 'textarea' ? (
-                                                <textarea
-                                                    name={key}
-                                                    required={isRequired}
-                                                    value={formData[key] || ''}
-                                                    onChange={handleInputChange}
-                                                    rows={6}
-                                                    placeholder={prop.description}
-                                                    className="w-full bg-zinc-100 border border-zinc-300 rounded-sm px-6 py-5 text-[13px] text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all resize-none placeholder:text-zinc-400 font-light"
-                                                />
-                                            ) : (
-                                                <input
-                                                    type={prop.format === 'email' ? 'email' : prop.format === 'date' ? 'date' : prop.type === 'number' ? 'number' : 'text'}
-                                                    name={key}
-                                                    required={isRequired}
-                                                    value={formData[key] || ''}
-                                                    onChange={handleInputChange}
-                                                    placeholder={prop.description}
-                                                    className="w-full bg-zinc-100 border border-zinc-300 rounded-sm px-6 py-5 text-[13px] text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all placeholder:text-zinc-400 font-medium"
-                                                />
-                                            )}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        )}
-
-                        {activeStepType === 'media' && (
-                            <div className="space-y-12 animate-in fade-in slide-in-from-right-8 duration-700">
-                                <div className="text-center md:text-left">
-                                    <h4 className="text-2xl font-serif text-black uppercase tracking-wide mb-2">Visual Documentation</h4>
-                                    <p className="text-sm text-zinc-500 font-light italic">Attach up to 5 clear photographs of the artifact for archival assessment.</p>
-                                </div>
-                                
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <label className="border-2 border-dashed border-zinc-200 rounded-sm p-16 flex flex-col items-center justify-center gap-6 hover:border-[#D4AF37] hover:bg-zinc-100 transition-all cursor-pointer group">
-                                        <div className="w-16 h-16 bg-white border border-zinc-300 rounded-sm flex items-center justify-center text-zinc-400 group-hover:text-[#D4AF37] group-hover:shadow-2xl transition-all">
-                                            <Upload className="w-8 h-8" />
-                                        </div>
-                                        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500">Select Media Files</div>
-                                        <input type="file" multiple onChange={handleFileChange} className="hidden" />
-                                    </label>
-                                    
-                                    <div className="grid grid-cols-1 gap-3">
-                                        {files.map((f, i) => (
-                                            <div key={i} className="flex items-center justify-between p-5 border border-zinc-200 rounded-sm bg-white shadow-sm hover:shadow-md transition-shadow group">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 bg-zinc-50 rounded-sm flex items-center justify-center text-[#D4AF37]">
-                                                        <FileText className="w-5 h-5" />
-                                                    </div>
-                                                    <div className="flex flex-col">
-                                                        <span className="text-xs font-bold text-black truncate max-w-[200px]">{f.name}</span>
-                                                        <span className="text-[9px] text-zinc-400 uppercase tracking-tighter">{(f.size/1024).toFixed(1)} KB • READY</span>
-                                                    </div>
-                                                </div>
-                                                <button type="button" onClick={() => removeFile(i)} className="p-2 text-rose-300 hover:text-rose-500 transition-colors">✕</button>
-                                            </div>
-                                        ))}
-                                        {files.length === 0 && (
-                                            <div className="h-full border border-zinc-50 border-dashed rounded-sm flex items-center justify-center italic text-zinc-300 text-xs">No media attached for this submission.</div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {activeStepType === 'verify' && (
-                            <div className="space-y-12 animate-in fade-in slide-in-from-right-8 duration-700">
-                                <div className="text-center max-w-xl mx-auto space-y-4">
-                                    <h4 className="text-2xl font-serif text-black uppercase tracking-wide">Identity Verification</h4>
-                                    <p className="text-sm text-zinc-500 font-light italic leading-relaxed">
-                                        To protect the integrity of the museum archive, please verify your email address before finalizing the submission.
-                                    </p>
-                                </div>
-
-                                {!otpSent ? (
-                                    <div className="max-w-md mx-auto p-12 bg-zinc-50 border border-zinc-100 rounded-sm text-center space-y-8">
-                                        <div className="w-20 h-20 bg-white border border-zinc-200 rounded-sm flex items-center justify-center text-[#D4AF37] mx-auto shadow-sm">
-                                            <Mail className="w-10 h-10" />
-                                        </div>
-                                        <div>
-                                            <div className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-1">Authenticated Channel</div>
-                                            <div className="text-sm font-bold text-black">{otpEmail || 'No email provided'}</div>
-                                        </div>
-                                        <button
-                                            type="button"
-                                            onClick={handleRequestOtp}
-                                            disabled={otpLoading}
-                                            className="w-full py-5 bg-black text-[#D4AF37] rounded-sm text-[10px] font-black uppercase tracking-[0.2em] transition-all shadow-2xl shadow-black/10 disabled:opacity-50 flex items-center justify-center gap-3"
-                                        >
-                                            {otpLoading ? 'Dispatching Code...' : <><Send className="w-4 h-4" /> Receive Access Token</>}
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <div className="max-w-md mx-auto p-12 bg-white border border-zinc-200 rounded-sm shadow-2xl text-center space-y-10 animate-in zoom-in-95 duration-500">
-                                        <div className="w-16 h-16 bg-green-50 text-green-500 rounded-sm flex items-center justify-center mx-auto">
-                                            <Key className="w-8 h-8" />
-                                        </div>
-                                        <div className="space-y-6">
-                                            <div>
-                                                <h4 className="text-lg font-bold text-black uppercase tracking-widest">Enter Access Code</h4>
-                                                <p className="text-[10px] text-zinc-400 uppercase tracking-tighter mt-1">Sent to {otpEmail}</p>
-                                            </div>
-                                            <input
-                                                type="text"
-                                                placeholder="000000"
-                                                maxLength={6}
-                                                value={otp}
-                                                onChange={(e) => setOtp(e.target.value)}
-                                                className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-6 py-6 text-center text-5xl tracking-[0.4em] font-black text-black focus:outline-none focus:border-[#D4AF37] transition-all"
-                                            />
-                                            <button type="button" onClick={() => setOtpSent(false)} className="text-[9px] font-black uppercase tracking-widest text-[#A68A27] hover:underline underline-offset-4 transition-all">Incorrect email? Change address.</button>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-
-                    {error && (
-                        <div className="p-5 bg-rose-50 border border-rose-100 text-rose-600 text-[11px] font-bold uppercase tracking-widest flex items-center gap-4 rounded-sm animate-in shake-in duration-300">
-                            <AlertCircle className="w-5 h-5" /> {error}
+                    {/* ── FIELD STEPS ── */}
+                    {activeStep?.type === 'fields' && (
+                        <div className="w-full animate-in fade-in duration-500 flex-1">
+                            {activeStep.fields.map(([key, prop]) => renderField(key, prop))}
                         </div>
                     )}
 
-                    {/* NAVIGATION CONTROLS */}
-                    <div className="flex items-center justify-between pt-12 border-t border-zinc-100">
-                        <button
-                            type="button"
-                            onClick={prevStep}
-                            disabled={currentStep === 0}
-                            className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-300 hover:text-black transition-all disabled:opacity-0"
-                        >
-                            <ChevronLeft className="w-5 h-5" /> Previous Section
-                        </button>
-
-                        <div className="flex gap-6">
-                            {currentStep < totalStepsCount - 1 ? (
-                                <button
-                                    type="button"
-                                    onClick={nextStep}
-                                    className="flex items-center gap-4 px-12 py-5 bg-black text-[#D4AF37] rounded-sm text-[10px] font-black uppercase tracking-[0.3em] hover:bg-zinc-900 transition-all shadow-2xl shadow-black/10"
-                                >
-                                    Proceed <ChevronRight className="w-5 h-5" />
-                                </button>
-                            ) : (
-                                <button
-                                    type="submit"
-                                    disabled={submitting || (definition.otp && otpSent && !otp)}
-                                    className="px-16 py-6 bg-black text-[#D4AF37] rounded-sm text-[11px] font-black uppercase tracking-[0.3em] hover:bg-zinc-900 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.15)] disabled:opacity-50 flex items-center gap-4 group"
-                                >
-                                    {submitting ? 'Transmitting to Archive...' : 'Finalize Official Submission'} 
-                                    <Check className={`w-5 h-5 group-hover:scale-125 transition-transform ${submitting ? 'animate-ping' : ''}`} />
-                                </button>
+                    {/* ── MEDIA STEP ── */}
+                    {activeStep?.type === 'media' && (
+                        <div className="w-full animate-in fade-in duration-500 space-y-8 flex-1">
+                            <label className="border border-dashed border-gray-400 rounded-sm p-12 flex flex-col items-center justify-center gap-4 hover:border-black hover:bg-gray-50 transition-all cursor-pointer">
+                                <Upload className="w-8 h-8 text-gray-400" />
+                                <div className="text-[11px] font-bold uppercase tracking-widest text-gray-600">Select Files to Upload</div>
+                                <input type="file" multiple onChange={handleFileChange} className="hidden" />
+                            </label>
+                            
+                            {files.length > 0 && (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {files.map((f, i) => (
+                                        <div key={i} className="flex items-center justify-between p-4 border border-gray-200 rounded-sm">
+                                            <div className="flex items-center gap-3 overflow-hidden">
+                                                <FileText className="w-5 h-5 text-gray-400 shrink-0" />
+                                                <div className="flex flex-col overflow-hidden">
+                                                    <span className="text-xs font-medium text-black truncate">{f.name}</span>
+                                                    <span className="text-[10px] text-gray-400 uppercase">{(f.size/1024).toFixed(1)} KB</span>
+                                                </div>
+                                            </div>
+                                            <button type="button" onClick={() => removeFile(i)} className="text-gray-400 hover:text-red-500 transition-colors ml-2">✕</button>
+                                        </div>
+                                    ))}
+                                </div>
                             )}
                         </div>
-                    </div>
+                    )}
+
+                    {/* ── OTP VERIFY STEP ── */}
+                    {activeStep?.type === 'verify' && (
+                        <div className="w-full animate-in fade-in duration-500 flex-1 flex flex-col justify-center">
+                            {!otpSent ? (
+                                <div className="text-center py-8">
+                                    <Mail className="w-10 h-10 text-gray-400 mx-auto mb-6" />
+                                    <div className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">Authenticated Email</div>
+                                    <div className="text-lg font-serif text-black mb-8">{otpEmail || formData.donor_email || 'No email provided'}</div>
+                                    <button
+                                        type="button"
+                                        onClick={handleRequestOtp}
+                                        disabled={otpLoading}
+                                        className="px-8 py-3 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-sm disabled:opacity-50"
+                                    >
+                                        {otpLoading ? 'Sending...' : 'Send Verification Code'}
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="text-center py-8 max-w-sm mx-auto">
+                                    <Key className="w-8 h-8 text-gray-400 mx-auto mb-6" />
+                                    <h4 className="text-xl font-serif text-black mb-2">Enter Access Code</h4>
+                                    <p className="text-xs text-gray-500 mb-8">Sent to {otpEmail}</p>
+                                    
+                                    <input
+                                        type="text"
+                                        placeholder="000000"
+                                        maxLength={6}
+                                        value={otp}
+                                        onChange={(e) => setOtp(e.target.value)}
+                                        className="w-full bg-transparent border border-gray-400 rounded-full px-6 py-4 text-center text-3xl tracking-[0.3em] font-medium text-black focus:outline-none focus:border-black transition-all mb-6"
+                                    />
+                                    <button type="button" onClick={() => setOtpSent(false)} className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-black transition-colors underline underline-offset-4">
+                                        Change Email Address
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </form>
             </div>
+
+            {/* ERROR DISPLAY */}
+            {displayError && (
+                <div className="w-full mt-6">
+                    <div className="p-4 bg-red-50 text-red-600 border border-red-100 text-[11px] font-bold uppercase tracking-widest flex items-center justify-center gap-3 rounded-sm">
+                        <AlertCircle className="w-4 h-4" /> {displayError}
+                    </div>
+                </div>
+            )}
+
+            {/* BOTTOM NAVIGATION (Outside Card) */}
+            <div className="w-full flex items-center justify-between mt-6 px-2 md:px-0">
+                <button
+                    type="button"
+                    onClick={prevStep}
+                    className={`bg-black text-white px-8 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-sm transition-opacity ${currentVisibleIdx === 0 ? 'opacity-0 pointer-events-none' : 'hover:bg-gray-800'}`}
+                >
+                    PREV
+                </button>
+
+                <div className="flex items-center gap-4">
+                    {currentVisibleIdx === 0 && !hideHeader && (
+                        <span className="text-[10px] text-gray-500 uppercase tracking-widest hidden md:inline">
+                            Proceed to the Form
+                        </span>
+                    )}
+                    
+                    {currentVisibleIdx < visibleSteps.length - 1 ? (
+                        <button
+                            type="button"
+                            onClick={nextStep}
+                            className="bg-black text-white px-8 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-sm hover:bg-gray-800 transition-colors flex items-center gap-2"
+                        >
+                            NEXT <ChevronRight className="w-4 h-4" />
+                        </button>
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={handleSubmit}
+                            disabled={submitting || (definition.otp && otpSent && !otp)}
+                            className="bg-black text-white px-8 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-sm hover:bg-gray-800 transition-colors disabled:opacity-50"
+                        >
+                            {submitting ? 'Submitting...' : 'Submit'}
+                        </button>
+                    )}
+                </div>
+            </div>
+
         </div>
     );
 };

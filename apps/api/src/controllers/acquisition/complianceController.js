@@ -8,6 +8,10 @@ import { mapDTO } from '../../utils/dtoMapper.js';
  * Handles museum compliance actions: conservation logs, movement trails, 
  * condition reports, and state machine metadata.
  */
+
+// H-2 FIX: Allowlist of entity types that can have condition reports.
+const VALID_ENTITY_TYPES = ['intake', 'accession', 'inventory'];
+
 export const complianceController = {
     async getMovementHistory(req, res, next) {
         try {
@@ -38,6 +42,10 @@ export const complianceController = {
     async addConditionReport(req, res, next) {
         try {
             const { entityType, entityId } = req.params;
+            // H-2 FIX: Validate entityType against allowlist to prevent injection.
+            if (!VALID_ENTITY_TYPES.includes(entityType)) {
+                return res.status(400).json({ error: `Invalid entity type '${entityType}'. Must be one of: ${VALID_ENTITY_TYPES.join(', ')}` });
+            }
             const report = await acquisitionService.createConditionReport(req.user.id, entityType, entityId, req.body.condition, req.body.notes);
             res.status(201).json({ message: "Condition report added.", report: mapDTO(report) });
         } catch (error) { next(error); }
@@ -46,6 +54,10 @@ export const complianceController = {
     async getConditionReports(req, res, next) {
         try {
             const { entityType, entityId } = req.params;
+            // H-2 FIX: Validate entityType against allowlist.
+            if (!VALID_ENTITY_TYPES.includes(entityType)) {
+                return res.status(400).json({ error: `Invalid entity type '${entityType}'. Must be one of: ${VALID_ENTITY_TYPES.join(', ')}` });
+            }
             const reports = await acquisitionService.getConditionReports(entityType, entityId);
             res.status(200).json({ status: 'success', data: mapDTO(reports) });
         } catch (error) { next(error); }

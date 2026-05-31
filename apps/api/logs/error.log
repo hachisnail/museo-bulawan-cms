@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 2026-04-27 10:59:43 [error]: CRITICAL: Failed to auto-provision PocketBase service account. | Meta: {"error":"Something went wrong."}
 2026-04-27 11:00:33 [error]: CRITICAL: Failed to auto-provision PocketBase service account. | Meta: {"error":"Something went wrong."}
 2026-04-27 11:02:15 [error]: Failed to subscribe to PB collection: inventory | Meta: {"error":"EventSource is not defined"}
@@ -1064,29 +1063,332 @@ sql: INSERT INTO condition_reports () VALUES () - parameters:[]
     at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:295:15 | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KS89J24F3TDSP2K7Z431GKMP/export-condition","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
 2026-05-23 13:39:21 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
 2026-05-23 13:39:42 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
-=======
-2026-05-23 14:41:13 [error]: Failed to reset password | Meta: {"action":"UPDATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
-2026-05-23 14:41:13 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
-    at Object.validatePasswordStrength (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
-    at Object.resetPassword (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/services/user/securityService.js:89:18)
-    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
-    at async Object.resetPassword (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/controllers/user/securityController.js:44:13) | Meta: {"method":"POST","url":"/api/v1/user/reset-password","ip":"::1","user":"Guest"}
-2026-05-23 14:42:39 [error]: Failed to write to audit log in MariaDB | Meta: {"error":"(conn:7, no: 1054, SQLState: 42S22) Unknown column 'before_state' in 'INSERT INTO'\nsql: \n                INSERT INTO audit_logs (id, user_id, action, resource, details, ip_address, before_state, after_state)\n                VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n             - parameters:['01KS9S4N4Y56KZV51Q97JNX4AK','01KQA7Q6M13E9N05SAXGZD6CS4','LO..."}
-2026-05-23 14:43:45 [error]: Failed to write to audit log in MariaDB | Meta: {"error":"(conn:6, no: 1054, SQLState: 42S22) Unknown column 'before_state' in 'INSERT INTO'\nsql: \n                INSERT INTO audit_logs (id, user_id, action, resource, details, ip_address, before_state, after_state)\n                VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n             - parameters:['01KS9S6NM1J4KNW2YG06667E7V','01KQA7Q6M13E9N05SAXGZD6CS4','LO..."}
-2026-05-23 14:50:02 [error]: Failed to write to audit log in MariaDB | Meta: {"error":"(conn:18, no: 1054, SQLState: 42S22) Unknown column 'before_state' in 'INSERT INTO'\nsql: \n                INSERT INTO audit_logs (id, user_id, action, resource, details, ip_address, before_state, after_state)\n                VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n             - parameters:['01KS9SJ645MSYJFN3FHR6NAFV1','01KQA7Q6M13E9N05SAXGZD6CS4','LO..."}
-2026-05-23 14:55:01 [error]: Failed to write to audit log in MariaDB | Meta: {"error":"(conn:29, no: 1054, SQLState: 42S22) Unknown column 'before_state' in 'INSERT INTO'\nsql: \n                INSERT INTO audit_logs (id, user_id, action, resource, details, ip_address, before_state, after_state)\n                VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n             - parameters:['01KS9SV9XBW02ZD567PG5EA9A5','01KQA7Q6M13E9N05SAXGZD6CS4','LO..."}
-2026-05-23 15:30:52 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:45, no: 1005, SQLState: HY000) Can't create table `scratch`.`accessions` (errno: 150 \"Foreign key constraint is incorrectly formed\")\nsql: \n            CREATE TABLE IF NOT EXISTS accessions (\n                id VARCHAR(26) PRIMARY KEY,\n                intake_id VARCHAR(26) NOT NULL,\n                accession_number VARCHAR(100) UNIQUE NOT NULL,\n                handling_instructions TEXT NULL,... - parameters:[]"}
-2026-05-23 15:35:38 [error]: Error: VALIDATION_FAILED: data.donor_email should match format "email"
-    at Object.submitForm (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:28:23)
-    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
-    at async Object.submitForm (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"01KS9W2S2H0AR9EA9KJYESGZKV"}
-2026-05-23 15:38:34 [error]: Failed to onboard first admin | Meta: {"action":"CREATE","resource":"User","error":"ALREADY_ONBOARDED"}
-2026-05-23 15:38:34 [error]: Error: ALREADY_ONBOARDED
-    at Object.onboardFirstAdmin (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:33:33)
-    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
-    at async Object.onboardAdmin (file:///C:/Users/lenovo/Documents/MB_MIS/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:18:13) | Meta: {"method":"POST","url":"/api/v1/user/onboard","ip":"::1","user":"01KS9W2S2H0AR9EA9KJYESGZKV"}
->>>>>>> c1c7919b39d4c8dc9f807f8198e2701c6e103ad7
-2026-05-23 18:16:09 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
-2026-05-23 18:17:09 [error]: Failed to auto-provision MinIO bucket after multiple attempts | Meta: {"error":"connect ECONNREFUSED 127.0.0.1:9000"}
-2026-05-23 18:19:46 [error]: Failed to auto-provision MinIO bucket after multiple attempts | Meta: {"error":"connect ECONNREFUSED 127.0.0.1:9000"}
-2026-05-23 18:21:59 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
+2026-05-23 20:28:07 [error]: Error: VALIDATION_FAILED: data should have required property 'donor_first_name'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:47:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-05-23 20:29:49 [error]: Form submission validation failed for donation-form. Errors: data should have required property 'donor_first_name'. Payload: {}
+2026-05-23 20:29:49 [error]: Error: VALIDATION_FAILED: data should have required property 'donor_first_name'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-05-23 20:30:53 [error]: Form submission validation failed for donation-form. Errors: data should have required property 'donor_first_name'. Payload: {}
+2026-05-23 20:30:53 [error]: Error: VALIDATION_FAILED: data should have required property 'donor_first_name'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-05-23 20:32:27 [error]: Form submission validation failed for donation-form. Errors: data should have required property 'donor_first_name'. Payload: {}
+2026-05-23 20:32:27 [error]: Error: VALIDATION_FAILED: data should have required property 'donor_first_name'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-05-23 21:46:30 [error]: Error processing accession: (conn:5248, no: 1364, SQLState: HY000) Field 'id' doesn't have a default value
+sql: INSERT INTO condition_reports () VALUES () - parameters:[]
+2026-05-23 21:46:31 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779543987485@example.com","notes":12345,"attachment":"file.png"}
+2026-05-23 21:46:31 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779543987485@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-23 21:47:14 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-23 21:50:26 [error]: Error processing accession: (conn:5282, no: 1364, SQLState: HY000) Field 'id' doesn't have a default value
+sql: INSERT INTO condition_reports () VALUES () - parameters:[]
+2026-05-23 21:50:26 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779544223319@example.com","notes":12345,"attachment":"file.png"}
+2026-05-23 21:50:26 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779544223319@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-23 21:50:56 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779544254813@example.com","notes":12345,"attachment":"file.png"}
+2026-05-23 21:50:56 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779544254813@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-23 21:55:14 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779544511650@example.com","notes":12345,"attachment":"file.png"}
+2026-05-23 21:55:14 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779544511650@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-23 21:55:17 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-24 01:15:35 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-24 01:15:35 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779556534274@example.com","notes":12345,"attachment":"file.png"}
+2026-05-24 01:15:35 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779556534274@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-24 01:15:54 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-24 01:15:54 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779556552986@example.com","notes":12345,"attachment":"file.png"}
+2026-05-24 01:15:54 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779556552986@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 21:23:41 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779801820774@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 21:23:41 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779801820774@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 21:23:46 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 21:47:59 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779803278114@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 21:47:59 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779803278114@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 21:48:00 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:05:31 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779804329993@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:05:31 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779804329993@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:05:32 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:16:40 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779804998977@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:16:40 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779804998977@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:16:41 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:38:47 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779806326407@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:38:47 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779806326407@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:38:48 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:39:07 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779806346048@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:39:07 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779806346048@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:39:07 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:40:49 [error]: Error generating MOA: Unknown acquisition method: 'bequest'
+2026-05-26 22:40:49 [error]: Error: Unknown acquisition method: 'bequest'
+    at getContractType (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/constants.js:35:22)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/intakeService.js:154:38
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.generateDynamicMOA (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/intakeService.js:142:16)
+    at async Object.acceptAndIssueExternal (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:169:33) | Meta: {"method":"POST","url":"/api/v1/acquisitions/intakes/external/01KSJBNZJWV1K41ZT2Z1C9F18D/accept-and-issue","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-05-26 22:41:31 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779806490144@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:41:31 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779806490144@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:41:33 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:42:51 [error]: Error processing external intake: Invalid transition: 'submission' cannot move from 'processed' → 'processed'. Allowed: [archived]
+2026-05-26 22:42:51 [error]: Error: Invalid transition: 'submission' cannot move from 'processed' → 'processed'. Allowed: [archived]
+    at assertTransition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/stateMachine.js:99:15)
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/pipeline/donationPipeline.js:32:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/pipeline/donationPipeline.js:19:16)
+    at async Object.processExternalIntake (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/formPipelineService.js:25:12)
+    at async Object.acceptAndIssueExternal (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/intakeController.js:158:35) | Meta: {"method":"POST","url":"/api/v1/acquisitions/intakes/external/01KSJBQMN7GPNHPRNKBE1F4CAW/accept-and-issue","ip":"::1","user":"01KQ91VTA5A1RGM1SS01DWBQVK"}
+2026-05-26 22:45:45 [error]: Failed to complete setup | Meta: {"username":"hachisnail","error":"USERNAME_TAKEN"}
+2026-05-26 22:45:45 [error]: Error: USERNAME_TAKEN
+    at Object.completeSetup (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:205:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.completeSetup (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:29:13) | Meta: {"method":"POST","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}
+2026-05-26 22:48:31 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779806909636@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:48:31 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779806909636@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:48:31 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:49:11 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779806950052@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:49:11 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779806950052@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:49:11 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 22:59:06 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779807544865@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 22:59:06 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779807544865@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 22:59:06 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 23:06:55 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1779808013613@example.com","notes":12345,"attachment":"file.png"}
+2026-05-26 23:06:55 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1779808013613@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-26 23:06:55 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-26 23:10:30 [error]: Error: Not allowed by CORS
+    at origin (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/config/cors.js:14:22)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:204:7)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:342:13)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:297:9
+    at processParams (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:582:12)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:291:5)
+    at internalNext (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/helmet/index.mjs:527:6) | Meta: {"method":"OPTIONS","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}
+2026-05-26 23:10:32 [error]: Error: Not allowed by CORS
+    at origin (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/config/cors.js:14:22)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:204:7)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:342:13)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:297:9
+    at processParams (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:582:12)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:291:5)
+    at internalNext (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/helmet/index.mjs:527:6) | Meta: {"method":"OPTIONS","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}
+2026-05-26 23:11:12 [error]: Error: Not allowed by CORS
+    at origin (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/config/cors.js:14:22)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:204:7)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:342:13)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:297:9
+    at processParams (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:582:12)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:291:5)
+    at internalNext (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/helmet/index.mjs:527:6) | Meta: {"method":"OPTIONS","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}
+2026-05-26 23:11:12 [error]: Error: Not allowed by CORS
+    at origin (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/config/cors.js:14:22)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\cors\lib\index.js:204:7)
+    at Layer.handleRequest (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:342:13)
+    at C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:297:9
+    at processParams (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:582:12)
+    at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:291:5)
+    at internalNext (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/helmet/index.mjs:527:6) | Meta: {"method":"OPTIONS","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}
+2026-05-27 00:31:09 [error]: Failed to fetch user by ID | Meta: {"action":"READ","resource":"User","userId":"01KQ91VTA5A1RGM1SS01DWBQVK","error":"(conn:5841, no: 1146, SQLState: 42S02) Table 'scratch.users' doesn't exist\nsql: SELECT id, username, role, fname, lname, email, status, current_session_id FROM users WHERE id = ? - parameters:['01KQ91VTA5A1RGM1SS01DWBQVK']"}
+2026-05-27 00:31:09 [error]: SqlError: (conn:5841, no: 1146, SQLState: 42S02) Table 'scratch.users' doesn't exist
+sql: SELECT id, username, role, fname, lname, email, status, current_session_id FROM users WHERE id = ? - parameters:['01KQ91VTA5A1RGM1SS01DWBQVK']
+    at Module.createError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) | Meta: {"method":"GET","url":"/api/v1/auth/check","ip":"::1","user":"Guest"}
+2026-05-27 00:33:12 [error]: Failed to reset password | Meta: {"action":"UPDATE","resource":"User","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-27 00:33:12 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.resetPassword (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/user/securityService.js:89:18)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.resetPassword (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/user/securityController.js:44:13) | Meta: {"method":"POST","url":"/api/v1/user/reset-password","ip":"::1","user":"Guest"}
+2026-05-27 00:34:25 [error]: Error: Invalid OTP.
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:66:48)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"01KSJJ2HMT9792RBRG6KDB5WZN"}
+2026-05-27 00:34:57 [error]: SqlError: (conn:5847, no: 1406, SQLState: 22001) Data too long for column 'id' at row 1
+sql: 
+            INSERT INTO notifications (id, title, message, type, target_type, target_id, action_url)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+         - parameters:['3a18fa05-1186-4612-83a9-66881b7e5b07','New Intake Created','External submission processed...
+    at Module.createError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) | Meta: {"name":"SqlError","sqlMessage":"Data too long for column 'id' at row 1","sql":"\n            INSERT INTO notifications (id, title, message, type, target_type, target_id, action_url)\n            VALUES (?, ?, ?, ?, ?, ?, ?)\n         - parameters:['3a18fa05-1186-4612-83a9-66881b7e5b07','New Intake Created','External submission processed...","fatal":false,"errno":1406,"sqlState":"22001","code":"ER_DATA_TOO_LONG"}
+2026-05-31 12:48:09 [error]: Error processing external intake: UNAUTHORIZED_PIPELINE_ACTION: Only donation submissions can be processed into the acquisition system.
+2026-05-31 12:48:09 [error]: Error processing accession: Record not found in intakes with id undefined
+2026-05-31 12:48:09 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780202888017@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 12:48:09 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780202888017@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 12:48:12 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 12:49:44 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780202982918@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 12:49:44 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780202982918@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 12:50:27 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780203025992@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 12:50:27 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780203025992@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 12:50:31 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 12:51:04 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780203063501@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 12:51:04 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780203063501@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 12:51:08 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:02:52 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780203770828@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:02:52 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780203770828@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:03:00 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:05:42 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780203940831@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:05:42 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780203940831@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:05:43 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:21:39 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780204898388@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:21:39 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780204898388@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:21:39 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:22:09 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780204928387@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:22:09 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780204928387@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:22:10 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:29:06 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780205345770@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:29:06 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780205345770@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:29:08 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:31:43 [error]: Error approving accession: Invalid transition: 'accession' cannot move from 'in_research' → 'in_research'. Allowed: [finalized]
+2026-05-31 13:31:43 [error]: Error: Invalid transition: 'accession' cannot move from 'in_research' → 'in_research'. Allowed: [finalized]
+    at assertTransition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/stateMachine.js:99:15)
+    at Object._transitionRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/baseService.js:327:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:131:36
+    at async Object.transaction (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/config/db.js:53:28)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:121:24
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.approveAccession (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:119:16)
+    at async Object.approveAccession (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/accessionController.js:71:31) | Meta: {"method":"POST","url":"/api/v1/acquisitions/accessions/01KSY7ZHAVF38VHFXBS6W7RTGP/approve","ip":"::1","user":"01KSJJ2HMT9792RBRG6KDB5WZN"}
+2026-05-31 13:33:00 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780205579566@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:33:00 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780205579566@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:33:01 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:33:26 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780205602461@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 13:33:26 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780205602461@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 13:33:26 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 13:38:25 [error]: Failed to complete setup | Meta: {"username":"hachi","error":"PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit."}
+2026-05-31 13:38:25 [error]: Error: PASSWORD_TOO_WEAK: Password must contain uppercase, lowercase, and a digit.
+    at Object.validatePasswordStrength (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/user/securityService.js:24:19)
+    at Object.completeSetup (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/user/lifecycleService.js:208:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.completeSetup (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/user/lifecycleController.js:29:13) | Meta: {"method":"POST","url":"/api/v1/user/setup","ip":"::1","user":"Guest"}
+2026-05-31 13:48:57 [error]: Error: OTP not found or expired. Please request a new one.
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:63:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/donation-form/submit","ip":"::1","user":"Guest"}
+2026-05-31 13:53:53 [error]: SqlError: (conn:6197, no: 4025, SQLState: 23000) CONSTRAINT `accessions.tags` failed for `scratch`.`accessions`
+sql: UPDATE `accessions` SET dimensions = ?, materials = ?, research_notes = ?, historical_significance = ?, tags = ?, research_completed = ?, accession_number = ?, research_data = ?, version = ?, updated_by = ? WHERE id = ? AND version = ? - parameters:['asdas...
+    at Module.createError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) | Meta: {"method":"PATCH","url":"/api/v1/acquisitions/accessions/01KSY9GJV4RYAGH4PY9WAC0TNC/research","ip":"::1","user":"01KSY8H2YMWAP1WPBTR9540JC3"}
+2026-05-31 18:49:20 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780224559087@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 18:49:20 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780224559087@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 18:49:21 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 18:49:40 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780224579692@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 18:49:40 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780224579692@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 18:49:42 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 18:49:55 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780224593660@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 18:49:55 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780224593660@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 18:49:55 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 18:57:32 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780225050636@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 18:57:32 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780225050636@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 18:57:32 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 18:57:50 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780225069345@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 18:57:50 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780225069345@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 18:57:52 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 19:20:02 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780226400503@example.com","notes":12345,"attachment":"file.png"}
+2026-05-31 19:20:02 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780226400503@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-05-31 19:20:06 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-05-31 19:59:57 [error]: Error: Cannot modify research data for a finalized accession record.
+    at file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:159:27
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.transaction (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/config/db.js:53:28)
+    at async file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:155:20
+    at async AsyncMutex.runExclusive (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/utils/mutex.js:30:20)
+    at async Object.updateAccessionResearch (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/accessionService.js:154:16)
+    at async Object.updateResearch (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/accessionController.js:79:31) | Meta: {"method":"PATCH","url":"/api/v1/acquisitions/accessions/01KSYW6FVVQHCBEDB66SB7Q5RD/research","ip":"::1","user":"01KSY8H2YMWAP1WPBTR9540JC3"}
+2026-05-31 20:41:54 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at getCollectionHealth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/analyticsController.js:112:126)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/analytics/collection-health","ip":"::1","user":"01KSY8H2YMWAP1WPBTR9540JC3"}
+2026-05-31 20:41:55 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at getCollectionHealth (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/analyticsController.js:112:126)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) | Meta: {"method":"GET","url":"/api/v1/analytics/collection-health","ip":"::1","user":"01KSY8H2YMWAP1WPBTR9540JC3"}
+2026-06-01 01:18:46 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:18:46 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:18:53 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=security","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:19:01 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:19:01 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:19:05 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:19:05 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:21:29 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:21:29 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:21:32 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=security","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:22:24 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:22:24 [error]: TypeError: Cannot mix BigInt and other types, use explicit conversions
+    at Object.fetchAll (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/auditService.js:75:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async listAuditLogs (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/auditController.js:5:22) | Meta: {"method":"GET","url":"/api/v1/audit-logs?page=1&limit=20&search=&action=all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 01:46:52 [error]: Form definition not found: test-form
+2026-06-01 01:47:33 [error]: Form submission validation failed for test-form. Errors: data.email should match format "email". Payload: {"email":"jefferson","name":"asdadsasda"}
+2026-06-01 01:47:33 [error]: Error: VALIDATION_FAILED: data.email should match format "email"
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/test-form/submit","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}

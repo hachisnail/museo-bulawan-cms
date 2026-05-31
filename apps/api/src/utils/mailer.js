@@ -47,3 +47,23 @@ export const sendEmail = async ({ to, subject, text, html }) => {
         throw new Error('EMAIL_SEND_FAILED');
     }
 };
+
+/**
+ * Sends an email with retry logic (exponential backoff).
+ */
+export const sendEmailWithRetry = async (options, maxRetries = 3, delay = 2000) => {
+    let lastError = null;
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            return await sendEmail(options);
+        } catch (error) {
+            lastError = error;
+            logger.warn(`Email send attempt ${attempt} failed to ${options.to}: ${error.message}.`);
+            if (attempt < maxRetries) {
+                await new Promise(resolve => setTimeout(resolve, delay * attempt));
+            }
+        }
+    }
+    logger.error(`All ${maxRetries} email send attempts failed to ${options.to}.`);
+    throw lastError;
+};

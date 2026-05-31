@@ -1,5 +1,6 @@
 import { submissionController } from './form/submissionController.js';
 import { queryController } from './form/queryController.js';
+import { definitionController } from './form/definitionController.js';
 import { schemas } from './form/schemas.js';
 
 /**
@@ -11,6 +12,7 @@ import { schemas } from './form/schemas.js';
  * Domain breakdown:
  * - Submission: Public actions (definition, OTP, submitting).
  * - Query: Staff actions (listing, detailed view).
+ * - Definition: Staff form definition builder CRUD and exports.
  */
 export const formController = {
     // ==========================================
@@ -31,7 +33,16 @@ export const formController = {
     // ==========================================
     listSubmissions: queryController.listSubmissions.bind(queryController),
     listAllSubmissions: queryController.listAllSubmissions.bind(queryController),
-    getSubmission: queryController.getSubmission.bind(queryController)
+    getSubmission: queryController.getSubmission.bind(queryController),
+
+    // ==========================================
+    // DEFINITION CRUD & EXPORT ACTIONS
+    // ==========================================
+    listDefinitions: definitionController.listDefinitions.bind(definitionController),
+    createDefinition: definitionController.createDefinition.bind(definitionController),
+    updateDefinition: definitionController.updateDefinition.bind(definitionController),
+    deleteDefinition: definitionController.deleteDefinition.bind(definitionController),
+    exportSubmissions: definitionController.exportSubmissions.bind(definitionController)
 };
 
 // Re-export schemas for route-level validation

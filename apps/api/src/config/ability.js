@@ -1,9 +1,10 @@
 import { AbilityBuilder, createMongoAbility } from '@casl/ability';
 
-// 1. The Multi-Department Hierarchy (Guide Removed)
+// 1. The Multi-Department Hierarchy
 const HIERARCHY = {
-    admin: ['registrar', 'conservator', 'content_editor', 'appointment_coordinator'], 
+    admin: ['curator', 'registrar', 'conservator', 'content_editor', 'appointment_coordinator'], 
     
+    curator: ['registrar'], // Added: Curators oversee intakes and accessions
     registrar: ['inventory_staff'],
     conservator: ['visitor'],
     inventory_staff: ['visitor'],
@@ -22,18 +23,28 @@ const ROLE_RULES = {
         can('manage', 'all'); 
     },
     
+    curator: (can) => {
+        can('manage', 'Intake');
+        can('manage', 'Accession');
+        can('manage', 'Submission');
+        can('update', 'Artifact');
+        can('manage', 'Inventory');
+    },
+
     registrar: (can) => {
         can('manage', 'Intake');
         can('manage', 'Accession');
         can('manage', 'Submission');
         can('update', 'Artifact'); 
     },
+    
     conservator: (can, user) => {
         can('read', 'Artifact');
         can('update', 'Artifact'); 
         can('manage', 'ConservationLog'); 
         can('delete', 'ConservationLog', { conservator_id: user.id }); 
     },
+    
     inventory_staff: (can) => {
         can('manage', 'Inventory'); 
         can('read', 'Intake');
@@ -45,6 +56,7 @@ const ROLE_RULES = {
     content_editor: (can) => {
         can('manage', 'Article'); 
     },
+    
     content_writer: (can, user) => {
         can('create', 'Article');
         can('update', 'Article', { author_id: user.id });
@@ -58,8 +70,6 @@ const ROLE_RULES = {
     donor: (can, user) => {
         // Donors can ONLY read records where their user.id matches the donor_account_id
         can('read', 'Intake', { donor_account_id: user.id });
-        
-        // (Optional) If you want them to see their signed contracts later:
         can('read', 'Accession', { 'intake.donor_account_id': user.id }); 
     },
 
@@ -82,7 +92,10 @@ const getEffectiveRoles = (role) => {
 
 export const defineAbilityFor = (user) => {
     const { can, cannot, build } = new AbilityBuilder(createMongoAbility);
-    const primaryRole = user?.role || 'visitor';
+    
+    // SECURITY FIX: Strip whitespace and strictly lowercase the role to prevent 403 blocks
+    const rawRole = user?.role || 'visitor';
+    const primaryRole = String(rawRole).toLowerCase().trim();
     
     getEffectiveRoles(primaryRole).forEach(role => {
         if (ROLE_RULES[role]) ROLE_RULES[role](can, user);

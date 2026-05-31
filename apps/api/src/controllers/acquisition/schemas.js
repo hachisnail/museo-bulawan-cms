@@ -46,7 +46,11 @@ export const schemas = {
         notes: Joi.string().max(5000).allow('', null).default('')
     }),
     
-    updateResearch: Joi.object({
+updateResearch: Joi.object({
+        // Add the accession_number validation here
+        accession_number: Joi.string().pattern(/^\d{4}\.\d{3}\.\d{2}$/).optional().messages({
+            'string.pattern.base': 'Accession number must match format YYYY.SEQ.BATCH (e.g., 2026.001.01)'
+        }),
         dimensions: Joi.string().max(255).optional().allow(''),
         materials: Joi.string().max(500).optional().allow(''),
         research_notes: Joi.string().max(10000).optional().allow(''),
@@ -58,8 +62,8 @@ export const schemas = {
     
     // M-1 & M-3: Added imageSkipReason validation, required location, and format check for catalog number.
     finalizeInventory: Joi.object({
-        catalogNumber: Joi.string().pattern(/^CAT-\d{4}-\d{5}$/).optional().messages({
-            'string.pattern.base': 'Catalog number must match format CAT-YYYY-NNNNN (e.g., CAT-2026-00042)'
+        catalogNumber: Joi.string().pattern(/^((CAT-\d{4}-\d{5})|(\d{4}\.\d{3}\.\d{2}(\.\d+|[a-z]+)))$/).optional().messages({
+            'string.pattern.base': 'Catalog number must match format CAT-YYYY-NNNNN or derived format YYYY.SEQ.BATCH.N / YYYY.SEQ.BATCHa'
         }),
         location: Joi.string().max(255).required(),
         conditionReport: Joi.string().max(5000).allow('', null),

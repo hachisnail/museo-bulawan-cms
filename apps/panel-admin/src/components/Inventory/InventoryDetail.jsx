@@ -225,10 +225,10 @@ export default function InventoryDetail({
                                     <div className="flex-1 space-y-2">
                                         <div className="flex justify-between">
                                             <div className="text-xs font-black uppercase text-black">{trail.to_location}</div>
-                                            <div className="text-[10px] font-mono text-zinc-400">{new Date(trail.created).toLocaleDateString()}</div>
+                                            <div className="text-[10px] font-mono text-zinc-400">{new Date(trail.created_at || trail.created).toLocaleDateString()}</div>
                                         </div>
                                         <p className="text-xs text-zinc-500 font-light italic">"{trail.reason}"</p>
-                                        <div className="text-[9px] uppercase font-bold text-zinc-400">Authorized by: {trail.authorized_by || 'MB-SERVER'}</div>
+                                        <div className="text-[9px] uppercase font-bold text-zinc-400">Authorized by: {trail.moved_by_name || trail.authorized_by || 'MB-SERVER'}</div>
                                     </div>
                                 </div>
                             ))}
@@ -279,7 +279,7 @@ export default function InventoryDetail({
                                             }`}>
                                                 {log.condition}
                                             </span>
-                                            <span className="text-[10px] font-mono text-zinc-400">{new Date(log.created).toLocaleDateString()}</span>
+                                            <span className="text-[10px] font-mono text-zinc-400">{new Date(log.created_at || log.created).toLocaleDateString()}</span>
                                         </div>
                                         <p className="text-sm text-zinc-600 font-light italic leading-relaxed">"{log.notes}"</p>
                                         <div className="text-[9px] uppercase font-bold text-zinc-400">Reporter: {log.reporter_name || 'MB-STAFF'}</div>
@@ -315,7 +315,7 @@ export default function InventoryDetail({
                                         <div className="text-[10px] text-zinc-400 font-black uppercase tracking-widest">{v.reason}</div>
                                     </div>
                                     <div className="text-right">
-                                        <div className="text-[10px] font-mono text-zinc-400 uppercase">{new Date(v.created).toLocaleDateString()}</div>
+                                        <div className="text-[10px] font-mono text-zinc-400 uppercase">{new Date(v.created_at || v.created).toLocaleDateString()}</div>
                                         <div className="text-[9px] text-[#A68A27] font-bold uppercase tracking-tighter mt-1">Verified Appraisal</div>
                                     </div>
                                 </div>
@@ -350,9 +350,9 @@ export default function InventoryDetail({
                                             <div className="text-sm font-black text-black">VERIFIED</div>
                                         </div>
                                         <p className="text-xs text-zinc-500 font-light italic">"{a.discrepancy_notes || a.notes || 'Object found in correct location.'}"</p>
-                                        <div className="text-[9px] uppercase font-bold text-zinc-400 mt-2">Auditor: {a.audited_by || 'MB-STAFF'} • Loc: {a.audited_location || selected.current_location}</div>
+                                        <div className="text-[9px] uppercase font-bold text-zinc-400 mt-2">Auditor: {a.audited_by_name || a.audited_by || 'MB-STAFF'} • Loc: {a.audited_location || selected.current_location}</div>
                                     </div>
-                                    <div className="text-[10px] font-mono text-zinc-400">{new Date(a.created || a.audit_date).toLocaleDateString()}</div>
+                                    <div className="text-[10px] font-mono text-zinc-400">{new Date(a.created_at || a.created || a.audit_date).toLocaleDateString()}</div>
                                 </div>
                             ))}
                             {auditLogs.length === 0 && (
@@ -400,9 +400,9 @@ export default function InventoryDetail({
                                         </div>
                                         <p className="text-xs text-zinc-600 mb-1">{c.treatment}</p>
                                         <p className="text-[10px] text-zinc-500 italic">Findings: {c.findings}</p>
-                                        <div className="text-[9px] uppercase font-bold text-zinc-400 mt-2">Conservator: {c.conservator_name || 'MB-STAFF'}</div>
+                                        <div className="text-[9px] uppercase font-bold text-zinc-400 mt-2">Conservator: {c.conservator_name_resolved || c.conservator_name || 'MB-STAFF'}</div>
                                     </div>
-                                    <div className="text-[10px] font-mono text-zinc-400">{new Date(c.created || c.created_at).toLocaleDateString()}</div>
+                                    <div className="text-[10px] font-mono text-zinc-400">{new Date(c.created_at || c.created).toLocaleDateString()}</div>
                                 </div>
                             ))}
                             {conservationLogs.length === 0 && (

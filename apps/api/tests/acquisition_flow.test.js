@@ -140,4 +140,28 @@ describe('Acquisition Pipeline Flow & Consolidation Tests', () => {
         const [final] = await db.query('SELECT research_notes, version FROM accessions WHERE id = ?', [testAccessionId]);
         expect(final.version).toBeGreaterThan(5); // Initial + updates
     });
+
+    test('Tags handling in Research Update and DTO Mapping', async () => {
+        // 1. Update research with tags string
+        await acquisitionService.updateAccessionResearch(testUserId, testAccessionId, {
+            tags: 'Pre-colonial, Ceramic, Ritual'
+        });
+
+        // 2. Retrieve raw record from database and verify it is a JSON array
+        const [dbRecord] = await db.query('SELECT tags FROM accessions WHERE id = ?', [testAccessionId]);
+        
+        let tagsJson = dbRecord.tags;
+        if (typeof tagsJson === 'string') {
+            tagsJson = JSON.parse(tagsJson);
+        }
+        expect(Array.isArray(tagsJson)).toBe(true);
+        expect(tagsJson).toContain('Pre-colonial');
+        expect(tagsJson).toContain('Ceramic');
+        expect(tagsJson).toContain('Ritual');
+
+        // 3. Verify DTO mapping maps the JSON array back to a comma-separated string
+        const { mapDTO } = await import('../src/utils/dtoMapper.js');
+        const mapped = mapDTO(dbRecord);
+        expect(mapped.tags).toBe('Pre-colonial, Ceramic, Ritual');
+    });
 });

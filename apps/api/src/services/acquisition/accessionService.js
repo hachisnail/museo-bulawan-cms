@@ -152,11 +152,27 @@ export const accessionService = {
     // ==========================================
     async updateAccessionResearch(staffId, accessionId, researchData) {
         return await globalMutex.runExclusive(`accession_${accessionId}`, async () => {
-            const accession = await baseService._getRecord('accessions', accessionId);
-            if (accession.status === 'finalized') {
-                throw new Error("Cannot modify research data for a finalized accession record.");
-            }
-            return await baseService._updateRecord(staffId, 'accessions', accessionId, researchData);
+            return await db.transaction(async (tx) => { // <-- ADD TRANSACTION WRAPPER
+                const accession = await baseService._getRecord('accessions', accessionId, {}, tx); // <-- PASS TX
+                
+                if (accession.status === 'finalized') {
+                    throw new Error("Cannot modify research data for a finalized accession record.");
+                }
+
+                const updateData = { ...researchData };
+                if (updateData.tags !== undefined) {
+                    if (typeof updateData.tags === 'string') {
+                        updateData.tags = updateData.tags
+                            .split(',')
+                            .map(t => t.trim())
+                            .filter(t => t.length > 0);
+                    } else if (!Array.isArray(updateData.tags)) {
+                        updateData.tags = [];
+                    }
+                }
+                
+                return await baseService._updateRecord(staffId, 'accessions', accessionId, updateData, tx); // <-- PASS TX
+            });
         });
     },
 

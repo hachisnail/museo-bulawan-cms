@@ -111,18 +111,19 @@ export default function Inventory() {
     useEffect(() => {
         const id = searchParams.get('id');
         const tab = searchParams.get('tab');
-        if (tab && tab !== activeTab) {
-            setActiveTab(tab);
-            return;
-        }
+        
         if (id && inventory.length > 0) {
-            const list = activeTab === 'active' 
-                ? inventory.filter(item => item.status !== 'deaccessioned')
-                : inventory.filter(item => item.status === 'deaccessioned');
-            const item = list.find(i => i.id === id);
-            if (item && selected?.id !== id) {
-                fetchDetails(item, false); 
+            const item = inventory.find(i => i.id === id);
+            if (item) {
+                const targetTab = item.status === 'deaccessioned' ? 'archived' : 'active';
+                if (activeTab !== targetTab) {
+                    setActiveTab(targetTab);
+                } else if (selected?.id !== id) {
+                    fetchDetails(item, false);
+                }
             }
+        } else if (tab && tab !== activeTab) {
+            setActiveTab(tab);
         }
     }, [searchParams, inventory, activeTab, selected, fetchDetails]);
 
@@ -133,6 +134,7 @@ export default function Inventory() {
             message: 'Provide a reason for removing this artifact from the permanent collection:',
             type: 'prompt',
             variant: 'warning',
+            promptValue: '',
             onConfirm: async (reason) => {
                 if (!reason) return;
                 setActionLoading(true);
@@ -163,13 +165,14 @@ export default function Inventory() {
             }
         });
     };
-
+ 
     const handleValuation = () => {
         setModal({
             isOpen: true,
             title: 'Add Market Valuation',
             message: 'Enter appraised value (PHP):',
             type: 'prompt',
+            promptValue: '',
             onConfirm: (amount) => {
                 if (!amount) return;
                 setModal({
@@ -177,6 +180,7 @@ export default function Inventory() {
                     title: 'Appraisal Reason',
                     message: 'Enter valuation reason (e.g. Insurance):',
                     type: 'prompt',
+                    promptValue: '',
                     onConfirm: async (reason) => {
                         if (!reason) return;
                         setActionLoading(true);

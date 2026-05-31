@@ -152,6 +152,78 @@ describe('Inventory, Location and Valuation Hardening Tests', () => {
             const updatedItem = await inventoryService.transferLocation(testUserId, item.id, 'Conservation Lab', 'Moving for restoration');
             expect(updatedItem.current_location).toBe('Conservation Lab');
         });
+
+        async function createTestAccession(userId) {
+            const submissionId = ulid();
+            const [formDef] = await db.query("SELECT id FROM form_definitions WHERE slug = 'donation-form' LIMIT 1");
+            const formId = formDef ? formDef.id : '01KQE81CSDZ6D68JYXB34JXZX5';
+            await db.query(`
+                INSERT INTO form_submissions (id, form_id, data, status)
+                VALUES (?, ?, ?, ?)
+            `, [submissionId, formId, '{}', 'pending']);
+            const intakeData = { itemName: `Hardened Artifact ${Date.now()}`, quantity: 1 };
+            const { intake } = await intakeService.registerExternalIntake(
+                userId,
+                submissionId,
+                userId,
+                'Donor Name',
+                'gift',
+                intakeData
+            );
+            await intakeService.approveIntake(userId, intake.id);
+            const moaRes = await intakeService.generateDynamicMOA(userId, intake.id, { donorName: 'Donor Name' });
+            await intakeService.confirmPhysicalDelivery(userId, intake.id, moaRes.qrPayload.token);
+            const accession = await accessionService.processAccession(userId, intake.id, {
+                handlingInstructions: 'Handle with care',
+                isMoaSigned: true,
+                conditionReport: 'Excellent'
+            });
+            await accessionService.approveAccession(userId, accession.id, 'Approved for testing');
+            await accessionService.updateAccessionResearch(userId, accession.id, {
+                dimensions: '10x10x10',
+                materials: 'Gold',
+                historical_significance: 'Extremely high',
+                research_completed: true
+            });
+            await db.query('UPDATE accessions SET signed_moa = 1 WHERE id = ?', [accession.id]);
+            const mediaId = ulid();
+            await db.query(`
+                INSERT INTO media_metadata (id, file_name, storage_key, mime_type, size_bytes, uploaded_by)
+                VALUES (?, ?, ?, ?, ?, ?)
+            `, [mediaId, 'moa.pdf', `key-${mediaId}`, 'application/pdf', 100, userId]);
+            await db.query(
+                `INSERT INTO media_links (id, media_id, entity_type, entity_id, context) VALUES (?, ?, ?, ?, ?)`,
+                [ulid(), mediaId, 'accession', accession.id, 'Signed MOA Document']
+            );
+            return accession;
+        }
+
+        test('finalizeToInventory accepts derived catalog numbers', async () => {
+            const accession = await createTestAccession(testUserId);
+            
+            // Format: accession_number + .1
+            const derivedNumNumeric = `${accession.accession_number}.1`;
+            const validInventoryData1 = {
+                location: 'Main Vault',
+                catalogNumber: derivedNumNumeric,
+                imageSkipReason: 'Mock reason'
+            };
+            const item1 = await inventoryService.finalizeToInventory(testUserId, accession.id, validInventoryData1);
+            expect(item1).toBeDefined();
+            expect(item1.catalog_number).toBe(derivedNumNumeric);
+
+            // Alphabetical suffix format
+            const accession2 = await createTestAccession(testUserId);
+            const derivedNumAlpha = `${accession2.accession_number}a`;
+            const validInventoryData2 = {
+                location: 'Main Vault',
+                catalogNumber: derivedNumAlpha,
+                imageSkipReason: 'Mock reason'
+            };
+            const item2 = await inventoryService.finalizeToInventory(testUserId, accession2.id, validInventoryData2);
+            expect(item2).toBeDefined();
+            expect(item2.catalog_number).toBe(derivedNumAlpha);
+        });
     });
 
     describe('valuationService Validation Rules', () => {

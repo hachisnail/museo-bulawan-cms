@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSSEGlobal } from '../context/sseContext';
 
 /**
@@ -9,19 +9,26 @@ import { useSSEGlobal } from '../context/sseContext';
  * Usage 2: useSSE({ 'event_name': (data) => { ... } }); // Specific named event listeners
  */
 export function useSSE(topicOrHandlers = '*') {
-    const { lastEvent, status, subscribe } = useSSEGlobal();
+    const { status, subscribe } = useSSEGlobal();
     const [localEvents, setLocalEvents] = useState([]);
 
+    // Store the handlers/topic in a ref so the callback identity remains stable
+    const topicOrHandlersRef = useRef(topicOrHandlers);
+    useEffect(() => {
+        topicOrHandlersRef.current = topicOrHandlers;
+    });
+
     const handleIncoming = useCallback(({ event, data }) => {
+        const current = topicOrHandlersRef.current;
         // Mode 1: Named Handlers Object
-        if (typeof topicOrHandlers === 'object' && topicOrHandlers !== null) {
-            if (topicOrHandlers[event]) {
-                topicOrHandlers[event](data);
+        if (typeof current === 'object' && current !== null) {
+            if (current[event]) {
+                current[event](data);
             }
         } 
         // Mode 2: Resource Filtering (db_change)
         else if (event === 'db_change') {
-            if (topicOrHandlers === '*' || data.resource === topicOrHandlers) {
+            if (current === '*' || data.resource === current) {
                 setLocalEvents(prev => [data, ...prev].slice(0, 50));
             }
         }
@@ -29,7 +36,7 @@ export function useSSE(topicOrHandlers = '*') {
         else if (event === 'message') {
             setLocalEvents(prev => [data, ...prev].slice(0, 50));
         }
-    }, [topicOrHandlers]);
+    }, []); // Stable callback identity
 
     useEffect(() => {
         return subscribe(handleIncoming);

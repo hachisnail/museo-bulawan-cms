@@ -96,7 +96,7 @@ import Layout from '../layouts/Layout.astro';
     const errorAlert = document.getElementById('error-alert') as HTMLDivElement;
     const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
 
-    const API_BASE_URL = 'http://localhost:3000';
+    const API_BASE_URL = import.meta.env.DEV ? '' : 'http://localhost:3000';
     
     async function checkSession() {
         try {

@@ -100,17 +100,25 @@ export default function Accessions() {
     useEffect(() => {
         const id = searchParams.get('id');
         const tab = searchParams.get('tab');
-        if (tab && tab !== activeTab) {
-            setActiveTab(tab);
-            return;
-        }
+        
         if (id) {
-            const list = activeTab === 'active' ? accessions : archived;
-            const item = list.find(i => i.id === id);
-            if (item && selected?.id !== id) {
-                setSelected(item);
-                if (activeTab === 'archive') fetchArchiveMedia(item);
+            let item = accessions.find(i => i.id === id);
+            let targetTab = 'active';
+            if (!item) {
+                item = archived.find(i => i.id === id);
+                if (item) targetTab = 'archive';
             }
+
+            if (item) {
+                if (activeTab !== targetTab) {
+                    setActiveTab(targetTab);
+                } else if (selected?.id !== id) {
+                    setSelected(item);
+                    if (activeTab === 'archive') fetchArchiveMedia(item);
+                }
+            }
+        } else if (tab && tab !== activeTab) {
+            setActiveTab(tab);
         }
     }, [searchParams, accessions, archived, activeTab, selected, fetchArchiveMedia]);
 
@@ -235,6 +243,7 @@ Would you like to reload the latest record and try again?`,
                 hasPhotos={hasPhotos}
                 onSubmit={handleFinalizeSubmit}
                 actionLoading={actionLoading}
+                accession={selected}
             />
 
             <Modal 

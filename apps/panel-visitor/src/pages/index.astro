@@ -187,7 +187,7 @@ import Layout from '../layouts/Layout.astro';
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js" is:inline></script>
 
 <script>
-    const API_BASE_URL = 'http://localhost:3000';
+    const API_BASE_URL = import.meta.env.DEV ? '' : 'http://localhost:3000';
     let currentUser: any = null;
     let donationsList: any[] = [];
     let selectedDonation: any = null;

@@ -7,6 +7,7 @@ import { generateCatalogNumber } from '../../utils/sequenceGenerator.js';
 import { assertTransition } from '../../utils/stateMachine.js';
 import { documentService } from '../documentService.js';
 import { auditService } from '../auditService.js';
+import { valuationService } from './valuationService.js';
 
 export const inventoryService = {
     async validateLocationName(locationName, connection = null) {
@@ -296,7 +297,11 @@ export const inventoryService = {
 
     async getMovementHistory(inventoryId, connection = null) {
         const rows = await db.query(
-            'SELECT * FROM location_history WHERE inventory_item_id = ? ORDER BY created_at DESC, id DESC',
+            `SELECT lh.*, CONCAT(u.fname, ' ', u.lname) AS moved_by_name 
+             FROM location_history lh 
+             LEFT JOIN users u ON lh.moved_by = u.id 
+             WHERE lh.inventory_item_id = ? 
+             ORDER BY lh.created_at DESC, lh.id DESC`,
             [inventoryId],
             connection
         );
@@ -330,9 +335,21 @@ export const inventoryService = {
     },
 
     async getConservationLogs(inventoryId) {
-        return await baseService._listRecords('conservation_logs', {
-            filter: `inventory_item_id="${inventoryId}"`
-        });
+        const rows = await db.query(
+            `SELECT cl.*, CONCAT(u.fname, ' ', u.lname) AS conservator_name_resolved 
+             FROM conservation_logs cl 
+             LEFT JOIN users u ON cl.conservator_id = u.id 
+             WHERE cl.inventory_item_id = ? 
+             ORDER BY cl.created_at DESC, cl.id DESC`,
+            [inventoryId]
+        );
+        return {
+            page: 1,
+            perPage: rows.length,
+            totalItems: rows.length,
+            totalPages: 1,
+            items: rows
+        };
     },
 
     // ==========================================
@@ -425,9 +442,21 @@ export const inventoryService = {
      * Retrieves audit history for a single inventory item.
      */
     async getAuditHistory(inventoryId) {
-        return await baseService._listRecords('inventory_audits', {
-            filter: `inventory_item_id="${inventoryId}"`
-        });
+        const rows = await db.query(
+            `SELECT ia.*, CONCAT(u.fname, ' ', u.lname) AS audited_by_name 
+             FROM inventory_audits ia 
+             LEFT JOIN users u ON ia.audited_by = u.id 
+             WHERE ia.inventory_item_id = ? 
+             ORDER BY ia.created_at DESC, ia.id DESC`,
+            [inventoryId]
+        );
+        return {
+            page: 1,
+            perPage: rows.length,
+            totalItems: rows.length,
+            totalPages: 1,
+            items: rows
+        };
     },
 
     /**
@@ -691,7 +720,25 @@ export const inventoryService = {
         const intake = await baseService._getRecord('intakes', accession.intake_id);
         const movementRes = await this.getMovementHistory(inventoryId);
         
-        return await documentService.generateInventoryReport(inventory, accession, intake, movementRes.items, format);
+        // Fetch additional details for ledger report
+        const conditionLogs = await baseService.getConditionReports('inventory', inventoryId);
+        const audits = await this.getAuditHistory(inventoryId);
+        const valuations = await valuationService.getHistory(inventoryId);
+        const conservationLogs = await this.getConservationLogs(inventoryId);
+        
+        return await documentService.generateInventoryReport(
+            inventory, 
+            accession, 
+            intake, 
+            movementRes.items, 
+            format,
+            {
+                conditionLogs: conditionLogs?.items || [],
+                audits: audits?.items || [],
+                valuations: valuations?.items || [],
+                conservationLogs: conservationLogs?.items || []
+            }
+        );
     },
 
     // Legacy aliases for backward compatibility with existing controllers

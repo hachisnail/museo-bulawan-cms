@@ -13,7 +13,7 @@ import ResetPassword from './pages/ResetPassword';
 import MainLayout from './components/MainLayout';
 import Management from './pages/Management';
 import Profile from './pages/Profile';
-import Intakes from './pages/Intakes';
+import { IntakesPage, IntakePage, OfferPage, IntakeManualNewPage } from './pages/intakes/index.js';
 import Accessions from './pages/Accessions';
 import Inventory from './pages/Inventory';
 import Home from './pages/Home';
@@ -25,6 +25,8 @@ import ArticlesCMS from './pages/ArticlesCMS';
 import Settings from './pages/Settings';
 import AuditLogs from './pages/AuditLogs';
 import Locations from './pages/Locations';
+
+import { AcquisitionsPage } from './pages/acquisitions';
 
 function App() {
     const navigate = useNavigate();
@@ -59,7 +61,12 @@ function App() {
             <Route element={<ProtectedRoute />}>
                 <Route element={<MainLayout />}>
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/intakes" element={<Intakes />} />
+                    {/* <Route path="/dashboard" element={<AcquisitionsPage />} /> */}
+
+                    <Route path="/intakes" element={<IntakesPage />} />
+                    <Route path="/intakes/new" element={<IntakeManualNewPage />} />
+                    <Route path="/intakes/offers/:id" element={<OfferPage />} />
+                    <Route path="/intakes/:id" element={<IntakePage />} />
                     <Route path="/accessions" element={<Accessions />} />
                     <Route path="/inventory" element={<Inventory />} />
                     <Route path="/management" element={<Management />} />

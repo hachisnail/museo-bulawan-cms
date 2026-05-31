@@ -1431,7 +1431,7 @@
       "source_file": "apps/api/src/config/passport.js",
       "source_location": "L1",
       "id": "apps_api_src_config_passport_js",
-      "community": 27,
+      "community": 0,
       "norm_label": "passport.js"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_file": "apps/api/src/config/passport.js",
       "source_location": "L8",
       "id": "config_passport_loginschema",
-      "community": 27,
+      "community": 0,
       "norm_label": "loginschema"
     },
     {
@@ -1467,7 +1467,7 @@
       "source_file": "apps/api/src/controllers/analyticsController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_analyticscontroller_js",
-      "community": 2,
+      "community": 10,
       "norm_label": "analyticscontroller.js"
     },
     {
@@ -1476,7 +1476,7 @@
       "source_file": "apps/api/src/controllers/analyticsController.js",
       "source_location": "L4",
       "id": "controllers_analyticscontroller_analyticscontroller",
-      "community": 2,
+      "community": 10,
       "norm_label": "analyticscontroller"
     },
     {
@@ -1485,7 +1485,7 @@
       "source_file": "apps/api/src/controllers/auditController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_auditcontroller_js",
-      "community": 0,
+      "community": 2,
       "norm_label": "auditcontroller.js"
     },
     {
@@ -1494,7 +1494,7 @@
       "source_file": "apps/api/src/controllers/auditController.js",
       "source_location": "L3",
       "id": "controllers_auditcontroller_listauditlogs",
-      "community": 0,
+      "community": 2,
       "norm_label": "listauditlogs()"
     },
     {
@@ -1503,7 +1503,7 @@
       "source_file": "apps/api/src/controllers/auditController.js",
       "source_location": "L12",
       "id": "controllers_auditcontroller_exportauditlogs",
-      "community": 0,
+      "community": 2,
       "norm_label": "exportauditlogs()"
     },
     {
@@ -1611,7 +1611,7 @@
       "source_file": "apps/api/src/controllers/loansController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_loanscontroller_js",
-      "community": 0,
+      "community": 10,
       "norm_label": "loanscontroller.js"
     },
     {
@@ -1701,7 +1701,7 @@
       "source_file": "apps/api/src/controllers/userController.js",
       "source_location": "L19",
       "id": "controllers_usercontroller_usercontroller",
-      "community": 27,
+      "community": 2,
       "norm_label": "usercontroller"
     },
     {
@@ -2448,7 +2448,7 @@
       "source_file": "apps/api/src/services/acquisitionService.js",
       "source_location": "L18",
       "id": "services_acquisitionservice_acquisitionservice",
-      "community": 0,
+      "community": 10,
       "norm_label": "acquisitionservice"
     },
     {
@@ -2529,7 +2529,7 @@
       "source_file": "apps/api/src/services/formService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_formservice_js",
-      "community": 0,
+      "community": 106,
       "norm_label": "formservice.js"
     },
     {
@@ -2790,7 +2790,7 @@
       "source_file": "apps/api/src/services/userService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_userservice_js",
-      "community": 27,
+      "community": 0,
       "norm_label": "userservice.js"
     },
     {
@@ -2923,7 +2923,7 @@
       "label": "inventoryService",
       "file_type": "code",
       "source_file": "apps/api/src/services/acquisition/inventoryService.js",
-      "source_location": "L11",
+      "source_location": "L12",
       "id": "acquisition_inventoryservice_inventoryservice",
       "community": 0,
       "norm_label": "inventoryservice"
@@ -3024,7 +3024,7 @@
       "source_file": "apps/api/src/services/form/queryService.js",
       "source_location": "L10",
       "id": "form_queryservice_queryservice",
-      "community": 0,
+      "community": 106,
       "norm_label": "queryservice"
     },
     {
@@ -3123,7 +3123,7 @@
       "source_file": "apps/api/src/services/user/identityService.js",
       "source_location": "L11",
       "id": "user_identityservice_identityservice",
-      "community": 27,
+      "community": 0,
       "norm_label": "identityservice"
     },
     {
@@ -3150,7 +3150,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L19",
       "id": "user_lifecycleservice_lifecycleservice",
-      "community": 27,
+      "community": 0,
       "norm_label": "lifecycleservice"
     },
     {
@@ -3168,7 +3168,7 @@
       "source_file": "apps/api/src/services/user/managementService.js",
       "source_location": "L12",
       "id": "user_managementservice_managementservice",
-      "community": 27,
+      "community": 0,
       "norm_label": "managementservice"
     },
     {
@@ -3442,10 +3442,19 @@
       "norm_label": "mapdto()"
     },
     {
+      "label": "formatTags()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/dtoMapper.js",
+      "source_location": "L30",
+      "id": "utils_dtomapper_formattags",
+      "community": 10,
+      "norm_label": "formattags()"
+    },
+    {
       "label": "transformRecord()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/dtoMapper.js",
-      "source_location": "L33",
+      "source_location": "L44",
       "id": "utils_dtomapper_transformrecord",
       "community": 10,
       "norm_label": "transformrecord()"
@@ -3454,7 +3463,7 @@
       "label": "mappers",
       "file_type": "code",
       "source_file": "apps/api/src/utils/dtoMapper.js",
-      "source_location": "L62",
+      "source_location": "L77",
       "id": "utils_dtomapper_mappers",
       "community": 10,
       "norm_label": "mappers"
@@ -3726,7 +3735,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L5",
       "id": "utils_redisclient_redismanager",
-      "community": 110,
+      "community": 115,
       "norm_label": "redismanager"
     },
     {
@@ -3735,7 +3744,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L6",
       "id": "utils_redisclient_redismanager_constructor",
-      "community": 110,
+      "community": 115,
       "norm_label": ".constructor()"
     },
     {
@@ -3744,7 +3753,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L15",
       "id": "utils_redisclient_redismanager_getclient",
-      "community": 110,
+      "community": 115,
       "norm_label": ".getclient()"
     },
     {
@@ -3753,7 +3762,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L40",
       "id": "utils_redisclient_redismanager_getworkerclient",
-      "community": 110,
+      "community": 115,
       "norm_label": ".getworkerclient()"
     },
     {
@@ -4088,6 +4097,15 @@
       "id": "apps_api_tests_inventory_hardening_test_js",
       "community": 0,
       "norm_label": "inventory_hardening.test.js"
+    },
+    {
+      "label": "createTestAccession()",
+      "file_type": "code",
+      "source_file": "apps/api/tests/inventory_hardening.test.js",
+      "source_location": "L156",
+      "id": "tests_inventory_hardening_test_createtestaccession",
+      "community": 0,
+      "norm_label": "createtestaccession()"
     },
     {
       "label": "system.test.js",
@@ -6284,7 +6302,7 @@
       "label": "App()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/App.jsx",
-      "source_location": "L29",
+      "source_location": "L31",
       "id": "apps_panel_admin_src_app_jsx_src_app_app",
       "community": 32,
       "norm_label": "app()"
@@ -6297,6 +6315,24 @@
       "id": "apps_panel_admin_src_main_jsx",
       "community": 1,
       "norm_label": "main.jsx"
+    },
+    {
+      "label": "DataTable.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/components/DataTable.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_components_datatable_jsx",
+      "community": 108,
+      "norm_label": "datatable.jsx"
+    },
+    {
+      "label": "DataTable()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/components/DataTable.jsx",
+      "source_location": "L5",
+      "id": "components_datatable_datatable",
+      "community": 108,
+      "norm_label": "datatable()"
     },
     {
       "label": "DocxPreview.jsx",
@@ -6315,6 +6351,15 @@
       "id": "components_docxpreview_docxpreview",
       "community": 61,
       "norm_label": "docxpreview()"
+    },
+    {
+      "label": "index.js",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/components/index.js",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_components_index_js",
+      "community": 108,
+      "norm_label": "index.js"
     },
     {
       "label": "MainLayout.jsx",
@@ -6338,7 +6383,7 @@
       "label": "MainLayout()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/components/MainLayout.jsx",
-      "source_location": "L200",
+      "source_location": "L76",
       "id": "components_mainlayout_mainlayout",
       "community": 32,
       "norm_label": "mainlayout()"
@@ -6349,7 +6394,7 @@
       "source_file": "apps/panel-admin/src/components/Modal.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_modal_jsx",
-      "community": 108,
+      "community": 1,
       "norm_label": "modal.jsx"
     },
     {
@@ -6358,7 +6403,7 @@
       "source_file": "apps/panel-admin/src/components/Modal.jsx",
       "source_location": "L12",
       "id": "components_modal_modal",
-      "community": 108,
+      "community": 1,
       "norm_label": "modal()"
     },
     {
@@ -6378,6 +6423,24 @@
       "id": "components_protectedroute_protectedroute",
       "community": 1,
       "norm_label": "protectedroute()"
+    },
+    {
+      "label": "SidebarDashboard.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/components/SidebarDashboard.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_components_sidebardashboard_jsx",
+      "community": 108,
+      "norm_label": "sidebardashboard.jsx"
+    },
+    {
+      "label": "SidebarDashboard()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/components/SidebarDashboard.jsx",
+      "source_location": "L3",
+      "id": "components_sidebardashboard_sidebardashboard",
+      "community": 108,
+      "norm_label": "sidebardashboard()"
     },
     {
       "label": "AccessionDetail.jsx",
@@ -6448,7 +6511,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_formrenderer_externalform_jsx",
-      "community": 35,
+      "community": 107,
       "norm_label": "externalform.jsx"
     },
     {
@@ -6457,7 +6520,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
       "source_location": "L19",
       "id": "formrenderer_externalform_step_icons",
-      "community": 35,
+      "community": 107,
       "norm_label": "step_icons"
     },
     {
@@ -6466,7 +6529,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
       "source_location": "L27",
       "id": "formrenderer_externalform_externalform",
-      "community": 35,
+      "community": 107,
       "norm_label": "externalform()"
     },
     {
@@ -6493,7 +6556,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/InternalForm.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_formrenderer_internalform_jsx",
-      "community": 35,
+      "community": 107,
       "norm_label": "internalform.jsx"
     },
     {
@@ -6502,7 +6565,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/InternalForm.jsx",
       "source_location": "L5",
       "id": "formrenderer_internalform_internalform",
-      "community": 35,
+      "community": 107,
       "norm_label": "internalform()"
     },
     {
@@ -6511,7 +6574,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/useFormLogic.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_formrenderer_useformlogic_js",
-      "community": 35,
+      "community": 107,
       "norm_label": "useformlogic.js"
     },
     {
@@ -6520,7 +6583,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/useFormLogic.js",
       "source_location": "L6",
       "id": "formrenderer_useformlogic_useformlogic",
-      "community": 35,
+      "community": 107,
       "norm_label": "useformlogic()"
     },
     {
@@ -6529,7 +6592,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/IntakeDetail.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_intakes_intakedetail_jsx",
-      "community": 107,
+      "community": 61,
       "norm_label": "intakedetail.jsx"
     },
     {
@@ -6538,7 +6601,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/IntakeDetail.jsx",
       "source_location": "L4",
       "id": "intakes_intakedetail_status_styles",
-      "community": 107,
+      "community": 61,
       "norm_label": "status_styles"
     },
     {
@@ -6547,7 +6610,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/IntakeDetail.jsx",
       "source_location": "L16",
       "id": "intakes_intakedetail_getintakedonoremail",
-      "community": 107,
+      "community": 61,
       "norm_label": "getintakedonoremail()"
     },
     {
@@ -6556,7 +6619,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/IntakeDetail.jsx",
       "source_location": "L28",
       "id": "intakes_intakedetail_getintakedonorphone",
-      "community": 107,
+      "community": 61,
       "norm_label": "getintakedonorphone()"
     },
     {
@@ -6565,7 +6628,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/IntakeDetail.jsx",
       "source_location": "L40",
       "id": "intakes_intakedetail_intakedetail",
-      "community": 107,
+      "community": 61,
       "norm_label": "intakedetail()"
     },
     {
@@ -6574,7 +6637,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/IntakeList.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_intakes_intakelist_jsx",
-      "community": 107,
+      "community": 61,
       "norm_label": "intakelist.jsx"
     },
     {
@@ -6583,7 +6646,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/IntakeList.jsx",
       "source_location": "L3",
       "id": "intakes_intakelist_intakelist",
-      "community": 107,
+      "community": 61,
       "norm_label": "intakelist()"
     },
     {
@@ -6592,7 +6655,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/ManualIntakeForm.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_intakes_manualintakeform_jsx",
-      "community": 61,
+      "community": 109,
       "norm_label": "manualintakeform.jsx"
     },
     {
@@ -6601,7 +6664,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/ManualIntakeForm.jsx",
       "source_location": "L3",
       "id": "intakes_manualintakeform_manualintakeform",
-      "community": 61,
+      "community": 109,
       "norm_label": "manualintakeform()"
     },
     {
@@ -6799,7 +6862,7 @@
       "source_file": "apps/panel-admin/src/pages/Analytics.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_analytics_jsx",
-      "community": 109,
+      "community": 110,
       "norm_label": "analytics.jsx"
     },
     {
@@ -6808,7 +6871,7 @@
       "source_file": "apps/panel-admin/src/pages/Analytics.jsx",
       "source_location": "L13",
       "id": "pages_analytics_colors",
-      "community": 109,
+      "community": 110,
       "norm_label": "colors"
     },
     {
@@ -6817,7 +6880,7 @@
       "source_file": "apps/panel-admin/src/pages/Analytics.jsx",
       "source_location": "L15",
       "id": "pages_analytics_analytics",
-      "community": 109,
+      "community": 110,
       "norm_label": "analytics()"
     },
     {
@@ -6826,7 +6889,7 @@
       "source_file": "apps/panel-admin/src/pages/Analytics.jsx",
       "source_location": "L243",
       "id": "pages_analytics_kpicard",
-      "community": 109,
+      "community": 110,
       "norm_label": "kpicard()"
     },
     {
@@ -6853,7 +6916,7 @@
       "source_file": "apps/panel-admin/src/pages/AuditLogs.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_auditlogs_jsx",
-      "community": 108,
+      "community": 1,
       "norm_label": "auditlogs.jsx"
     },
     {
@@ -6862,7 +6925,7 @@
       "source_file": "apps/panel-admin/src/pages/AuditLogs.jsx",
       "source_location": "L17",
       "id": "pages_auditlogs_auditlogs",
-      "community": 108,
+      "community": 1,
       "norm_label": "auditlogs()"
     },
     {
@@ -6997,7 +7060,7 @@
       "source_file": "apps/panel-admin/src/pages/Locations.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_locations_jsx",
-      "community": 108,
+      "community": 1,
       "norm_label": "locations.jsx"
     },
     {
@@ -7006,7 +7069,7 @@
       "source_file": "apps/panel-admin/src/pages/Locations.jsx",
       "source_location": "L6",
       "id": "pages_locations_type_styles",
-      "community": 108,
+      "community": 1,
       "norm_label": "type_styles"
     },
     {
@@ -7015,7 +7078,7 @@
       "source_file": "apps/panel-admin/src/pages/Locations.jsx",
       "source_location": "L13",
       "id": "pages_locations_locations",
-      "community": 108,
+      "community": 1,
       "norm_label": "locations()"
     },
     {
@@ -7161,6 +7224,267 @@
       "id": "pages_submissionviewer_submissionviewer",
       "community": 1,
       "norm_label": "submissionviewer()"
+    },
+    {
+      "label": "index.js",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/index.js",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_acquisitions_index_js",
+      "community": 35,
+      "norm_label": "index.js"
+    },
+    {
+      "label": "AcquisitionIndex.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_acquisitions_pages_acquisitionindex_jsx",
+      "community": 35,
+      "norm_label": "acquisitionindex.jsx"
+    },
+    {
+      "label": "mockData",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
+      "source_location": "L6",
+      "id": "pages_acquisitionindex_mockdata",
+      "community": 35,
+      "norm_label": "mockdata"
+    },
+    {
+      "label": "getBadgeStyles()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
+      "source_location": "L39",
+      "id": "pages_acquisitionindex_getbadgestyles",
+      "community": 35,
+      "norm_label": "getbadgestyles()"
+    },
+    {
+      "label": "standardColumns",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
+      "source_location": "L52",
+      "id": "pages_acquisitionindex_standardcolumns",
+      "community": 35,
+      "norm_label": "standardcolumns"
+    },
+    {
+      "label": "groupedColumns",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
+      "source_location": "L63",
+      "id": "pages_acquisitionindex_groupedcolumns",
+      "community": 35,
+      "norm_label": "groupedcolumns"
+    },
+    {
+      "label": "AcquisitionIndex()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
+      "source_location": "L79",
+      "id": "pages_acquisitionindex_acquisitionindex",
+      "community": 35,
+      "norm_label": "acquisitionindex()"
+    },
+    {
+      "label": "AcquisitionItem.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionItem.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_acquisitions_pages_acquisitionitem_jsx",
+      "community": 35,
+      "norm_label": "acquisitionitem.jsx"
+    },
+    {
+      "label": "AcquisitionItem()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionItem.jsx",
+      "source_location": "L3",
+      "id": "pages_acquisitionitem_acquisitionitem",
+      "community": 35,
+      "norm_label": "acquisitionitem()"
+    },
+    {
+      "label": "index.js",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/index.js",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_intakes_index_js",
+      "community": 109,
+      "norm_label": "index.js"
+    },
+    {
+      "label": "IntakeColumns.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
+      "community": 108,
+      "norm_label": "intakecolumns.jsx"
+    },
+    {
+      "label": "offersColumns",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
+      "source_location": "L4",
+      "id": "components_intakecolumns_offerscolumns",
+      "community": 108,
+      "norm_label": "offerscolumns"
+    },
+    {
+      "label": "intakesColumns",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
+      "source_location": "L21",
+      "id": "components_intakecolumns_intakescolumns",
+      "community": 108,
+      "norm_label": "intakescolumns"
+    },
+    {
+      "label": "archiveColumns",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
+      "source_location": "L38",
+      "id": "components_intakecolumns_archivecolumns",
+      "community": 108,
+      "norm_label": "archivecolumns"
+    },
+    {
+      "label": "IntakeStats.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeStats.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_intakes_components_intakestats_jsx",
+      "community": 108,
+      "norm_label": "intakestats.jsx"
+    },
+    {
+      "label": "getSidebarStats()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeStats.jsx",
+      "source_location": "L7",
+      "id": "components_intakestats_getsidebarstats",
+      "community": 108,
+      "norm_label": "getsidebarstats()"
+    },
+    {
+      "label": "getSidebarTitle()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeStats.jsx",
+      "source_location": "L38",
+      "id": "components_intakestats_getsidebartitle",
+      "community": 108,
+      "norm_label": "getsidebartitle()"
+    },
+    {
+      "label": "getSidebarCount()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeStats.jsx",
+      "source_location": "L45",
+      "id": "components_intakestats_getsidebarcount",
+      "community": 108,
+      "norm_label": "getsidebarcount()"
+    },
+    {
+      "label": "IntakeItem.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
+      "community": 1,
+      "norm_label": "intakeitem.jsx"
+    },
+    {
+      "label": "IntakeItem()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L8",
+      "id": "pages_intakeitem_intakeitem",
+      "community": 1,
+      "norm_label": "intakeitem()"
+    },
+    {
+      "label": "IntakeManualNew.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
+      "community": 109,
+      "norm_label": "intakemanualnew.jsx"
+    },
+    {
+      "label": "IntakeManualNew()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
+      "source_location": "L7",
+      "id": "pages_intakemanualnew_intakemanualnew",
+      "community": 109,
+      "norm_label": "intakemanualnew()"
+    },
+    {
+      "label": "IntakesIndex.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "community": 108,
+      "norm_label": "intakesindex.jsx"
+    },
+    {
+      "label": "IntakesIndex()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L12",
+      "id": "pages_intakesindex_intakesindex",
+      "community": 108,
+      "norm_label": "intakesindex()"
+    },
+    {
+      "label": "OfferItem.jsx",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L1",
+      "id": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "community": 61,
+      "norm_label": "offeritem.jsx"
+    },
+    {
+      "label": "Field()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L11",
+      "id": "pages_offeritem_field",
+      "community": 61,
+      "norm_label": "field()"
+    },
+    {
+      "label": "Section()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L23",
+      "id": "pages_offeritem_section",
+      "community": 61,
+      "norm_label": "section()"
+    },
+    {
+      "label": "TextBlock()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L36",
+      "id": "pages_offeritem_textblock",
+      "community": 61,
+      "norm_label": "textblock()"
+    },
+    {
+      "label": "OfferItem()",
+      "file_type": "code",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L51",
+      "id": "pages_offeritem_offeritem",
+      "community": 61,
+      "norm_label": "offeritem()"
     },
     {
       "label": "astro.config.mjs",
@@ -7514,10 +7838,19 @@
       "norm_label": "extracterrortype"
     },
     {
+      "label": "ExtractDataType",
+      "file_type": "code",
+      "source_file": "apps/panel-visitor/.astro/content.d.ts",
+      "source_location": "L137",
+      "id": "astro_content_d_extractdatatype",
+      "community": 15,
+      "norm_label": "extractdatatype"
+    },
+    {
       "label": "LiveLoaderDataType",
       "file_type": "code",
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
-      "source_location": "L138",
+      "source_location": "L139",
       "id": "apps_panel_visitor_astro_content_d_ts_astro_content_d_liveloaderdatatype",
       "community": 15,
       "norm_label": "liveloaderdatatype"
@@ -7526,7 +7859,7 @@
       "label": "LiveLoaderEntryFilterType",
       "file_type": "code",
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
-      "source_location": "L144",
+      "source_location": "L145",
       "id": "apps_panel_visitor_astro_content_d_ts_astro_content_d_liveloaderentryfiltertype",
       "community": 15,
       "norm_label": "liveloaderentryfiltertype"
@@ -7535,7 +7868,7 @@
       "label": "LiveLoaderCollectionFilterType",
       "file_type": "code",
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
-      "source_location": "L146",
+      "source_location": "L147",
       "id": "apps_panel_visitor_astro_content_d_ts_astro_content_d_liveloadercollectionfiltertype",
       "community": 15,
       "norm_label": "liveloadercollectionfiltertype"
@@ -7544,7 +7877,7 @@
       "label": "LiveLoaderErrorType",
       "file_type": "code",
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
-      "source_location": "L148",
+      "source_location": "L149",
       "id": "apps_panel_visitor_astro_content_d_ts_astro_content_d_liveloadererrortype",
       "community": 15,
       "norm_label": "liveloadererrortype"
@@ -7553,7 +7886,7 @@
       "label": "ContentConfig",
       "file_type": "code",
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
-      "source_location": "L152",
+      "source_location": "L153",
       "id": "apps_panel_visitor_astro_content_d_ts_astro_content_d_contentconfig",
       "community": 15,
       "norm_label": "contentconfig"
@@ -7562,7 +7895,7 @@
       "label": "LiveContentConfig",
       "file_type": "code",
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
-      "source_location": "L153",
+      "source_location": "L154",
       "id": "apps_panel_visitor_astro_content_d_ts_astro_content_d_livecontentconfig",
       "community": 15,
       "norm_label": "livecontentconfig"
@@ -19044,6 +19377,28 @@
       "target": "acquisition_inventoryservice_inventoryservice"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/acquisition/inventoryService.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_services_acquisition_inventoryservice_js",
+      "target": "acquisition_valuationservice_valuationservice"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/acquisition/inventoryService.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_services_acquisition_inventoryservice_js",
+      "target": "apps_api_src_services_acquisition_valuationservice_js"
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -20340,6 +20695,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/utils/dtoMapper.js",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_utils_dtomapper_js",
+      "target": "utils_dtomapper_formattags"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/dtoMapper.js",
       "source_location": "L15",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -20376,6 +20741,17 @@
       "confidence_score": 1.0,
       "source": "utils_dtomapper_mapdto",
       "target": "utils_dtomapper_transformrecord"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/dtoMapper.js",
+      "source_location": "L50",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_dtomapper_transformrecord",
+      "target": "utils_dtomapper_formattags"
     },
     {
       "relation": "contains",
@@ -21375,6 +21751,16 @@
       "confidence_score": 1.0,
       "source": "utils_uploadqueue_nativeredisqueueadapter_init",
       "target": "utils_uploadqueue_nativeredisqueueadapter_startworker"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/tests/inventory_hardening.test.js",
+      "source_location": "L156",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_tests_inventory_hardening_test_js",
+      "target": "tests_inventory_hardening_test_createtestaccession"
     },
     {
       "relation": "contains",
@@ -23780,6 +24166,17 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/App.jsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_app_jsx",
+      "target": "apps_panel_admin_src_pages_acquisitions_index_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/App.jsx",
       "source_location": "L20",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -23862,6 +24259,17 @@
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_app_jsx",
       "target": "apps_panel_admin_src_pages_home_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/App.jsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_app_jsx",
+      "target": "apps_panel_admin_src_pages_intakes_index_js",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -24086,6 +24494,27 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/components/DataTable.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_components_datatable_jsx",
+      "target": "components_datatable_datatable"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/components/index.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_components_index_js",
+      "target": "apps_panel_admin_src_components_datatable_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/components/DocxPreview.jsx",
       "source_location": "L4",
       "weight": 1.0,
@@ -24114,6 +24543,50 @@
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_jsx",
       "target": "apps_panel_admin_src_components_docxpreview_jsx"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/components/index.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_components_index_js",
+      "target": "apps_panel_admin_src_components_sidebardashboard_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_acquisitions_pages_acquisitionindex_jsx",
+      "target": "apps_panel_admin_src_components_index_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_jsx",
+      "target": "apps_panel_admin_src_components_index_js"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "apps_panel_admin_src_components_index_js",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -24259,6 +24732,50 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
+      "target": "apps_panel_admin_src_components_modal_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
+      "target": "apps_panel_admin_src_components_modal_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "apps_panel_admin_src_components_modal_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "target": "apps_panel_admin_src_components_modal_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
       "source_location": "L24",
       "weight": 1.0,
@@ -24341,6 +24858,16 @@
       "weight": 1.0,
       "source": "components_protectedroute_protectedroute",
       "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/components/SidebarDashboard.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_components_sidebardashboard_jsx",
+      "target": "components_sidebardashboard_sidebardashboard"
     },
     {
       "relation": "contains",
@@ -24685,12 +25212,45 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
+      "target": "apps_panel_admin_src_components_intakes_intakedetail_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
       "source_location": "L8",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_jsx",
       "target": "apps_panel_admin_src_components_intakes_intakedetail_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
+      "target": "apps_panel_admin_src_components_intakes_intakedetail_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "target": "apps_panel_admin_src_components_intakes_intakedetail_jsx",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -24702,6 +25262,39 @@
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_components_intakes_intakelist_jsx",
       "target": "intakes_intakedetail_status_styles"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
+      "target": "intakes_intakedetail_status_styles",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_jsx",
+      "target": "intakes_intakedetail_status_styles"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "target": "intakes_intakedetail_status_styles",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -24768,6 +25361,17 @@
       "target": "apps_panel_admin_src_components_intakes_manualintakeform_jsx"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
+      "target": "apps_panel_admin_src_components_intakes_manualintakeform_jsx",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/components/Intakes/MoaDialog.jsx",
@@ -24787,6 +25391,39 @@
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_intakes_jsx",
       "target": "apps_panel_admin_src_components_intakes_moadialog_jsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
+      "target": "apps_panel_admin_src_components_intakes_moadialog_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "apps_panel_admin_src_components_intakes_moadialog_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "target": "apps_panel_admin_src_components_intakes_moadialog_jsx",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -25005,6 +25642,50 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
+      "target": "apps_panel_admin_src_context_authcontext_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
+      "target": "apps_panel_admin_src_context_authcontext_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "apps_panel_admin_src_context_authcontext_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "target": "apps_panel_admin_src_context_authcontext_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
       "source_location": "L3",
       "weight": 1.0,
@@ -25170,6 +25851,50 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
+      "target": "context_authcontext_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
+      "target": "context_authcontext_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "context_authcontext_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "target": "context_authcontext_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
       "source_location": "L3",
       "weight": 1.0,
@@ -25325,10 +26050,43 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "pages_intakeitem_intakeitem",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "pages_intakemanualnew_intakemanualnew",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
       "source_location": "L48",
       "weight": 1.0,
       "source": "pages_intakes_intakes",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "pages_intakesindex_intakesindex",
       "target": "context_authcontext_useauth"
     },
     {
@@ -25373,6 +26131,17 @@
       "source_location": "L20",
       "weight": 1.0,
       "source": "pages_management_management",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "pages_offeritem_offeritem",
       "target": "context_authcontext_useauth"
     },
     {
@@ -25518,6 +26287,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "apps_panel_admin_src_hooks_usesse_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
       "source_location": "L4",
       "weight": 1.0,
@@ -25562,6 +26342,17 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "hooks_usesse_usesse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/Inventory.jsx",
       "source_location": "L4",
       "weight": 1.0,
@@ -25600,6 +26391,17 @@
       "source_location": "L50",
       "weight": 1.0,
       "source": "pages_intakes_intakes",
+      "target": "hooks_usesse_usesse"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "pages_intakesindex_intakesindex",
       "target": "hooks_usesse_usesse"
     },
     {
@@ -25776,6 +26578,17 @@
     {
       "relation": "calls",
       "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
+      "source_location": "L639",
+      "weight": 1.0,
+      "source": "pages_intakes_intakes",
+      "target": "components_intakestats_getsidebarstats"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "apps/panel-admin/src/pages/Intakes.jsx",
       "source_location": "L665",
@@ -25914,6 +26727,383 @@
       "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_submissionviewer_jsx",
       "target": "pages_submissionviewer_submissionviewer"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/index.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_acquisitions_index_js",
+      "target": "apps_panel_admin_src_pages_acquisitions_pages_acquisitionindex_jsx"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/index.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_acquisitions_index_js",
+      "target": "apps_panel_admin_src_pages_acquisitions_pages_acquisitionitem_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
+      "source_location": "L78",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_acquisitions_pages_acquisitionindex_jsx",
+      "target": "pages_acquisitionindex_acquisitionindex"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_acquisitions_pages_acquisitionindex_jsx",
+      "target": "pages_acquisitionindex_getbadgestyles"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
+      "source_location": "L62",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_acquisitions_pages_acquisitionindex_jsx",
+      "target": "pages_acquisitionindex_groupedcolumns"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_acquisitions_pages_acquisitionindex_jsx",
+      "target": "pages_acquisitionindex_mockdata"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
+      "source_location": "L51",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_acquisitions_pages_acquisitionindex_jsx",
+      "target": "pages_acquisitionindex_standardcolumns"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionItem.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_admin_src_pages_acquisitions_pages_acquisitionitem_jsx",
+      "target": "pages_acquisitionitem_acquisitionitem"
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/index.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_index_js",
+      "target": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/index.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_index_js",
+      "target": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/index.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_index_js",
+      "target": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/index.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_index_js",
+      "target": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
+      "target": "components_intakecolumns_archivecolumns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
+      "target": "components_intakecolumns_intakescolumns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeColumns.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
+      "target": "components_intakecolumns_offerscolumns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "apps_panel_admin_src_pages_intakes_components_intakecolumns_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "components_intakecolumns_offerscolumns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "components_intakecolumns_intakescolumns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "components_intakecolumns_archivecolumns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeStats.jsx",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_components_intakestats_jsx",
+      "target": "components_intakestats_getsidebarcount",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeStats.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_components_intakestats_jsx",
+      "target": "components_intakestats_getsidebarstats",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/components/IntakeStats.jsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_components_intakestats_jsx",
+      "target": "components_intakestats_getsidebartitle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "apps_panel_admin_src_pages_intakes_components_intakestats_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "components_intakestats_getsidebarstats",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L258",
+      "weight": 1.0,
+      "source": "pages_intakesindex_intakesindex",
+      "target": "components_intakestats_getsidebarstats"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "components_intakestats_getsidebartitle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L259",
+      "weight": 1.0,
+      "source": "pages_intakesindex_intakesindex",
+      "target": "components_intakestats_getsidebartitle"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "components_intakestats_getsidebarcount",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L260",
+      "weight": 1.0,
+      "source": "pages_intakesindex_intakesindex",
+      "target": "components_intakestats_getsidebarcount"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakeitem_jsx",
+      "target": "pages_intakeitem_intakeitem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
+      "target": "pages_intakemanualnew_intakemanualnew",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakesIndex.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_intakesindex_jsx",
+      "target": "pages_intakesindex_intakesindex",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "target": "pages_offeritem_field",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "target": "pages_offeritem_offeritem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "target": "pages_offeritem_section",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "apps_panel_admin_src_pages_intakes_pages_offeritem_jsx",
+      "target": "pages_offeritem_textblock",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -26328,6 +27518,16 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "apps/panel-visitor/.astro/content.d.ts",
+      "source_location": "L137",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_panel_visitor_astro_content_d_ts",
+      "target": "astro_content_d_extractdatatype"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "apps/panel-visitor/.astro/settings.json",
       "source_location": "L2",
       "weight": 1.0,
@@ -26543,9 +27743,9 @@
       "source_file": "apps/panel-visitor/src/pages/index.astro",
       "source_location": "L353",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_src_pages_index_astro",
-      "target": "pages_index_getstagebadgetext",
-      "confidence_score": 1.0
+      "target": "pages_index_getstagebadgetext"
     },
     {
       "relation": "contains",
@@ -29234,5 +30434,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "02f85a4ba8a19d87a99a92dc521f8f90955d1fba"
+  "built_at_commit": "da8297b4c065a27c85a4da104f321bfc205eadef"
 }

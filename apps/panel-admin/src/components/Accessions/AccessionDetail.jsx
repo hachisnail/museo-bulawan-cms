@@ -16,6 +16,7 @@ export default function AccessionDetail({
     setSelected,
     handleAction,
     actionLoading,
+    setActionLoading,
     setModal,
     fetchData,
     locations,
@@ -123,51 +124,54 @@ export default function AccessionDetail({
         }
     };
 
-    const handleResearchSubmit = async (e) => {
-        e.preventDefault();
-        
-        // Validate accession number format if it has changed and is manually inputted
-        if (research.accession_number !== selected.accession_number) {
-            const accNumRegex = /^\d{4}\.\d{3}\.\d{2}$/;
-            if (!accNumRegex.test(research.accession_number)) {
-                setModal({
-                    isOpen: true,
-                    title: 'Validation Error',
-                    message: 'Accession number must match format YYYY.SEQ.BATCH (e.g., 2026.001.01)',
-                    type: 'alert',
-                    variant: 'error'
-                });
-                return;
-            }
-        }
-
-        const researchDataObj = {};
-        customData.forEach(item => {
-            if (item.key.trim()) researchDataObj[item.key.trim()] = item.value;
-        });
-
-        try {
-            const res = await apiFetch(`/api/v1/acquisitions/accessions/${selected.id}/research`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    ...research, 
-                    research_data: researchDataObj 
-                })
+// 2. Wrap handleResearchSubmit with the loading lock
+const handleResearchSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (research.accession_number !== selected.accession_number) {
+        const accNumRegex = /^\d{4}\.\d{3}\.\d{2}$/;
+        if (!accNumRegex.test(research.accession_number)) {
+            setModal({
+                isOpen: true,
+                title: 'Validation Error',
+                message: 'Accession number must match format YYYY.SEQ.BATCH (e.g., 2026.001.01)',
+                type: 'alert',
+                variant: 'error'
             });
-            const json = await res.json();
-            if (res.ok) {
-                setModal({ isOpen: true, title: 'Success', message: 'Research data saved successfully.', type: 'alert', variant: 'success' });
-                setSelected(prev => ({ ...prev, ...research, research_data: researchDataObj }));
-                fetchData(true);
-            } else {
-                setModal({ isOpen: true, title: 'Failed', message: json.error || json.message || 'Failed to save research data.', type: 'alert', variant: 'error' });
-            }
-        } catch (err) {
-            setModal({ isOpen: true, title: 'Error', message: 'Update failed.', type: 'alert', variant: 'error' });
+            return;
         }
-    };
+    }
 
+    const researchDataObj = {};
+    customData.forEach(item => {
+        if (item.key.trim()) researchDataObj[item.key.trim()] = item.value;
+    });
+
+    setActionLoading(true); // <-- LOCK THE UI HERE
+
+    try {
+        const res = await apiFetch(`/api/v1/acquisitions/accessions/${selected.id}/research`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                ...research, 
+                research_data: researchDataObj 
+            })
+        });
+        const json = await res.json();
+        if (res.ok) {
+            setModal({ isOpen: true, title: 'Success', message: 'Research data saved successfully.', type: 'alert', variant: 'success' });
+            setSelected(prev => ({ ...prev, ...research, research_data: researchDataObj }));
+            fetchData(true);
+        } else {
+            setModal({ isOpen: true, title: 'Failed', message: json.error || json.message || 'Failed to save research data.', type: 'alert', variant: 'error' });
+        }
+    } catch (err) {
+        setModal({ isOpen: true, title: 'Error', message: 'Update failed.', type: 'alert', variant: 'error' });
+    } finally {
+        setActionLoading(false); // <-- UNLOCK THE UI HERE
+    }
+};
     return (
         <div className="border border-zinc-200 bg-white rounded-sm flex flex-col h-[700px] overflow-hidden">
             {/* Detail Header */}

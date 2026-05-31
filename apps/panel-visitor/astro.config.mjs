@@ -13,6 +13,14 @@ export default defineConfig({
     port: 4321
   },
   vite: {
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3000',
+          changeOrigin: true,
+        }
+      }
+    },
     plugins: [
       // @ts-expect-error - Bypasses the Rollup/Rolldown type mismatch between root vite and astro's bundled vite
       tailwindcss()

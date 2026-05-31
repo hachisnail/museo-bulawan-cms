@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { useSSE } from "../hooks/useSSE";
+import { useUmami } from "../hooks/useUmami";
 
 // --- Helper Icon Components ---
 const Icons = {
@@ -201,6 +202,7 @@ export default function MainLayout() {
   const { user, logout, apiFetch } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const { track } = useUmami();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
@@ -237,11 +239,14 @@ export default function MainLayout() {
     setNotifications((prev) => [payload, ...prev].slice(0, 50));
     setUnreadCount((prev) => prev + 1);
 
+    track('notification_received', { type: payload.type, title: payload.title });
+    console.log('[Umami] notification_received:', payload.type, payload.title);
+
     // Optional: Browser notification or toast
     if (Notification.permission === "granted") {
       new Notification(payload.title, { body: payload.message });
     }
-  }, []);
+  }, [track]);
 
   // Hook up SSE for notifications
   useSSE({
@@ -260,6 +265,8 @@ export default function MainLayout() {
           prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)),
         );
         setUnreadCount((prev) => Math.max(0, prev - 1));
+        track('notification_read', { id });
+        console.log('[Umami] notification_read:', id);
       }
     } catch (err) {
       console.error("Failed to mark notification as read", err);
@@ -281,6 +288,8 @@ export default function MainLayout() {
       if (res.ok) {
         setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
         setUnreadCount(0);
+        track('notification_mark_all_read', { count: unreadCount });
+        console.log('[Umami] notification_mark_all_read, count:', unreadCount);
       }
     } catch (err) {
       console.error("Failed to mark all as read", err);
@@ -342,9 +351,8 @@ export default function MainLayout() {
     <div className="flex h-screen bg-zinc-50 font-sans text-zinc-900 overflow-hidden">
       {/* --- Sidebar --- */}
       <aside
-        className={`bg-zinc-950 flex flex-col transition-[width] duration-300 ease-in-out relative z-30 ${
-          isCollapsed ? "w-16" : "w-56"
-        }`}
+        className={`bg-zinc-950 flex flex-col transition-[width] duration-300 ease-in-out relative z-30 ${isCollapsed ? "w-16" : "w-56"
+          }`}
       >
         {/* Brand / User Profile Section */}
         <div className="h-14 flex items-center px-4 border-b border-zinc-900 overflow-hidden whitespace-nowrap">
@@ -376,11 +384,10 @@ export default function MainLayout() {
                   key={item.path}
                   to={item.path}
                   title={isCollapsed ? item.name : ""}
-                  className={`flex items-center px-3 py-2 rounded-sm transition-colors group ${
-                    isActive
+                  className={`flex items-center px-3 py-2 rounded-sm transition-colors group ${isActive
                       ? "bg-zinc-900 text-white border-l-2 border-[#D4AF37]"
                       : "text-zinc-500 hover:bg-zinc-900 hover:text-white border-l-2 border-transparent"
-                  }`}
+                    }`}
                 >
                   <span
                     className={`${isActive ? "text-[#D4AF37]" : "text-zinc-500 group-hover:text-zinc-300"} transition-colors ml-0.5`}
@@ -389,11 +396,10 @@ export default function MainLayout() {
                   </span>
 
                   <span
-                    className={`text-[13px] font-medium tracking-wide transition-all duration-300 overflow-hidden whitespace-nowrap ${
-                      isCollapsed
+                    className={`text-[13px] font-medium tracking-wide transition-all duration-300 overflow-hidden whitespace-nowrap ${isCollapsed
                         ? "opacity-0 w-0 ml-0"
                         : "opacity-100 w-full ml-3"
-                    }`}
+                      }`}
                   >
                     {item.name}
                   </span>
@@ -463,7 +469,11 @@ export default function MainLayout() {
             </div>
 
             <button
-              onClick={() => setIsNotifOpen(true)}
+              onClick={() => {
+                setIsNotifOpen(true);
+                track('notification_drawer_opened', { unread: unreadCount });
+                console.log('[Umami] notification_drawer_opened, unread:', unreadCount);
+              }}
               className="p-1.5 text-zinc-400 hover:text-black transition-colors relative"
               aria-label="Open notifications"
             >
@@ -488,8 +498,8 @@ export default function MainLayout() {
                 <p className="text-sm font-semibold text-zinc-600 tracking-wider uppercase">Loading CMS...</p>
               </div>
             )}
-            <iframe 
-                src="http://localhost:3001/admin/collections/articles" 
+            <iframe
+                src="http://localhost:3001/admin/collections/articles"
                 className="w-full h-full flex-1 border-0"
                 title="Payload CMS Editor Preloaded"
                 onLoad={() => setIsCmsLoading(false)}
@@ -510,9 +520,8 @@ export default function MainLayout() {
 
         {/* Notification Drawer Panel */}
         <div
-          className={`absolute inset-y-0 right-0 z-50 w-80 bg-white border-l border-zinc-200 shadow-2xl transform transition-transform duration-300 ease-in-out ${
-            isNotifOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`absolute inset-y-0 right-0 z-50 w-80 bg-white border-l border-zinc-200 shadow-2xl transform transition-transform duration-300 ease-in-out ${isNotifOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           <div className="flex items-center justify-between px-6 h-14 border-b border-zinc-200 bg-zinc-50/50">
             <div className="flex items-center gap-2">

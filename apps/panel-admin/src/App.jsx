@@ -1,7 +1,9 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './context/authContext';
 import { useSSE } from './hooks/useSSE';
 import { Navigate } from 'react-router-dom';
+import { useUmami } from './hooks/useUmami';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
@@ -28,8 +30,16 @@ import Locations from './pages/Locations';
 
 function App() {
     const navigate = useNavigate();
-    
+    const location = useLocation();
+    const { track } = useUmami();
+
     const { user, localLogout } = useAuth();
+
+    // Log route changes; Umami also auto-tracks page views via its script.
+    useEffect(() => {
+        console.log('[Umami] Page view:', location.pathname);
+        track('admin_page_visit', { path: location.pathname });
+    }, [location.pathname]);
 
     useSSE(user ? {
         'force_logout': (data) => {

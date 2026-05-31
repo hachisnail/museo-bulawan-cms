@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { useSSE } from "../hooks/useSSE";
-import { useUmami } from "../hooks/useUmami";
 
 // --- Helper Icon Components ---
 const Icons = {
@@ -202,7 +201,6 @@ export default function MainLayout() {
   const { user, logout, apiFetch } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const { track } = useUmami();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
@@ -239,14 +237,11 @@ export default function MainLayout() {
     setNotifications((prev) => [payload, ...prev].slice(0, 50));
     setUnreadCount((prev) => prev + 1);
 
-    track('notification_received', { type: payload.type, title: payload.title });
-    console.log('[Umami] notification_received:', payload.type, payload.title);
-
     // Optional: Browser notification or toast
     if (Notification.permission === "granted") {
       new Notification(payload.title, { body: payload.message });
     }
-  }, [track]);
+  }, []);
 
   // Hook up SSE for notifications
   useSSE({
@@ -265,8 +260,6 @@ export default function MainLayout() {
           prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)),
         );
         setUnreadCount((prev) => Math.max(0, prev - 1));
-        track('notification_read', { id });
-        console.log('[Umami] notification_read:', id);
       }
     } catch (err) {
       console.error("Failed to mark notification as read", err);
@@ -288,8 +281,6 @@ export default function MainLayout() {
       if (res.ok) {
         setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
         setUnreadCount(0);
-        track('notification_mark_all_read', { count: unreadCount });
-        console.log('[Umami] notification_mark_all_read, count:', unreadCount);
       }
     } catch (err) {
       console.error("Failed to mark all as read", err);
@@ -385,8 +376,8 @@ export default function MainLayout() {
                   to={item.path}
                   title={isCollapsed ? item.name : ""}
                   className={`flex items-center px-3 py-2 rounded-sm transition-colors group ${isActive
-                      ? "bg-zinc-900 text-white border-l-2 border-[#D4AF37]"
-                      : "text-zinc-500 hover:bg-zinc-900 hover:text-white border-l-2 border-transparent"
+                    ? "bg-zinc-900 text-white border-l-2 border-[#D4AF37]"
+                    : "text-zinc-500 hover:bg-zinc-900 hover:text-white border-l-2 border-transparent"
                     }`}
                 >
                   <span
@@ -397,8 +388,8 @@ export default function MainLayout() {
 
                   <span
                     className={`text-[13px] font-medium tracking-wide transition-all duration-300 overflow-hidden whitespace-nowrap ${isCollapsed
-                        ? "opacity-0 w-0 ml-0"
-                        : "opacity-100 w-full ml-3"
+                      ? "opacity-0 w-0 ml-0"
+                      : "opacity-100 w-full ml-3"
                       }`}
                   >
                     {item.name}
@@ -469,11 +460,7 @@ export default function MainLayout() {
             </div>
 
             <button
-              onClick={() => {
-                setIsNotifOpen(true);
-                track('notification_drawer_opened', { unread: unreadCount });
-                console.log('[Umami] notification_drawer_opened, unread:', unreadCount);
-              }}
+              onClick={() => setIsNotifOpen(true)}
               className="p-1.5 text-zinc-400 hover:text-black transition-colors relative"
               aria-label="Open notifications"
             >
@@ -499,10 +486,10 @@ export default function MainLayout() {
               </div>
             )}
             <iframe
-                src="http://localhost:3001/admin/collections/articles"
-                className="w-full h-full flex-1 border-0"
-                title="Payload CMS Editor Preloaded"
-                onLoad={() => setIsCmsLoading(false)}
+              src="http://localhost:3001/admin/collections/articles"
+              className="w-full h-full flex-1 border-0"
+              title="Payload CMS Editor Preloaded"
+              onLoad={() => setIsCmsLoading(false)}
             />
           </div>
           <div className={location.pathname === '/articles' ? 'hidden' : 'block h-full'}>

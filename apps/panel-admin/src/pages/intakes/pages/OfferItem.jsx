@@ -1,3 +1,4 @@
+// apps/panel-admin/src/pages/intakes/pages/OfferItem.jsx
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/authContext';
@@ -6,14 +7,50 @@ import MoaDialog from '../../../components/Intakes/MoaDialog';
 import { STATUS_STYLES } from '../../../components/Intakes/IntakeDetail';
 
 // ─────────────────────────────────────────────────────────────────────────────
+//  Skeleton Loader
+// ─────────────────────────────────────────────────────────────────────────────
+function OfferItemSkeleton() {
+    return (
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 animate-pulse">
+            <div className="space-y-6 pt-4">
+                <div className="h-4 bg-gray-200 rounded w-28" />
+                <div className="flex items-center gap-3 mt-2">
+                    <div className="h-8 bg-gray-200 rounded w-1/3" />
+                    <div className="h-6 bg-gray-200 rounded w-20" />
+                </div>
+                <div className="border border-gray-200 rounded-lg mt-4">
+                    <div className="h-14 bg-gray-50 border-b border-gray-200" />
+                    <div className="p-6 space-y-6">
+                        <div className="grid grid-cols-2 gap-6">
+                            {[...Array(4)].map((_, i) => (
+                                <div key={i} className="space-y-2">
+                                    <div className="h-4 bg-gray-200 rounded w-24" />
+                                    <div className="h-5 bg-gray-100 rounded w-3/4" />
+                                </div>
+                            ))}
+                        </div>
+                        {[...Array(2)].map((_, i) => (
+                            <div key={i} className="space-y-2">
+                                <div className="h-4 bg-gray-200 rounded w-32" />
+                                <div className="h-24 bg-gray-100 rounded-md" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 //  Small presentational helpers
 // ─────────────────────────────────────────────────────────────────────────────
-function Field({ label, value, mono = false, serif = false }) {
+function Field({ label, value, mono = false }) {
     if (!value && value !== 0) return null;
     return (
         <div>
-            <label className="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-1">{label}</label>
-            <div className={`text-sm text-black ${mono ? 'font-mono' : ''} ${serif ? 'font-serif leading-relaxed' : 'font-medium'}`}>
+            <label className="text-sm font-medium text-gray-500 block mb-1">{label}</label>
+            <div className={`text-base text-gray-900 ${mono ? 'font-mono' : ''}`}>
                 {value}
             </div>
         </div>
@@ -22,11 +59,11 @@ function Field({ label, value, mono = false, serif = false }) {
 
 function Section({ title, children }) {
     return (
-        <div className="space-y-4 pt-6 border-t border-zinc-100 first:border-0 first:pt-0">
+        <div className="space-y-4 pt-6 border-t border-gray-200 first:border-0 first:pt-0">
             {title && (
-                <div className="text-[9px] uppercase font-black tracking-[0.2em] text-zinc-400">{title}</div>
+                <div className="text-lg font-semibold text-gray-900">{title}</div>
             )}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                 {children}
             </div>
         </div>
@@ -37,8 +74,8 @@ function TextBlock({ label, value }) {
     if (!value) return null;
     return (
         <div className="col-span-full">
-            <label className="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-2">{label}</label>
-            <div className="text-sm text-black font-serif leading-relaxed bg-zinc-50 border border-zinc-200 px-5 py-4 rounded-sm whitespace-pre-wrap">
+            <label className="text-sm font-medium text-gray-500 block mb-2">{label}</label>
+            <div className="text-base text-gray-900 bg-gray-50 border border-gray-200 px-5 py-4 rounded-md whitespace-pre-wrap">
                 {value}
             </div>
         </div>
@@ -67,9 +104,6 @@ export default function OfferItem() {
         variant: 'info', onConfirm: null, promptValue: ''
     });
 
-    // ------------------------------------------------------------------ //
-    //  Fetch
-    // ------------------------------------------------------------------ //
     const fetchRecord = useCallback(async () => {
         setLoading(true);
         try {
@@ -96,9 +130,6 @@ export default function OfferItem() {
 
     useEffect(() => { fetchRecord(); }, [fetchRecord]);
 
-    // ------------------------------------------------------------------ //
-    //  Actions
-    // ------------------------------------------------------------------ //
     const executeAction = async (action, body = {}) => {
         setModal(prev => ({ ...prev, isOpen: false }));
         setActionLoading(true);
@@ -109,7 +140,6 @@ export default function OfferItem() {
             if (action === 'accept_and_issue') {
                 endpoint = `/api/v1/acquisitions/intakes/external/${id}/accept-and-issue`;
             } else if (action === 'approve_and_generate') {
-                // Two-step: approve then generate MOA
                 const appRes = await apiFetch(`/api/v1/acquisitions/intakes/${id}/approve`, { method: 'POST' });
                 if (!appRes.ok) { const j = await appRes.json(); throw new Error(j.message || 'Failed to approve'); }
                 const moaRes = await apiFetch(`/api/v1/acquisitions/intakes/${id}/generate-moa`, {
@@ -161,35 +191,21 @@ export default function OfferItem() {
         executeAction(action, body);
     };
 
-    // ------------------------------------------------------------------ //
-    //  Loading skeleton
-    // ------------------------------------------------------------------ //
     if (loading) {
-        return (
-            <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="animate-pulse space-y-4 pt-4">
-                    <div className="h-4 bg-gray-200 rounded w-24" />
-                    <div className="h-8 bg-gray-200 rounded w-2/3" />
-                    <div className="h-[600px] bg-gray-100 rounded-sm border border-gray-200 mt-4" />
-                </div>
-            </div>
-        );
+        return <OfferItemSkeleton />;
     }
 
     if (!submission) {
         return (
             <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <button onClick={() => navigate(`/intakes?tab=${fromTab}`)} className="self-start text-sm font-semibold text-gray-500 hover:text-black mt-4 flex items-center gap-1.5">
+                <button onClick={() => navigate(`/intakes?tab=${fromTab}`)} className="self-start text-sm font-medium text-blue-600 hover:text-blue-800 mt-4 flex items-center gap-1.5">
                     <span>←</span> Back to Intakes
                 </button>
-                <p className="text-zinc-400 text-sm italic">Record not found.</p>
+                <p className="text-gray-500 text-base">Record not found.</p>
             </div>
         );
     }
 
-    // ------------------------------------------------------------------ //
-    //  Derived display data
-    // ------------------------------------------------------------------ //
     const pd      = submission.data || {};
     const isAnon  = pd.is_anonymous === true;
     const fullName = `${pd.donor_first_name || ''} ${pd.donor_last_name || ''}`.trim();
@@ -198,7 +214,6 @@ export default function OfferItem() {
     const acqType       = (pd.acquisition_type || 'Gift');
     const isLoan        = acqType.toLowerCase() === 'loan';
 
-    // Build a "catch-all" list of any extra form fields not already shown
     const knownKeys = new Set([
         'artifact_name','artifact_description','artifact_provenance',
         'acquisition_type','loan_end_date','is_anonymous',
@@ -206,45 +221,36 @@ export default function OfferItem() {
     ]);
     const extraFields = Object.entries(pd).filter(([k]) => !knownKeys.has(k));
 
-    // ------------------------------------------------------------------ //
-    //  Render
-    // ------------------------------------------------------------------ //
     return (
-        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
 
-            {/* ── Page header ── */}
-            <section className="flex items-start border-b border-gray-100 pb-4 mb-4">
+            <section className="flex items-start border-b border-gray-200 pb-6 mb-2">
                 <div className="flex-1">
                     <button
                         onClick={() => navigate(`/intakes?tab=${fromTab}`)}
-                        className="text-sm font-semibold text-gray-500 hover:text-black transition-colors flex items-center gap-1.5 mb-2"
+                        className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1.5 mb-3"
                     >
                         <span>←</span> Back to Intakes
                     </button>
-                    <div className="flex items-center gap-3 flex-wrap">
-                        <h1 className="text-3xl font-bold text-black tracking-tight">{artifactTitle}</h1>
-                        <span className={`px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-widest border ${STATUS_STYLES[submission.status] || STATUS_STYLES.pending}`}>
+                    <div className="flex items-center gap-4 flex-wrap">
+                        <h1 className="text-2xl font-bold text-gray-900">{artifactTitle}</h1>
+                        <span className={`px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wider border ${STATUS_STYLES[submission.status] || STATUS_STYLES.pending}`}>
                             {submission.status?.replace(/_/g, ' ')}
                         </span>
                     </div>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-base text-gray-500 mt-2">
                         {submission.form_title || 'Donation Offer'} &mdash; Submitted {submission.created ? new Date(submission.created).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'}
                     </p>
                 </div>
             </section>
 
-            {/* ── Detail card ── */}
-            <div className="border border-zinc-200 bg-white rounded-sm">
-
-                {/* Card header */}
-                <div className="px-6 py-4 bg-zinc-50 border-b border-zinc-200 flex items-center gap-3">
-                    <span className="text-[10px] uppercase font-black tracking-[0.2em] text-zinc-400">Submission</span>
-                    <span className="text-[10px] text-zinc-400 font-mono">{submission.id}</span>
+            <div className="border border-gray-200 bg-white rounded-lg shadow-sm">
+                <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex items-center gap-3 rounded-t-lg">
+                    <span className="text-sm font-semibold text-gray-700">Submission Details</span>
+                    <span className="text-sm text-gray-500 font-mono">#{submission.id}</span>
                 </div>
 
                 <div className="p-6 space-y-8">
-
-                    {/* ── 1. Donor information ── */}
                     <Section title="Donor Information">
                         <Field label="Donor Name" value={donorDisplay} />
                         <Field label="Anonymity" value={isAnon ? 'Anonymous — identity withheld' : 'Identity disclosed'} />
@@ -257,7 +263,6 @@ export default function OfferItem() {
                         <Field label="Submitted By (Portal Account)" value={!isAnon && submission.submitted_by !== fullName ? submission.submitted_by : null} />
                     </Section>
 
-                    {/* ── 2. Acquisition details ── */}
                     <Section title="Acquisition Details">
                         <Field label="Acquisition Type" value={acqType} />
                         {isLoan && <Field label="Loan Return Date" value={pd.loan_end_date ? new Date(pd.loan_end_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'No end date specified'} />}
@@ -265,18 +270,16 @@ export default function OfferItem() {
                         <Field label="Source Form" value={submission.form_title} />
                     </Section>
 
-                    {/* ── 3. Artifact details ── */}
-                    <div className="space-y-4 pt-6 border-t border-zinc-100">
-                        <div className="text-[9px] uppercase font-black tracking-[0.2em] text-zinc-400">Artifact Details</div>
+                    <div className="space-y-4 pt-6 border-t border-gray-200">
+                        <div className="text-lg font-semibold text-gray-900">Artifact Details</div>
                         <TextBlock label="Physical Description" value={pd.artifact_description || 'No description provided.'} />
                         <TextBlock label="Provenance / Historical Background" value={pd.artifact_provenance || 'No provenance information provided.'} />
                     </div>
 
-                    {/* ── 4. Additional form fields (catch-all) ── */}
                     {extraFields.length > 0 && (
-                        <div className="space-y-4 pt-6 border-t border-zinc-100">
-                            <div className="text-[9px] uppercase font-black tracking-[0.2em] text-zinc-400">Additional Form Responses</div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                        <div className="space-y-4 pt-6 border-t border-gray-200">
+                            <div className="text-lg font-semibold text-gray-900">Additional Form Responses</div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                                 {extraFields.map(([key, val]) => (
                                     <Field
                                         key={key}
@@ -288,26 +291,25 @@ export default function OfferItem() {
                         </div>
                     )}
 
-                    {/* ── 5. Donation items (if multi-item submission) ── */}
                     {items.length > 0 && (
-                        <div className="space-y-3 pt-6 border-t border-zinc-100">
-                            <div className="text-[9px] uppercase font-black tracking-[0.2em] text-zinc-400">Submitted Items ({items.length})</div>
-                            <div className="border border-zinc-200 rounded-sm overflow-hidden">
-                                <table className="w-full text-sm text-left">
-                                    <thead className="bg-zinc-50 border-b border-zinc-200">
+                        <div className="space-y-4 pt-6 border-t border-gray-200">
+                            <div className="text-lg font-semibold text-gray-900">Submitted Items ({items.length})</div>
+                            <div className="border border-gray-200 rounded-md overflow-hidden">
+                                <table className="w-full text-base text-left">
+                                    <thead className="bg-gray-50 border-b border-gray-200">
                                         <tr>
                                             {['Item Name', 'Description', 'Status'].map(h => (
-                                                <th key={h} className="py-2.5 px-4 text-[10px] font-bold uppercase tracking-widest text-zinc-400">{h}</th>
+                                                <th key={h} className="py-3 px-4 text-sm font-semibold text-gray-600">{h}</th>
                                             ))}
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {items.map((item, i) => (
-                                            <tr key={i} className="border-b border-zinc-100 last:border-0">
-                                                <td className="py-3 px-4 font-medium text-black">{item.proposed_item_name || item.name || '—'}</td>
-                                                <td className="py-3 px-4 text-zinc-500 font-serif">{item.description || '—'}</td>
-                                                <td className="py-3 px-4">
-                                                    <span className={`px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-wider border ${STATUS_STYLES[item.status] || STATUS_STYLES.pending}`}>
+                                            <tr key={i} className="border-b border-gray-100 last:border-0">
+                                                <td className="py-4 px-4 font-medium text-gray-900">{item.proposed_item_name || item.name || '—'}</td>
+                                                <td className="py-4 px-4 text-gray-600">{item.description || '—'}</td>
+                                                <td className="py-4 px-4">
+                                                    <span className={`px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wider border ${STATUS_STYLES[item.status] || STATUS_STYLES.pending}`}>
                                                         {item.status?.replace(/_/g, ' ') || '—'}
                                                     </span>
                                                 </td>
@@ -319,24 +321,23 @@ export default function OfferItem() {
                         </div>
                     )}
 
-                    {/* ── 6. Attached media ── */}
                     {media.length > 0 && (
-                        <div className="space-y-3 pt-6 border-t border-zinc-100">
-                            <div className="text-[9px] uppercase font-black tracking-[0.2em] text-zinc-400">Attached Documents & Photos ({media.length})</div>
+                        <div className="space-y-4 pt-6 border-t border-gray-200">
+                            <div className="text-lg font-semibold text-gray-900">Attached Documents & Photos ({media.length})</div>
                             <div className="flex gap-4 overflow-x-auto pb-2">
                                 {media.map(m => (
                                     <a
                                         key={m.id}
                                         href={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/submission/${id}/${m.file_name}`}
                                         target="_blank" rel="noreferrer"
-                                        className="relative flex-shrink-0 w-32 h-32 border border-zinc-200 rounded-sm overflow-hidden group bg-zinc-100"
+                                        className="relative flex-shrink-0 w-32 h-32 border border-gray-200 rounded-md overflow-hidden group bg-gray-100"
                                     >
                                         <img
                                             src={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/submission/${id}/${m.file_name}`}
                                             className="w-full h-full object-cover group-hover:opacity-75 transition-opacity"
                                             alt="Attachment"
                                         />
-                                        <div className="absolute inset-x-0 bottom-0 bg-black/70 p-1 text-[8px] text-white font-mono truncate text-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <div className="absolute inset-x-0 bottom-0 bg-gray-900/70 p-2 text-xs text-white font-mono truncate text-center opacity-0 group-hover:opacity-100 transition-opacity">
                                             {m.file_name}
                                         </div>
                                     </a>
@@ -347,10 +348,9 @@ export default function OfferItem() {
                 </div>
 
                 {/* ── Action footer ── */}
-                <div className="px-6 py-4 border-t border-zinc-200 bg-zinc-50 flex justify-end gap-3 flex-wrap">
-                    {actionLoading && <span className="text-xs text-zinc-400 uppercase tracking-widest self-center mr-auto">Processing…</span>}
+                <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3 flex-wrap rounded-b-lg">
+                    {actionLoading && <span className="text-sm text-gray-500 font-medium self-center mr-auto">Processing…</span>}
 
-                    {/* Pending: decline + accept */}
                     {submission.status === 'pending' && (
                         <>
                             <button
@@ -361,7 +361,7 @@ export default function OfferItem() {
                                     onConfirm: (val) => handleAction('reject', { reason: val })
                                 })}
                                 disabled={actionLoading}
-                                className="px-6 py-3 bg-white border border-red-200 text-red-700 text-xs font-bold uppercase tracking-widest hover:bg-red-50 transition-colors rounded-sm disabled:opacity-50"
+                                className="px-5 py-2.5 bg-white border border-red-200 text-red-600 text-sm font-semibold hover:bg-red-50 transition-colors rounded-md disabled:opacity-50"
                             >
                                 Decline Offer
                             </button>
@@ -376,7 +376,7 @@ export default function OfferItem() {
                                     });
                                 }}
                                 disabled={actionLoading}
-                                className="px-6 py-3 bg-black text-[#D4AF37] text-xs font-bold uppercase tracking-widest hover:bg-zinc-900 transition-colors rounded-sm flex items-center gap-2 disabled:opacity-50"
+                                className="px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors rounded-md flex items-center gap-2 disabled:opacity-50"
                             >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                 Accept &amp; Issue Documents
@@ -384,7 +384,6 @@ export default function OfferItem() {
                         </>
                     )}
 
-                    {/* Under review: decline + approve & generate MOA */}
                     {submission.status === 'under_review' && (
                         <>
                             <button
@@ -395,7 +394,7 @@ export default function OfferItem() {
                                     onConfirm: (val) => handleAction('reject', { reason: val })
                                 })}
                                 disabled={actionLoading}
-                                className="px-6 py-3 bg-white border border-red-200 text-red-700 text-xs font-bold uppercase tracking-widest hover:bg-red-50 transition-colors rounded-sm disabled:opacity-50"
+                                className="px-5 py-2.5 bg-white border border-red-200 text-red-600 text-sm font-semibold hover:bg-red-50 transition-colors rounded-md disabled:opacity-50"
                             >
                                 Decline Offer
                             </button>
@@ -410,30 +409,28 @@ export default function OfferItem() {
                                     });
                                 }}
                                 disabled={actionLoading}
-                                className="px-6 py-3 bg-black text-[#D4AF37] text-xs font-bold uppercase tracking-widest hover:bg-zinc-900 transition-colors rounded-sm disabled:opacity-50"
+                                className="px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors rounded-md disabled:opacity-50"
                             >
                                 Approve &amp; Generate MOA
                             </button>
                         </>
                     )}
 
-                    {/* Rejected: reopen */}
                     {submission.status === 'rejected' && (
                         <button
                             onClick={() => handleAction('reopen')}
                             disabled={actionLoading}
-                            className="px-6 py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-sm disabled:opacity-50"
+                            className="px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors rounded-md disabled:opacity-50"
                         >
                             Reopen for Review
                         </button>
                     )}
 
-                    {/* Archived: restore */}
                     {submission.status === 'archived' && (
                         <button
                             onClick={() => handleAction('reopen')}
                             disabled={actionLoading}
-                            className="px-6 py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-sm disabled:opacity-50"
+                            className="px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors rounded-md disabled:opacity-50"
                         >
                             Restore Submission
                         </button>

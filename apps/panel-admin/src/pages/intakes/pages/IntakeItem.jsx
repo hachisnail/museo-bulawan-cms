@@ -1,3 +1,4 @@
+// apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/authContext';
@@ -6,50 +7,35 @@ import MoaDialog from '../../../components/Intakes/MoaDialog';
 import { STATUS_STYLES } from '../../../components/Intakes/IntakeDetail';
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  Skeleton
+//  Skeleton Loader
 // ─────────────────────────────────────────────────────────────────────────────
 function IntakeItemSkeleton() {
     return (
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-pulse space-y-6">
-            {/* Back link */}
-            <div className="h-4 bg-gray-200 rounded w-28" />
-            {/* Title + badge */}
-            <div className="flex items-center gap-3">
-                <div className="h-8 bg-gray-200 rounded w-1/2" />
-                <div className="h-6 bg-gray-200 rounded w-20" />
-            </div>
-            {/* Card */}
-            <div className="border border-gray-200 rounded-sm">
-                {/* Header strip */}
-                <div className="h-14 bg-gray-100 border-b border-gray-200" />
-                <div className="p-6 space-y-6">
-                    {/* Two-col grid */}
-                    <div className="grid grid-cols-2 gap-6">
-                        {[...Array(4)].map((_, i) => (
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 animate-pulse">
+            <div className="space-y-6 pt-4">
+                <div className="h-4 bg-gray-200 rounded w-28" />
+                <div className="flex items-center gap-3 mt-2">
+                    <div className="h-8 bg-gray-200 rounded w-1/3" />
+                    <div className="h-6 bg-gray-200 rounded w-20" />
+                </div>
+                <div className="border border-gray-200 rounded-lg mt-4">
+                    <div className="h-14 bg-gray-50 border-b border-gray-200" />
+                    <div className="p-6 space-y-6">
+                        <div className="grid grid-cols-2 gap-6">
+                            {[...Array(4)].map((_, i) => (
+                                <div key={i} className="space-y-2">
+                                    <div className="h-4 bg-gray-200 rounded w-24" />
+                                    <div className="h-5 bg-gray-100 rounded w-3/4" />
+                                </div>
+                            ))}
+                        </div>
+                        {[...Array(2)].map((_, i) => (
                             <div key={i} className="space-y-2">
-                                <div className="h-3 bg-gray-200 rounded w-24" />
-                                <div className="h-5 bg-gray-100 rounded w-3/4" />
+                                <div className="h-4 bg-gray-200 rounded w-32" />
+                                <div className="h-24 bg-gray-100 rounded-md" />
                             </div>
                         ))}
                     </div>
-                    {/* Text blocks */}
-                    {[...Array(2)].map((_, i) => (
-                        <div key={i} className="space-y-2">
-                            <div className="h-3 bg-gray-200 rounded w-32" />
-                            <div className="h-24 bg-gray-100 rounded-sm" />
-                        </div>
-                    ))}
-                    {/* Media row */}
-                    <div className="flex gap-4">
-                        {[...Array(4)].map((_, i) => (
-                            <div key={i} className="w-32 h-32 bg-gray-100 rounded-sm flex-shrink-0" />
-                        ))}
-                    </div>
-                </div>
-                {/* Footer */}
-                <div className="h-16 bg-gray-50 border-t border-gray-200 flex items-center justify-end px-6 gap-3">
-                    <div className="h-9 w-32 bg-gray-200 rounded-sm" />
-                    <div className="h-9 w-40 bg-gray-200 rounded-sm" />
                 </div>
             </div>
         </div>
@@ -59,12 +45,27 @@ function IntakeItemSkeleton() {
 // ─────────────────────────────────────────────────────────────────────────────
 //  Small presentational helpers
 // ─────────────────────────────────────────────────────────────────────────────
-function Field({ label, value }) {
+function Field({ label, value, mono = false }) {
     if (!value && value !== 0) return null;
     return (
         <div>
-            <label className="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-1">{label}</label>
-            <div className="text-sm text-black font-medium">{value}</div>
+            <label className="text-sm font-medium text-gray-500 block mb-1">{label}</label>
+            <div className={`text-base text-gray-900 ${mono ? 'font-mono' : ''}`}>
+                {value}
+            </div>
+        </div>
+    );
+}
+
+function Section({ title, children }) {
+    return (
+        <div className="space-y-4 pt-6 border-t border-gray-200 first:border-0 first:pt-0">
+            {title && (
+                <div className="text-lg font-semibold text-gray-900">{title}</div>
+            )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                {children}
+            </div>
         </div>
     );
 }
@@ -72,9 +73,9 @@ function Field({ label, value }) {
 function TextBlock({ label, value }) {
     if (!value) return null;
     return (
-        <div>
-            <label className="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-2">{label}</label>
-            <div className="text-sm text-black font-serif leading-relaxed bg-zinc-50 border border-zinc-200 px-5 py-4 rounded-sm whitespace-pre-wrap">
+        <div className="col-span-full">
+            <label className="text-sm font-medium text-gray-500 block mb-2">{label}</label>
+            <div className="text-base text-gray-900 bg-gray-50 border border-gray-200 px-5 py-4 rounded-md whitespace-pre-wrap">
                 {value}
             </div>
         </div>
@@ -104,9 +105,6 @@ export default function IntakeItem() {
         variant: 'info', onConfirm: null, promptValue: ''
     });
 
-    // ------------------------------------------------------------------ //
-    //  Fetch
-    // ------------------------------------------------------------------ //
     const fetchRecord = useCallback(async () => {
         setLoading(true);
         try {
@@ -140,9 +138,6 @@ export default function IntakeItem() {
         fetchLocations();
     }, [fetchRecord, fetchLocations]);
 
-    // ------------------------------------------------------------------ //
-    //  Helpers from IntakeDetail
-    // ------------------------------------------------------------------ //
     const getDonorEmail = (i) => {
         if (i?.expand?.donor_account_id?.email) return i.expand.donor_account_id.email;
         if (i?.expand?.submission_id) {
@@ -163,16 +158,12 @@ export default function IntakeItem() {
         return null;
     };
 
-    // Pull description/provenance from linked submission if not on intake itself
     const getSubmissionData = () => {
         if (!intake?.expand?.submission_id) return {};
         const sub = intake.expand.submission_id;
         return typeof sub.data === 'string' ? JSON.parse(sub.data) : (sub.data || {});
     };
 
-    // ------------------------------------------------------------------ //
-    //  Actions
-    // ------------------------------------------------------------------ //
     const executeAction = async (action, body = {}) => {
         setModal(prev => ({ ...prev, isOpen: false }));
         setActionLoading(true);
@@ -244,25 +235,19 @@ export default function IntakeItem() {
         executeAction(action, body);
     };
 
-    // ------------------------------------------------------------------ //
-    //  Render states
-    // ------------------------------------------------------------------ //
     if (loading) return <IntakeItemSkeleton />;
 
     if (!intake) {
         return (
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <button onClick={() => navigate(`/intakes?tab=${fromTab}`)} className="text-sm font-semibold text-gray-500 hover:text-black flex items-center gap-1.5 mb-4">
+            <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+                <button onClick={() => navigate(`/intakes?tab=${fromTab}`)} className="self-start text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1.5 mb-3">
                     <span>←</span> Back to Intakes
                 </button>
-                <p className="text-zinc-400 text-sm italic">Intake record not found.</p>
+                <p className="text-gray-500 text-base">Intake record not found.</p>
             </div>
         );
     }
 
-    // ------------------------------------------------------------------ //
-    //  Derived display data
-    // ------------------------------------------------------------------ //
     const subData   = getSubmissionData();
     const donorEmail = getDonorEmail(intake);
     const donorPhone = getDonorPhone(intake);
@@ -273,107 +258,95 @@ export default function IntakeItem() {
 
     const description = intake.description || subData.artifact_description || 'No description provided.';
     const provenance  = intake.provenance   || subData.artifact_provenance   || 'No provenance information provided.';
-
-    // All intake media + any submission-linked media
     const allMedia = media;
 
     return (
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
 
-            {/* ── Page header ── */}
-            <div className="mb-6">
-                <button
-                    onClick={() => navigate(`/intakes?tab=${fromTab}`)}
-                    className="text-sm font-semibold text-gray-500 hover:text-black transition-colors flex items-center gap-1.5 mb-3"
-                >
-                    <span>←</span> Back to Intakes
-                </button>
-                <div className="flex items-center gap-3 flex-wrap">
-                    <h1 className="text-3xl font-bold text-black tracking-tight">{intake.proposed_item_name || 'Unnamed Record'}</h1>
-                    <span className={`px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-widest border ${STATUS_STYLES[intake.status] || STATUS_STYLES.pending}`}>
-                        {intake.status?.replace(/_/g, ' ')}
-                    </span>
+            <section className="flex items-start border-b border-gray-200 pb-6 mb-2">
+                <div className="flex-1">
+                    <button
+                        onClick={() => navigate(`/intakes?tab=${fromTab}`)}
+                        className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1.5 mb-3"
+                    >
+                        <span>←</span> Back to Intakes
+                    </button>
+                    <div className="flex items-center gap-4 flex-wrap">
+                        <h1 className="text-2xl font-bold text-gray-900">{intake.proposed_item_name || 'Unnamed Record'}</h1>
+                        <span className={`px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wider border ${STATUS_STYLES[intake.status] || STATUS_STYLES.pending}`}>
+                            {intake.status?.replace(/_/g, ' ')}
+                        </span>
+                    </div>
+                    <p className="text-base text-gray-500 mt-2">
+                        Intake Record &mdash; Logged {intake.created ? new Date(intake.created).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'}
+                    </p>
                 </div>
-                <p className="text-sm text-gray-500 mt-1">
-                    Intake Record &mdash; Logged {intake.created ? new Date(intake.created).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'}
-                </p>
-            </div>
+            </section>
 
-            {/* ── Detail card ── */}
-            <div className="border border-zinc-200 bg-white rounded-sm">
-
-                {/* Card header bar */}
-                <div className="px-6 py-4 bg-zinc-50 border-b border-zinc-200 flex items-center gap-3">
-                    <span className="text-[10px] uppercase font-black tracking-[0.2em] text-zinc-400">Record</span>
-                    <span className="text-[10px] text-zinc-400 font-mono">{intake.id}</span>
+            <div className="border border-gray-200 bg-white rounded-lg shadow-sm">
+                <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex items-center gap-3 rounded-t-lg">
+                    <span className="text-sm font-semibold text-gray-700">Record</span>
+                    <span className="text-sm text-gray-500 font-mono">#{intake.id}</span>
                     {intake.donor_account_id ? (
-                        <span className="ml-auto flex items-center gap-1.5 text-[10px] font-bold text-green-700 uppercase tracking-wider">
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                        <span className="ml-auto flex items-center gap-1.5 text-xs font-semibold text-green-700 uppercase tracking-wider">
+                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                             Portal Account Linked
                         </span>
                     ) : (
-                        <span className="ml-auto flex items-center gap-1.5 text-[10px] text-zinc-400 uppercase tracking-wider">
-                            <span className="w-1.5 h-1.5 rounded-full bg-zinc-300" />
+                        <span className="ml-auto flex items-center gap-1.5 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <span className="w-2 h-2 rounded-full bg-gray-300" />
                             No portal account
                         </span>
                     )}
                 </div>
 
                 <div className="p-6 space-y-8">
-
-                    {/* ── 1. Donor / Source ── */}
-                    <div className="space-y-4">
-                        <div className="text-[9px] uppercase font-black tracking-[0.2em] text-zinc-400">Donor / Source Information</div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                            <Field label="Donor / Source Name" value={intake.donor_info || intake.source_info || '—'} />
-                            <Field label="Email Address"   value={donorEmail} />
-                            <Field label="Phone Number"    value={donorPhone} />
-                            <Field label="Acquisition Type" value={acqMethod} />
-                            {isLoan && (
-                                <Field
-                                    label="Loan Return Date"
-                                    value={intake.loan_end_date
-                                        ? new Date(intake.loan_end_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-                                        : 'No end date specified'}
-                                />
-                            )}
+                    <Section title="Donor / Source Information">
+                        <Field label="Donor / Source Name" value={intake.donor_info || intake.source_info || '—'} />
+                        <Field label="Email Address"   value={donorEmail} />
+                        <Field label="Phone Number"    value={donorPhone} />
+                        <Field label="Acquisition Type" value={acqMethod} />
+                        {isLoan && (
                             <Field
-                                label="Date Logged"
-                                value={intake.created
-                                    ? new Date(intake.created).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
-                                    : '—'}
+                                label="Loan Return Date"
+                                value={intake.loan_end_date
+                                    ? new Date(intake.loan_end_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                                    : 'No end date specified'}
                             />
-                        </div>
-                    </div>
+                        )}
+                        <Field
+                            label="Date Logged"
+                            value={intake.created
+                                ? new Date(intake.created).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+                                : '—'}
+                        />
+                    </Section>
 
-                    {/* ── 2. Physical location ── */}
-                    <div className="space-y-3 pt-6 border-t border-zinc-100">
-                        <div className="text-[9px] uppercase font-black tracking-[0.2em] text-zinc-400">Physical Location</div>
-                        <div className="flex items-center justify-between">
+                    <Section title="Physical Location">
+                        <div className="col-span-full flex items-center justify-between">
                             {isDeliveryPending ? (
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-sm text-[10px] font-bold uppercase tracking-wider text-amber-700">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                                <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-50 border border-yellow-200 rounded-md text-sm font-semibold text-yellow-800">
+                                    <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
                                     Awaiting Delivery — Not Yet Received
                                 </span>
                             ) : (
-                                <div className="text-sm text-black font-bold flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-[#D4AF37]" />
+                                <div className="text-base text-gray-900 font-semibold flex items-center gap-2">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
                                     {intake.current_location || 'Not Specified (Check Receiving)'}
                                 </div>
                             )}
 
-                            {/* Set location dropdown */}
                             {['in_custody', 'accessioned', 'processed'].includes(intake.status) && (
                                 <div className="relative">
                                     <button
                                         onClick={() => setShowLocSelect(!showLocSelect)}
-                                        className="text-[9px] font-black uppercase tracking-[0.2em] text-[#A68A27] bg-[#D4AF37]/10 px-3 py-1.5 rounded-sm hover:bg-[#D4AF37]/20 transition-all border border-[#D4AF37]/30"
+                                        className="text-sm font-semibold text-blue-600 bg-blue-50 px-4 py-2 rounded-md hover:bg-blue-100 transition-colors border border-blue-200"
                                     >
                                         Set Location
                                     </button>
                                     {showLocSelect && (
-                                        <div className="absolute right-0 bottom-full mb-2 w-64 bg-white border border-zinc-300 rounded-sm shadow-2xl z-50 p-2">
-                                            <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500 p-3 border-b border-zinc-200 bg-zinc-50">
+                                        <div className="absolute right-0 bottom-full mb-2 w-64 bg-white border border-gray-200 rounded-lg shadow-xl z-50 p-2">
+                                            <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 p-3 border-b border-gray-100 bg-gray-50 rounded-t-md">
                                                 Select Pre-set Location
                                             </div>
                                             <div className="max-h-48 overflow-y-auto">
@@ -391,10 +364,10 @@ export default function IntakeItem() {
                                                                 if (res.ok) fetchRecord();
                                                             } catch (e) {}
                                                         }}
-                                                        className="w-full text-left p-3 hover:bg-zinc-50 transition-colors flex flex-col gap-0.5 rounded-sm"
+                                                        className="w-full text-left p-3 hover:bg-gray-50 transition-colors flex flex-col gap-1 rounded-md"
                                                     >
-                                                        <div className="text-[10px] font-bold text-black">{loc.name}</div>
-                                                        <div className="text-[8px] text-zinc-400 uppercase tracking-tighter">{loc.type}</div>
+                                                        <div className="text-sm font-semibold text-gray-900">{loc.name}</div>
+                                                        <div className="text-xs text-gray-500 uppercase tracking-wide">{loc.type}</div>
                                                     </button>
                                                 ))}
                                             </div>
@@ -403,16 +376,13 @@ export default function IntakeItem() {
                                 </div>
                             )}
                         </div>
-                    </div>
+                    </Section>
 
-                    {/* ── 3. Artifact description & provenance ── */}
-                    <div className="space-y-4 pt-6 border-t border-zinc-100">
-                        <div className="text-[9px] uppercase font-black tracking-[0.2em] text-zinc-400">Artifact Details</div>
+                    <Section title="Artifact Details">
                         <TextBlock label="Physical Description" value={description} />
                         <TextBlock label="Provenance / Historical Background" value={provenance} />
-                    </div>
+                    </Section>
 
-                    {/* ── 4. Linked submission data (if any extra form fields exist) ── */}
                     {intake.expand?.submission_id && (() => {
                         const sd = getSubmissionData();
                         const known = new Set(['artifact_name','artifact_description','artifact_provenance',
@@ -421,25 +391,21 @@ export default function IntakeItem() {
                         const extra = Object.entries(sd).filter(([k]) => !known.has(k));
                         if (!extra.length) return null;
                         return (
-                            <div className="space-y-4 pt-6 border-t border-zinc-100">
-                                <div className="text-[9px] uppercase font-black tracking-[0.2em] text-zinc-400">Additional Submission Responses</div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                                    {extra.map(([key, val]) => (
-                                        <Field
-                                            key={key}
-                                            label={key.replace(/_/g, ' ')}
-                                            value={typeof val === 'boolean' ? (val ? 'Yes' : 'No') : String(val || '—')}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
+                            <Section title="Additional Submission Responses">
+                                {extra.map(([key, val]) => (
+                                    <Field
+                                        key={key}
+                                        label={key.replace(/_/g, ' ')}
+                                        value={typeof val === 'boolean' ? (val ? 'Yes' : 'No') : String(val || '—')}
+                                    />
+                                ))}
+                            </Section>
                         );
                     })()}
 
-                    {/* ── 5. Attached media ── */}
                     {allMedia.length > 0 && (
-                        <div className="space-y-3 pt-6 border-t border-zinc-100">
-                            <div className="text-[9px] uppercase font-black tracking-[0.2em] text-zinc-400">
+                        <div className="space-y-4 pt-6 border-t border-gray-200">
+                            <div className="text-lg font-semibold text-gray-900">
                                 Attached Photos &amp; Documents ({allMedia.length})
                             </div>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -451,19 +417,19 @@ export default function IntakeItem() {
                                             href={url}
                                             target="_blank"
                                             rel="noreferrer"
-                                            className="relative aspect-square border border-zinc-200 rounded-sm overflow-hidden group bg-zinc-100 block"
+                                            className="relative aspect-square border border-gray-200 rounded-md overflow-hidden group bg-gray-100 block"
                                         >
                                             <img
                                                 src={url}
                                                 alt={m.file_name}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                             />
-                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div className="absolute inset-0 bg-gray-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                                 </svg>
                                             </div>
-                                            <div className="absolute inset-x-0 bottom-0 bg-black/70 p-1.5 text-[8px] text-white font-mono truncate">
+                                            <div className="absolute inset-x-0 bottom-0 bg-gray-900/70 p-2 text-xs text-white font-mono truncate text-center opacity-0 group-hover:opacity-100 transition-opacity">
                                                 {m.file_name}
                                             </div>
                                         </a>
@@ -474,17 +440,16 @@ export default function IntakeItem() {
                     )}
                 </div>
 
-                {/* ── Action footer ── */}
-                <div className="px-6 py-4 border-t border-zinc-200 bg-zinc-50 flex justify-end gap-3 flex-wrap items-center">
+                <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3 flex-wrap items-center rounded-b-lg">
                     {actionLoading && (
-                        <span className="text-xs text-zinc-400 uppercase tracking-widest mr-auto">Processing…</span>
+                        <span className="text-sm text-gray-500 font-medium mr-auto">Processing…</span>
                     )}
 
                     {intake.status === 'approved' && (
                         <button
                             onClick={() => handleAction('moa')}
                             disabled={actionLoading}
-                            className="px-6 py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-sm disabled:opacity-50"
+                            className="px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors rounded-md disabled:opacity-50"
                         >
                             Issue Deed of Gift &amp; Slip
                         </button>
@@ -495,20 +460,20 @@ export default function IntakeItem() {
                             <button
                                 onClick={() => handleAction('rollback')}
                                 disabled={actionLoading}
-                                className="px-4 py-3 bg-white border border-zinc-200 text-zinc-500 text-xs font-bold uppercase tracking-widest hover:text-black transition-colors rounded-sm disabled:opacity-50"
+                                className="px-4 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50 hover:text-gray-900 transition-colors rounded-md disabled:opacity-50"
                             >
                                 Rollback to Review
                             </button>
-                            <div className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
+                            <div className="text-sm text-gray-500 font-medium">
                                 Awaiting physical delivery
                             </div>
                             <a
                                 href={`${import.meta.env.VITE_API_BASE_URL}/api/v1/acquisitions/intakes/${id}/export-moa`}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="px-6 py-3 bg-white border border-zinc-300 text-black text-xs font-bold uppercase tracking-widest hover:bg-zinc-100 transition-colors rounded-sm flex items-center gap-2"
+                                className="px-5 py-2.5 bg-white border border-gray-300 text-gray-900 text-sm font-semibold hover:bg-gray-50 transition-colors rounded-md flex items-center gap-2"
                             >
-                                <svg className="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                                 </svg>
                                 Export MOA for Printing
@@ -522,9 +487,9 @@ export default function IntakeItem() {
                                 href={`${import.meta.env.VITE_API_BASE_URL}/api/v1/acquisitions/intakes/${id}/export-moa`}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="px-6 py-3 bg-white border border-zinc-300 text-black text-xs font-bold uppercase tracking-widest hover:bg-zinc-100 transition-colors rounded-sm flex items-center gap-2"
+                                className="px-5 py-2.5 bg-white border border-gray-300 text-gray-900 text-sm font-semibold hover:bg-gray-50 transition-colors rounded-md flex items-center gap-2"
                             >
-                                <svg className="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                                 </svg>
                                 Print MOA
@@ -537,7 +502,7 @@ export default function IntakeItem() {
                                     onConfirm: (val) => handleAction('accession', { handlingInstructions: val })
                                 })}
                                 disabled={actionLoading}
-                                className="px-6 py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-sm disabled:opacity-50"
+                                className="px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors rounded-md disabled:opacity-50"
                             >
                                 Start Accessioning
                             </button>
@@ -548,7 +513,7 @@ export default function IntakeItem() {
                         <button
                             onClick={() => handleAction('reopen')}
                             disabled={actionLoading}
-                            className="px-6 py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-sm disabled:opacity-50"
+                            className="px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors rounded-md disabled:opacity-50"
                         >
                             Reopen for Review
                         </button>

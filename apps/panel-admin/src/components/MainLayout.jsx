@@ -1,3 +1,4 @@
+// apps/panel-admin/src/components/MainLayout.jsx
 import { useState, useEffect, useCallback } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
@@ -178,7 +179,7 @@ export default function MainLayout() {
   return (
     <div className="flex h-screen bg-gray-50 font-sans text-gray-900 overflow-hidden">
       
-      {/* --- Sidebar (Refactored to match image_97987c) --- */}
+      {/* --- Sidebar --- */}
       <aside
         className={`bg-[#1c1c1c] flex flex-col transition-[width] duration-300 ease-in-out relative z-30 shadow-xl ${
           isCollapsed ? "w-20" : "w-[260px]"
@@ -211,7 +212,10 @@ export default function MainLayout() {
           {navItems
             .filter((item) => item.show)
             .map((item) => {
-              const isActive = location.pathname === item.path;
+              // Highlight if it's an exact match OR if it's a sub-route (e.g. /intakes/...)
+              const isActive = location.pathname === item.path || 
+                               (item.path !== '/dashboard' && location.pathname.startsWith(item.path + '/'));
+                               
               return (
                 <Link
                   key={item.path}
@@ -244,20 +248,24 @@ export default function MainLayout() {
         </nav>
 
         {/* Bottom Logout Action */}
-        <div className="mt-auto p-6 pb-8 border-t border-white/5 flex justify-center">
+        <div className={`mt-auto pb-8 pt-4 border-t border-white/5 ${isCollapsed ? "px-3" : "px-4"}`}>
           <button
             onClick={logout}
             title={isCollapsed ? "Log out" : ""}
-            className="flex flex-col items-center justify-center text-zinc-400 hover:text-white transition-colors group"
+            className={`flex items-center w-full py-3 rounded-xl transition-all group text-zinc-400 hover:bg-white/10 hover:text-white ${isCollapsed ? "px-0 justify-center" : "px-4"}`}
           >
-            <span className="group-hover:scale-110 transition-transform duration-200">
+            <span className="text-zinc-400 group-hover:text-white transition-colors">
               <Icons.Logout />
             </span>
-            {!isCollapsed && (
-              <span className="text-[11px] font-bold tracking-wider mt-1.5">
-                Logout
-              </span>
-            )}
+            <span
+              className={`text-[14px] font-medium tracking-wide transition-all duration-300 overflow-hidden whitespace-nowrap text-left ${
+                isCollapsed
+                  ? "opacity-0 w-0 ml-0 hidden"
+                  : "opacity-100 w-full ml-4"
+              }`}
+            >
+              Logout
+            </span>
           </button>
         </div>
       </aside>
@@ -281,18 +289,13 @@ export default function MainLayout() {
                <span className="text-gray-400">{location.pathname === "/dashboard" ? "Home" : "Pages"}</span>
                <span className="text-gray-300">/</span>
                <span className="text-gray-800">
-                 {location.pathname === "/dashboard" ? "Dashboard" : location.pathname.replace("/", "").replace("-", " ")}
+                 {location.pathname === "/dashboard" ? "Dashboard" : location.pathname.split("/")[1].replace("-", " ")}
                </span>
             </div>
           </div>
 
           {/* Right Header Area */}
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center px-3 py-1 bg-green-50 rounded-full border border-green-200 text-[10px] font-bold text-green-700 uppercase tracking-widest shadow-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 mr-2 animate-pulse"></span>
-              Online
-            </div>
-
             <button
               onClick={() => setIsNotifOpen(true)}
               className="p-2 text-gray-400 hover:text-black transition-colors relative"

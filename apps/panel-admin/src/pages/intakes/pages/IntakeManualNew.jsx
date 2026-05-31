@@ -1,3 +1,4 @@
+// apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/authContext';
@@ -35,24 +36,11 @@ export default function IntakeManualNew() {
     };
 
     return (
-        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <section className="flex items-end border-b border-gray-100 pb-4 mb-4">
-                <div>
-                    <button
-                        onClick={() => navigate('/intakes?tab=intakes')}
-                        className="text-sm font-semibold text-gray-500 hover:text-black transition-colors flex items-center gap-1.5 mb-2"
-                    >
-                        <span>←</span> Back to Intakes
-                    </button>
-                    <h1 className="text-3xl font-bold text-black tracking-tight">Register Manual Intake</h1>
-                    <p className="text-sm text-gray-500 mt-1">Record an offline or legacy acquisition directly.</p>
-                </div>
-            </section>
-
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
             <ManualIntakeForm
                 actionLoading={actionLoading}
                 onSubmit={handleSubmit}
-                onCancel={() => navigate(-1)}
+                onCancel={() => navigate('/intakes?tab=intakes')}
             />
 
             <Modal

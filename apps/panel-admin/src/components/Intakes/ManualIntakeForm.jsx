@@ -25,7 +25,7 @@ export default function ManualIntakeForm({
     };
 
     return (
-        <div className="border border-zinc-200 bg-white rounded-sm flex flex-col h-[600px] p-8 shadow-sm">
+        <div className="border border-zinc-200 bg-white rounded-sm flex flex-col h-full p-8 shadow-sm">
             <div className="border-b border-zinc-200 pb-4 mb-6 flex justify-between items-center bg-zinc-50 -mx-8 -mt-8 p-8 rounded-t-sm">
                 <div>
                     <h2 className="text-2xl font-serif text-black uppercase tracking-wider leading-tight">Register Manual Intake</h2>

@@ -7,6 +7,7 @@ import {
   ChevronLeft, ChevronRight, Plus, Users, Clock, CheckCircle2,
   Ban, Loader2, X, CalendarDays, ArrowRight, Activity,
 } from 'lucide-react';
+import MiniCal from '../components/MiniCal';
 import { useAuth } from '../context/authContext';
 import { useSSE } from '../hooks/useSSE';
 import {
@@ -46,91 +47,6 @@ const FC_STYLES = `
   .sch-cal .fc-day-today .fc-col-header-cell-cushion { color: #D4AF37 !important; }
 `;
 
-// ─── Mini Calendar ────────────────────────────────────────────────────────────
-function MiniCal({ value, onChange, allSchedules }) {
-  const [cursor, setCursor] = useState({ m: value.getMonth(), y: value.getFullYear() });
-
-  // Sync when external value changes (e.g. Dashboard auto-select)
-  useEffect(() => {
-    setCursor({ m: value.getMonth(), y: value.getFullYear() });
-  }, [value.getFullYear(), value.getMonth()]);
-
-  const prev = () => setCursor(c => c.m === 0 ? { m: 11, y: c.y - 1 } : { m: c.m - 1, y: c.y });
-  const next = () => setCursor(c => c.m === 11 ? { m: 0, y: c.y + 1 } : { m: c.m + 1, y: c.y });
-
-  const today = getLocalDateString(new Date());
-  const selectedStr = getLocalDateString(value);
-
-  const disabledSet = useMemo(
-    () => new Set(allSchedules.filter(s => s.isDisabledDay).map(s => s.date)),
-    [allSchedules]
-  );
-  const markedSet = useMemo(
-    () => new Set(allSchedules.filter(s => !s.isDisabledDay && s.status !== 'COMPLETED').map(s => s.date)),
-    [allSchedules]
-  );
-
-  const firstDay = new Date(cursor.y, cursor.m, 1).getDay();
-  const daysInMonth = new Date(cursor.y, cursor.m + 1, 0).getDate();
-  const cells = [
-    ...Array(firstDay).fill(null),
-    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
-  ];
-  while (cells.length % 7 !== 0) cells.push(null);
-
-  const ds = (d) =>
-    `${cursor.y}-${String(cursor.m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-
-  return (
-    <div className="px-4 pt-4 pb-3 select-none">
-      <div className="flex items-center justify-between mb-3">
-        <button onClick={prev} className="p-1 rounded hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors">
-          <ChevronLeft className="w-3.5 h-3.5" />
-        </button>
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">
-          {new Date(cursor.y, cursor.m).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-        </span>
-        <button onClick={next} className="p-1 rounded hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors">
-          <ChevronRight className="w-3.5 h-3.5" />
-        </button>
-      </div>
-
-      <div className="grid grid-cols-7 gap-y-0.5">
-        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
-          <div key={i} className="text-center text-[9px] font-bold text-zinc-300 pb-1.5">{d}</div>
-        ))}
-        {cells.map((day, i) => {
-          if (!day) return <div key={`e${i}`} />;
-          const dateStr = ds(day);
-          const isSel = dateStr === selectedStr;
-          const isToday = dateStr === today;
-          const isDisabled = disabledSet.has(dateStr);
-          const hasEvent = markedSet.has(dateStr);
-
-          return (
-            <button
-              key={dateStr}
-              onClick={() => onChange(new Date(cursor.y, cursor.m, day))}
-              className={`relative h-7 w-full flex flex-col items-center justify-center rounded text-xs font-medium transition-all
-                ${isSel
-                  ? 'bg-[#D4AF37] text-zinc-900 font-bold shadow-sm'
-                  : isToday
-                    ? 'bg-zinc-900 text-white font-bold'
-                    : isDisabled
-                      ? 'text-rose-400 hover:bg-rose-50'
-                      : 'text-zinc-600 hover:bg-zinc-100'}`}
-            >
-              <span className="leading-none">{day}</span>
-              {(hasEvent || isDisabled) && !isSel && (
-                <span className={`absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${isDisabled ? 'bg-rose-400' : 'bg-[#D4AF37]'}`} />
-              )}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
 
 // ─── Event card (sidebar list item) ──────────────────────────────────────────
 function EventCard({ ev, isSelected, onClick }) {
@@ -563,7 +479,13 @@ export default function Schedule() {
         <div className="w-64 flex-shrink-0 flex flex-col border-r border-zinc-100 mr-4">
 
           {/* Mini Calendar */}
-          <MiniCal value={selectedDate} onChange={handleDateChange} allSchedules={allSchedules} />
+          <MiniCal
+            value={selectedDate}
+            onChange={handleDateChange}
+            allSchedules={allSchedules}
+            className="px-4 pt-4 pb-3"
+            compact
+          />
 
           {/* Stats strip */}
           <div className="flex border-t border-b border-zinc-100 divide-x divide-zinc-100 flex-shrink-0">
@@ -606,8 +528,9 @@ export default function Schedule() {
                       <Loader2 className="w-5 h-5 animate-spin" />
                     </div>
                   ) : todayEvents.length === 0 ? (
-                    <div className="p-8 text-center text-[10px] text-zinc-400 uppercase tracking-widest">
-                      No events
+                    <div className="p-8 text-center flex flex-col items-center gap-2 text-zinc-400">
+                      <CalendarDays className="w-6 h-6 opacity-30" />
+                      <span className="text-[10px] uppercase tracking-widest">No events on this date</span>
                     </div>
                   ) : (
                     todayEvents.map(ev => (
@@ -671,7 +594,7 @@ export default function Schedule() {
         title="Mark Schedule Completed"
         message={
           <>
-            Mark <strong>"{selectedEvent?.title}"</strong> as completed?
+            Mark <strong>&ldquo;{selectedEvent?.title}&rdquo;</strong> as completed?
             <br />
             <span className="text-xs text-zinc-400 mt-1 block">
               {selectedEvent?.date} · {formatTimeTo12H(selectedEvent?.startTime)} – {formatTimeTo12H(selectedEvent?.endTime)}

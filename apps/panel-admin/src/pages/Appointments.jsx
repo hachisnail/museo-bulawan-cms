@@ -236,7 +236,7 @@ export default function Appointments() {
           className="flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white text-[11px] font-bold uppercase tracking-widest rounded-sm hover:bg-[#D4AF37] hover:text-zinc-900 transition-all shadow-sm"
         >
           <Plus className="w-4 h-4" strokeWidth={2.5} />
-          New Walk-in
+          Register Walk-in
         </button>
       </div>
 
@@ -279,7 +279,7 @@ export default function Appointments() {
         </div>
 
         {/* ── Main Content — Table ─────────────────────────────────────────── */}
-        <div className="flex-1 min-w-0 flex flex-col bg-white border border-zinc-200 rounded-sm shadow-sm overflow-hidden">
+        <div className="flex-1 min-w-0 min-h-0 flex flex-col bg-white border border-zinc-200 rounded-sm shadow-sm overflow-hidden">
 
           {/* Toolbar */}
           <div className="p-4 border-b border-zinc-200 flex items-center justify-between bg-zinc-50/50 flex-shrink-0 gap-4 flex-wrap">

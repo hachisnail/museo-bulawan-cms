@@ -1,6 +1,13 @@
 import { ulid } from 'ulidx';
+import Ajv from 'ajv';
 import { db } from '../config/db.js';
 import { appEvents } from '../utils/eventBus.js';
+import { definitionService } from '../services/form/definitionService.js';
+
+// ─── AJV setup for schema validation ──────────────────────────────────────────
+const ajv = new Ajv({ strict: false });
+ajv.addFormat('textarea', { validate: () => true });
+ajv.addFormat('file', { validate: () => true });
 
 // ─── Helper: normalize TIME values from mariadb (can be string, Date, or BigInt)
 function formatTime(t) {
@@ -73,9 +80,32 @@ export const createSchedule = async (req, res, next) => {
     try {
         const { title, description, date, start_time, end_time, availability } = req.body;
 
-        if (!title || !date || !start_time || !end_time || !availability) {
-            return res.status(400).json({ message: 'Please fill in all required fields.' });
+        let schemaValidated = false;
+
+        // 1) Schema-based validation via form_definitions (schedule slug)
+        try {
+            const definition = await definitionService.getFormDefinition('schedule');
+            if (definition?.schema && Object.keys(definition.schema).length > 0) {
+                const validate = ajv.compile(definition.schema);
+                const valid = validate(req.body);
+                if (!valid) {
+                    return res.status(400).json({
+                        message: `Validation failed: ${ajv.errorsText(validate.errors)}`
+                    });
+                }
+                schemaValidated = true;
+            }
+        } catch {
+            // No-op: fallback below
         }
+
+        // 2) Fallback/manual validation (or extra guard even after schema pass)
+        if (!schemaValidated) {
+            if (!title || !date || !start_time || !end_time || !availability) {
+                return res.status(400).json({ message: 'Please fill in all required fields.' });
+            }
+        }
+
         if (!['SHARED', 'EXCLUSIVE'].includes(availability)) {
             return res.status(400).json({ message: 'Invalid availability type.' });
         }

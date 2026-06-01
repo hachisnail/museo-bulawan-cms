@@ -9,11 +9,14 @@ const router = Router();
 // ==========================================
 // ABUSE PREVENTION: Strict Form Upload Limits
 // ==========================================
+// Use memoryStorage so file.buffer is always available for direct MinIO streaming.
+// This avoids a race condition where multer's temp disk file could be cleaned up
+// before mediaService.attachMedia() finishes uploading to MinIO via fPutObject.
 const formUpload = multer({ 
-    dest: 'uploads/',
+    storage: multer.memoryStorage(),
     limits: { 
-        fileSize: 15 * 1024 * 1024, // 15MB
-        files: 5                    // Max 5
+        fileSize: 15 * 1024 * 1024, // 15MB per file
+        files: 5                    // Max 5 attachments
     }
 });
 

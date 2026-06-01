@@ -1,6 +1,13 @@
 import { ulid } from 'ulidx';
+import Ajv from 'ajv';
 import { db } from '../config/db.js';
 import { appEvents } from '../utils/eventBus.js';
+import { definitionService } from '../services/form/definitionService.js';
+
+// ─── AJV setup for schema validation ──────────────────────────────────────────
+const ajv = new Ajv({ strict: false });
+ajv.addFormat('textarea', { validate: () => true });
+ajv.addFormat('file', { validate: () => true });
 
 // ─── Helper: normalize TIME values from mariadb (can be string, Date, or BigInt)
 function formatTime(t) {
@@ -96,8 +103,38 @@ export const createAppointment = async (req, res, next) => {
             status,
         } = req.body;
 
-        if (!visitor_name || !visitor_email || !purpose_of_visit || !preferred_date || !population_count) {
-            return res.status(400).json({ message: 'Missing required appointment fields.' });
+        // ── Step 1: Always run manual field validation (fast, specific error messages) ──
+        if (!visitor_name?.trim())
+            return res.status(400).json({ message: 'Visitor name is required.' });
+        if (!visitor_email?.trim())
+            return res.status(400).json({ message: 'Visitor email is required.' });
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(visitor_email.trim()))
+            return res.status(400).json({ message: 'Visitor email is not a valid email address.' });
+        if (!purpose_of_visit?.trim())
+            return res.status(400).json({ message: 'Purpose of visit is required.' });
+        if (!preferred_date)
+            return res.status(400).json({ message: 'Preferred date is required.' });
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(preferred_date))
+            return res.status(400).json({ message: 'Preferred date must be in YYYY-MM-DD format.' });
+        if (!population_count || parseInt(population_count, 10) < 1)
+            return res.status(400).json({ message: 'Population count must be at least 1.' });
+        if (start_time && end_time && start_time >= end_time)
+            return res.status(400).json({ message: 'Start time must be before end time.' });
+
+        // ── Step 2: AJV schema validation from form_definitions (best-effort) ──────
+        try {
+            const definition = await definitionService.getFormDefinition('appointment-booking');
+            if (definition?.schema && Object.keys(definition.schema).length > 0) {
+                const validate = ajv.compile(definition.schema);
+                const valid = validate(req.body);
+                if (!valid) {
+                    return res.status(400).json({
+                        message: `Validation failed: ${ajv.errorsText(validate.errors)}`
+                    });
+                }
+            }
+        } catch {
+            // form_definitions not reachable — manual validation above already passed, proceed.
         }
 
         const id = ulid();

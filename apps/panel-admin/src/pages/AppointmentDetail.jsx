@@ -314,7 +314,7 @@ export default function AppointmentDetail() {
               <div className="mt-8 pt-6 border-t border-zinc-100">
                 <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-2">Additional Notes</div>
                 <div className="p-4 bg-zinc-50 border border-zinc-100 rounded-sm text-sm text-zinc-700 leading-relaxed italic">
-                  "{additionalNotes}"
+                  &ldquo;{additionalNotes}&rdquo;
                 </div>
               </div>
             )}
@@ -447,7 +447,7 @@ export default function AppointmentDetail() {
                   <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5">
                     Message Sent to Visitor
                   </div>
-                  <p className="text-sm text-zinc-600 leading-relaxed italic">"{rawData.message_to_visitor}"</p>
+                  <p className="text-sm text-zinc-600 leading-relaxed italic">&ldquo;{rawData.message_to_visitor}&rdquo;</p>
                 </div>
               )}
             </div>

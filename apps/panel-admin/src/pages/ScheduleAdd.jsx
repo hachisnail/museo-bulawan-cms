@@ -1,16 +1,17 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  ChevronLeft, ChevronRight, Clock, Users, FileText, Ban,
+  ArrowLeft, Clock, Users, FileText, Ban,
   CheckCircle2, AlertTriangle, Loader2, Trash2, CalendarDays, Plus,
 } from 'lucide-react';
+import MiniCal from '../components/MiniCal';
 import { useAuth } from '../context/authContext';
 import { useSSE } from '../hooks/useSSE';
 import { getLocalDateString, formatTimeTo12H, normalizeSchedule, normalizeAppointment } from '../utils/scheduleUtils';
 import { validateScheduleCreation, validateDateDisabling } from '../utils/scheduleValidation';
 
 // ─── Input class ──────────────────────────────────────────────────────────────
-const INP = 'w-full border border-zinc-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] transition-colors placeholder:text-zinc-400';
+const INP = 'w-full border border-zinc-200 rounded-sm px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] transition-colors placeholder:text-zinc-400';
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
 function Toast({ msg, type }) {
@@ -18,7 +19,7 @@ function Toast({ msg, type }) {
   const isErr  = type === 'error';
   const isWarn = type === 'warning';
   return (
-    <div className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2.5 rounded-lg shadow-lg text-xs font-semibold border
+    <div className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2.5 rounded-sm shadow-lg text-xs font-semibold border
       ${isErr ? 'bg-red-500 text-white border-red-600' : isWarn ? 'bg-amber-500 text-white border-amber-600' : 'bg-zinc-900 text-white border-zinc-800'}`}>
       {isErr || isWarn ? <AlertTriangle className="w-3.5 h-3.5" /> : <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" />}
       {msg}
@@ -32,7 +33,7 @@ function ConfirmModal({ open, title, children, onConfirm, onCancel, confirmDisab
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm" onClick={onCancel} />
-      <div className="relative bg-white border border-zinc-200 rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+      <div className="relative bg-white border border-zinc-200 rounded-sm shadow-2xl w-full max-w-md mx-4 overflow-hidden">
         <div className="px-6 py-4 border-b border-zinc-100">
           <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">{title}</h3>
         </div>
@@ -44,7 +45,7 @@ function ConfirmModal({ open, title, children, onConfirm, onCancel, confirmDisab
           <button
             onClick={onConfirm}
             disabled={confirmDisabled}
-            className={`px-5 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all disabled:opacity-40 disabled:cursor-not-allowed
+            className={`px-5 py-2 text-[10px] font-bold uppercase tracking-widest rounded-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed
               ${danger ? 'bg-rose-500 text-white hover:bg-rose-600' : 'bg-zinc-900 text-white hover:bg-[#D4AF37] hover:text-zinc-900'}`}
           >
             {confirmLabel}
@@ -61,13 +62,13 @@ function DeleteModal({ open, event, onConfirm, onCancel }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm" onClick={onCancel} />
-      <div className="relative bg-white border border-zinc-200 rounded-xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
+      <div className="relative bg-white border border-zinc-200 rounded-sm shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
         <div className="px-6 py-4 border-b border-zinc-100">
           <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">Delete Schedule</h3>
         </div>
         <div className="px-6 py-5 space-y-3 text-sm text-zinc-600">
           <p>This action cannot be undone:</p>
-          <div className="p-3 bg-rose-50 rounded-lg border border-rose-100">
+          <div className="p-3 bg-rose-50 rounded-sm border border-rose-100">
             <p className="font-bold text-rose-900 text-sm">{event.title}</p>
             <p className="text-xs text-rose-600 mt-1 font-mono">
               {event.isDisabledDay ? 'All Day (Closed)' : `${formatTimeTo12H(event.startTime)} – ${formatTimeTo12H(event.endTime)}`}
@@ -78,7 +79,7 @@ function DeleteModal({ open, event, onConfirm, onCancel }) {
           <button onClick={onCancel} className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900">
             Cancel
           </button>
-          <button onClick={onConfirm} className="px-5 py-2 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-rose-600 transition-all">
+          <button onClick={onConfirm} className="px-5 py-2 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-rose-600 transition-all">
             Delete
           </button>
         </div>
@@ -87,101 +88,6 @@ function DeleteModal({ open, event, onConfirm, onCancel }) {
   );
 }
 
-// ─── Mini Calendar ────────────────────────────────────────────────────────────
-function MiniCal({ value, onChange, allSchedules }) {
-  const [cursor, setCursor] = useState({ m: value.getMonth(), y: value.getFullYear() });
-
-  const prev = () => setCursor(c => c.m === 0 ? { m: 11, y: c.y - 1 } : { m: c.m - 1, y: c.y });
-  const next = () => setCursor(c => c.m === 11 ? { m: 0, y: c.y + 1 } : { m: c.m + 1, y: c.y });
-
-  const today      = getLocalDateString(new Date());
-  const selectedStr = getLocalDateString(value);
-
-  const disabledSet = useMemo(
-    () => new Set(allSchedules.filter(s => s.isDisabledDay).map(s => s.date)),
-    [allSchedules]
-  );
-  const markedSet = useMemo(
-    () => new Set(allSchedules.filter(s => !s.isDisabledDay && s.status !== 'COMPLETED').map(s => s.date)),
-    [allSchedules]
-  );
-
-  const firstDay   = new Date(cursor.y, cursor.m, 1).getDay();
-  const daysInMonth = new Date(cursor.y, cursor.m + 1, 0).getDate();
-  const cells = [
-    ...Array(firstDay).fill(null),
-    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
-  ];
-  while (cells.length % 7 !== 0) cells.push(null);
-
-  const ds = (d) =>
-    `${cursor.y}-${String(cursor.m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-
-  return (
-    <div className="select-none p-4">
-      {/* Month nav */}
-      <div className="flex items-center justify-between mb-4">
-        <button onClick={prev} className="p-1.5 rounded-lg hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors">
-          <ChevronLeft className="w-4 h-4" />
-        </button>
-        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-700">
-          {new Date(cursor.y, cursor.m).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-        </span>
-        <button onClick={next} className="p-1.5 rounded-lg hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors">
-          <ChevronRight className="w-4 h-4" />
-        </button>
-      </div>
-
-      {/* Grid */}
-      <div className="grid grid-cols-7 gap-y-1">
-        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
-          <div key={i} className="text-center text-[9px] font-bold text-zinc-300 pb-1">{d}</div>
-        ))}
-        {cells.map((day, i) => {
-          if (!day) return <div key={`e${i}`} />;
-          const dateStr   = ds(day);
-          const isSel     = dateStr === selectedStr;
-          const isToday   = dateStr === today;
-          const isDisabled = disabledSet.has(dateStr);
-          const hasEvent  = markedSet.has(dateStr);
-
-          return (
-            <button
-              key={dateStr}
-              onClick={() => onChange(new Date(cursor.y, cursor.m, day))}
-              className={`relative h-8 w-full flex flex-col items-center justify-center rounded-lg text-xs font-medium transition-all
-                ${isSel
-                  ? 'bg-[#D4AF37] text-zinc-900 font-bold shadow-sm'
-                  : isToday
-                    ? 'bg-zinc-900 text-white font-bold'
-                    : isDisabled
-                      ? 'text-rose-400 hover:bg-rose-50'
-                      : 'text-zinc-600 hover:bg-zinc-100'}`}
-            >
-              <span className="leading-none">{day}</span>
-              {(hasEvent || isDisabled) && !isSel && (
-                <span className={`absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${isDisabled ? 'bg-rose-400' : 'bg-[#D4AF37]'}`} />
-              )}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Legend */}
-      <div className="flex items-center gap-4 mt-4 pt-3 border-t border-zinc-100">
-        <div className="flex items-center gap-1.5 text-[9px] text-zinc-400 font-medium">
-          <span className="w-2 h-2 rounded-full bg-[#D4AF37] inline-block" /> Has schedule
-        </div>
-        <div className="flex items-center gap-1.5 text-[9px] text-zinc-400 font-medium">
-          <span className="w-2 h-2 rounded-full bg-rose-400 inline-block opacity-60" /> Closed
-        </div>
-        <div className="flex items-center gap-1.5 text-[9px] text-zinc-400 font-medium">
-          <span className="w-2 h-2 rounded-full bg-[#D4AF37]/60 border border-[#D4AF37] inline-block" /> Selected
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ─── Row helper (for confirm modals) ─────────────────────────────────────────
 function Row({ k, v, muted }) {
@@ -384,33 +290,34 @@ export default function ScheduleAdd() {
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
-    <div className="flex flex-col gap-4" style={{ height: 'calc(100vh - 3.5rem)' }}>
+    <div className="h-full flex flex-col" style={{ height: 'calc(100vh - 3.5rem)' }}>
       <Toast msg={toast.msg} type={toast.type} />
 
-      {/* Header */}
-      <div className="flex-shrink-0 flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold text-zinc-900 tracking-tight">Configure Schedule</h2>
-          <p className="text-[10px] text-zinc-400 mt-0.5 uppercase tracking-[0.15em]">
-            Add schedule blocks or set date closures
-          </p>
+      {/* Page Header */}
+      <div className="flex-shrink-0 flex items-center justify-between pb-5 border-b border-zinc-200">
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => navigate('/schedule')}
+            className="p-2 border border-zinc-200 rounded-sm text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <div>
+            <h1 className="text-2xl font-serif text-black uppercase tracking-widest">Configure Schedule</h1>
+            <p className="text-xs text-zinc-500 mt-1 font-light tracking-wide">Add schedule blocks or set date closures</p>
+          </div>
         </div>
-        <button
-          onClick={() => navigate('/schedule')}
-          className="flex items-center gap-1.5 px-4 py-2 bg-white border border-zinc-200 text-zinc-600 text-[10px] font-bold uppercase tracking-widest rounded-lg hover:border-zinc-300 hover:text-zinc-900 shadow-sm transition-all"
-        >
-          <ChevronLeft className="w-3.5 h-3.5" /> Back to Schedule
-        </button>
       </div>
 
       {/* Body */}
-      <div className="flex-1 grid grid-cols-12 gap-4 min-h-0">
+      <div className="flex-1 overflow-auto pt-6 flex justify-center min-h-0">
+        <div className="w-full max-w-5xl grid grid-cols-12 gap-6">
 
-        {/* ── Left: Calendar + Events ────────────────────────────────────────── */}
-        <div className="col-span-5 flex flex-col gap-4 min-h-0">
+          {/* ── Left: Calendar + Events ────────────────────────────────────────── */}
+          <div className="col-span-5 flex flex-col gap-6 min-h-0">
 
           {/* Mini Calendar */}
-          <div className="bg-white rounded-xl border border-zinc-200 shadow-sm flex-shrink-0">
+          <div className="bg-white rounded-sm border border-zinc-200 shadow-sm flex-shrink-0">
             <MiniCal
               value={selectedDate}
               onChange={setSelectedDate}
@@ -419,7 +326,7 @@ export default function ScheduleAdd() {
           </div>
 
           {/* Events for selected date */}
-          <div className="bg-white rounded-xl border border-zinc-200 shadow-sm flex flex-col flex-1 min-h-0 overflow-hidden">
+          <div className="bg-white rounded-sm border border-zinc-200 shadow-sm flex flex-col flex-1 min-h-0 overflow-hidden">
             <div className="px-5 py-4 border-b border-zinc-100 flex items-center justify-between flex-shrink-0">
               <div>
                 <div className="text-[9px] uppercase tracking-[0.2em] font-bold text-zinc-400">Events on Date</div>
@@ -470,7 +377,7 @@ export default function ScheduleAdd() {
                       {ev.isSchedule && (
                         <button
                           onClick={() => { setDeletingEvent(ev); setShowDeleteModal(true); }}
-                          className="opacity-0 group-hover:opacity-100 p-1 rounded-lg text-zinc-300 hover:text-rose-500 hover:bg-rose-50 transition-all"
+                          className="opacity-0 group-hover:opacity-100 p-1 rounded-sm text-zinc-300 hover:text-rose-500 hover:bg-rose-50 transition-all"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -484,7 +391,7 @@ export default function ScheduleAdd() {
         </div>
 
         {/* ── Right: Form ─────────────────────────────────────────────────────── */}
-        <div className="col-span-7 bg-white rounded-xl border border-zinc-200 shadow-sm flex flex-col min-h-0 overflow-hidden">
+        <div className="col-span-7 bg-white rounded-sm border border-zinc-200 shadow-sm flex flex-col min-h-0 overflow-hidden">
 
           {/* Mode tabs */}
           <div className="flex border-b border-zinc-200 flex-shrink-0">
@@ -515,7 +422,7 @@ export default function ScheduleAdd() {
             {mode === 'add' && (
               <form onSubmit={handleAddSubmit} className="space-y-5">
                 {/* Guidelines */}
-                <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200/60 rounded-xl">
+                <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200/60 rounded-sm">
                   <FileText className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
                   <div className="space-y-0.5">
                     {['6:00 AM – 6:00 PM window', '15 min minimum duration', 'Max 10 concurrent events'].map(r => (
@@ -574,7 +481,7 @@ export default function ScheduleAdd() {
                         key={val}
                         type="button"
                         onClick={() => setAvailability(val)}
-                        className={`p-3.5 border-2 rounded-xl text-left transition-all
+                        className={`p-3.5 border-2 rounded-sm text-left transition-all
                           ${availability === val ? color : 'border-zinc-200 hover:border-zinc-300 bg-white text-zinc-600'}`}
                       >
                         <div className="text-[10px] font-bold uppercase tracking-widest">{label}</div>
@@ -587,7 +494,7 @@ export default function ScheduleAdd() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-[#D4AF37] hover:text-zinc-900 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-[#D4AF37] hover:text-zinc-900 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isLoading
                     ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving…</>
@@ -600,13 +507,13 @@ export default function ScheduleAdd() {
             {mode === 'close' && (
               <form onSubmit={handleCloseSubmit} className="space-y-5">
                 {/* Day / Time slot toggle */}
-                <div className="flex bg-zinc-100 p-1 rounded-xl">
+                <div className="flex bg-zinc-100 p-1 rounded-sm">
                   {['day', 'time'].map(t => (
                     <button
                       key={t}
                       type="button"
                       onClick={() => setCloseType(t)}
-                      className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all
+                      className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-widest rounded-sm transition-all
                         ${closeType === t ? 'bg-white text-rose-600 shadow-sm' : 'text-zinc-500 hover:text-zinc-700'}`}
                     >
                       {t === 'day' ? 'Full Day' : 'Time Slot'}
@@ -615,7 +522,7 @@ export default function ScheduleAdd() {
                 </div>
 
                 {/* Warning */}
-                <div className="flex items-start gap-3 p-4 bg-rose-50 border border-rose-200/60 rounded-xl">
+                <div className="flex items-start gap-3 p-4 bg-rose-50 border border-rose-200/60 rounded-sm">
                   <AlertTriangle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
                   <div className="space-y-0.5">
                     <div className="text-[11px] text-rose-700 font-semibold">
@@ -666,7 +573,7 @@ export default function ScheduleAdd() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-rose-600 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-rose-600 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isLoading
                     ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Processing…</>
@@ -677,6 +584,7 @@ export default function ScheduleAdd() {
           </div>
         </div>
       </div>
+    </div>
 
       {/* ── Modals ──────────────────────────────────────────────────────────────── */}
       <ConfirmModal
@@ -686,7 +594,7 @@ export default function ScheduleAdd() {
         onCancel={() => setShowAddConfirm(false)}
       >
         <p className="text-zinc-700 font-medium">Adding a new schedule block:</p>
-        <div className="mt-1 p-4 bg-zinc-50 rounded-lg border border-zinc-100 space-y-2">
+        <div className="mt-1 p-4 bg-zinc-50 rounded-sm border border-zinc-100 space-y-2">
           <Row k="Title" v={title} />
           <Row k="Date"  v={dateLabel} />
           <Row k="Time"  v={`${formatTimeTo12H(startTime)} – ${formatTimeTo12H(endTime)}`} />
@@ -705,7 +613,7 @@ export default function ScheduleAdd() {
         danger
       >
         <div className="text-rose-600 font-semibold text-sm">⚠ This will prevent new appointment bookings.</div>
-        <div className="p-4 bg-rose-50 rounded-lg border border-rose-100 space-y-2">
+        <div className="p-4 bg-rose-50 rounded-sm border border-rose-100 space-y-2">
           <Row k="Date"     v={dateLabel} />
           {closeType === 'time' && (
             <Row k="Time" v={`${formatTimeTo12H(closeStartTime)} – ${formatTimeTo12H(closeEndTime)}`} />
@@ -714,7 +622,7 @@ export default function ScheduleAdd() {
           {reason && <Row k="Reason" v={reason} muted />}
         </div>
         {!canConfirm && (
-          <div className="flex items-center gap-2 text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+          <div className="flex items-center gap-2 text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-sm px-3 py-2">
             <Clock className="w-3.5 h-3.5 animate-pulse" /> Wait {countdown}s to confirm…
           </div>
         )}
@@ -729,7 +637,7 @@ export default function ScheduleAdd() {
 
       {isDeleting && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-900/20 backdrop-blur-sm">
-          <div className="bg-white rounded-xl px-8 py-6 shadow-2xl flex items-center gap-3 border border-zinc-200">
+          <div className="bg-white rounded-sm px-8 py-6 shadow-2xl flex items-center gap-3 border border-zinc-200">
             <Loader2 className="w-5 h-5 animate-spin text-zinc-600" />
             <span className="text-sm font-medium text-zinc-700">Deleting…</span>
           </div>

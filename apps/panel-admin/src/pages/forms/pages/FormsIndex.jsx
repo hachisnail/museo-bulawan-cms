@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../../../context/authContext';
 import { useSSE } from '../../../hooks/useSSE';
 import { 
-    Plus, Edit2, Trash2, Download, FileText, CheckCircle, 
-    XCircle, HelpCircle, Eye, RefreshCw, MessageSquare, Star, 
-    BarChart3, Settings, ClipboardList
+    Settings, Plus, LayoutGrid, Eye, Trash2, Edit, Save, X, 
+    FileText, CheckCircle, ClipboardList, Database, AlertCircle, 
+    ArrowRight, Upload, Calendar, Copy, ExternalLink, BarChart3, Star, MessageSquare, Edit2   // <-- Added Copy and ExternalLink
 } from 'lucide-react';
 import { 
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, 
@@ -110,12 +110,12 @@ export default function FormsIndex() {
 
             {/* Tab Views */}
             <div>
-                {activeTab === 'submissions' && (
-                    <SubmissionsTab 
-                        customDefinitions={customDefinitions} 
-                        apiFetch={apiFetch} 
-                    />
-                )}
+               {activeTab === 'submissions' && (
+    <SubmissionsTab 
+        forms={customDefinitions} 
+        apiFetch={apiFetch} 
+    />
+)}
                 {activeTab === 'builder' && (
                     <FormBuilderTab 
                         customDefinitions={customDefinitions} 
@@ -137,147 +137,132 @@ export default function FormsIndex() {
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. SUBMISSIONS TAB
 // ─────────────────────────────────────────────────────────────────────────────
-function SubmissionsTab({ customDefinitions, apiFetch }) {
-    const [selectedSlug, setSelectedSlug] = useState('');
+const SubmissionsTab = ({ forms, apiFetch }) => {
+    const [selectedSlug, setSelectedSlug] = useState(forms.length > 0 ? forms[0].slug : '');
     const [submissions, setSubmissions] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [exporting, setExporting] = useState(false);
-
-    // Find currently selected form definition
-    const activeDef = useMemo(() => {
-        return customDefinitions.find(d => d.slug === selectedSlug);
-    }, [customDefinitions, selectedSlug]);
-
-    // Load submissions when form selection changes
-    const fetchSubmissions = useCallback(async () => {
-        if (!selectedSlug) {
-            setSubmissions([]);
-            return;
-        }
-        setLoading(true);
-        try {
-            const res = await apiFetch(`/api/v1/forms/${selectedSlug}/submissions`);
-            const json = await res.json();
-            if (json.status === 'success') {
-                setSubmissions(json.data.items || []);
-            }
-        } catch (err) {
-            console.error("Failed to fetch submissions", err);
-        } finally {
-            setLoading(false);
-        }
-    }, [selectedSlug, apiFetch]);
+    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
-        fetchSubmissions();
-    }, [fetchSubmissions]);
-
-    // Handle CSV Spreadsheet export download
-    const handleExportSubmissions = async () => {
         if (!selectedSlug) return;
-        setExporting(true);
-        try {
-            const res = await apiFetch(`/api/v1/forms/admin/submissions/export?slug=${selectedSlug}`);
-            if (!res.ok) {
-                const errJson = await res.json();
-                throw new Error(errJson.error || 'Export failed');
+        const fetchSubmissions = async () => {
+            setLoading(true);
+            try {
+                const res = await apiFetch(`/api/v1/forms/${selectedSlug}/submissions`);
+                const json = await res.json();
+                if (json.status === 'success') {
+                    setSubmissions(json.data.items || []);
+                }
+            } catch (error) {
+                console.error("Error fetching submissions:", error);
+            } finally {
+                setLoading(false);
             }
-            const blob = await res.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `submissions-${selectedSlug}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
-        } catch (err) {
-            alert(`Spreadsheet export error: ${err.message}`);
-        } finally {
-            setExporting(false);
-        }
+        };
+        fetchSubmissions();
+    }, [selectedSlug, apiFetch]);
+
+    const selectedForm = forms.find(f => f.slug === selectedSlug);
+    const schemaProperties = selectedForm?.schema?.properties || {};
+    const propertyKeys = Object.keys(schemaProperties);
+    
+    // Generate a public URL based on current environment (Handles standard dev ports automatically)
+    const publicUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? (window.location.port === '5173' ? ':4321' : ':' + window.location.port) : ''}/forms/${selectedSlug}`;
+
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(publicUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
     };
 
-    // Columns mapping from schema properties
-    const schemaProperties = useMemo(() => {
-        return activeDef?.schema_data?.properties || {};
-    }, [activeDef]);
-
-    const propertyKeys = useMemo(() => {
-        return Object.keys(schemaProperties);
-    }, [schemaProperties]);
-
     return (
-        <div className="space-y-6">
-            {/* Form Selector Header */}
-            <div className="bg-zinc-50 border border-zinc-200 rounded-xl p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="flex-1 max-w-sm">
-                    <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Select Custom Form</label>
-                    <select
-                        value={selectedSlug}
-                        onChange={(e) => setSelectedSlug(e.target.value)}
-                        className="w-full bg-white border border-gray-300 rounded-md py-2.5 px-3 text-sm focus:ring-1 focus:ring-black focus:border-black"
-                    >
-                        <option value="">-- Choose custom form --</option>
-                        {customDefinitions.map(d => (
-                            <option key={d.id} value={d.slug}>{d.title} ({d.slug})</option>
-                        ))}
-                    </select>
+        <div className="space-y-6 animate-in fade-in duration-500">
+            {/* Form Selection Buttons */}
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Select Form to View Submissions</h3>
+                <div className="flex flex-wrap gap-2.5">
+                    {forms.length === 0 && (
+                        <div className="text-sm text-gray-500 italic">No custom forms created yet.</div>
+                    )}
+                    {forms.map(form => (
+                        <button
+                            key={form.slug}
+                            onClick={() => setSelectedSlug(form.slug)}
+                            className={`px-5 py-2.5 text-sm font-semibold rounded-xl border transition-all duration-200 ${
+                                selectedSlug === form.slug 
+                                    ? 'bg-black text-white border-black shadow-md scale-[1.02]' 
+                                    : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+                            }`}
+                        >
+                            {form.title}
+                        </button>
+                    ))}
                 </div>
-
-                {selectedSlug && submissions.length > 0 && (
-                    <button
-                        onClick={handleExportSubmissions}
-                        disabled={exporting}
-                        className="self-end px-5 py-2.5 bg-black text-white text-sm font-semibold rounded-md border border-black hover:bg-zinc-800 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        <Download className="w-4 h-4" />
-                        {exporting ? 'Exporting...' : 'Export to Sheets'}
-                    </button>
-                )}
             </div>
 
-            {/* Submissions List */}
-            {!selectedSlug ? (
-                <div className="border border-dashed border-gray-300 rounded-lg p-16 text-center text-zinc-400">
-                    <ClipboardList className="w-12 h-12 mx-auto mb-4 text-zinc-300" />
-                    <p className="text-sm font-medium">Please select a custom form definition above to view user submissions.</p>
+            {/* Sharing Link Bar */}
+            {selectedSlug && (
+                <div className="bg-amber-50 border border-amber-200 p-5 rounded-xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h3 className="text-sm font-bold text-amber-900 flex items-center gap-2">
+                            <ExternalLink className="w-4 h-4" /> Public Share Link
+                        </h3>
+                        <p className="text-xs text-amber-700 mt-1">Share this URL with users to collect submissions directly to this form.</p>
+                    </div>
+                    <div className="flex items-center gap-2 w-full md:w-auto">
+                        <input 
+                            type="text" 
+                            readOnly 
+                            value={publicUrl}
+                            className="bg-white border border-amber-300 text-amber-900 text-xs px-3 py-2.5 rounded-lg w-full md:w-72 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                        />
+                        <button 
+                            onClick={copyToClipboard}
+                            className="px-4 py-2.5 bg-white border border-amber-300 rounded-lg text-xs font-bold text-amber-700 hover:bg-amber-100 transition-colors flex items-center gap-1.5 shrink-0"
+                        >
+                            {copied ? <CheckCircle className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />} 
+                            {copied ? 'Copied' : 'Copy'}
+                        </button>
+                        <a 
+                            href={publicUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="px-4 py-2.5 bg-amber-600 text-white rounded-lg text-xs font-bold hover:bg-amber-700 transition-colors shrink-0 flex items-center gap-1.5"
+                        >
+                            Open Form
+                        </a>
+                    </div>
                 </div>
-            ) : loading ? (
+            )}
+
+            {/* Submissions List */}
+            {!selectedSlug ? null : loading ? (
                 <div className="py-20 text-center text-zinc-500">
                     <div className="w-8 h-8 border-2 border-zinc-200 border-t-black rounded-full animate-spin mx-auto mb-4"></div>
                     <span className="text-sm">Loading submission entries...</span>
                 </div>
             ) : submissions.length === 0 ? (
-                <div className="border border-gray-200 rounded-lg bg-white p-12 text-center text-zinc-400">
-                    <p className="text-sm italic">No submissions have been received yet for this form definition.</p>
-                    <a 
-                        href={`/forms/display/${selectedSlug}`} 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="mt-4 inline-block text-xs font-semibold text-amber-600 hover:underline"
-                    >
-                        Preview External Submissions Form &rarr;
-                    </a>
+                <div className="border border-gray-200 rounded-xl bg-white p-16 text-center text-zinc-400 shadow-sm">
+                    <ClipboardList className="w-12 h-12 mx-auto mb-4 text-zinc-300" />
+                    <p className="text-sm font-medium text-gray-500">No submissions have been received yet for this form.</p>
                 </div>
             ) : (
-                <div className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
+                <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm">
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left whitespace-nowrap">
                             <thead className="bg-gray-50 border-b border-gray-200">
                                 <tr>
-                                    <th className="py-3 px-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Submission ID</th>
-                                    <th className="py-3 px-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Email Address</th>
-                                    <th className="py-3 px-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Date Submitted</th>
-                                    <th className="py-3 px-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                                    <th className="py-4 px-5 text-xs font-bold text-gray-500 uppercase tracking-widest">Submission ID</th>
+                                    <th className="py-4 px-5 text-xs font-bold text-gray-500 uppercase tracking-widest">Email Address</th>
+                                    <th className="py-4 px-5 text-xs font-bold text-gray-500 uppercase tracking-widest">Date Submitted</th>
                                     
                                     {/* Schema headers */}
                                     {propertyKeys.map(key => (
-                                        <th key={key} className="py-3 px-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        <th key={key} className="py-4 px-5 text-xs font-bold text-gray-500 uppercase tracking-widest">
                                             {schemaProperties[key]?.title || key}
                                         </th>
                                     ))}
-                                    <th className="py-3 px-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                                    <th className="py-4 px-5 text-xs font-bold text-gray-500 uppercase tracking-widest text-right">Action</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
@@ -291,14 +276,9 @@ function SubmissionsTab({ customDefinitions, apiFetch }) {
 
                                     return (
                                         <tr key={sub.id} className="hover:bg-gray-50 transition-colors">
-                                            <td className="py-4 px-4 text-gray-500 font-mono text-xs">{sub.id}</td>
-                                            <td className="py-4 px-4 text-gray-900 font-medium">{sub.submitted_email || 'anonymous'}</td>
-                                            <td className="py-4 px-4 text-gray-500">{new Date(sub.created_at || sub.created).toLocaleString()}</td>
-                                            <td className="py-4 px-4">
-                                                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-zinc-100 text-zinc-800 border border-zinc-200">
-                                                    {sub.status || 'pending'}
-                                                </span>
-                                            </td>
+                                            <td className="py-4 px-5 text-gray-500 font-mono text-xs">{sub.id}</td>
+                                            <td className="py-4 px-5 text-gray-900 font-medium">{sub.submitted_email || 'anonymous'}</td>
+                                            <td className="py-4 px-5 text-gray-500 text-xs">{new Date(sub.created_at || sub.created).toLocaleString()}</td>
 
                                             {/* Dynamic Schema values */}
                                             {propertyKeys.map(key => {
@@ -307,22 +287,22 @@ function SubmissionsTab({ customDefinitions, apiFetch }) {
                                                     ? JSON.stringify(value) 
                                                     : String(value ?? '—');
                                                 return (
-                                                    <td key={key} className="py-4 px-4 text-gray-700 max-w-[200px] truncate">
+                                                    <td key={key} className="py-4 px-5 text-gray-700 max-w-[200px] truncate" title={displayVal}>
                                                         {displayVal}
                                                     </td>
                                                 );
                                             })}
 
-                                            <td className="py-4 px-4">
-                                                <a 
-                                                    href={`/admin/forms/submissions/${sub.id}`}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    className="p-1 text-zinc-500 hover:text-black transition-colors inline-block"
-                                                    title="View Proof File"
-                                                >
-                                                    <Eye className="w-4 h-4" />
-                                                </a>
+                                            <td className="py-4 px-5 text-right">
+                                                <td className="py-4 px-5 text-right">
+    <a 
+        href={`/forms/submissions/${sub.id}`}
+        className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 hover:bg-black hover:text-white rounded-lg transition-colors"
+        title="View Full Submission"
+    >
+        <Eye className="w-4 h-4" />
+    </a>
+</td>
                                             </td>
                                         </tr>
                                     );
@@ -334,7 +314,7 @@ function SubmissionsTab({ customDefinitions, apiFetch }) {
             )}
         </div>
     );
-}
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. FORM BUILDER TAB
@@ -389,12 +369,12 @@ function FormBuilderTab({ customDefinitions, fetchDefinitions, apiFetch }) {
         const props = schema.properties || {};
         const requiredFields = schema.required || [];
 
-        const loadedFields = Object.entries(props).map(([key, value]) => {
+const loadedFields = Object.entries(props).map(([key, value]) => {
             return {
                 key,
                 title: value.title || key,
                 type: value.type || 'string',
-                format: value.format || 'text',
+                format: value['ui:widget'] === 'rating' ? 'rating' : (value.format || 'text'),
                 options: Array.isArray(value.enum) ? value.enum.join(', ') : '',
                 required: requiredFields.includes(key),
                 stepGroup: value['ui:group'] || ''
@@ -492,7 +472,12 @@ function FormBuilderTab({ customDefinitions, fetchDefinitions, apiFetch }) {
                     type: f.type
                 };
 
-                if (f.format !== 'text') {
+                if (f.format === 'rating') {
+                    prop.type = 'integer';
+                    prop['ui:widget'] = 'rating';
+                    prop.minimum = 1;
+                    prop.maximum = 5;
+                } else if (f.format !== 'text') {
                     prop.format = f.format;
                 }
 
@@ -603,7 +588,7 @@ function FormBuilderTab({ customDefinitions, fetchDefinitions, apiFetch }) {
 
                                     <div className="flex items-center justify-between border-t border-zinc-100 pt-4 mt-auto">
                                         <a
-                                            href={`/forms/display/${form.slug}`}
+                                            href={`/forms/${form.slug}`}
                                             target="_blank"
                                             rel="noreferrer"
                                             className="text-xs font-semibold text-amber-600 hover:text-amber-800 hover:underline flex items-center gap-1"
@@ -837,6 +822,7 @@ function FormBuilderTab({ customDefinitions, fetchDefinitions, apiFetch }) {
                                                     let type = 'string';
                                                     if (format === 'select') type = 'string';
                                                     if (format === 'date') type = 'string';
+                                                    if (format === 'rating') type = 'integer';
                                                     updateField(idx, { format, type });
                                                 }}
                                                 className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none"
@@ -846,6 +832,7 @@ function FormBuilderTab({ customDefinitions, fetchDefinitions, apiFetch }) {
                                                 <option value="email">Email Input</option>
                                                 <option value="date">Date Input</option>
                                                 <option value="select">Dropdown Select</option>
+                                                <option value="rating">Rating (1-5)</option>
                                             </select>
                                         </div>
 

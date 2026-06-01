@@ -1392,23 +1392,7 @@ sql: UPDATE `accessions` SET dimensions = ?, materials = ?, research_notes = ?, 
     at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
     at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/test-form/submit","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
-2026-06-01 01:51:18 [error]: Form submission validation failed for user-feedback. Errors: data.rating should be integer. Payload: {"name":"Jefferson Talagtag","email":"jeffersontalagtag06@gmail.com","feedback_type":"Website Experience","rating":"4","comments":"very good","visit_date":"2026-06-01"}
-2026-06-01 01:51:18 [error]: Error: VALIDATION_FAILED: data.rating should be integer
-    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/user-feedback/submit","ip":"::1","user":"Guest"}
-2026-06-01 01:51:36 [error]: Form submission validation failed for user-feedback. Errors: data.rating should be integer. Payload: {"name":"Jefferson Talagtag","email":"jeffersontalagtag06@gmail.com","feedback_type":"Website Experience","rating":"4","comments":"very good","visit_date":"2026-06-01"}
-2026-06-01 01:51:36 [error]: Error: VALIDATION_FAILED: data.rating should be integer
-    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/user-feedback/submit","ip":"::1","user":"Guest"}
-2026-06-01 02:12:58 [error]: Form submission validation failed for user-feedback. Errors: data.rating should be integer. Payload: {"name":"Jefferson Talagtag","email":"jeffersontalagtag06@gmail.com","feedback_type":"Museum Visit","rating":"3","comments":"asasdasd","visit_date":"2026-06-01"}
-2026-06-01 02:12:58 [error]: Error: VALIDATION_FAILED: data.rating should be integer
-    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/user-feedback/submit","ip":"::1","user":"Guest"}
-2026-06-01 02:31:29 [error]: Form submission validation failed for test-form. Errors: data.email should match format "email". Payload: {"email":"asd","name":"asdasdasdasd"}
-2026-06-01 02:31:29 [error]: Error: VALIDATION_FAILED: data.email should match format "email"
-    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/test-form/submit","ip":"::1","user":"Guest"}
+2026-06-01 07:34:24 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
+2026-06-01 07:35:58 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
+2026-06-01 07:37:12 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
+2026-06-01 07:41:43 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}

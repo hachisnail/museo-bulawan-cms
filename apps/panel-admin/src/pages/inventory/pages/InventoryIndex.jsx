@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../../context/authContext';
 import { useSSE } from '../../../hooks/useSSE';
+import { DataTable } from '../../../components';
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Status Pill Styles
@@ -195,8 +196,51 @@ export default function InventoryIndex() {
         setCurrentPage(1);
     };
 
+    const handleQueryChange = useCallback((filters) => {
+        setSearchTerm(filters.search);
+        setCurrentPage(1);
+    }, []);
+
+    const columns = [
+        { key: 'id', label: 'Catalog ID', render: (val) => <span className="font-mono text-xs text-gray-500">{val}</span> },
+        { key: 'title', label: 'Title', isBold: true, render: (val, row) => (
+            <Link to={`/inventory/${row.rawId}?tab=${activeTab}`} className="hover:underline text-black group-hover:text-blue-600">
+                {val}
+            </Link>
+        )},
+        { key: 'donator', label: 'Donor / Source' },
+        { key: 'origin', label: 'Origin' },
+        { key: 'date', label: 'Acquisition Date' },
+        { key: 'type', label: 'Type', render: (val) => <span className="capitalize text-gray-600">{val}</span> },
+        { key: 'status', label: 'Status', render: (val, row) => (
+             <span className={`px-2.5 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest border ${getStatusStyles(row.rawStatus)}`}>
+                 {val}
+             </span>
+        )},
+        { key: 'maintenance', label: 'Last Checked' },
+        { key: 'expiration', label: 'Contract Expiration', render: (val) => <span className="capitalize text-gray-600">{val}</span> }
+    ];
+
+    const tabsNode = (
+        <div className="flex items-center gap-2">
+            {['Artifact', 'Acquired', 'Borrowing', 'Deaccessioned'].map(tab => (
+                <button
+                    key={tab}
+                    onClick={() => handleTabChange(tab)}
+                    className={`px-5 py-2 text-sm font-semibold rounded-md border transition-colors ${
+                        activeTab === tab 
+                            ? 'bg-black text-white border-black shadow-sm' 
+                            : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
+                    }`}
+                >
+                    {tab === 'Deaccessioned' ? 'Deaccessioned' : (tab === 'Artifact' ? 'All Active' : tab)}
+                </button>
+            ))}
+        </div>
+    );
+
     return (
-        <div className="flex flex-col gap-y-8 bg-white min-h-screen pb-12 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="flex flex-col gap-y-8 bg-white min-h-screen pb-12 px-4 sm:px-6 lg:px-8 pt-8">
             
             {/* ── Header ── */}
             <div className="flex items-center justify-between">
@@ -220,146 +264,22 @@ export default function InventoryIndex() {
                 ))}
             </div>
 
-            {/* ── Filters & Search ── */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-4">
-                <div className="flex items-center gap-2 flex-wrap">
-                    {/* Tabs */}
-                    <div className="flex items-center gap-2">
-                        {['Artifact', 'Acquired', 'Borrowing', 'Deaccessioned'].map(tab => (
-                            <button
-                                key={tab}
-                                onClick={() => handleTabChange(tab)}
-                                className={`px-5 py-2 text-sm font-semibold rounded-md border transition-colors ${
-                                    activeTab === tab 
-                                        ? 'bg-black text-white border-black shadow-sm' 
-                                        : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
-                                }`}
-                            >
-                                {tab === 'Deaccessioned' ? 'Deaccessioned' : (tab === 'Artifact' ? 'All Active' : tab)}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="flex items-center gap-3 flex-wrap">
-                    {/* Search */}
-                    <div className="relative">
-                        <svg className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                        <input 
-                            type="text" 
-                            placeholder="Search catalog..." 
-                            value={searchTerm}
-                            onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-                            className="pl-9 pr-4 py-2 border border-gray-300 rounded-md text-sm w-64 focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
-                        />
-                    </div>
-                </div>
-            </div>
-
-            {/* ── Table ── */}
-            <div className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left whitespace-nowrap">
-                        <thead className="bg-gray-50 border-b border-gray-200">
-                            <tr>
-                                {[
-                                    { key: 'id', label: 'Catalog ID' },
-                                    { key: 'title', label: 'Title' },
-                                    { key: 'donator', label: 'Donor / Source' },
-                                    { key: 'origin', label: 'Origin' },
-                                    { key: 'date', label: 'Acquisition Date' },
-                                    { key: 'type', label: 'Type' },
-                                    { key: 'status', label: 'Status' },
-                                    { key: 'maintenance', label: 'Last Checked' },
-                                    { key: 'expiration', label: 'Contract Expiration' }
-                                ].map(h => (
-                                    <th 
-                                        key={h.key} 
-                                        onClick={() => requestSort(h.key)}
-                                        className="py-3 px-4 text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors select-none"
-                                    >
-                                        <div className="flex items-center gap-1.5">
-                                            {h.label}
-                                            {sortConfig.key === h.key && (
-                                                <span>{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
-                                            )}
-                                        </div>
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {loading ? (
-                                <tr>
-                                    <td colSpan={9} className="py-12 text-center text-gray-500">
-                                        <div className="flex justify-center items-center gap-3">
-                                            <div className="w-5 h-5 border-2 border-zinc-200 border-t-black rounded-full animate-spin"></div>
-                                            <span>Loading collection...</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ) : paginatedData.length === 0 ? (
-                                <tr>
-                                    <td colSpan={9} className="py-12 text-center text-gray-400 italic">
-                                        No items found in this section.
-                                    </td>
-                                </tr>
-                            ) : (
-                                paginatedData.map((row, idx) => (
-                                    <tr 
-                                        key={idx} 
-                                        className="hover:bg-gray-50/80 transition-colors cursor-pointer group"
-                                    >
-                                        <td className="py-4 px-4 text-gray-500 font-mono text-xs">{row.id}</td>
-                                        <td className="py-4 px-4 font-semibold text-gray-900">
-                                            <Link to={`/inventory/${row.rawId}?tab=${activeTab}`} className="hover:underline text-black group-hover:text-blue-600">
-                                                {row.title}
-                                            </Link>
-                                        </td>
-                                        <td className="py-4 px-4 text-gray-700">{row.donator}</td>
-                                        <td className="py-4 px-4 text-gray-700">{row.origin}</td>
-                                        <td className="py-4 px-4 text-gray-500">{row.date}</td>
-                                        <td className="py-4 px-4 text-gray-600 capitalize">{row.type}</td>
-                                        <td className="py-4 px-4">
-                                            <span className={`px-2.5 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest border ${getStatusStyles(row.rawStatus)}`}>
-                                                {row.status}
-                                            </span>
-                                        </td>
-                                        <td className="py-4 px-4 text-gray-500">{row.maintenance}</td>
-                                        <td className="py-4 px-4 text-gray-600 capitalize">{row.expiration}</td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-
-                {/* ── Pagination Footer ── */}
-                {!loading && totalPages > 1 && (
-                    <div className="bg-gray-50 border-t border-gray-200 px-6 py-4 flex items-center justify-between">
-                        <span className="text-xs text-gray-500">
-                            Showing page {currentPage} of {totalPages} ({sortedData.length} total items)
-                        </span>
-                        <div className="flex gap-2">
-                            <button
-                                onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
-                                disabled={currentPage === 1}
-                                className="px-4 py-2 text-xs font-semibold bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Previous
-                            </button>
-                            <button
-                                onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
-                                disabled={currentPage === totalPages}
-                                className="px-4 py-2 text-xs font-semibold bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Next
-                            </button>
-                        </div>
-                    </div>
-                )}
+            <div className="mt-4">
+                <DataTable 
+                    columns={columns}
+                    data={paginatedData}
+                    onQueryChange={handleQueryChange}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                    showExtraActions={false}
+                    sortConfig={sortConfig}
+                    onSort={requestSort}
+                    isLoading={loading}
+                    searchPlaceholder="Search catalog..."
+                    leftHeaderContent={tabsNode}
+                    totalItems={sortedData.length}
+                />
             </div>
         </div>
     );

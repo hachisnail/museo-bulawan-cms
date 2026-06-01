@@ -286,7 +286,7 @@ export default function AccessionsIndex() {
     //  Render
     // ------------------------------------------------------------------ //
     return (
-        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-y-6 bg-white pb-12 px-4 sm:px-6 lg:px-8 pt-8">
             <section className="flex justify-between items-end border-b border-gray-100 pb-4 mb-4">
                 <div>
                     <h1 className="text-3xl font-bold text-black tracking-tight">Accessions</h1>

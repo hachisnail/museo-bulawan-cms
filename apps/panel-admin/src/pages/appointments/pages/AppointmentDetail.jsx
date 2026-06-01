@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/authContext';
-import { useSSE } from '../hooks/useSSE';
-import { normalizeStatus, formatTimeTo12H } from '../utils/scheduleUtils';
+import { useAuth } from '../../../context/authContext';
+import { useSSE } from '../../../hooks/useSSE';
+import { normalizeStatus, formatTimeTo12H } from '../../../utils/scheduleUtils';
 import {
   ArrowLeft, Mail, Phone, Building2, Calendar, Clock,
   Users, FileText, CheckCircle2, Loader2, AlertCircle,

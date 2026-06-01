@@ -4,11 +4,11 @@ import {
   ArrowLeft, Clock, Users, FileText, Ban,
   CheckCircle2, AlertTriangle, Loader2, Trash2, CalendarDays, Plus,
 } from 'lucide-react';
-import MiniCal from '../components/MiniCal';
-import { useAuth } from '../context/authContext';
-import { useSSE } from '../hooks/useSSE';
-import { getLocalDateString, formatTimeTo12H, normalizeSchedule, normalizeAppointment } from '../utils/scheduleUtils';
-import { validateScheduleCreation, validateDateDisabling } from '../utils/scheduleValidation';
+import MiniCal from '../../../components/MiniCal';
+import { useAuth } from '../../../context/authContext';
+import { useSSE } from '../../../hooks/useSSE';
+import { getLocalDateString, formatTimeTo12H, normalizeSchedule, normalizeAppointment } from '../../../utils/scheduleUtils';
+import { validateScheduleCreation, validateDateDisabling } from '../../../utils/scheduleValidation';
 
 // ─── Input class ──────────────────────────────────────────────────────────────
 const INP = 'w-full border border-zinc-200 rounded-sm px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] transition-colors placeholder:text-zinc-400';

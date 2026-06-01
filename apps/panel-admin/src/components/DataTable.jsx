@@ -19,7 +19,10 @@ export default function DataTable({
   isLoading = false,
   isUpdating = false,
   onRowClick,
-  onRowOptionsClick
+  onRowOptionsClick,
+  searchPlaceholder = "Search Title or Visitor",
+  leftHeaderContent = null,
+  totalItems = null
 }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedRows, setExpandedRows] = useState(new Set());
@@ -62,6 +65,8 @@ export default function DataTable({
         {/* Header Controls */}
         <div className="flex flex-wrap gap-3 mb-6 items-center">
           
+          {leftHeaderContent}
+
           {/* --- NEW: Calendar Popover Container --- */}
           <div className="relative" ref={calendarRef}>
             <button 
@@ -109,7 +114,7 @@ export default function DataTable({
             </svg>
             <input 
               type="text" 
-              placeholder="Search Title or Visitor" 
+              placeholder={searchPlaceholder}
               className="w-full pl-9 pr-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-gray-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -330,6 +335,7 @@ export default function DataTable({
             <div>
               <p className="text-sm text-gray-700">
                 Showing page <span className="font-medium">{currentPage}</span> of <span className="font-medium">{totalPages}</span>
+                {totalItems !== null && ` (${totalItems} total items)`}
               </p>
             </div>
             <div>

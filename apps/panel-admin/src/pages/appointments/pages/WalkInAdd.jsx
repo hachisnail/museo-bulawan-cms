@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import FormRenderer from '../components/FormRenderer';
+import FormRenderer from '../../../components/FormRenderer';
 
 export default function WalkInAdd() {
   const navigate = useNavigate();

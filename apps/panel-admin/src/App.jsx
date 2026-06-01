@@ -27,11 +27,8 @@ import ArticlesCMS from './pages/ArticlesCMS';
 import { SettingsPage } from './pages/settings/index.js';
 import { AuditLogsPage } from './pages/audit-logs/index.js';
 import Locations from './pages/Locations';
-import Schedule from './pages/Schedule';
-import ScheduleAdd from './pages/ScheduleAdd';
-import Appointments from './pages/Appointments';
-import AppointmentDetail from './pages/AppointmentDetail';
-import WalkInAdd from './pages/WalkInAdd';
+import { ScheduleIndex, ScheduleAdd } from './pages/schedule';
+import { AppointmentsIndex, AppointmentDetail, WalkInAdd } from './pages/appointments';
 
 import { AcquisitionsPage } from './pages/acquisitions';
 import { FormsPage } from './pages/forms';
@@ -101,9 +98,9 @@ function App() {
                     <Route path="/forms/submissions/:id" element={<SubmissionViewer />} />
                     <Route path="/forms/proof/:id" element={<SubmissionViewer />} />
                     <Route path="/audit-logs" element={<AuditLogsPage />} />
-                    <Route path="/schedule" element={<Schedule />} />
+                    <Route path="/schedule" element={<ScheduleIndex />} />
                     <Route path="/schedule/add" element={<ScheduleAdd />} />
-                    <Route path="/appointments" element={<Appointments />} />
+                    <Route path="/appointments" element={<AppointmentsIndex />} />
                     <Route path="/appointments/walk-in" element={<WalkInAdd />} />
                     <Route path="/appointments/:id" element={<AppointmentDetail />} />
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />

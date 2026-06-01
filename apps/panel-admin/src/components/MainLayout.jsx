@@ -3,6 +3,8 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { useSSE } from "../hooks/useSSE";
+import { ErrorBoundary } from "./index.js";
+import Modal from "./Modal";
 
 // --- Helper Icon Components ---
 const Icons = {
@@ -60,6 +62,11 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
   ),
+  SettingsSolid: () => (
+    <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+      <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+    </svg>
+  ),
   Analytics: () => (
     <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -98,371 +105,442 @@ const Icons = {
 };
 
 export default function MainLayout() {
-    const { user, logout, apiFetch } = useAuth();
-    const location = useLocation();
-    const navigate = useNavigate();
-    
-    const [isCollapsed, setIsCollapsed] = useState(false);
-    const [isNotifOpen, setIsNotifOpen] = useState(false);
-    const [isCmsLoading, setIsCmsLoading] = useState(true);
-    const [shouldLoadCms, setShouldLoadCms] = useState(false);
-    const [isInEditor, setIsInEditor] = useState(false);
-    const cmsIframeRef = useRef(null);
+  const { user, logout, apiFetch } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    const [notifications, setNotifications] = useState([]);
-    const [unreadCount, setUnreadCount] = useState(0);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [isCmsLoading, setIsCmsLoading] = useState(true);
+  const [shouldLoadCms, setShouldLoadCms] = useState(false);
+  const [isInEditor, setIsInEditor] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const cmsIframeRef = useRef(null);
 
-    useEffect(() => {
-        if (location.pathname === '/articles') {
-            setShouldLoadCms(true);
-        } else if (!shouldLoadCms) {
-            const timer = setTimeout(() => setShouldLoadCms(true), 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [location.pathname, shouldLoadCms]);
+  useEffect(() => {
+    if (location.pathname === '/articles') {
+      setShouldLoadCms(true);
+    } else if (!shouldLoadCms) {
+      const timer = setTimeout(() => setShouldLoadCms(true), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname, shouldLoadCms]);
 
-    useEffect(() => {
-        const handleMessage = (event) => {
-            if (event.data?.type === 'PAYLOAD_ROUTE_CHANGE') {
-                const { pathname } = event.data;
-                if (pathname && pathname.startsWith('/admin/collections/articles/')) {
-                    const remainingPath = pathname.replace('/admin/collections/articles', '');
-                    setIsInEditor(remainingPath.length > 1);
-                } else {
-                    setIsInEditor(false);
-                }
+  useEffect(() => {
+    const handleMessage = (event) => {
+        if (event.data?.type === 'PAYLOAD_ROUTE_CHANGE') {
+            const { pathname } = event.data;
+            if (pathname && pathname.startsWith('/admin/collections/articles/')) {
+                const remainingPath = pathname.replace('/admin/collections/articles', '');
+                setIsInEditor(remainingPath.length > 1);
+            } else {
+                setIsInEditor(false);
             }
-        };
-
-        window.addEventListener('message', handleMessage);
-        return () => window.removeEventListener('message', handleMessage);
-    }, []);
-
-    const isAdmin = user?.role === "admin";
-    const userInitials = user?.username
-        ? user.username.substring(0, 2).toUpperCase()
-        : "JT";
-
-    const fetchNotifications = useCallback(async () => {
-        try {
-            const res = await apiFetch('/api/v1/notifications');
-            const data = await res.json();
-            if (data.notifications) {
-                setNotifications(data.notifications);
-                setUnreadCount(data.notifications.filter(n => !n.is_read).length);
-            }
-        } catch (err) {
-            console.error("Failed to fetch notifications", err);
-        }
-    }, [apiFetch]);
-
-    useEffect(() => {
-        fetchNotifications();
-    }, [fetchNotifications]);
-
-    // Handle incoming real-time notifications
-    const handleNewNotification = useCallback((payload) => {
-        setNotifications(prev => [payload, ...prev].slice(0, 50));
-        setUnreadCount(prev => prev + 1);
-        
-        // Optional: Browser notification or toast
-        if (Notification.permission === "granted") {
-            new Notification(payload.title, { body: payload.message });
-        }
-    }, []);
-
-    useSSE({
-        notification: handleNewNotification,
-        db_change: (data) => console.log("Real-time DB update:", data),
-    });
-
-    const markAsRead = async (id, actionUrl) => {
-        try {
-            const res = await apiFetch(`/api/v1/notifications/${id}/read`, { method: 'PATCH' });
-            if (res.ok) {
-                setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n));
-                setUnreadCount(prev => Math.max(0, prev - 1));
-            }
-        } catch (err) {
-            console.error("Failed to mark notification as read", err);
         }
     };
 
-    const navigateToResource = (actionUrl) => {
-        if (actionUrl) {
-            navigate(actionUrl);
-            setIsNotifOpen(false);
-        }
-    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
-    const markAllAsRead = async () => {
-        try {
-            const res = await apiFetch('/api/v1/notifications/read-all', { method: 'PATCH' });
-            if (res.ok) {
-                setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
-                setUnreadCount(0);
-            }
-        } catch (err) {
-            console.error("Failed to mark all as read", err);
-        }
-    };
+  const isAdmin = user?.role === "admin";
+  const userInitials = user?.username
+    ? user.username.substring(0, 2).toUpperCase()
+    : "JT";
 
-    const navItems = [
-        { name: "Dashboard", path: "/dashboard", icon: <Icons.Dashboard />, show: true },
-        { name: "Analytics", path: "/analytics", icon: <Icons.Analytics />, show: true },
-        { name: "Articles", path: "/articles", icon: <Icons.Articles />, show: true },
-        { name: "Acquisitions", path: "/intakes", icon: <Icons.Acquisitions />, show: true },
-        { name: "Accessions", path: "/accessions", icon: <Icons.Accessions />, show: true },
-        { name: "Inventory", path: "/inventory", icon: <Icons.Inventory />, show: true },
-        { name: "Schedule", path: "/schedule", icon: <Icons.Schedule />, show: true },
-        { name: "Appointments", path: "/appointments", icon: <Icons.Appointments />, show: true },
-        { name: "Forms Manager", path: "/forms", icon: <Icons.Forms />, show: isAdmin },
-        { name: "Management", path: "/management", icon: <Icons.Management />, show: isAdmin },
-        { name: "Audit Logs", path: "/audit-logs", icon: <Icons.AuditLogs />, show: isAdmin },
-        { name: "Settings", path: "/settings", icon: <Icons.Settings />, show: true },
-    ];
+  // --- Notifications State ---
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
-    return (
-        <div className="flex h-screen bg-zinc-50 font-sans text-zinc-900 overflow-hidden">
-            
-            {/* --- Sidebar --- */}
-            <aside 
-                className={`bg-zinc-950 flex flex-col transition-[width] duration-300 ease-in-out relative z-30 ${
-                    isCollapsed ? 'w-16' : 'w-56'
-                }`}
-            >
-                {/* Brand / User Profile Section */}
-                <div className="h-14 flex items-center px-4 border-b border-zinc-900 overflow-hidden whitespace-nowrap">
-                    {/* Flatter, minimalist avatar */}
-                    <div className="flex-shrink-0 h-7 w-7 rounded-sm bg-black border border-zinc-800 flex items-center justify-center text-[#D4AF37] font-semibold text-[10px] uppercase tracking-wider">
-                        {userInitials}
-                    </div>
-                    
-                    <div className={`flex flex-col transition-all duration-300 overflow-hidden ${isCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100 w-auto ml-3'}`}>
-                        <span className="text-xs font-semibold text-zinc-200 truncate capitalize tracking-wide leading-tight">
-                            {user?.username || 'Curator'}
-                        </span>
-                        <span className="text-[9px] uppercase tracking-widest text-zinc-500 leading-tight">
-                            {user?.role || 'Staff'}
-                        </span>
-                    </div>
-                </div>
+  const fetchNotifications = useCallback(async () => {
+    try {
+      const res = await apiFetch("/api/v1/notifications");
+      const data = await res.json();
+      if (data.notifications) {
+        setNotifications(data.notifications);
+        setUnreadCount(data.notifications.filter((n) => !n.is_read).length);
+      }
+    } catch (err) {
+      console.error("Failed to fetch notifications", err);
+    }
+  }, [apiFetch]);
 
-                {/* Main Navigation */}
-                <nav className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-2 space-y-0.5 scrollbar-hide">
-                    {navItems.filter(item => item.show).map((item) => {
-                        const isActive = location.pathname === item.path;
-                        return (
-                            <Link 
-                                key={item.path} 
-                                to={item.path}
-                                title={isCollapsed ? item.name : ''}
-                                className={`flex items-center px-3 py-2 rounded-sm transition-colors group ${
-                                    isActive 
-                                    ? 'bg-zinc-900 text-white border-l-2 border-[#D4AF37]' 
-                                    : 'text-zinc-500 hover:bg-zinc-900 hover:text-white border-l-2 border-transparent'
-                                }`}
-                            >
-                                <span className={`${isActive ? 'text-[#D4AF37]' : 'text-zinc-500 group-hover:text-zinc-300'} transition-colors ml-0.5`}>
-                                    {item.icon}
-                                </span>
-                                
-                                <span className={`text-[13px] font-medium tracking-wide transition-all duration-300 overflow-hidden whitespace-nowrap ${
-                                    isCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100 w-full ml-3'
-                                }`}>
-                                    {item.name}
-                                </span>
-                            </Link>
-                        );
-                    })}
-                </nav>
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
 
-                {/* Bottom Actions */}
-                <div className="p-2 border-t border-zinc-900 space-y-0.5 overflow-hidden whitespace-nowrap">
-                    <button 
-                        title={isCollapsed ? "Help & Info" : ""}
-                        className="w-full flex items-center px-3 py-2 rounded-sm text-zinc-500 hover:bg-zinc-900 hover:text-white transition-colors group border-l-2 border-transparent"
-                    >
-                        <span className="text-zinc-500 group-hover:text-zinc-300 ml-0.5"><Icons.Help /></span>
-                        <span className={`text-[13px] font-medium tracking-wide transition-all duration-300 overflow-hidden whitespace-nowrap ${isCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100 w-full ml-3 text-left'}`}>
-                            Help & Info
-                        </span>
-                    </button>
-                    
-                    <button 
-                        onClick={logout}
-                        title={isCollapsed ? "Log out" : ""}
-                        className="w-full flex items-center px-3 py-2 rounded-sm text-zinc-500 hover:bg-zinc-900 hover:text-red-400 transition-colors group border-l-2 border-transparent"
-                    >
-                        <span className="text-zinc-500 group-hover:text-red-400 ml-0.5"><Icons.Logout /></span>
-                        <span className={`text-[13px] font-medium tracking-wide transition-all duration-300 overflow-hidden whitespace-nowrap ${isCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100 w-full ml-3 text-left'}`}>
-                            Log out
-                        </span>
-                    </button>
-                </div>
-            </aside>
+  const handleNewNotification = useCallback((payload) => {
+    setNotifications((prev) => [payload, ...prev].slice(0, 50));
+    setUnreadCount((prev) => prev + 1);
 
-            {/* --- Main Content Area --- */}
-            <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-white relative">
-                
-                {/* Header */}
-                <header className="h-14 bg-white border-b border-zinc-200 flex items-center justify-between px-4 sm:px-6 z-10">
-                    <div className="flex items-center gap-4">
-                        <button 
-                            onClick={() => setIsCollapsed(!isCollapsed)}
-                            className="p-1 -ml-1 text-zinc-400 hover:text-black transition-colors focus:outline-none"
-                            aria-label="Toggle sidebar"
-                        >
-                            <Icons.Menu />
-                        </button>
-                        
-                        <h1 className="text-sm font-serif font-bold text-black uppercase tracking-widest hidden sm:block">
-                            {location.pathname === '/dashboard' ? `Welcome, ${user?.username || 'Curator'}` : location.pathname.replace('/', '').replace('-', ' ')}
-                        </h1>
-                    </div>
+    if (Notification.permission === "granted") {
+      new Notification(payload.title, { body: payload.message });
+    }
+  }, []);
 
-                    {/* Right Header Area (Status & Notifications) */}
-                    <div className="flex items-center gap-3">
-                        <div className="hidden md:flex items-center px-2.5 py-1 bg-zinc-50 border border-zinc-200 text-[9px] font-bold text-zinc-400 uppercase tracking-widest">
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 mr-2"></span>
-                            Online
-                        </div>
-                        
-                        <button 
-                            onClick={() => setIsNotifOpen(true)}
-                            className="p-1.5 text-zinc-400 hover:text-black transition-colors relative"
-                            aria-label="Open notifications"
-                        >
-                            <Icons.Bell />
-                            {/* Unread indicator dot */}
-                            {unreadCount > 0 && (
-                                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#D4AF37] border-2 border-white rounded-full"></span>
-                            )}
-                        </button>
-                    </div>
-                </header>
+  useSSE({
+    notification: handleNewNotification,
+    db_change: (data) => console.log("Real-time DB update:", data),
+  });
 
-                {/* Page Content */}
-                <section className={`flex-1 min-h-0 bg-zinc-50/50 relative ${
-                    location.pathname.startsWith('/schedule') || location.pathname.startsWith('/appointments')
-                      ? 'overflow-hidden p-4 sm:p-6 flex flex-col'
-                      : location.pathname === '/articles' ? '!p-0' : 'overflow-y-auto p-4 sm:p-6 lg:p-8'
-                }`}>
-                    <div className={`h-full flex flex-col relative ${location.pathname === '/articles' ? 'block' : 'hidden'}`}>
-                        {isCmsLoading && (
-                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-50/50 z-10">
-                                <div className="w-8 h-8 border-4 border-zinc-200 border-t-[#D4AF37] rounded-full animate-spin mb-4"></div>
-                                <p className="text-xs font-bold text-zinc-500 tracking-widest uppercase">Loading CMS...</p>
-                            </div>
-                        )}
-                        {shouldLoadCms && (
-                            <iframe 
-                                ref={cmsIframeRef}
-                                src="http://localhost:3001/admin/collections/articles" 
-                                className="w-full h-full flex-1 border-0"
-                                title="Payload CMS Editor Preloaded"
-                                onLoad={() => setIsCmsLoading(false)}
-                            />
-                        )}
-                    </div>
-                    <div className={location.pathname === '/articles' ? 'hidden' : 'block h-full'}>
-                        <Outlet />
-                    </div>
-                </section>
-                
-                {/* --- Notification Drawer Overlay --- */}
-                {isNotifOpen && (
-                    <div 
-                        className="absolute inset-0 bg-zinc-900/10 backdrop-blur-sm z-40 transition-opacity"
-                        onClick={() => setIsNotifOpen(false)}
-                    />
-                )}
-                
-                {/* Notification Drawer Panel */}
-                <div 
-                    className={`absolute inset-y-0 right-0 z-50 w-80 bg-white border-l border-zinc-200 shadow-2xl transform transition-transform duration-300 ease-in-out ${
-                        isNotifOpen ? 'translate-x-0' : 'translate-x-full'
-                    }`}
-                >
-                    <div className="flex items-center justify-between px-6 h-14 border-b border-zinc-200 bg-zinc-50/50">
-                        <div className="flex items-center gap-2">
-                            <h3 className="text-xs font-bold tracking-widest uppercase text-black">Alerts & Logs</h3>
-                            {unreadCount > 0 && (
-                                <span className="px-1.5 py-0.5 bg-[#D4AF37] text-black text-[9px] font-black rounded-sm">
-                                    {unreadCount}
-                                </span>
-                            )}
-                        </div>
-                        <div className="flex items-center gap-2">
-                            {unreadCount > 0 && (
-                                <button 
-                                    onClick={markAllAsRead}
-                                    className="text-[9px] uppercase font-bold text-zinc-400 hover:text-[#D4AF37] transition-colors mr-2"
-                                >
-                                    Clear All
-                                </button>
-                            )}
-                            <button 
-                                onClick={() => setIsNotifOpen(false)}
-                                className="p-1 text-zinc-400 hover:text-black transition-colors"
-                            >
-                                <Icons.Close />
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div className="overflow-y-auto h-[calc(100vh-3.5rem)] divide-y divide-zinc-100">
-                        {notifications.length === 0 ? (
-                            <div className="p-8 text-center flex flex-col items-center justify-center h-full text-zinc-500">
-                                <Icons.Bell />
-                                <p className="mt-4 text-xs tracking-wider uppercase font-medium">No active alerts</p>
-                                <p className="mt-1 text-[11px] font-light text-zinc-400">Your archive is secure and up to date.</p>
-                            </div>
-                        ) : (
-                            notifications.map((notif) => {
-                                const typeColors = {
-                                    success: 'bg-green-500',
-                                    warning: 'bg-amber-500',
-                                    error: 'bg-red-500',
-                                    info: 'bg-blue-500'
-                                };
-                                
-                                return (
-                                    <div 
-                                        key={notif.id} 
-                                        onClick={() => {
-                                            if (!notif.is_read) markAsRead(notif.id);
-                                            if (notif.action_url) navigateToResource(notif.action_url);
-                                        }}
-                                        className={`p-5 cursor-pointer transition-all duration-300 border-l-2 hover:bg-zinc-50 ${notif.is_read ? 'border-transparent' : 'border-[#D4AF37] bg-zinc-50/50'}`}
-                                    >
-                                        <div className="flex justify-between items-start mb-1">
-                                            <div className="flex items-center gap-2">
-                                                <span className={`w-1.5 h-1.5 rounded-full ${typeColors[notif.type] || 'bg-zinc-400'}`}></span>
-                                                <h4 className={`text-[13px] font-bold tracking-tight ${notif.is_read ? 'text-zinc-600' : 'text-black'}`}>
-                                                    {notif.title}
-                                                </h4>
-                                            </div>
-                                            <span className="text-[9px] text-zinc-400 font-mono">
-                                                {new Date(notif.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                            </span>
-                                        </div>
-                                        <p className="text-xs text-zinc-500 leading-relaxed">
-                                            {notif.message}
-                                        </p>
-                                        {notif.action_url && (
-                                            <div className="mt-3 text-[10px] font-black uppercase tracking-widest text-[#A68A27] flex items-center gap-1">
-                                                View Resource <span className="text-xs">→</span>
-                                            </div>
-                                        )}
-                                    </div>
-                                );
-                            })
-                        )}
-                    </div>
-                </div>
+  const markAsRead = async (id, actionUrl) => {
+    try {
+      const res = await apiFetch(`/api/v1/notifications/${id}/read`, {
+        method: "PATCH",
+      });
+      if (res.ok) {
+        setNotifications((prev) =>
+          prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)),
+        );
+        setUnreadCount((prev) => Math.max(0, prev - 1));
+      }
+    } catch (err) {
+      console.error("Failed to mark notification as read", err);
+    }
+  };
 
-            </main>
+  const navigateToResource = (actionUrl) => {
+    if (actionUrl) {
+      navigate(actionUrl);
+      setIsNotifOpen(false);
+    }
+  };
+
+  const markAllAsRead = async () => {
+    try {
+      const res = await apiFetch("/api/v1/notifications/read-all", {
+        method: "PATCH",
+      });
+      if (res.ok) {
+        setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+        setUnreadCount(0);
+      }
+    } catch (err) {
+      console.error("Failed to mark all as read", err);
+    }
+  };
+
+  const navItems = [
+    { name: "Dashboard", path: "/dashboard", icon: <Icons.Dashboard />, show: true },
+    { name: "Analytics", path: "/analytics", icon: <Icons.Analytics />, show: true },
+    { name: "Articles", path: "/articles", icon: <Icons.Articles />, show: true },
+    { name: "Acquisitions", path: "/intakes", icon: <Icons.Acquisitions />, show: true },
+    { name: "Accessions", path: "/accessions", icon: <Icons.Accessions />, show: true },
+    { name: "Inventory", path: "/inventory", icon: <Icons.Inventory />, show: true },
+    { name: "Schedule", path: "/schedule", icon: <Icons.Schedule />, show: true },
+    { name: "Appointments", path: "/appointments", icon: <Icons.Appointments />, show: true },
+    { name: "Forms Manager", path: "/forms", icon: <Icons.Forms />, show: isAdmin },
+    { name: "Management", path: "/management", icon: <Icons.Management />, show: isAdmin },
+    { name: "Audit Logs", path: "/audit-logs", icon: <Icons.AuditLogs />, show: isAdmin },
+  ];
+
+  return (
+    <div className="flex h-screen bg-gray-50 font-sans text-gray-900 overflow-hidden">
+      
+      {/* --- Sidebar --- */}
+      <aside
+        className={`bg-[#1c1c1c] flex flex-col transition-[width] duration-300 ease-in-out relative z-30 shadow-xl ${
+          isCollapsed ? "w-20" : "w-[260px]"
+        }`}
+      >
+        {/* Brand / User Profile Section */}
+        <div className="flex items-center border-b border-white/5 h-[76px] transition-all duration-300 px-3">
+          
+          <div className="flex items-center justify-center min-w-[56px]">
+            {/* Avatar Ring */}
+            <div className="p-[2px] border border-zinc-600 rounded-full">
+              <div className="flex-shrink-0 h-8 w-8 rounded-full bg-[#FF5A5F] flex items-center justify-center text-white font-semibold text-xs uppercase tracking-widest shadow-inner">
+                {userInitials}
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={`flex flex-col transition-all duration-300 overflow-hidden whitespace-nowrap ${isCollapsed ? "opacity-0 w-0" : "opacity-100 w-full"}`}
+          >
+            <span className="text-[9px] text-zinc-400 capitalize tracking-wide leading-tight mb-0.5">
+              {user?.role || "Curator"}
+            </span>
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider leading-tight">
+              {user?.username || "JOHN RUSSEL DIGGA"}
+            </span>
+          </div>
         </div>
-    );
+
+        {/* Main Navigation */}
+        <nav className="flex-1 overflow-y-auto overflow-x-hidden py-6 space-y-1.5 scrollbar-hide px-3">
+          {navItems
+            .filter((item) => item.show)
+            .map((item) => {
+              // Highlight if it's an exact match OR if it's a sub-route (e.g. /intakes/...)
+              const isActive = location.pathname === item.path || 
+                               (item.path !== '/dashboard' && location.pathname.startsWith(item.path + '/'));
+                               
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  title={isCollapsed ? item.name : ""}
+                  className={`flex items-center py-3 rounded-xl transition-all group ${
+                    isActive
+                      ? "bg-white text-black shadow-sm"
+                      : "text-zinc-200 hover:bg-white/10 hover:text-white"
+                  }`}
+                >
+                  <div className="flex items-center justify-center min-w-[56px]">
+                    <span
+                      className={`${isActive ? "text-black" : "text-zinc-300 group-hover:text-white"} transition-colors`}
+                    >
+                      {item.icon}
+                    </span>
+                  </div>
+
+                  <span
+                    className={`text-[14px] font-medium tracking-wide transition-all duration-300 overflow-hidden whitespace-nowrap ${
+                      isCollapsed
+                        ? "opacity-0 w-0 hidden"
+                        : "opacity-100 w-full"
+                    }`}
+                  >
+                    {item.name}
+                  </span>
+                </Link>
+              );
+            })}
+        </nav>
+
+        {/* Bottom Logout Action */}
+        <div className="mt-auto pb-4 pt-3 border-t border-white/5 px-3">
+          <button
+            onClick={() => setIsLogoutModalOpen(true)}
+            title={isCollapsed ? "Log out" : ""}
+            className={`flex items-center w-full py-2 rounded-lg transition-all group text-zinc-400 hover:bg-white/10 hover:text-white`}
+          >
+            <div className="flex items-center justify-center min-w-[56px]">
+              <span className="text-zinc-400 group-hover:text-white transition-colors">
+                <Icons.Logout />
+              </span>
+            </div>
+            <span
+              className={`text-[13px] font-medium tracking-wide transition-all duration-300 overflow-hidden whitespace-nowrap text-left ${
+                isCollapsed
+                  ? "opacity-0 w-0 hidden"
+                  : "opacity-100 w-full"
+              }`}
+            >
+              Logout
+            </span>
+          </button>
+        </div>
+      </aside>
+
+      {/* --- Main Content Area --- */}
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-gray-50 relative">
+        
+        {/* Header */}
+        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-8 z-10">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="p-2 -ml-2 text-gray-500 hover:text-black hover:bg-gray-100 rounded-md transition-all focus:outline-none"
+              aria-label="Toggle sidebar"
+            >
+              <Icons.Menu />
+            </button>
+
+            {/* Smaller Breadcrumb Style Header */}
+            <div className="hidden sm:flex items-center text-xs font-semibold uppercase tracking-widest gap-2">
+               <span className="text-gray-400">{location.pathname === "/dashboard" ? "Home" : "Pages"}</span>
+               <span className="text-gray-300">/</span>
+               <span className="text-gray-800">
+                 {location.pathname === "/dashboard" ? "Dashboard" : location.pathname.split("/")[1].replace("-", " ")}
+               </span>
+            </div>
+          </div>
+
+          {/* Right Header Area */}
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Link
+              to="/settings"
+              className={`p-2 transition-colors relative ${
+                  location.pathname.startsWith("/settings") 
+                      ? "text-black" 
+                      : "text-gray-400 hover:text-black"
+              }`}
+              aria-label="Settings"
+            >
+              {location.pathname.startsWith("/settings") ? <Icons.SettingsSolid /> : <Icons.Settings />}
+            </Link>
+
+            <button
+              onClick={() => setIsNotifOpen(true)}
+              className="p-2 text-gray-400 hover:text-black transition-colors relative"
+              aria-label="Open notifications"
+            >
+              <Icons.Bell />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#F05A5A] border-2 border-white rounded-full"></span>
+              )}
+            </button>
+          </div>
+        </header>
+
+        {/* Page Content */}
+        <section className={`flex-1 overflow-y-auto bg-gray-50 relative ${location.pathname === '/articles' ? '!p-0' : ''}`}>
+          <div className={`h-full flex flex-col relative ${location.pathname === '/articles' ? 'block' : 'hidden'}`}>
+            {isCmsLoading && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-50 z-10">
+                <div className="w-8 h-8 border-4 border-gray-200 border-t-[#7A40F2] rounded-full animate-spin mb-4"></div>
+                <p className="text-sm font-semibold text-gray-500 tracking-widest uppercase">Loading CMS...</p>
+              </div>
+            )}
+            {shouldLoadCms && (
+              <iframe 
+                  ref={cmsIframeRef}
+                  src="http://localhost:3001/admin/collections/articles" 
+                  className="w-full h-full flex-1 border-0"
+                  title="Payload CMS Editor Preloaded"
+                  onLoad={() => setIsCmsLoading(false)}
+              />
+            )}
+          </div>
+          <div className={location.pathname === '/articles' ? 'hidden' : 'block h-full pt-5'}>
+            <ErrorBoundary>
+              <Outlet />
+            </ErrorBoundary>
+          </div>
+        </section>
+
+        {/* --- Notification Drawer Overlay --- */}
+        {isNotifOpen && (
+          <div
+            className="absolute inset-0 bg-gray-900/20 backdrop-blur-sm z-40 transition-opacity"
+            onClick={() => setIsNotifOpen(false)}
+          />
+        )}
+
+        {/* Notification Drawer Panel */}
+        <div
+          className={`absolute inset-y-0 right-0 z-50 w-80 md:w-96 bg-white border-l border-gray-200 shadow-2xl transform transition-transform duration-300 ease-in-out ${
+            isNotifOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="flex items-center justify-between px-6 h-16 border-b border-gray-200 bg-white">
+            <div className="flex items-center gap-3">
+              <h3 className="text-sm font-bold tracking-tight text-black">
+                Notifications
+              </h3>
+              {unreadCount > 0 && (
+                <span className="px-2 py-0.5 bg-gray-100 text-black text-[10px] font-bold rounded-full border border-gray-200">
+                  {unreadCount} New
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-1">
+              {unreadCount > 0 && (
+                <button
+                  onClick={markAllAsRead}
+                  className="text-xs font-semibold text-gray-400 hover:text-[#7A40F2] transition-colors mr-2 px-2 py-1 rounded hover:bg-gray-50"
+                >
+                  Mark all read
+                </button>
+              )}
+              <button
+                onClick={() => setIsNotifOpen(false)}
+                className="p-1.5 text-gray-400 hover:text-black hover:bg-gray-100 rounded-md transition-all"
+              >
+                <Icons.Close />
+              </button>
+            </div>
+          </div>
+
+          <div className="overflow-y-auto h-[calc(100vh-4rem)]">
+            {notifications.length === 0 ? (
+              <div className="p-8 text-center flex flex-col items-center justify-center h-full text-gray-400">
+                <div className="p-4 bg-gray-50 rounded-full mb-4">
+                  <Icons.Bell />
+                </div>
+                <p className="text-sm font-bold text-gray-900 tracking-tight">
+                  You're all caught up
+                </p>
+                <p className="mt-1 text-xs text-gray-500">
+                  No new alerts or system logs.
+                </p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-100">
+                {notifications.map((notif) => {
+                  const typeColors = {
+                    success: "bg-[#A3CC39]",
+                    warning: "bg-[#F5A623]",
+                    error: "bg-[#F05A5A]",
+                    info: "bg-[#7A40F2]",
+                  };
+
+                  return (
+                    <div
+                      key={notif.id}
+                      onClick={() => {
+                        if (!notif.is_read) markAsRead(notif.id);
+                        if (notif.action_url) navigateToResource(notif.action_url);
+                      }}
+                      className={`p-5 cursor-pointer transition-colors border-l-4 hover:bg-gray-50 ${
+                        notif.is_read 
+                          ? "border-transparent bg-white" 
+                          : "border-[#7A40F2] bg-[#7A40F2]/5"
+                      }`}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`w-2 h-2 rounded-full ${typeColors[notif.type] || "bg-gray-300"}`}
+                          ></span>
+                          <h4
+                            className={`text-sm tracking-tight ${notif.is_read ? "text-gray-600 font-medium" : "text-black font-bold"}`}
+                          >
+                            {notif.title}
+                          </h4>
+                        </div>
+                        <span className="text-[10px] text-gray-400 font-medium whitespace-nowrap ml-2">
+                          {new Date(notif.created_at).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </div>
+                      <p className="text-[13px] text-gray-500 leading-relaxed pl-4">
+                        {notif.message}
+                      </p>
+                      {notif.action_url && (
+                        <div className="mt-3 pl-4 text-xs font-semibold text-[#7A40F2] flex items-center gap-1 hover:underline">
+                          View Details <span>→</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
+
+      {/* Logout Confirmation Modal */}
+      <Modal
+          isOpen={isLogoutModalOpen}
+          onClose={() => setIsLogoutModalOpen(false)}
+          title="Confirm Logout"
+          message="Are you sure you want to log out of the CMS? You will need to sign in again to access the dashboard."
+          type="confirm"
+          variant="warning"
+          confirmText="Log Out"
+          cancelText="Cancel"
+          onConfirm={() => {
+              setIsLogoutModalOpen(false);
+              logout();
+          }}
+      />
+
+    </div>
+  );
 }

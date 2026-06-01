@@ -41,7 +41,7 @@ export default function SubmissionViewer() {
     }, [id, apiFetch]);
 
     if (loading) return (
-        <div className="flex flex-col gap-y-8 bg-white min-h-screen pb-12 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="flex flex-col gap-y-8 bg-white min-h-screen pb-12 px-4 sm:px-6 lg:px-8 pt-8">
             <div className="py-32 text-center text-zinc-500">
                 <div className="w-8 h-8 border-2 border-zinc-200 border-t-black rounded-full animate-spin mx-auto mb-4"></div>
                 <span className="text-sm font-semibold tracking-widest uppercase">Loading Submission Details...</span>
@@ -64,7 +64,7 @@ export default function SubmissionViewer() {
     const formTitle = submission.expand?.form_id?.title || 'Standard Submission';
 
     return (
-        <div className="flex flex-col gap-y-8 bg-white min-h-screen pb-12 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 animate-in fade-in duration-500">
+        <div className="flex flex-col gap-y-8 bg-white min-h-screen pb-12 px-4 sm:px-6 lg:px-8 pt-8 animate-in fade-in duration-500">
             
             {/* Header & Breadcrumb */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-100 pb-6">

@@ -7,13 +7,13 @@ import {
   ChevronLeft, ChevronRight, Plus, Users, Clock, CheckCircle2,
   Ban, Loader2, X, CalendarDays, ArrowRight, Activity,
 } from 'lucide-react';
-import MiniCal from '../components/MiniCal';
-import { useAuth } from '../context/authContext';
-import { useSSE } from '../hooks/useSSE';
+import MiniCal from '../../../components/MiniCal';
+import { useAuth } from '../../../context/authContext';
+import { useSSE } from '../../../hooks/useSSE';
 import {
   getLocalDateString, formatTimeTo12H,
   normalizeSchedule, normalizeAppointment, toFCEvent,
-} from '../utils/scheduleUtils';
+} from '../../../utils/scheduleUtils';
 
 // ─── FullCalendar CSS ─────────────────────────────────────────────────────────
 const FC_STYLES = `
@@ -402,7 +402,7 @@ export default function Schedule() {
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
-    <div className="h-full flex flex-col" style={{ height: 'calc(100vh - 3.5rem)' }}>
+    <div className="flex flex-col gap-y-6 bg-white h-full" style={{ height: 'calc(100vh - 3.5rem)' }}>
       <style>{FC_STYLES}</style>
 
       {/* Toast */}
@@ -413,8 +413,12 @@ export default function Schedule() {
         </div>
       )}
 
+      <section className="flex">
+        <h1 className="text-3xl font-bold text-black tracking-tight">Schedule</h1>
+      </section>
+
       {/* ── Header ─────────────────────────────────────────────────────────────── */}
-      <div className="flex-shrink-0 flex items-center gap-3 pb-4 border-b border-zinc-200">
+      <div className="flex-shrink-0 flex items-center gap-3">
         {/* Date nav */}
         <div className="flex items-center gap-1 bg-zinc-100 rounded-lg p-0.5">
           <button onClick={() => goDir('prev')} className="p-1.5 rounded-md hover:bg-white text-zinc-500 hover:text-zinc-900 hover:shadow-sm transition-all">

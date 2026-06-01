@@ -36,8 +36,7 @@ export default function SetupAccount() {
             });
 
             const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Failed to setup account.');
-            
+            if (!res.ok) throw new Error(data.message || data.error || 'Failed to setup account.');
             setStatus({ type: 'success', message: "Account successfully created. Redirecting to login..." });
             setTimeout(() => navigate('/login'), 2500);
         } catch (err) {

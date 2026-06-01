@@ -11,6 +11,8 @@ import formRoutes from './form/index.js'
 import auditRoutes from './auditRoutes.js'
 import mediaRoutes from './mediaRoutes.js'
 import analyticsRoutes from './analyticsRoutes.js'
+import scheduleRoutes from './scheduleRoutes.js'
+import appointmentRoutes from './appointmentRoutes.js'
 
 const router = Router();
 
@@ -28,5 +30,7 @@ router.use('/forms', formRoutes);
 router.use('/audit-logs', auditRoutes);
 router.use('/media', mediaRoutes);
 router.use('/analytics', analyticsRoutes);
+router.use('/schedules', scheduleRoutes);
+router.use('/appointments', appointmentRoutes);
 
 export default router;

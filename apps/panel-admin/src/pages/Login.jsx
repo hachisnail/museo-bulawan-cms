@@ -22,7 +22,7 @@ export default function Login() {
             });
 
             const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Login failed.');
+            if (!res.ok) throw new Error(data.message || data.error || 'Login failed.');
 
             login(data.user);
             navigate('/dashboard');

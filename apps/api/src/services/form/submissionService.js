@@ -113,6 +113,8 @@ export const submissionService = {
                 await formPipelineService.processMovementTrailForm(actingStaffId, record.id, files);
             } else if (definition.type === 'artifact_conservation') {
                 await formPipelineService.processConservationLogForm(actingStaffId, record.id, files);
+            } else if (definition.type === 'appointment') {
+                await formPipelineService.processAppointmentForm(actingStaffId, record.id, files);
             }
         } catch (postError) {
             logger.error(`Post-submission hook failed for ${slug}: ${postError.message}`);

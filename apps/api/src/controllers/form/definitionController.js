@@ -80,7 +80,7 @@ export const definitionController = {
 
             const definition = await definitionService.getFormDefinition(slug);
             const submissions = await db.query(
-                `SELECT * FROM form_submissions WHERE form_id = ? ORDER BY created_at DESC`, 
+                `SELECT * FROM form_submissions WHERE form_id = ? AND status != 'pending' ORDER BY created_at DESC`, 
                 [definition.id]
             );
 

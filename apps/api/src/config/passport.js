@@ -7,8 +7,8 @@ import { userService } from '../services/userService.js';
 // Define the Joi validation schema for the login payload
 const loginSchema = Joi.object({
     username: Joi.string().min(3).max(50).required().messages({
-        'string.empty': 'Username is required.',
-        'string.min': 'Username must be at least 3 characters long.'
+        'string.empty': 'Username or Email is required.',
+        'string.min': 'Username or Email must be at least 3 characters long.'
     }),
     password: Joi.string().required().messages({
         'string.empty': 'Password is required.'

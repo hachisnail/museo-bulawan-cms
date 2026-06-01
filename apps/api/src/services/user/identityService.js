@@ -35,17 +35,17 @@ export const identityService = {
         }
     },
 
-    async getUserByUsername(username) {
+    async getUserByUsername(usernameOrEmail) {
         try {
             const [user] = await db.query(
-                'SELECT * FROM users WHERE username = ?',
-                [username]
+                'SELECT * FROM users WHERE username = ? OR email = ?',
+                [usernameOrEmail, usernameOrEmail]
             );
 
             logger.info('Fetched user by username', {
                 action: 'READ',
                 resource: 'User',
-                username,
+                username: usernameOrEmail,
                 found: !!user
             });
 
@@ -54,7 +54,7 @@ export const identityService = {
             logger.error('Failed to fetch user by username', {
                 action: 'READ',
                 resource: 'User',
-                username,
+                username: usernameOrEmail,
                 error: error.message
             });
             throw error;

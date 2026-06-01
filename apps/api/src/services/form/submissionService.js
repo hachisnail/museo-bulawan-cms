@@ -39,6 +39,9 @@ export const submissionService = {
                     delete prop['ui:dependsOn'];
                     delete prop['ui:group'];
                     delete prop['ui:widget'];
+                    if (prop.format && !['textarea', 'file'].includes(prop.format)) {
+                        delete prop.format;
+                    }
                 }
             }
 

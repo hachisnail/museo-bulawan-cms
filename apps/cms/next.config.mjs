@@ -5,7 +5,6 @@ import { withPayload } from '@payloadcms/next/withPayload'
 const nextConfig = {
   // Suppress punycode deprecation and other node warnings
   serverExternalPackages: ['sharp'],
-  
   // Removed webpack config for now to debug scss issue
 }
 

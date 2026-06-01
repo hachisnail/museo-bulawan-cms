@@ -4,7 +4,7 @@ import { useSSE } from '../../../hooks/useSSE';
 import { 
     Settings, Plus, LayoutGrid, Eye, Trash2, Edit, Save, X, 
     FileText, CheckCircle, ClipboardList, Database, AlertCircle, 
-    ArrowRight, Upload, Calendar, Copy, ExternalLink, BarChart3, Star, MessageSquare, Edit2   // <-- Added Copy and ExternalLink
+    ArrowRight, Upload, Calendar, Copy, ExternalLink, BarChart3, Star, MessageSquare, Edit2, Download
 } from 'lucide-react';
 import { 
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, 
@@ -175,6 +175,28 @@ const SubmissionsTab = ({ forms, apiFetch }) => {
         setTimeout(() => setCopied(false), 2000);
     };
 
+    const handleExport = async () => {
+        try {
+            const res = await apiFetch(`/api/v1/forms/admin/submissions/export?slug=${selectedSlug}`);
+            if (!res.ok) {
+                alert('Failed to export submissions.');
+                return;
+            }
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `submissions-${selectedSlug}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error(err);
+            alert('Error exporting submissions.');
+        }
+    };
+
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
             {/* Form Selection Buttons */}
@@ -236,19 +258,32 @@ const SubmissionsTab = ({ forms, apiFetch }) => {
             )}
 
             {/* Submissions List */}
-            {!selectedSlug ? null : loading ? (
-                <div className="py-20 text-center text-zinc-500">
-                    <div className="w-8 h-8 border-2 border-zinc-200 border-t-black rounded-full animate-spin mx-auto mb-4"></div>
-                    <span className="text-sm">Loading submission entries...</span>
-                </div>
-            ) : submissions.length === 0 ? (
-                <div className="border border-gray-200 rounded-xl bg-white p-16 text-center text-zinc-400 shadow-sm">
-                    <ClipboardList className="w-12 h-12 mx-auto mb-4 text-zinc-300" />
-                    <p className="text-sm font-medium text-gray-500">No submissions have been received yet for this form.</p>
-                </div>
-            ) : (
-                <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm">
-                    <div className="overflow-x-auto">
+            {!selectedSlug ? null : (
+                <>
+                    <div className="flex justify-between items-center px-1">
+                        <h3 className="text-sm font-bold text-zinc-800 uppercase tracking-widest">Received Submissions ({submissions.length})</h3>
+                        <button 
+                            onClick={handleExport}
+                            disabled={submissions.length === 0}
+                            className="px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition-colors flex items-center gap-1.5 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            <Download className="w-4 h-4" /> Export to Excel
+                        </button>
+                    </div>
+
+                    {loading ? (
+                        <div className="py-20 text-center text-zinc-500">
+                            <div className="w-8 h-8 border-2 border-zinc-200 border-t-black rounded-full animate-spin mx-auto mb-4"></div>
+                            <span className="text-sm">Loading submission entries...</span>
+                        </div>
+                    ) : submissions.length === 0 ? (
+                        <div className="border border-gray-200 rounded-xl bg-white p-16 text-center text-zinc-400 shadow-sm">
+                            <ClipboardList className="w-12 h-12 mx-auto mb-4 text-zinc-300" />
+                            <p className="text-sm font-medium text-gray-500">No submissions have been received yet for this form.</p>
+                        </div>
+                    ) : (
+                        <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm">
+                            <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left whitespace-nowrap">
                             <thead className="bg-gray-50 border-b border-gray-200">
                                 <tr>
@@ -311,6 +346,8 @@ const SubmissionsTab = ({ forms, apiFetch }) => {
                         </table>
                     </div>
                 </div>
+                )}
+                </>
             )}
         </div>
     );
@@ -356,7 +393,7 @@ function FormBuilderTab({ customDefinitions, fetchDefinitions, apiFetch }) {
         setEditingForm(form);
         setTitle(form.title);
         setSlug(form.slug);
-        setOtp(form.otp);
+        setOtp(!!form.otp);
         setLayout(form.settings?.layout || 'single_column');
         setAllowAttachments(form.settings?.allow_attachments || false);
         setDescription(form.settings?.description || '');

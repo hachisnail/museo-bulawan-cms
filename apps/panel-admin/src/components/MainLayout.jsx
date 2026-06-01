@@ -60,6 +60,11 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
   ),
+  Analytics: () => (
+    <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
+  ),
   Forms: () => (
     <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
@@ -204,6 +209,7 @@ export default function MainLayout() {
 
     const navItems = [
         { name: "Dashboard", path: "/dashboard", icon: <Icons.Dashboard />, show: true },
+        { name: "Analytics", path: "/analytics", icon: <Icons.Analytics />, show: true },
         { name: "Articles", path: "/articles", icon: <Icons.Articles />, show: true },
         { name: "Acquisitions", path: "/intakes", icon: <Icons.Acquisitions />, show: true },
         { name: "Accessions", path: "/accessions", icon: <Icons.Accessions />, show: true },
@@ -216,280 +222,6 @@ export default function MainLayout() {
         { name: "Settings", path: "/settings", icon: <Icons.Settings />, show: true },
     ];
 
-  return (
-    <div className="flex h-screen bg-gray-50 font-sans text-gray-900 overflow-hidden">
-      
-      {/* --- Sidebar --- */}
-      <aside
-        className={`bg-[#1c1c1c] flex flex-col transition-[width] duration-300 ease-in-out relative z-30 shadow-xl ${
-          isCollapsed ? "w-20" : "w-[260px]"
-        }`}
-      >
-        {/* Brand / User Profile Section */}
-        <div className={`flex flex-col border-b border-white/5 pt-8 pb-6 transition-all duration-300 ${isCollapsed ? "items-center px-2" : "items-start px-7"}`}>
-          
-          {/* Avatar Ring */}
-          <div className="p-[3px] border border-zinc-600 rounded-full mb-3">
-            <div className="flex-shrink-0 h-11 w-11 rounded-full bg-[#FF5A5F] flex items-center justify-center text-white font-semibold text-sm uppercase tracking-widest shadow-inner">
-              {userInitials}
-            </div>
-          </div>
-
-          <div
-            className={`flex flex-col transition-all duration-300 overflow-hidden ${isCollapsed ? "opacity-0 w-0 h-0" : "opacity-100 w-full h-auto"}`}
-          >
-            <span className="text-[10px] text-zinc-400 capitalize tracking-wide leading-tight mb-0.5">
-              {user?.role || "Curator"}
-            </span>
-            <span className="text-[13px] font-bold text-white uppercase tracking-wider leading-tight">
-              {user?.username || "JOHN RUSSEL DIGGA"}
-            </span>
-          </div>
-        </div>
-
-        {/* Main Navigation */}
-        <nav className={`flex-1 overflow-y-auto overflow-x-hidden py-6 space-y-1.5 scrollbar-hide ${isCollapsed ? "px-3" : "px-4"}`}>
-          {navItems
-            .filter((item) => item.show)
-            .map((item) => {
-              // Highlight if it's an exact match OR if it's a sub-route (e.g. /intakes/...)
-              const isActive = location.pathname === item.path || 
-                               (item.path !== '/dashboard' && location.pathname.startsWith(item.path + '/'));
-                               
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  title={isCollapsed ? item.name : ""}
-                  className={`flex items-center py-3 rounded-xl transition-all group ${
-                    isActive
-                      ? "bg-white text-black shadow-sm"
-                      : "text-zinc-200 hover:bg-white/10 hover:text-white"
-                  } ${isCollapsed ? "px-0 justify-center" : "px-4"}`}
-                >
-                  <span
-                    className={`${isActive ? "text-black" : "text-zinc-300 group-hover:text-white"} transition-colors`}
-                  >
-                    {item.icon}
-                  </span>
-
-                  <span
-                    className={`text-[14px] font-medium tracking-wide transition-all duration-300 overflow-hidden whitespace-nowrap ${
-                      isCollapsed
-                        ? "opacity-0 w-0 ml-0 hidden"
-                        : "opacity-100 w-full ml-4"
-                    }`}
-                  >
-                    {item.name}
-                  </span>
-                </Link>
-              );
-            })}
-        </nav>
-
-        {/* Bottom Logout Action */}
-        <div className={`mt-auto pb-8 pt-4 border-t border-white/5 ${isCollapsed ? "px-3" : "px-4"}`}>
-          <button
-            onClick={logout}
-            title={isCollapsed ? "Log out" : ""}
-            className={`flex items-center w-full py-3 rounded-xl transition-all group text-zinc-400 hover:bg-white/10 hover:text-white ${isCollapsed ? "px-0 justify-center" : "px-4"}`}
-          >
-            <span className="text-zinc-400 group-hover:text-white transition-colors">
-              <Icons.Logout />
-            </span>
-            <span
-              className={`text-[14px] font-medium tracking-wide transition-all duration-300 overflow-hidden whitespace-nowrap text-left ${
-                isCollapsed
-                  ? "opacity-0 w-0 ml-0 hidden"
-                  : "opacity-100 w-full ml-4"
-              }`}
-            >
-              Logout
-            </span>
-          </button>
-        </div>
-      </aside>
-
-      {/* --- Main Content Area --- */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-gray-50 relative">
-        
-        {/* Header */}
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-8 z-10">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              className="p-2 -ml-2 text-gray-500 hover:text-black hover:bg-gray-100 rounded-md transition-all focus:outline-none"
-              aria-label="Toggle sidebar"
-            >
-              <Icons.Menu />
-            </button>
-
-            {/* Smaller Breadcrumb Style Header */}
-            <div className="hidden sm:flex items-center text-xs font-semibold uppercase tracking-widest gap-2">
-               <span className="text-gray-400">{location.pathname === "/dashboard" ? "Home" : "Pages"}</span>
-               <span className="text-gray-300">/</span>
-               <span className="text-gray-800">
-                 {location.pathname === "/dashboard" ? "Dashboard" : location.pathname.split("/")[1].replace("-", " ")}
-               </span>
-            </div>
-          </div>
-
-          {/* Right Header Area */}
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setIsNotifOpen(true)}
-              className="p-2 text-gray-400 hover:text-black transition-colors relative"
-              aria-label="Open notifications"
-            >
-              <Icons.Bell />
-              {unreadCount > 0 && (
-                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#F05A5A] border-2 border-white rounded-full"></span>
-              )}
-            </button>
-          </div>
-        </header>
-
-        {/* Page Content */}
-        <section className={`flex-1 overflow-y-auto bg-gray-50 relative ${location.pathname === '/articles' ? '!p-0' : ''}`}>
-          <div className={`h-full flex flex-col relative ${location.pathname === '/articles' ? 'block' : 'hidden'}`}>
-            {isCmsLoading && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-50 z-10">
-                <div className="w-8 h-8 border-4 border-gray-200 border-t-[#7A40F2] rounded-full animate-spin mb-4"></div>
-                <p className="text-sm font-semibold text-gray-500 tracking-widest uppercase">Loading CMS...</p>
-              </div>
-            )}
-            {/* The Payload CMS iframe handles its own back button internally now */}
-            {shouldLoadCms && (
-              <iframe 
-                  ref={cmsIframeRef}
-                  src="http://localhost:3001/admin/collections/articles" 
-                  className="w-full h-full flex-1 border-0"
-                  title="Payload CMS Editor Preloaded"
-                  onLoad={() => setIsCmsLoading(false)}
-              />
-            )}
-          </div>
-          <div className={location.pathname === '/articles' ? 'hidden' : 'block h-full pt-5'}>
-            <Outlet />
-          </div>
-        </section>
-
-        {/* --- Notification Drawer Overlay --- */}
-        {isNotifOpen && (
-          <div
-            className="absolute inset-0 bg-gray-900/20 backdrop-blur-sm z-40 transition-opacity"
-            onClick={() => setIsNotifOpen(false)}
-          />
-        )}
-
-        {/* Notification Drawer Panel */}
-        <div
-          className={`absolute inset-y-0 right-0 z-50 w-80 md:w-96 bg-white border-l border-gray-200 shadow-2xl transform transition-transform duration-300 ease-in-out ${
-            isNotifOpen ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          <div className="flex items-center justify-between px-6 h-16 border-b border-gray-200 bg-white">
-            <div className="flex items-center gap-3">
-              <h3 className="text-sm font-bold tracking-tight text-black">
-                Notifications
-              </h3>
-              {unreadCount > 0 && (
-                <span className="px-2 py-0.5 bg-gray-100 text-black text-[10px] font-bold rounded-full border border-gray-200">
-                  {unreadCount} New
-                </span>
-              )}
-            </div>
-            <div className="flex items-center gap-1">
-              {unreadCount > 0 && (
-                <button
-                  onClick={markAllAsRead}
-                  className="text-xs font-semibold text-gray-400 hover:text-[#7A40F2] transition-colors mr-2 px-2 py-1 rounded hover:bg-gray-50"
-                >
-                  Mark all read
-                </button>
-              )}
-              <button
-                onClick={() => setIsNotifOpen(false)}
-                className="p-1.5 text-gray-400 hover:text-black hover:bg-gray-100 rounded-md transition-all"
-              >
-                <Icons.Close />
-              </button>
-            </div>
-          </div>
-
-          <div className="overflow-y-auto h-[calc(100vh-4rem)]">
-            {notifications.length === 0 ? (
-              <div className="p-8 text-center flex flex-col items-center justify-center h-full text-gray-400">
-                <div className="p-4 bg-gray-50 rounded-full mb-4">
-                  <Icons.Bell />
-                </div>
-                <p className="text-sm font-bold text-gray-900 tracking-tight">
-                  You're all caught up
-                </p>
-                <p className="mt-1 text-xs text-gray-500">
-                  No new alerts or system logs.
-                </p>
-              </div>
-            ) : (
-              <div className="divide-y divide-gray-100">
-                {notifications.map((notif) => {
-                  const typeColors = {
-                    success: "bg-[#A3CC39]",
-                    warning: "bg-[#F5A623]",
-                    error: "bg-[#F05A5A]",
-                    info: "bg-[#7A40F2]",
-                  };
-
-                  return (
-                    <div
-                      key={notif.id}
-                      onClick={() => {
-                        if (!notif.is_read) markAsRead(notif.id);
-                        if (notif.action_url) navigateToResource(notif.action_url);
-                      }}
-                      className={`p-5 cursor-pointer transition-colors border-l-4 hover:bg-gray-50 ${
-                        notif.is_read 
-                          ? "border-transparent bg-white" 
-                          : "border-[#7A40F2] bg-[#7A40F2]/5"
-                      }`}
-                    >
-                      <div className="flex justify-between items-start mb-2">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className={`w-2 h-2 rounded-full ${typeColors[notif.type] || "bg-gray-300"}`}
-                          ></span>
-                          <h4
-                            className={`text-sm tracking-tight ${notif.is_read ? "text-gray-600 font-medium" : "text-black font-bold"}`}
-                          >
-                            {notif.title}
-                          </h4>
-                        </div>
-                        <span className="text-[10px] text-gray-400 font-medium whitespace-nowrap ml-2">
-                          {new Date(notif.created_at).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </span>
-                      </div>
-                      <p className="text-[13px] text-gray-500 leading-relaxed pl-4">
-                        {notif.message}
-                      </p>
-                      {notif.action_url && (
-                        <div className="mt-3 pl-4 text-xs font-semibold text-[#7A40F2] flex items-center gap-1 hover:underline">
-                          View Details <span>→</span>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-      </main>
-    </div>
-  );
-=======
     return (
         <div className="flex h-screen bg-zinc-50 font-sans text-zinc-900 overflow-hidden">
             
@@ -611,12 +343,31 @@ export default function MainLayout() {
                 </header>
 
                 {/* Page Content */}
-                <section className={`flex-1 min-h-0 bg-zinc-50/50 ${
+                <section className={`flex-1 min-h-0 bg-zinc-50/50 relative ${
                     location.pathname.startsWith('/schedule') || location.pathname.startsWith('/appointments')
                       ? 'overflow-hidden p-4 sm:p-6 flex flex-col'
-                      : 'overflow-y-auto p-4 sm:p-6 lg:p-8'
+                      : location.pathname === '/articles' ? '!p-0' : 'overflow-y-auto p-4 sm:p-6 lg:p-8'
                 }`}>
-                    <Outlet />
+                    <div className={`h-full flex flex-col relative ${location.pathname === '/articles' ? 'block' : 'hidden'}`}>
+                        {isCmsLoading && (
+                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-50/50 z-10">
+                                <div className="w-8 h-8 border-4 border-zinc-200 border-t-[#D4AF37] rounded-full animate-spin mb-4"></div>
+                                <p className="text-xs font-bold text-zinc-500 tracking-widest uppercase">Loading CMS...</p>
+                            </div>
+                        )}
+                        {shouldLoadCms && (
+                            <iframe 
+                                ref={cmsIframeRef}
+                                src="http://localhost:3001/admin/collections/articles" 
+                                className="w-full h-full flex-1 border-0"
+                                title="Payload CMS Editor Preloaded"
+                                onLoad={() => setIsCmsLoading(false)}
+                            />
+                        )}
+                    </div>
+                    <div className={location.pathname === '/articles' ? 'hidden' : 'block h-full'}>
+                        <Outlet />
+                    </div>
                 </section>
                 
                 {/* --- Notification Drawer Overlay --- */}
@@ -714,5 +465,4 @@ export default function MainLayout() {
             </main>
         </div>
     );
->>>>>>> louis-calendar-scheduler
 }

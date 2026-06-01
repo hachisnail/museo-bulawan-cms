@@ -132,6 +132,7 @@ export default function InventoryIndex() {
                 rawDate: dateVal,
                 type: accession.contract_type ? accession.contract_type.replace(/_/g, ' ') : 'Donation',
                 status: item.status === 'deaccessioned' ? 'Deaccessioned' : (item.status === 'loaned' ? 'On Display' : (item.status === 'maintenance' ? 'Under Maintenance' : 'In Storage')),
+                rawStatus: item.status,
                 maintenance: item.last_checked ? new Date(item.last_checked).toLocaleDateString() : (dateVal ? new Date(dateVal).toLocaleDateString() : '—'),
                 expiration: accession.contract_type?.toLowerCase() === 'loan' 
                     ? (intake.loan_end_date ? new Date(intake.loan_end_date).toLocaleDateString() : '—') 
@@ -322,7 +323,7 @@ export default function InventoryIndex() {
                                         <td className="py-4 px-4 text-gray-500">{row.date}</td>
                                         <td className="py-4 px-4 text-gray-600 capitalize">{row.type}</td>
                                         <td className="py-4 px-4">
-                                            <span className={`px-2.5 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest border ${getStatusStyles(row.rawItem.status)}`}>
+                                            <span className={`px-2.5 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest border ${getStatusStyles(row.rawStatus)}`}>
                                                 {row.status}
                                             </span>
                                         </td>

@@ -23,7 +23,7 @@ const InternalForm = (props) => {
     } = useFormLogic(props);
 
     if (loading) return (
-        <div className="py-10 text-center flex flex-col items-center justify-center gap-4">
+        <div className="py-10 text-center flex flex-col items-center justify-center gap-4 min-h-[400px]">
             <div className="w-6 h-6 border-2 border-zinc-200 border-t-black rounded-full animate-spin"></div>
             <div className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-300">Retrieving Schema...</div>
         </div>

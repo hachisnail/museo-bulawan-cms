@@ -83,6 +83,20 @@ import Layout from '../layouts/Layout.astro';
                             />
                             <p class="text-[10px] text-zinc-400 mt-1 font-light">Must be at least 8 characters long, including uppercase, lowercase, numbers, and symbols.</p>
                         </div>
+
+                        <div>
+                            <label for="confirm_password" class="block text-xs font-medium text-zinc-700 uppercase tracking-wider mb-1">
+                                Confirm Password
+                            </label>
+                            <input 
+                                type="password" 
+                                id="confirm_password" 
+                                name="confirm_password" 
+                                minlength="8"
+                                class="block w-full rounded-sm border border-zinc-300 px-4 py-2.5 text-black placeholder:text-zinc-400 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all sm:text-sm bg-white"
+                                required
+                            />
+                        </div>
                     </div>
 
                     <div class="pt-2">
@@ -127,6 +141,15 @@ import Layout from '../layouts/Layout.astro';
 
         const usernameInput = document.getElementById('username') as HTMLInputElement;
         const passwordInput = document.getElementById('password') as HTMLInputElement;
+        const confirmPasswordInput = document.getElementById('confirm_password') as HTMLInputElement;
+
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            errorAlert.textContent = 'Passwords do not match.';
+            errorAlert.classList.remove('hidden');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Save Account & Complete';
+            return;
+        }
 
         try {
             const res = await fetch(`${API_BASE_URL}/api/v1/user/setup`, {

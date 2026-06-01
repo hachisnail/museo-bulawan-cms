@@ -33,6 +33,9 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      providers: ['@/providers/RouteListenerProvider#RouteListenerProvider'],
+    },
   },
 
   // ─── Collections ──────────────────────────────

@@ -4,6 +4,7 @@ import type { NextRequest } from 'next/server'
 // ─── Allowed origins that may embed the CMS in an iframe ─────────
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',  // panel-admin (Vite dev)
+  'http://localhost:5174',  // panel-admin (Vite dev fallback port)
 ]
 
 export function middleware(request: NextRequest) {
@@ -14,21 +15,19 @@ export function middleware(request: NextRequest) {
     const referer = request.headers.get('referer')
     const secFetchDest = request.headers.get('sec-fetch-dest')
 
-    // Allow iframe requests whose Origin OR Referer matches an allowed source.
-    // Browsers always send Origin on cross-origin requests and Referer on
-    // same-origin navigations, so checking both covers all legitimate cases.
     const isAllowedOrigin = origin && ALLOWED_ORIGINS.some(o => origin.startsWith(o))
     const isAllowedReferer = referer && ALLOWED_ORIGINS.some(o => referer.startsWith(o))
 
-    // If the request is an iframe embed from a trusted origin, allow it through.
-    if (secFetchDest === 'iframe' && (isAllowedOrigin || isAllowedReferer)) {
-      // Add Content-Security-Policy frame-ancestors to prevent clickjacking
+    // Allow if the request comes from a trusted admin panel origin.
+    // This covers: initial iframe load, navigation within the iframe,
+    // and sub-resource fetches (scripts, styles, images, XHR/fetch).
+    // Browsers may send Origin, Referer, or both — checking either is enough.
+    if (isAllowedOrigin || isAllowedReferer) {
       const response = NextResponse.next()
       response.headers.set(
         'Content-Security-Policy',
         `frame-ancestors 'self' ${ALLOWED_ORIGINS.join(' ')}`
       )
-      // Remove X-Powered-By to avoid technology disclosure (V-007)
       response.headers.delete('X-Powered-By')
       return response
     }
@@ -37,7 +36,7 @@ export function middleware(request: NextRequest) {
     // inside the Payload admin UI). These are same-origin requests where the
     // Referer points to the CMS itself.
     const cmsOrigin = `${url.protocol}//${url.host}`
-    const isCmsInternalNav = referer && referer.startsWith(cmsOrigin) && secFetchDest === 'document'
+    const isCmsInternalNav = referer && referer.startsWith(cmsOrigin)
 
     if (isCmsInternalNav) {
       const response = NextResponse.next()
@@ -49,7 +48,20 @@ export function middleware(request: NextRequest) {
       return response
     }
 
-    // Everything else (direct browser access, spoofed headers, etc.) is blocked.
+    // Allow sub-resource requests (scripts, styles, images, fonts, etc.)
+    // These are needed for the CMS UI to render inside the iframe and often
+    // don't carry Origin or Referer headers.
+    if (secFetchDest && secFetchDest !== 'document' && secFetchDest !== 'iframe') {
+      const response = NextResponse.next()
+      response.headers.set(
+        'Content-Security-Policy',
+        `frame-ancestors 'self' ${ALLOWED_ORIGINS.join(' ')}`
+      )
+      response.headers.delete('X-Powered-By')
+      return response
+    }
+
+    // Everything else (direct browser access) is blocked.
     return new NextResponse(`
       <!DOCTYPE html>
       <html>

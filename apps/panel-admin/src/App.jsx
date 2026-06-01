@@ -32,6 +32,8 @@ import { AcquisitionsPage } from './pages/acquisitions';
 import { FormsPage } from './pages/forms';
 import PublicFormViewer from './pages/PublicFormViewer';
 
+import NotFound from './pages/NotFound';
+
 function App() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -59,8 +61,8 @@ function App() {
         }
     } : {});
 
-    return (
-<Routes>
+ return (
+        <Routes>
             {/* Public Routes */}
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -74,8 +76,6 @@ function App() {
             <Route element={<ProtectedRoute />}>
                 <Route element={<MainLayout />}>
                     <Route path="/dashboard" element={<Dashboard />} />
-                    {/* <Route path="/dashboard" element={<AcquisitionsPage />} /> */}
-
                     <Route path="/intakes" element={<IntakesPage />} />
                     <Route path="/intakes/new" element={<IntakeManualNewPage />} />
                     <Route path="/intakes/offers/:id" element={<OfferPage />} />
@@ -93,12 +93,17 @@ function App() {
                     <Route path="/settings" element={<SettingsPage />} />
                     <Route path="/analytics" element={<Analytics />} />
                     <Route path="/forms" element={<FormsPage />} />
-                    <Route path="/admin/forms/submissions/:id" element={<SubmissionViewer />} />
+                    <Route path="/forms/submissions/:id" element={<SubmissionViewer />} />
                     <Route path="/forms/proof/:id" element={<SubmissionViewer />} />
                     <Route path="/audit-logs" element={<AuditLogsPage />} />
-                    <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                    
+                    {/* Protected Catch All */}
+                    <Route path="*" element={<NotFound />} />
                 </Route>
             </Route>
+            
+            {/* Global Public Catch All */}
+            <Route path="*" element={<NotFound />} />
         </Routes>
     );
 }

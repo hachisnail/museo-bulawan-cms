@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FormRenderer from '../components/FormRenderer';
 
 // Placeholder images to ensure the project compiles
 const bgImage1 = "https://images.unsplash.com/photo-1518998053401-b15e84852986?q=80&w=2560&auto=format&fit=crop";
@@ -7,6 +8,8 @@ const block1 = "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=8
 const block2 = "https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?q=80&w=1000&auto=format&fit=crop";
 const na1 = "https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=1000&auto=format&fit=crop";
 const na2 = "https://images.unsplash.com/photo-1572953109213-3be62398eb95?q=80&w=1000&auto=format&fit=crop";
+
+const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
 
 // Mock Data for initial render
 const displayEvents = [
@@ -162,6 +165,31 @@ const articles = [...displayEvents, ...displayEvents];
           </div>
         </div>
 
+      </div>
+    </section>
+<div class="flex flex-col lg:flex-row-reverse items-center gap-16">
+          <div class="flex-1 w-full h-[30rem] bg-cover bg-center rounded-xl shadow-xl" style={`background-image: url('${na2}')`}></div>
+          <div class="flex-1 flex flex-col items-start text-left">
+            <h2 class="text-6xl font-bold text-black mb-6">YOUR SUPPORT MATTERS!</h2>
+            <p class="text-2xl text-gray-700 leading-relaxed mb-8 max-w-2xl">
+              Help us preserve and celebrate our heritage! Contribute to Museo Bulawan by donating or lending artifacts to enrich our collection and share history with future generations.
+            </p>
+            <a href="/about/support" class="border-2 border-black text-black hover:bg-black hover:text-white px-8 py-4 text-2xl font-bold rounded transition-colors">
+              SUPPORT US
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="feedback" class="w-screen bg-gray-50 min-h-screen py-24 flex items-center border-t border-gray-200">
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32">
+        <div class="text-center mb-16">
+          <h2 class="text-5xl md:text-7xl font-serif text-black mb-4">We Value Your Feedback</h2>
+          <p class="text-xl text-gray-600">Help us improve Museo Bulawan by sharing your experience.</p>
+        </div>
+        <FormRenderer client:only="react" slug="user-feedback" apiBaseUrl={API_URL} />
       </div>
     </section>
 

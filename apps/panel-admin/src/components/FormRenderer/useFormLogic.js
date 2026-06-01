@@ -169,10 +169,14 @@ export const useFormLogic = ({
             };
 
             const submissionData = {};
-            Object.entries(properties).forEach(([key, prop]) => {
+           Object.entries(properties).forEach(([key, prop]) => {
                 if (isFieldVisible(key, prop)) {
-                    const value = formData[key];
+                    let value = formData[key];
                     if (value !== '' && value !== undefined && value !== null) {
+                        // Cast variables expected to be integers to integers
+                        if (prop.type === 'integer' || prop.type === 'number') {
+                            value = Number(value);
+                        }
                         submissionData[key] = value;
                     }
                 }

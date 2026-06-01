@@ -2,7 +2,7 @@ node_modules
 package-lock.json
 
 .env
-apps/api/logs/combined.log
+apps/api/logs/*.log
 apps/minio/data/
 apps/minio/data/.minio.sys/buckets/.bloomcycle.bin/xl.meta
 apps/minio/data/.minio.sys/buckets/.usage-cache.bin/xl.meta

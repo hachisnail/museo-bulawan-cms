@@ -7,7 +7,8 @@ import {
     FileText, 
     Upload, 
     Mail, 
-    Key
+    Key,
+    Star
 } from 'lucide-react';
 
 const ExternalForm = (props) => {
@@ -258,7 +259,7 @@ const ExternalForm = (props) => {
                 </label>
 
                 <div className="flex-1">
-                    {prop.type === 'boolean' ? (
+                   {prop.type === 'boolean' ? (
                         <label className="flex items-center cursor-pointer py-2">
                             <input type="checkbox" name={key} checked={!!formData[key]} onChange={onInputChange} className="w-4 h-4 text-black border-gray-400 rounded-sm focus:ring-black" />
                             <span className="ml-3 text-sm text-gray-600">{prop.description || 'Confirmed'}</span>
@@ -278,6 +279,23 @@ const ExternalForm = (props) => {
                             <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-500">
                                 <ChevronRight className="w-4 h-4 rotate-90" />
                             </div>
+                        </div>
+                    ) : prop['ui:widget'] === 'rating' ? (
+                        <div className="flex items-center gap-2">
+                            {[1, 2, 3, 4, 5].map(star => (
+                                <button
+                                    key={star}
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setLocalError(null);
+                                        setFormData(prev => ({...prev, [key]: star}));
+                                    }}
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors border ${Number(formData[key]) >= star ? 'bg-black text-white border-black' : 'bg-white text-gray-300 border-gray-300 hover:border-black hover:text-black'}`}
+                                >
+                                    <Star className={`w-5 h-5 ${Number(formData[key]) >= star ? 'fill-current' : ''}`} />
+                                </button>
+                            ))}
                         </div>
                     ) : prop.format === 'textarea' ? (
                         <textarea

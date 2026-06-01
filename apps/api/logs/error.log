@@ -1392,3 +1392,7 @@ sql: UPDATE `accessions` SET dimensions = ?, materials = ?, research_notes = ?, 
     at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:49:23)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
     at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/test-form/submit","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-01 07:34:24 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
+2026-06-01 07:35:58 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
+2026-06-01 07:37:12 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
+2026-06-01 07:41:43 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}

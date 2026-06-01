@@ -22,7 +22,7 @@ export default function ForgotPassword() {
 
             const data = await res.json();
             
-            if (!res.ok) throw new Error(data.error || 'Failed to process request');
+            if (!res.ok) throw new Error(data.message || data.error || 'Failed to process request');
             
             setStatus({ type: 'success', message: data.message || 'Recovery email sent successfully.' });
             setEmail(''); // Clear the form on success

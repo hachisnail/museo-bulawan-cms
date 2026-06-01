@@ -30,7 +30,8 @@
     "@types/react-dom": "^19.2.3",
     "lucide-react": "^1.16.0",
     "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react-dom": "^19.2.5",
+    "recharts": "^3.8.1"
   },
   "overrides": {
     "vite": "^7.1.0",

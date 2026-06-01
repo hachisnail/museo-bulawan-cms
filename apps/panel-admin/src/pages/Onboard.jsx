@@ -30,7 +30,7 @@ export default function Onboard() {
             });
             
             const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Initialization failed.');
+            if (!res.ok) throw new Error(data.message || data.error || 'Initialization failed.');
             
             setIsSuccess(true);
             setMessage("System initialized! Redirecting to login...");

@@ -6,16 +6,7 @@ const nextConfig = {
   // Suppress punycode deprecation and other node warnings
   serverExternalPackages: ['sharp'],
   
-  webpack: (config, { webpack }) => {
-    // Fix: Ignore missing SCSS imports dynamically called by @payloadcms/ui packages
-    config.plugins.push(
-      new webpack.IgnorePlugin({
-        resourceRegExp: /\.scss$/,
-        contextRegExp: /@payloadcms[\\/]ui/
-      })
-    );
-    return config;
-  }
+  // Removed webpack config for now to debug scss issue
 }
 
 export default withPayload(nextConfig)

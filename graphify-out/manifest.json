@@ -20,8 +20,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\.claude\\settings.local.json": {
-    "mtime": 1779525820.0065887,
-    "ast_hash": "83ceeaf3447dcebce6b7a3e52fc69fae",
+    "mtime": 1780272046.4932306,
+    "ast_hash": "53298caf94f77b25db6590a9d1a5430a",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\.vscan\\findings.json": {
@@ -555,18 +555,18 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\next-env.d.ts": {
-    "mtime": 1779526565.1134248,
-    "ast_hash": "90426577ad8f38459f3e566411c85589",
+    "mtime": 1780272812.5607681,
+    "ast_hash": "c68600c0eb0d34c34bfc0f4b2547e31f",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\next.config.mjs": {
-    "mtime": 1779525820.1070404,
-    "ast_hash": "aab3218481a9e9b4f2577d5ddac36a91",
+    "mtime": 1780252617.9239807,
+    "ast_hash": "18af683bd3f55c9e35caf8f6bbf8445f",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\package.json": {
-    "mtime": 1779805934.495742,
-    "ast_hash": "00de8c71abc86ca5bae4de33296992e6",
+    "mtime": 1780272436.3170686,
+    "ast_hash": "d28611af454297339da39f3ffb2a9882",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\tsconfig.json": {
@@ -575,8 +575,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\src\\middleware.ts": {
-    "mtime": 1779808546.458316,
-    "ast_hash": "ff77a05b2ed17c0f673259c92cfe63b0",
+    "mtime": 1780272046.4979942,
+    "ast_hash": "3600212e5a5aea17f4a1f9da3b765ec5",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\src\\payload-types.ts": {
@@ -585,8 +585,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\src\\payload.config.ts": {
-    "mtime": 1779808546.461535,
-    "ast_hash": "6d89f462ee49446cb259bc4ff1fde0cd",
+    "mtime": 1780272046.4990568,
+    "ast_hash": "b67f61d440da9234cee067619bb6de79",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\src\\app\\(payload)\\layout.tsx": {
@@ -600,8 +600,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\src\\app\\(payload)\\admin\\importMap.js": {
-    "mtime": 1779808546.4536796,
-    "ast_hash": "3adcd1fdbe65d817bc0c2636d3b7f673",
+    "mtime": 1780272046.4964664,
+    "ast_hash": "e7476d21ba13ffeb58c2edff6c002982",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\src\\app\\(payload)\\admin\\[[...segments]]\\not-found.tsx": {
@@ -685,8 +685,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\.astro\\types.d.ts": {
-    "mtime": 1780249500.489045,
-    "ast_hash": "f3d48b2aa569815a445d3509aa161559",
+    "mtime": 1780272846.765271,
+    "ast_hash": "72c584e3bd8b5f007b2beb870517b437",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\.vscode\\extensions.json": {
@@ -730,8 +730,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\src\\pages\\index.astro": {
-    "mtime": 1777967973.5232656,
-    "ast_hash": "01ce79809abc445ceb6c2b83dbe859de",
+    "mtime": 1780251251.157279,
+    "ast_hash": "a2ab9b7708a9eedb56f9434611c5627c",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\src\\pages\\articles\\[slug].astro": {
@@ -760,13 +760,13 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\App.jsx": {
-    "mtime": 1780249071.5050275,
-    "ast_hash": "4912ed6e752b86a8b4af2739246c253a",
+    "mtime": 1780272046.5013812,
+    "ast_hash": "64f7073993cc5237ba69b8c0e4e703d6",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\main.jsx": {
-    "mtime": 1777567706.3929832,
-    "ast_hash": "941477ef9d71b095eb64c62dee99fd56",
+    "mtime": 1780272046.504923,
+    "ast_hash": "d4b821a50732d37ed8061662669095ae",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\components\\DocxPreview.jsx": {
@@ -775,8 +775,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\components\\MainLayout.jsx": {
-    "mtime": 1780249065.9615579,
-    "ast_hash": "7267f3e65923d2bb55a99bcfc5265731",
+    "mtime": 1780272046.5024786,
+    "ast_hash": "fe2bf0adb4b15f9312526b5f68f3b0a0",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\components\\Modal.jsx": {
@@ -790,8 +790,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\components\\FormRenderer\\ExternalForm.jsx": {
-    "mtime": 1780246337.4740791,
-    "ast_hash": "55d64d2d8b485ad617d6519a0f125287",
+    "mtime": 1780251062.5132408,
+    "ast_hash": "6900041830d0d668c817de7988ecc17b",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\components\\FormRenderer\\index.jsx": {
@@ -805,8 +805,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\components\\FormRenderer\\useFormLogic.js": {
-    "mtime": 1777525107.758492,
-    "ast_hash": "379080351ef63db2fe21acac4afdf50e",
+    "mtime": 1780250967.29443,
+    "ast_hash": "64fb03ffdf525cb08da2afc46c280840",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\context\\authContext.jsx": {
@@ -890,8 +890,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\pages\\SubmissionViewer.jsx": {
-    "mtime": 1777527118.6128187,
-    "ast_hash": "7f4204ad159c546538e2a2ffabc12b30",
+    "mtime": 1780272040.9379244,
+    "ast_hash": "0290bfeb7c569aad4a49d9f94f99da7f",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-visitor\\astro.config.mjs": {
@@ -920,7 +920,7 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-visitor\\.astro\\types.d.ts": {
-    "mtime": 1780247253.392106,
+    "mtime": 1780272845.898021,
     "ast_hash": "72c584e3bd8b5f007b2beb870517b437",
     "semantic_hash": ""
   },
@@ -1099,61 +1099,6 @@
     "ast_hash": "7f4de6626e9fa491597cf8cff00c5ca5",
     "semantic_hash": ""
   },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\api_documentation.md": {
-    "mtime": 1777434762.7451608,
-    "ast_hash": "4d928bdf927a5a3a9baa0b499406a4ee",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\api_lifecycle_audit.md": {
-    "mtime": 1777394930.016369,
-    "ast_hash": "93652e14e6ab8627cd4f48cb9ea7db22",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\api_routes_map.md": {
-    "mtime": 1779468727.997373,
-    "ast_hash": "db7a8f71a1f2a0bdaf3c4c30ecc14a2e",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\api_routing_guide.md": {
-    "mtime": 1779522250.3962307,
-    "ast_hash": "b65c27dc1523c0605c23dd7c37f2d185",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\archival_lifecycle_handbook.md": {
-    "mtime": 1777559036.2488558,
-    "ast_hash": "ac24021a644ce6aa282751801947e6d5",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\artifact_lifecycle.md": {
-    "mtime": 1778057498.2609377,
-    "ast_hash": "0e788401b0608f3894e781fc2401f584",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\complete_api_reference.md": {
-    "mtime": 1777559179.6303904,
-    "ast_hash": "1e7c38d74255a0e73bb4791465d17f28",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\payload_cms_astro_integration.md": {
-    "mtime": 1779525820.3969371,
-    "ast_hash": "ff02b1139b8862a6c9c6055da575c41e",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\plan.md": {
-    "mtime": 1779525820.3989513,
-    "ast_hash": "d3c789ec70ebdaeecf02c8084528eee6",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\stack.txt": {
-    "mtime": 1779525820.400952,
-    "ast_hash": "75c2df6c09ae4586b5fb0c688c6f6344",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\to_do.md": {
-    "mtime": 1779525820.402949,
-    "ast_hash": "011762f6d1ba7fd9d4d82eddc09279bb",
-    "semantic_hash": ""
-  },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\.agents\\rules\\graphify.md": {
     "mtime": 1780200090.7301447,
     "ast_hash": "a0e4d192b9e2e17256124dbfc8e24e6a",
@@ -1222,21 +1167,6 @@
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-visitor\\public\\favicon.svg": {
     "mtime": 1776877995.0,
     "ast_hash": "8c13f40658976ea1dfb8ba37a8be0e8d",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\debug_placeholders.js": {
-    "mtime": 1780203495.5908756,
-    "ast_hash": "6c46364aef8ac7cae6fd9f3ffa1fac2a",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\find_docx_placeholders.js": {
-    "mtime": 1780203461.770566,
-    "ast_hash": "d768ca4450c6888f1a5ee75b222db67d",
-    "semantic_hash": ""
-  },
-  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\print_docx_text.js": {
-    "mtime": 1780203472.1026378,
-    "ast_hash": "ea532adcf52d21ba1b3303d00036a597",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\components\\Intakes\\IntakeDetail.jsx": {
@@ -1325,8 +1255,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\src\\components\\FormRenderer\\ExternalForm.jsx": {
-    "mtime": 1780246344.4810903,
-    "ast_hash": "9248cab25d2849f5e6f1d7dd83424a3b",
+    "mtime": 1780251271.7566736,
+    "ast_hash": "6900041830d0d668c817de7988ecc17b",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\src\\components\\FormRenderer\\index.jsx": {
@@ -1340,8 +1270,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\src\\components\\FormRenderer\\useFormLogic.js": {
-    "mtime": 1780237243.8058507,
-    "ast_hash": "379080351ef63db2fe21acac4afdf50e",
+    "mtime": 1780251286.9694,
+    "ast_hash": "64fb03ffdf525cb08da2afc46c280840",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\pages\\[D]Intakes.jsx": {
@@ -1450,8 +1380,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\pages\\forms\\pages\\FormsIndex.jsx": {
-    "mtime": 1780249055.097099,
-    "ast_hash": "6bb93f1129b0a1a9dfee5378539536f0",
+    "mtime": 1780252781.149755,
+    "ast_hash": "c68a9536dad605265735199196e61ed7",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\src\\pages\\about\\support.astro": {
@@ -1467,6 +1397,91 @@
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\src\\pages\\forms\\[slug].astro": {
     "mtime": 1780249459.8050041,
     "ast_hash": "d4a26c97d164a4f5fad022700fd150a1",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\src\\providers\\RouteListenerProvider.tsx": {
+    "mtime": 1780272046.50016,
+    "ast_hash": "4b6f5be51191df63e3f00b80d8788c6c",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\hooks\\useUmami.js": {
+    "mtime": 1780272046.503606,
+    "ast_hash": "41347bbfd8547c43b1a636a99ce5c9f1",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-admin\\src\\pages\\NotFound.jsx": {
+    "mtime": 1780252855.3687224,
+    "ast_hash": "f76932b1931a7fd0b31e5dcb22d068ef",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\debug_placeholders.js": {
+    "mtime": 1780203495.5908756,
+    "ast_hash": "6c46364aef8ac7cae6fd9f3ffa1fac2a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\find_docx_placeholders.js": {
+    "mtime": 1780203461.770566,
+    "ast_hash": "d768ca4450c6888f1a5ee75b222db67d",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\print_docx_text.js": {
+    "mtime": 1780203472.1026378,
+    "ast_hash": "ea532adcf52d21ba1b3303d00036a597",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\api_documentation.md": {
+    "mtime": 1777434762.7451608,
+    "ast_hash": "4d928bdf927a5a3a9baa0b499406a4ee",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\api_lifecycle_audit.md": {
+    "mtime": 1777394930.016369,
+    "ast_hash": "93652e14e6ab8627cd4f48cb9ea7db22",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\api_routes_map.md": {
+    "mtime": 1779468727.997373,
+    "ast_hash": "db7a8f71a1f2a0bdaf3c4c30ecc14a2e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\api_routing_guide.md": {
+    "mtime": 1779522250.3962307,
+    "ast_hash": "b65c27dc1523c0605c23dd7c37f2d185",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\archival_lifecycle_handbook.md": {
+    "mtime": 1777559036.2488558,
+    "ast_hash": "ac24021a644ce6aa282751801947e6d5",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\artifact_lifecycle.md": {
+    "mtime": 1778057498.2609377,
+    "ast_hash": "0e788401b0608f3894e781fc2401f584",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\complete_api_reference.md": {
+    "mtime": 1777559179.6303904,
+    "ast_hash": "1e7c38d74255a0e73bb4791465d17f28",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\payload_cms_astro_integration.md": {
+    "mtime": 1779525820.3969371,
+    "ast_hash": "ff02b1139b8862a6c9c6055da575c41e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\plan.md": {
+    "mtime": 1779525820.3989513,
+    "ast_hash": "d3c789ec70ebdaeecf02c8084528eee6",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\stack.txt": {
+    "mtime": 1779525820.400952,
+    "ast_hash": "75c2df6c09ae4586b5fb0c688c6f6344",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\misc\\to_do.md": {
+    "mtime": 1779525820.402949,
+    "ast_hash": "011762f6d1ba7fd9d4d82eddc09279bb",
     "semantic_hash": ""
   }
 }

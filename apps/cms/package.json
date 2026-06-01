@@ -16,11 +16,13 @@
     "@payloadcms/richtext-lexical": "^3.0.0",
     "cross-env": "^7.0.3",
     "graphql": "^16.8.1",
-   "next": "15.4.11",
+    "next": "15.4.11",
     "payload": "^3.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sharp": "^0.32.6"
+    "sass": "^1.100.0",
+    "sharp": "^0.32.6",
+    "simple-swizzle": "^0.2.4"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

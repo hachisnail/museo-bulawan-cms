@@ -1,16 +1,16 @@
 # Graph Report - museo-bulawan-cms  (2026-06-02)
 
 ## Corpus Check
-- 315 files · ~173,718 words
+- 315 files · ~174,901 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1633 nodes · 2425 edges · 151 communities (125 shown, 26 thin omitted)
+- 1633 nodes · 2428 edges · 151 communities (126 shown, 25 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `2f6edb47`
+- Built from commit: `a3f1b688`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -149,11 +149,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (151 total, 26 thin omitted)
+## Communities (151 total, 25 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.14
-Nodes (21): accessionService, baseService, constituentService, exhibitionService, intakeService, inventoryService, loanService, locationService (+13 more)
+Cohesion: 0.18
+Nodes (10): accessionService, baseService, exhibitionService, intakeService, inventoryService, loanService, locationService, valuationService (+2 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.11
@@ -424,8 +424,8 @@ Cohesion: 0.40
 Nodes (5): 3. Things in the doc that are slightly misleading, A. §1 calls Payload a "microservice", B. §2.C "delete `apps/cms/data/payload.db`", C. §2.A "Payload automatically saves an empty draft when the create page opens", D. §3.B "slug || id"
 
 ### Community 129 - "Community 129"
-Cohesion: 0.14
-Nodes (10): errorHandler(), errorMessages, auditService, pbService, lifecycleService, managementService, securityService, customFormat (+2 more)
+Cohesion: 0.17
+Nodes (10): app, corsOptions, csrfProtection(), errorHandler(), errorMessages, pbService, customFormat, logger (+2 more)
 
 ### Community 130 - "Community 130"
 Cohesion: 0.21
@@ -448,48 +448,52 @@ Cohesion: 0.50
 Nodes (4): defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES
 
 ### Community 137 - "Community 137"
-Cohesion: 0.14
-Nodes (15): app, corsOptions, pool, env, envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource() (+7 more)
+Cohesion: 0.20
+Nodes (10): startServer(), initMariaDB(), envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), getPrivateFile(), resourceMap (+2 more)
 
 ### Community 139 - "Community 139"
-Cohesion: 0.29
-Nodes (6): definitionService, queryService, ajv, submissionService, verificationService, otpStore
+Cohesion: 0.32
+Nodes (4): definitionService, queryService, verificationService, otpStore
 
 ### Community 140 - "Community 140"
-Cohesion: 0.14
-Nodes (11): startServer(), db, initMariaDB(), loginSchema, compliancePipeline, donationPipeline, run(), acquisitionService (+3 more)
+Cohesion: 0.15
+Nodes (13): constituentService, db, pool, ajv, submissionService, compliancePipeline, donationPipeline, acquisitionService (+5 more)
 
 ### Community 145 - "Community 145"
 Cohesion: 0.13
 Nodes (8): AppointmentDetail(), getApptStatus(), getVisitorName(), AppointmentsIndex(), columns, getApptStatus(), STATUS_STYLE, normalizeStatus()
+
+### Community 147 - "Community 147"
+Cohesion: 0.15
+Nodes (12): __dirname, documentService, __filename, NotificationService, ALLOWED_TABLES, CONTRACT_TYPE_MAP, getContractType(), getLegalStatus() (+4 more)
 
 ### Community 148 - "Community 148"
 Cohesion: 0.47
 Nodes (4): handleDonationUpload(), handleUpload(), router, upload
 
 ### Community 149 - "Community 149"
-Cohesion: 0.83
-Nodes (3): generateAccessionNumber(), generateCatalogNumber(), nextSequenceValue()
+Cohesion: 0.23
+Nodes (8): env, loginSchema, identityService, lifecycleService, managementService, securityService, sendEmail(), sendEmailWithRetry()
 
 ## Knowledge Gaps
 - **800 isolated node(s):** `version`, `records`, `fired`, `falsePositive`, `precision` (+795 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **25 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `PocketBaseService` connect `Community 26` to `Community 129`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
-- **Why does `logger` connect `Community 129` to `Community 0`, `Community 137`, `Community 139`, `Community 140`, `Community 149`?**
+- **Why does `logger` connect `Community 129` to `Community 0`, `Community 137`, `Community 139`, `Community 140`, `Community 147`, `Community 149`?**
   _High betweenness centrality (0.007) - this node is a cross-community bridge._
 - **What connects `version`, `records`, `fired` to the rest of the system?**
   _800 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.14304993252361672 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.10887096774193548 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
   _Cohesion score 0.04081632653061224 - nodes in this community are weakly interconnected._
 - **Should `Community 4` be split into smaller, more focused modules?**
   _Cohesion score 0.05410628019323672 - nodes in this community are weakly interconnected._
+- **Should `Community 5` be split into smaller, more focused modules?**
+  _Cohesion score 0.04878048780487805 - nodes in this community are weakly interconnected._

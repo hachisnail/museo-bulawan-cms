@@ -1134,7 +1134,7 @@
       "source_file": "apps/api/server.js",
       "source_location": "L8",
       "id": "api_server_startserver",
-      "community": 140,
+      "community": 137,
       "norm_label": "startserver()"
     },
     {
@@ -1188,7 +1188,7 @@
       "source_file": "apps/api/scratch/init_db.js",
       "source_location": "L1",
       "id": "apps_api_scratch_init_db_js",
-      "community": 140,
+      "community": 137,
       "norm_label": "init_db.js"
     },
     {
@@ -1197,7 +1197,7 @@
       "source_file": "apps/api/scratch/init_db.js",
       "source_location": "L4",
       "id": "scratch_init_db_run",
-      "community": 140,
+      "community": 137,
       "norm_label": "run()"
     },
     {
@@ -1224,7 +1224,7 @@
       "source_file": "apps/api/scratch/manual_cleanup.js",
       "source_location": "L1",
       "id": "apps_api_scratch_manual_cleanup_js",
-      "community": 137,
+      "community": 140,
       "norm_label": "manual_cleanup.js"
     },
     {
@@ -1233,7 +1233,7 @@
       "source_file": "apps/api/scratch/manual_cleanup.js",
       "source_location": "L4",
       "id": "scratch_manual_cleanup_fullmaintenance",
-      "community": 137,
+      "community": 140,
       "norm_label": "fullmaintenance()"
     },
     {
@@ -1278,7 +1278,7 @@
       "source_file": "apps/api/src/app.js",
       "source_location": "L1",
       "id": "apps_api_src_app_js",
-      "community": 137,
+      "community": 129,
       "norm_label": "app.js"
     },
     {
@@ -1287,7 +1287,7 @@
       "source_file": "apps/api/src/app.js",
       "source_location": "L20",
       "id": "apps_api_src_app_js_src_app_app",
-      "community": 137,
+      "community": 129,
       "norm_label": "app"
     },
     {
@@ -1341,7 +1341,7 @@
       "source_file": "apps/api/src/config/cors.js",
       "source_location": "L1",
       "id": "apps_api_src_config_cors_js",
-      "community": 137,
+      "community": 129,
       "norm_label": "cors.js"
     },
     {
@@ -1350,7 +1350,7 @@
       "source_file": "apps/api/src/config/cors.js",
       "source_location": "L4",
       "id": "config_cors_corsoptions",
-      "community": 137,
+      "community": 129,
       "norm_label": "corsoptions"
     },
     {
@@ -1359,7 +1359,7 @@
       "source_file": "apps/api/src/config/db.js",
       "source_location": "L1",
       "id": "apps_api_src_config_db_js",
-      "community": 137,
+      "community": 140,
       "norm_label": "db.js"
     },
     {
@@ -1368,7 +1368,7 @@
       "source_file": "apps/api/src/config/db.js",
       "source_location": "L5",
       "id": "config_db_pool",
-      "community": 137,
+      "community": 140,
       "norm_label": "pool"
     },
     {
@@ -1386,7 +1386,7 @@
       "source_file": "apps/api/src/config/dbInit.js",
       "source_location": "L1",
       "id": "apps_api_src_config_dbinit_js",
-      "community": 140,
+      "community": 137,
       "norm_label": "dbinit.js"
     },
     {
@@ -1395,7 +1395,7 @@
       "source_file": "apps/api/src/config/dbInit.js",
       "source_location": "L10",
       "id": "config_dbinit_initmariadb",
-      "community": 140,
+      "community": 137,
       "norm_label": "initmariadb()"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_file": "apps/api/src/config/env.js",
       "source_location": "L58",
       "id": "config_env_env",
-      "community": 137,
+      "community": 149,
       "norm_label": "env"
     },
     {
@@ -1449,7 +1449,7 @@
       "source_file": "apps/api/src/config/passport.js",
       "source_location": "L1",
       "id": "apps_api_src_config_passport_js",
-      "community": 140,
+      "community": 149,
       "norm_label": "passport.js"
     },
     {
@@ -1458,7 +1458,7 @@
       "source_file": "apps/api/src/config/passport.js",
       "source_location": "L8",
       "id": "config_passport_loginschema",
-      "community": 140,
+      "community": 149,
       "norm_label": "loginschema"
     },
     {
@@ -1620,7 +1620,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_authcontroller_js",
-      "community": 129,
+      "community": 0,
       "norm_label": "authcontroller.js"
     },
     {
@@ -1629,7 +1629,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L7",
       "id": "controllers_authcontroller_login",
-      "community": 129,
+      "community": 0,
       "norm_label": "login()"
     },
     {
@@ -1638,7 +1638,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L57",
       "id": "controllers_authcontroller_logout",
-      "community": 129,
+      "community": 0,
       "norm_label": "logout()"
     },
     {
@@ -1647,7 +1647,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L88",
       "id": "controllers_authcontroller_check",
-      "community": 129,
+      "community": 0,
       "norm_label": "check()"
     },
     {
@@ -1656,7 +1656,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L97",
       "id": "controllers_authcontroller_loginvisitor",
-      "community": 129,
+      "community": 0,
       "norm_label": "loginvisitor()"
     },
     {
@@ -2205,7 +2205,7 @@
       "source_file": "apps/api/src/middlewares/csrfHandler.js",
       "source_location": "L1",
       "id": "apps_api_src_middlewares_csrfhandler_js",
-      "community": 137,
+      "community": 129,
       "norm_label": "csrfhandler.js"
     },
     {
@@ -2214,7 +2214,7 @@
       "source_file": "apps/api/src/middlewares/csrfHandler.js",
       "source_location": "L5",
       "id": "middlewares_csrfhandler_csrfprotection",
-      "community": 137,
+      "community": 129,
       "norm_label": "csrfprotection()"
     },
     {
@@ -2700,7 +2700,7 @@
       "source_file": "apps/api/src/services/auditService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_auditservice_js",
-      "community": 129,
+      "community": 0,
       "norm_label": "auditservice.js"
     },
     {
@@ -2709,7 +2709,7 @@
       "source_file": "apps/api/src/services/auditService.js",
       "source_location": "L5",
       "id": "services_auditservice_auditservice",
-      "community": 129,
+      "community": 0,
       "norm_label": "auditservice"
     },
     {
@@ -2718,7 +2718,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_documentservice_js",
-      "community": 0,
+      "community": 147,
       "norm_label": "documentservice.js"
     },
     {
@@ -2727,7 +2727,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L9",
       "id": "services_documentservice_filename",
-      "community": 0,
+      "community": 147,
       "norm_label": "__filename"
     },
     {
@@ -2736,7 +2736,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L10",
       "id": "services_documentservice_dirname",
-      "community": 0,
+      "community": 147,
       "norm_label": "__dirname"
     },
     {
@@ -2745,7 +2745,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L18",
       "id": "services_documentservice_documentservice",
-      "community": 0,
+      "community": 147,
       "norm_label": "documentservice"
     },
     {
@@ -2790,7 +2790,7 @@
       "source_file": "apps/api/src/services/maintenanceService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_maintenanceservice_js",
-      "community": 137,
+      "community": 140,
       "norm_label": "maintenanceservice.js"
     },
     {
@@ -2799,7 +2799,7 @@
       "source_file": "apps/api/src/services/maintenanceService.js",
       "source_location": "L13",
       "id": "services_maintenanceservice_maintenanceservice",
-      "community": 137,
+      "community": 140,
       "norm_label": "maintenanceservice"
     },
     {
@@ -2808,7 +2808,7 @@
       "source_file": "apps/api/src/services/mediaService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_mediaservice_js",
-      "community": 137,
+      "community": 140,
       "norm_label": "mediaservice.js"
     },
     {
@@ -2817,7 +2817,7 @@
       "source_file": "apps/api/src/services/mediaService.js",
       "source_location": "L8",
       "id": "services_mediaservice_mediaservice",
-      "community": 137,
+      "community": 140,
       "norm_label": "mediaservice"
     },
     {
@@ -3033,7 +3033,7 @@
       "source_file": "apps/api/src/services/userService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_userservice_js",
-      "community": 140,
+      "community": 149,
       "norm_label": "userservice.js"
     },
     {
@@ -3051,7 +3051,7 @@
       "source_file": "apps/api/src/services/acquisition/accessionService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_accessionservice_js",
-      "community": 0,
+      "community": 147,
       "norm_label": "accessionservice.js"
     },
     {
@@ -3087,7 +3087,7 @@
       "source_file": "apps/api/src/services/acquisition/constituentService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_constituentservice_js",
-      "community": 0,
+      "community": 140,
       "norm_label": "constituentservice.js"
     },
     {
@@ -3096,7 +3096,7 @@
       "source_file": "apps/api/src/services/acquisition/constituentService.js",
       "source_location": "L12",
       "id": "acquisition_constituentservice_constituentservice",
-      "community": 0,
+      "community": 140,
       "norm_label": "constituentservice"
     },
     {
@@ -3141,7 +3141,7 @@
       "source_file": "apps/api/src/services/acquisition/intakeService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_intakeservice_js",
-      "community": 0,
+      "community": 149,
       "norm_label": "intakeservice.js"
     },
     {
@@ -3285,7 +3285,7 @@
       "source_file": "apps/api/src/services/form/submissionService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_submissionservice_js",
-      "community": 139,
+      "community": 140,
       "norm_label": "submissionservice.js"
     },
     {
@@ -3294,7 +3294,7 @@
       "source_file": "apps/api/src/services/form/submissionService.js",
       "source_location": "L12",
       "id": "form_submissionservice_ajv",
-      "community": 139,
+      "community": 140,
       "norm_label": "ajv"
     },
     {
@@ -3303,7 +3303,7 @@
       "source_file": "apps/api/src/services/form/submissionService.js",
       "source_location": "L19",
       "id": "form_submissionservice_submissionservice",
-      "community": 139,
+      "community": 140,
       "norm_label": "submissionservice"
     },
     {
@@ -3366,7 +3366,7 @@
       "source_file": "apps/api/src/services/user/identityService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_identityservice_js",
-      "community": 129,
+      "community": 149,
       "norm_label": "identityservice.js"
     },
     {
@@ -3375,7 +3375,7 @@
       "source_file": "apps/api/src/services/user/identityService.js",
       "source_location": "L11",
       "id": "user_identityservice_identityservice",
-      "community": 140,
+      "community": 149,
       "norm_label": "identityservice"
     },
     {
@@ -3384,7 +3384,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_lifecycleservice_js",
-      "community": 129,
+      "community": 149,
       "norm_label": "lifecycleservice.js"
     },
     {
@@ -3393,7 +3393,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L12",
       "id": "user_lifecycleservice_generatetoken",
-      "community": 129,
+      "community": 149,
       "norm_label": "generatetoken()"
     },
     {
@@ -3402,7 +3402,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L19",
       "id": "user_lifecycleservice_lifecycleservice",
-      "community": 129,
+      "community": 149,
       "norm_label": "lifecycleservice"
     },
     {
@@ -3420,7 +3420,7 @@
       "source_file": "apps/api/src/services/user/managementService.js",
       "source_location": "L12",
       "id": "user_managementservice_managementservice",
-      "community": 129,
+      "community": 149,
       "norm_label": "managementservice"
     },
     {
@@ -3429,7 +3429,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_securityservice_js",
-      "community": 129,
+      "community": 149,
       "norm_label": "securityservice.js"
     },
     {
@@ -3438,7 +3438,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L9",
       "id": "user_securityservice_generatetoken",
-      "community": 129,
+      "community": 149,
       "norm_label": "generatetoken()"
     },
     {
@@ -3447,7 +3447,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L17",
       "id": "user_securityservice_securityservice",
-      "community": 129,
+      "community": 149,
       "norm_label": "securityservice"
     },
     {
@@ -3627,7 +3627,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_constants_js",
-      "community": 0,
+      "community": 147,
       "norm_label": "constants.js"
     },
     {
@@ -3636,7 +3636,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L13",
       "id": "utils_constants_contract_type_map",
-      "community": 0,
+      "community": 147,
       "norm_label": "contract_type_map"
     },
     {
@@ -3645,7 +3645,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L25",
       "id": "utils_constants_legal_status_map",
-      "community": 0,
+      "community": 147,
       "norm_label": "legal_status_map"
     },
     {
@@ -3654,7 +3654,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L30",
       "id": "utils_constants_getlegalstatus",
-      "community": 0,
+      "community": 147,
       "norm_label": "getlegalstatus()"
     },
     {
@@ -3663,7 +3663,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L34",
       "id": "utils_constants_getcontracttype",
-      "community": 0,
+      "community": 147,
       "norm_label": "getcontracttype()"
     },
     {
@@ -3672,7 +3672,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L45",
       "id": "utils_constants_allowed_tables",
-      "community": 0,
+      "community": 147,
       "norm_label": "allowed_tables"
     },
     {
@@ -3771,7 +3771,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_mailer_js",
-      "community": 0,
+      "community": 149,
       "norm_label": "mailer.js"
     },
     {
@@ -3780,7 +3780,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L18",
       "id": "utils_mailer_sendemail",
-      "community": 0,
+      "community": 149,
       "norm_label": "sendemail()"
     },
     {
@@ -3789,7 +3789,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L54",
       "id": "utils_mailer_sendemailwithretry",
-      "community": 0,
+      "community": 149,
       "norm_label": "sendemailwithretry()"
     },
     {
@@ -3798,7 +3798,7 @@
       "source_file": "apps/api/src/utils/mutex.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_mutex_js",
-      "community": 0,
+      "community": 140,
       "norm_label": "mutex.js"
     },
     {
@@ -3843,7 +3843,7 @@
       "source_file": "apps/api/src/utils/mutex.js",
       "source_location": "L37",
       "id": "utils_mutex_globalmutex",
-      "community": 0,
+      "community": 140,
       "norm_label": "globalmutex"
     },
     {
@@ -3978,7 +3978,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_redisclient_js",
-      "community": 137,
+      "community": 129,
       "norm_label": "redisclient.js"
     },
     {
@@ -3987,7 +3987,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L5",
       "id": "utils_redisclient_redismanager",
-      "community": 137,
+      "community": 129,
       "norm_label": "redismanager"
     },
     {
@@ -3996,7 +3996,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L6",
       "id": "utils_redisclient_redismanager_constructor",
-      "community": 137,
+      "community": 129,
       "norm_label": ".constructor()"
     },
     {
@@ -4005,7 +4005,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L15",
       "id": "utils_redisclient_redismanager_getclient",
-      "community": 137,
+      "community": 129,
       "norm_label": ".getclient()"
     },
     {
@@ -4014,7 +4014,7 @@
       "source_file": "apps/api/src/utils/redisCLient.js",
       "source_location": "L40",
       "id": "utils_redisclient_redismanager_getworkerclient",
-      "community": 137,
+      "community": 129,
       "norm_label": ".getworkerclient()"
     },
     {
@@ -4023,7 +4023,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_sequencegenerator_js",
-      "community": 149,
+      "community": 147,
       "norm_label": "sequencegenerator.js"
     },
     {
@@ -4032,7 +4032,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L28",
       "id": "utils_sequencegenerator_nextsequencevalue",
-      "community": 149,
+      "community": 147,
       "norm_label": "nextsequencevalue()"
     },
     {
@@ -4041,7 +4041,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L59",
       "id": "utils_sequencegenerator_generateaccessionnumber",
-      "community": 149,
+      "community": 147,
       "norm_label": "generateaccessionnumber()"
     },
     {
@@ -4050,7 +4050,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L72",
       "id": "utils_sequencegenerator_generatecatalognumber",
-      "community": 149,
+      "community": 147,
       "norm_label": "generatecatalognumber()"
     },
     {
@@ -4221,7 +4221,7 @@
       "source_file": "apps/api/src/utils/uploadQueue.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_uploadqueue_js",
-      "community": 137,
+      "community": 129,
       "norm_label": "uploadqueue.js"
     },
     {
@@ -28197,9 +28197,9 @@
       "source_file": "apps/landing/src/pages/forms/embed/[id].astro",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_landing_src_pages_forms_embed_id_astro",
-      "target": "apps_landing_src_components_formrenderer_index_jsx",
-      "confidence_score": 1.0
+      "target": "apps_landing_src_components_formrenderer_index_jsx"
     },
     {
       "relation": "imports_from",
@@ -28307,6 +28307,17 @@
     },
     {
       "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/index.astro",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "apps_landing_src_pages_index_astro",
+      "target": "apps_landing_src_components_ui_footer_astro",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "apps/landing/src/components/ui/Nav.astro",
       "confidence_score": 1.0,
@@ -28333,6 +28344,17 @@
       "confidence_score": 1.0,
       "source": "apps_landing_src_layouts_baselayout_astro",
       "target": "apps_landing_src_components_ui_header_astro"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/index.astro",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "apps_landing_src_pages_index_astro",
+      "target": "apps_landing_src_components_ui_header_astro",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -28374,6 +28396,17 @@
       "confidence_score": 1.0,
       "source": "apps_landing_src_layouts_baselayout_astro",
       "target": "apps_landing_src_components_ui_nav_astro"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/index.astro",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "apps_landing_src_pages_index_astro",
+      "target": "apps_landing_src_components_ui_nav_astro",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -28446,9 +28479,9 @@
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "apps/landing/src/pages/forms/embed/[id].astro",
+      "confidence_score": 1.0,
       "source": "apps_landing_src_pages_forms_embed_id_astro",
-      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_styles_global_css",
-      "confidence_score": 1.0
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_styles_global_css"
     },
     {
       "relation": "contains",
@@ -28480,9 +28513,9 @@
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "apps/landing/src/pages/forms/embed/[id].astro",
+      "confidence_score": 1.0,
       "source": "apps_landing_src_pages_forms_embed_id_astro",
-      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_components_formrenderer",
-      "confidence_score": 1.0
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_components_formrenderer"
     },
     {
       "relation": "imports_from",
@@ -40021,5 +40054,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2f6edb47b22b82cbf664cafb06ccf5027add9ba5"
+  "built_at_commit": "a3f1b68883301569bb3900898f600a425123ee08"
 }

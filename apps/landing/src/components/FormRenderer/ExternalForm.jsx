@@ -434,37 +434,46 @@ const ExternalForm = (props) => {
                                 </button>
                             ))}
                         </div>
-                    ) : prop['ui:widget'] === 'file' || prop.format === 'file' ? (
-                        <div className="space-y-4">
-                            <label 
-                                className="w-full border border-dashed border-gray-400 rounded-sm p-8 flex flex-col items-center justify-center gap-4 hover:border-black hover:bg-gray-50 transition-all cursor-pointer"
-                                onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                                onDrop={(e) => { 
-                                    e.preventDefault(); 
-                                    e.stopPropagation(); 
-                                    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                                        handleFileChange({ target: { files: e.dataTransfer.files }}); 
-                                    }
-                                }}
-                            >
-                                <Upload className="w-6 h-6 text-gray-400" />
-                                <div className="text-[11px] font-bold uppercase tracking-widest text-gray-600">Drag & Drop or Click to Upload</div>
-                                <input type="file" multiple onChange={handleFileChange} className="hidden" />
-                            </label>
-                            {files.length > 0 && (
-                                <div className="grid grid-cols-1 gap-2">
-                                    {files.map((f, i) => (
-                                        <div key={i} className="flex items-center justify-between p-3 border border-gray-200 rounded-sm">
-                                            <div className="flex items-center gap-3 overflow-hidden">
-                                                <FileText className="w-4 h-4 text-gray-400 shrink-0" />
-                                                <span className="text-xs font-medium text-black truncate">{f.name}</span>
-                                            </div>
-                                            <button type="button" onClick={() => removeFile(i)} className="text-gray-400 hover:text-red-500 transition-colors ml-2">✕</button>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
+// Replace the existing file widget block with this:
+) : prop['ui:widget'] === 'file' || prop.format === 'file' ? (
+    <div className="space-y-4">
+        <label 
+            className="w-full border border-dashed border-gray-400 rounded-sm p-8 flex flex-col items-center justify-center gap-4 hover:border-black hover:bg-gray-50 transition-all cursor-pointer"
+            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            onDrop={(e) => { 
+                e.preventDefault(); 
+                e.stopPropagation(); 
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    handleFileChange({ target: { files: e.dataTransfer.files }}); 
+                    // Tell formData that this required field has been filled
+                    onInputChange({ target: { name: key, value: Array.from(e.dataTransfer.files).map(f => f.name).join(', ') } });
+                }
+            }}
+        >
+            <Upload className="w-6 h-6 text-gray-400" />
+            <div className="text-[11px] font-bold uppercase tracking-widest text-gray-600">Drag & Drop or Click to Upload</div>
+            <input type="file" multiple onChange={(e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                    handleFileChange(e);
+                    // Tell formData that this required field has been filled
+                    onInputChange({ target: { name: key, value: Array.from(e.target.files).map(f => f.name).join(', ') } });
+                }
+            }} className="hidden" />
+        </label>
+        {files.length > 0 && (
+            <div className="grid grid-cols-1 gap-2">
+                {files.map((f, i) => (
+                    <div key={i} className="flex items-center justify-between p-3 border border-gray-200 rounded-sm">
+                        <div className="flex items-center gap-3 overflow-hidden">
+                            <FileText className="w-4 h-4 text-gray-400 shrink-0" />
+                            <span className="text-xs font-medium text-black truncate">{f.name}</span>
                         </div>
+                        <button type="button" onClick={() => removeFile(i)} className="text-gray-400 hover:text-red-500 transition-colors ml-2">✕</button>
+                    </div>
+                ))}
+            </div>
+        )}
+    </div>
                     ) : prop.format === 'textarea' ? (
                         <textarea
                             name={key}

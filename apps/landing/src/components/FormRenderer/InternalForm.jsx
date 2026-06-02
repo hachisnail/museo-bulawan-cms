@@ -290,37 +290,46 @@ const InternalForm = (props) => {
                                         <option value="" disabled>Select...</option>
                                         {prop.enum.map((opt, i) => <option key={`${opt}_${i}`} value={opt}>{opt}</option>)}
                                     </select>
-                                ) : prop['ui:widget'] === 'file' || prop.format === 'file' ? (
-                                    <div className="space-y-4">
-                                        <label 
-                                            className="w-full border border-dashed border-zinc-300 rounded-sm p-6 flex flex-col items-center justify-center gap-3 hover:border-[#D4AF37] hover:bg-zinc-50 transition-all cursor-pointer"
-                                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                                            onDrop={(e) => { 
-                                                e.preventDefault(); 
-                                                e.stopPropagation(); 
-                                                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                                                    handleFileChange({ target: { files: e.dataTransfer.files }}); 
-                                                }
-                                            }}
-                                        >
-                                            <Upload className="w-5 h-5 text-zinc-400" />
-                                            <div className="text-[9px] font-bold uppercase tracking-widest text-zinc-500">Drag & Drop or Click to Upload</div>
-                                            <input type="file" multiple onChange={handleFileChange} className="hidden" />
-                                        </label>
-                                        {files.length > 0 && (
-                                            <div className="grid grid-cols-1 gap-2">
-                                                {files.map((f, i) => (
-                                                    <div key={i} className="flex items-center justify-between p-2 border border-zinc-200 rounded-sm bg-white shadow-sm">
-                                                        <div className="flex items-center gap-2 overflow-hidden">
-                                                            <FileText className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
-                                                            <span className="text-[10px] font-medium text-black truncate">{f.name}</span>
-                                                        </div>
-                                                        <button type="button" onClick={() => removeFile(i)} className="text-zinc-400 hover:text-red-500 transition-colors ml-2">✕</button>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
+// Replace the existing file widget block with this:
+) : prop['ui:widget'] === 'file' || prop.format === 'file' ? (
+    <div className="space-y-4">
+        <label 
+            className="w-full border border-dashed border-zinc-300 rounded-sm p-6 flex flex-col items-center justify-center gap-3 hover:border-[#D4AF37] hover:bg-zinc-50 transition-all cursor-pointer"
+            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            onDrop={(e) => { 
+                e.preventDefault(); 
+                e.stopPropagation(); 
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    handleFileChange({ target: { files: e.dataTransfer.files }}); 
+                    // Tell formData that this required field has been filled
+                    onInputChange({ target: { name: key, value: Array.from(e.dataTransfer.files).map(f => f.name).join(', ') } });
+                }
+            }}
+        >
+            <Upload className="w-5 h-5 text-zinc-400" />
+            <div className="text-[9px] font-bold uppercase tracking-widest text-zinc-500">Drag & Drop or Click to Upload</div>
+            <input type="file" multiple onChange={(e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                    handleFileChange(e);
+                    // Tell formData that this required field has been filled
+                    onInputChange({ target: { name: key, value: Array.from(e.target.files).map(f => f.name).join(', ') } });
+                }
+            }} className="hidden" />
+        </label>
+        {files.length > 0 && (
+            <div className="grid grid-cols-1 gap-2">
+                {files.map((f, i) => (
+                    <div key={i} className="flex items-center justify-between p-2 border border-zinc-200 rounded-sm bg-white shadow-sm">
+                        <div className="flex items-center gap-2 overflow-hidden">
+                            <FileText className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
+                            <span className="text-[10px] font-medium text-black truncate">{f.name}</span>
+                        </div>
+                        <button type="button" onClick={() => removeFile(i)} className="text-zinc-400 hover:text-red-500 transition-colors ml-2">✕</button>
+                    </div>
+                ))}
+            </div>
+        )}
+    </div>
                                 ) : prop.format === 'textarea' ? (
                                     <textarea
                                         name={key}

@@ -429,132 +429,164 @@ const articles = [...displayEvents, ...displayEvents];
       </div>
     </section>
 
-    <section id="news_events" class="w-full bg-[#1C1B19] min-h-screen py-24">
-      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32">
-        <div class="flex items-center text-gray-400 gap-4 mb-4">
-          <div class="w-12 h-px bg-gray-400"></div>
-          <span class="text-xl font-light uppercase tracking-widest"
-            >Don't Miss</span
-          >
+<!-- News & Events Section -->
+    <section id="news_events" class="w-full bg-[#1C1B19] h-screen pt-16 pb-8 flex items-center overflow-hidden">
+      <!-- h-full and min-h-0 on the wrapper ensure the content flexes inside the screen height -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col h-full justify-center min-h-0">
+        
+        <!-- Header Section -->
+        <div class="flex items-center text-gray-500 gap-4 mb-3 shrink-0">
+          <div class="w-8 h-[1px] bg-gray-500"></div>
+          <span class="text-xs md:text-sm font-light uppercase tracking-[0.2em]">
+            Don't Miss
+          </span>
         </div>
-        <h2 class="text-6xl md:text-8xl font-serif text-white mb-16">
+        <h2 class="text-4xl md:text-6xl font-serif text-white mb-8 md:mb-12 tracking-wide shrink-0">
           News & Events
         </h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <!-- Event Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-6 md:gap-y-10 flex-1 min-h-0 overflow-y-auto pr-2 lg:pr-0">
           {
             articles.slice(0, 4).map((article) => (
               <a
                 href={`/articles`}
-                class="flex flex-col xl:flex-row gap-6 bg-black/40 p-6 rounded-xl hover:bg-black/60 transition-colors border border-white/5"
+                class="flex flex-col sm:flex-row gap-5 md:gap-6 group"
               >
+                <!-- Scaled down Square Image to prevent vertical overflow -->
                 <div
-                  class="w-full xl:w-2/5 h-[20rem] rounded-lg bg-cover bg-center"
+                  class="w-full sm:w-[140px] md:w-[180px] lg:w-[200px] shrink-0 aspect-square bg-cover bg-center object-cover border border-white/5"
                   style={`background-image: url('${article.images}')`}
                 />
-                <div class="w-full xl:w-3/5 flex flex-col justify-between py-2">
-                  <h3 class="text-3xl font-bold text-white leading-tight">
+                
+                <!-- Text Content -->
+                <div class="flex flex-col py-1 justify-center">
+                  <!-- Title -->
+                  <h3 class="text-lg md:text-xl font-bold text-white uppercase leading-snug mb-2 group-hover:text-gray-300 transition-colors line-clamp-2">
                     {article.title}
                   </h3>
-                  <div class="flex gap-4 mt-4">
-                    <span class="text-[#DAB765] text-lg font-semibold">
-                      Exhibition
-                    </span>
-                    <span class="text-gray-400 text-lg">
-                      {article.upload_date}
-                    </span>
-                  </div>
+                  <!-- Date -->
+                  <span class="text-gray-500 text-xs md:text-sm mb-3">
+                    {article.upload_date}
+                  </span>
+                  <!-- Placeholder Description matching Mockup with line clamping -->
+                  <p class="text-gray-200 text-xs md:text-sm leading-relaxed max-w-sm line-clamp-3 md:line-clamp-4">
+                    Brief description of the event will be placed here. Brief description of the event will be placed here.
+                  </p>
                 </div>
               </a>
             ))
           }
         </div>
-        <div class="flex justify-end">
+        
+        <!-- See All Link -->
+        <div class="flex justify-end shrink-0 mt-6">
           <a
             href="/articles"
-            class="text-2xl text-white hover:text-[#DAB765] flex items-center gap-4 transition-colors"
+            class="text-sm md:text-base text-gray-200 hover:text-white flex items-center gap-3 transition-colors"
           >
-            See All Events &rarr;
+            See all Events <span class="text-xl leading-none pt-0.5">&#10230;</span>
           </a>
         </div>
+        
       </div>
     </section>
 
-    <section
-      id="support"
-      class="w-full bg-white min-h-screen py-24 flex items-center"
-    >
-      <div
-        class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col gap-24"
-      >
-        <div class="flex flex-col lg:flex-row items-center gap-16">
-          <div
-            class="flex-1 w-full h-[30rem] bg-cover bg-center rounded-xl shadow-xl"
-            style={`background-image: url('${na1}')`}
-          >
+<!-- Support Us Section -->
+    <section id="support" class="w-full bg-white h-screen pt-8 flex items-center justify-center overflow-hidden">
+      <!-- Wrapper max width and flexible padding -->
+      <div class="w-full max-w-[140rem] mx-auto px-6 md:px-16 lg:px-32 h-full flex items-center justify-center min-h-0 py-6">
+        
+        <!-- 2x2 Checkerboard Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 grid-rows-4 md:grid-rows-2 w-full max-w-6xl h-full max-h-[55rem] min-h-0 shadow-sm border border-gray-100">
+          
+          <!-- Top Left: Image 1 -->
+          <div class="relative w-full h-full min-h-[150px] bg-cover bg-center order-1" style={`background-image: url('${na1}')`}>
+            <!-- Inner white frame -->
+            <div class="absolute inset-4 md:inset-6 border-[1.5px] border-white/90 pointer-events-none"></div>
           </div>
-          <div
-            class="flex-1 flex flex-col items-start lg:items-end text-left lg:text-right"
-          >
-            <h2 class="text-6xl font-bold text-black mb-6">VISIT US!</h2>
-            <p class="text-2xl text-gray-700 leading-relaxed mb-8 max-w-2xl">
-              Explore the treasures of Museo Bulawan! Plan your visit today by
-              booking a tour or schedule an appointment for research,
-              interviews, and more.
-            </p>
-            <a
-              href="/appointment"
-              class="border-2 border-black text-black hover:bg-black hover:text-white px-8 py-4 text-2xl font-bold rounded transition-colors"
-            >
-              BOOK AN APPOINTMENT
-            </a>
+          
+          <!-- Top Right: Visit Us Text -->
+          <div class="flex items-center justify-center p-8 md:p-12 lg:p-16 order-2 bg-white">
+            <!-- Inner bounded box to replicate exact text wrapping -->
+            <div class="flex flex-col items-start text-left max-w-[26rem] w-full">
+              <h2 class="text-5xl md:text-6xl lg:text-[4.5rem] font-black text-black mb-3 uppercase leading-none tracking-tighter">
+                VISIT US!
+              </h2>
+              <p class="text-[0.95rem] md:text-base text-black font-medium leading-[1.6] mb-6">
+                Explore the treasures of Museo Bulawan! Plan your visit today by booking a tour or schedule an appointment for research, interviews, and more.
+              </p>
+              <a href="/appointment" class="border-[1.5px] border-black text-black hover:bg-black hover:text-white px-5 py-2 text-sm font-bold uppercase rounded transition-colors">
+                BOOK AN APPOINTMENT
+              </a>
+            </div>
           </div>
-        </div>
 
-        <div class="flex flex-col lg:flex-row-reverse items-center gap-16">
-          <div
-            class="flex-1 w-full h-[30rem] bg-cover bg-center rounded-xl shadow-xl"
-            style={`background-image: url('${na2}')`}
-          >
+          <!-- Bottom Left: Support Matters Text -->
+          <div class="flex items-center justify-center p-8 md:p-12 lg:p-16 order-4 md:order-3 bg-white">
+            <!-- Inner bounded box to replicate exact text wrapping -->
+            <div class="flex flex-col items-end text-right max-w-[26rem] w-full">
+              <h2 class="text-5xl md:text-6xl lg:text-[4.5rem] font-black text-black mb-4 uppercase leading-[0.85] tracking-tighter flex flex-col items-end">
+                <span>YOUR</span>
+                <span>SUPPORT</span>
+                <span>MATTERS</span>
+              </h2>
+              <p class="text-[0.95rem] md:text-base text-black font-medium leading-[1.6] mb-6">
+                Help us preserve and celebrate our heritage! Contribute to Museo Bulawan by donating or lending artifacts to enrich our collection and share history with future generations.
+              </p>
+              <a href="/about/support" class="border-[1.5px] border-black text-black hover:bg-black hover:text-white px-8 py-2 text-sm font-bold rounded transition-colors">
+                Support
+              </a>
+            </div>
           </div>
-          <div class="flex-1 flex flex-col items-start text-left">
-            <h2 class="text-6xl font-bold text-black mb-6">
-              YOUR SUPPORT MATTERS!
-            </h2>
-            <p class="text-2xl text-gray-700 leading-relaxed mb-8 max-w-2xl">
-              Help us preserve and celebrate our heritage! Contribute to Museo
-              Bulawan by donating or lending artifacts to enrich our collection
-              and share history with future generations.
-            </p>
-            <a
-              href="/about/support"
-              class="border-2 border-black text-black hover:bg-black hover:text-white px-8 py-4 text-2xl font-bold rounded transition-colors"
-            >
-              SUPPORT US
-            </a>
+
+          <!-- Bottom Right: Image 2 -->
+          <div class="relative w-full h-full min-h-[150px] bg-cover bg-center order-3 md:order-4" style={`background-image: url('${na2}')`}>
+            <!-- Inner white frame -->
+            <div class="absolute inset-4 md:inset-6 border-[1.5px] border-white/90 pointer-events-none"></div>
           </div>
+
         </div>
       </div>
     </section>
 
-    <section
-      id="feedback"
-      class="w-full bg-gray-50 min-h-screen py-24 flex items-center border-t border-gray-200"
+<!-- Feedback Section -->
+    <section 
+      id="feedback" 
+      class="w-full bg-[#1C1B19] h-[110vh] flex overflow-hidden border-t border-white/5"
     >
-      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32">
-        <div class="text-center mb-16">
-          <h2 class="text-5xl md:text-7xl font-serif text-black mb-4">
+      <!-- Changed items-center to items-stretch to allow full vertical stretching -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row items-stretch gap-12 lg:gap-24 h-full min-h-0">
+        
+        <!-- Left Block: Typography & Information -->
+        <div class="flex-1 w-full flex flex-col justify-center text-left max-w-2xl py-12">
+          <div class="flex items-center text-gray-500 gap-4 mb-6">
+            <div class="w-8 h-[1px] bg-gray-500"></div>
+            <span class="text-xs md:text-sm font-light uppercase tracking-[0.2em]">
+              Get in Touch
+            </span>
+          </div>
+          <h2 class="text-5xl md:text-6xl lg:text-7xl font-serif text-white mb-6 tracking-wide">
             We Value Your Feedback
           </h2>
-          <p class="text-xl text-gray-600">
-            Help us improve Museo Bulawan by sharing your experience.
+          <p class="text-lg md:text-xl text-gray-400 leading-relaxed max-w-xl">
+            Help us improve Museo Bulawan by sharing your experience. Your thoughts and suggestions are vital in helping us preserve our heritage and enhance our visitor services.
           </p>
         </div>
-        <FormRenderer
-          client:only="react"
-          id="01KQEFB1FEEDBACKFORMSEED00"
-          apiBaseUrl={API_URL}
-        />
+
+        <!-- Right Block: Form Container -->
+        <!-- Removed py-4 and items-center to let the inner div scale 100% vertically -->
+        <div class="flex-1 w-full h-full min-h-0 flex justify-center relative">
+          <!-- Scrollable bounds pulling 100% of the h-[110vh] remainder -->
+          <div class="w-full max-w-2xl h-full overflow-y-auto rounded-t-xl lg:rounded-xl shadow-2xl">
+            <FormRenderer 
+              client:only="react" 
+              id="01KQEFB1FEEDBACKFORMSEED00" 
+              apiBaseUrl={API_URL} 
+            />
+          </div>
+        </div>
+
       </div>
     </section>
   </div>

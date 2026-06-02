@@ -392,7 +392,50 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
             return;
         }
 
-        const validKeys = fields.every(f => /^[a-zA-Z0-9_]+$/.test(f.key));
+        let currentFields = [...fields];
+        let currentEmailKey = emailFieldKey.trim() || 'email';
+
+        // Auto-inject and map an email field if OTP is required
+        if (otp) {
+            let emailField = currentFields.find(f => f.key === currentEmailKey);
+            
+            if (!emailField || emailField.format !== 'email') {
+                const alternateEmailField = currentFields.find(f => f.format === 'email');
+                if (alternateEmailField) {
+                    currentEmailKey = alternateEmailField.key;
+                    setEmailFieldKey(currentEmailKey);
+                } else {
+                    let newKey = 'email';
+                    let counter = 1;
+                    while (currentFields.some(f => f.key === newKey)) {
+                        newKey = `email_${counter}`;
+                        counter++;
+                    }
+                    currentEmailKey = newKey;
+                    
+                    emailField = {
+                        key: currentEmailKey,
+                        title: 'Email Address',
+                        type: 'string',
+                        format: 'email',
+                        options: '', rows: '', columns: '', minLabel: '', maxLabel: '',
+                        required: true, stepGroup: '', hidden: false, fileAccept: '', fileMaxCount: '', hasDependsOn: false, dependsOnField: '', dependsOnValue: '', dependsOnOperator: 'eq'
+                    };
+                    currentFields.push(emailField);
+                    setFields(currentFields);
+                    setEmailFieldKey(currentEmailKey);
+                }
+            }
+            
+            // Ensure the designated email field is marked as required
+            const emailFieldIndex = currentFields.findIndex(f => f.key === currentEmailKey);
+            if (emailFieldIndex !== -1 && !currentFields[emailFieldIndex].required) {
+                currentFields[emailFieldIndex] = { ...currentFields[emailFieldIndex], required: true };
+                setFields([...currentFields]);
+            }
+        }
+
+        const validKeys = currentFields.every(f => /^[a-zA-Z0-9_]+$/.test(f.key));
         if (!validKeys) {
             setModal({ isOpen: true, title: 'Validation Error', message: 'All fields must have a valid Field Key (letters, numbers, underscores only).', type: 'alert', variant: 'warning' });
             return;
@@ -403,7 +446,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
             const properties = {};
             const required = [];
 
-            fields.forEach(f => {
+            currentFields.forEach(f => {
                 const key = f.key.trim();
                 const prop = { title: f.title.trim() || key, type: f.type };
 
@@ -469,7 +512,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                 description: description.trim(),
                 layout,
                 step_groups: layout === 'wizard' ? stepGroups : [],
-                field_mapping: { donorEmail: emailFieldKey.trim() || 'email' },
+                field_mapping: { donorEmail: currentEmailKey },
                 max_files: Number(maxFiles) || 5,
                 max_file_size_mb: Number(maxFileSizeMB) || 10,
                 accepted_file_types: acceptedFileTypes.trim()

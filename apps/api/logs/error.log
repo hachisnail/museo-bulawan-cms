@@ -1520,3 +1520,13 @@ sql: UPDATE `accessions` SET dimensions = ?, materials = ?, research_notes = ?, 
 2026-06-02 14:37:44 [error]: Form definition not found: event-questionaire
 2026-06-02 14:55:01 [error]: Form definition not found: event-questionaire
 2026-06-02 14:55:25 [error]: Form definition not found: event-questionaire
+2026-06-02 15:23:43 [error]: Failed to request OTP for labayanrenz@gmail.com: slug is not defined
+2026-06-02 15:23:43 [error]: ReferenceError: slug is not defined
+    at Object.requestEmailOtp (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/verificationService.js:34:58)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.requestOtp (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:23:28) | Meta: {"method":"POST","url":"/api/v1/forms/01KT3GTV8XXG0P7XQTQFGR5DBR/request-otp","ip":"::ffff:127.0.0.1","user":"Guest"}
+2026-06-02 15:24:14 [error]: Failed to request OTP for labayanrenz@gmail.com: slug is not defined
+2026-06-02 15:24:14 [error]: ReferenceError: slug is not defined
+    at Object.requestEmailOtp (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/verificationService.js:34:58)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.requestOtp (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:23:28) | Meta: {"method":"POST","url":"/api/v1/forms/01KT3GTV8XXG0P7XQTQFGR5DBR/request-otp","ip":"::ffff:127.0.0.1","user":"Guest"}

@@ -144,6 +144,7 @@ export default function SubmissionViewer() {
             </div>
 
             {/* Attachments Section */}
+{/* Attachments Section */}
             {media.length > 0 && (
                 <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
                     <div className="bg-gray-50/50 border-b border-gray-100 px-8 py-5 flex items-center justify-between">
@@ -153,22 +154,37 @@ export default function SubmissionViewer() {
                     </div>
                     <div className="p-8">
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                            {media.map((m) => (
-                                <div key={m.id} className="group relative aspect-square rounded-xl overflow-hidden border border-gray-200 bg-gray-100 shadow-sm block">
-                                    <img 
-                                        src={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/form_submissions/${id}/${m.file_name}`}
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                        alt="Attachment preview"
-                                    />
-                                    <a 
-                                        href={`${import.meta.env.VITE_API_BASE_URL}/api/v1/files/form_submissions/${id}/${m.file_name}`}
-                                        target="_blank" rel="noreferrer"
-                                        className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity"
-                                    >
-                                        <ExternalLink className="text-white w-6 h-6" />
-                                    </a>
-                                </div>
-                            ))}
+                            {media.map((m) => {
+                                const filename = m.file_name || m.file || '';
+                                const isImage = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(filename);
+                                const fileUrl = `${import.meta.env.VITE_API_BASE_URL}/api/v1/files/form_submissions/${id}/${filename}`;
+
+                                return (
+                                    <div key={m.id} className="group relative aspect-square rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shadow-sm flex items-center justify-center">
+                                        {isImage ? (
+                                            <img 
+                                                src={fileUrl}
+                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                alt="Attachment preview"
+                                            />
+                                        ) : (
+                                            <div className="flex flex-col items-center justify-center text-gray-400 p-4 w-full h-full">
+                                                <FileText className="w-12 h-12 mb-3 text-amber-600" />
+                                                <span className="text-[10px] font-bold text-center truncate w-full" title={filename}>
+                                                    {filename || 'Document'}
+                                                </span>
+                                            </div>
+                                        )}
+                                        <a 
+                                            href={fileUrl}
+                                            target="_blank" rel="noreferrer"
+                                            className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        >
+                                            <ExternalLink className="text-white w-6 h-6" />
+                                        </a>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>

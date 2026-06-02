@@ -188,52 +188,64 @@ export default function FormsIndex() {
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {customDefinitions.map(form => (
-                                    <div key={form.id} className="border border-zinc-200 rounded-xl bg-white p-6 shadow-sm flex flex-col justify-between hover:border-zinc-400 transition-colors relative group">
-                                        <div>
-                                            <div className="flex items-center justify-between mb-3">
-                                                <span className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-zinc-100 text-zinc-600 rounded">
-                                                    {form.settings?.layout || 'single_column'}
+                                    <div key={form.id} className="group border border-gray-200 rounded-xl bg-white p-5 flex flex-col hover:border-gray-300 hover:shadow-md transition-all min-h-[200px]">
+                                        
+                                        {/* Badges Container */}
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-gray-100 text-gray-600 rounded-md">
+                                                {form.settings?.layout || 'SINGLE_COLUMN'}
+                                            </span>
+                                            {form.otp && (
+                                                <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-amber-100 text-amber-800 rounded-md">
+                                                    OTP Required
                                                 </span>
-                                                {form.otp && (
-                                                    <span className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 rounded">
-                                                        OTP Required
-                                                    </span>
-                                                )}
+                                            )}
+                                        </div>
+
+                                        {/* Body Content - flex-1 pushes the footer to the bottom */}
+                                        <div className="flex-1 mb-4">
+                                            <h3 className="text-xl font-bold text-gray-900 mb-1 leading-tight line-clamp-1" title={form.title}>
+                                                {form.title}
+                                            </h3>
+                                            <div className="flex items-center text-sm text-gray-500 font-mono mb-3">
+                                                <span className="text-gray-400 mr-0.5">/</span>
+                                                <span className="truncate">{form.slug}</span>
                                             </div>
-                                            <h3 className="text-md font-bold text-zinc-950 mb-1">{form.title}</h3>
-                                            <p className="text-xs text-zinc-400 font-mono mb-2">/{form.slug}</p>
-                                            <p className="text-xs text-zinc-600 font-light line-clamp-2 leading-relaxed mb-6">
+                                            <p className="text-sm text-gray-600 font-normal line-clamp-2 leading-relaxed">
                                                 {form.settings?.description || 'No description provided.'}
                                             </p>
                                         </div>
 
-                                        <div className="flex items-center justify-between border-t border-zinc-100 pt-4 mt-auto">
+                                        {/* Action Footer */}
+                                        <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-auto">
                                             <a
                                                 href={`/forms/${form.id.toLowerCase()}`}
                                                 target="_blank"
                                                 rel="noreferrer"
-                                                className="text-xs font-semibold text-amber-600 hover:text-amber-800 hover:underline flex items-center gap-1"
+                                                className="flex items-center gap-1.5 text-sm font-semibold text-amber-600 hover:text-amber-800 transition-colors"
                                             >
-                                                <Eye className="w-3.5 h-3.5" /> Preview
+                                                <Eye className="w-4 h-4" /> Preview
                                             </a>
 
-                                            <div className="flex gap-2">
+                                            <div className="flex items-center gap-2">
+                                                {/* Button flex classes ensure icon and text sit perfectly inline */}
                                                 <button
                                                     onClick={() => navigate(`/forms/builder/${form.id}`)}
-                                                    className="p-1.5 text-zinc-500 hover:text-black hover:bg-zinc-100 rounded transition-colors"
+                                                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-black hover:bg-gray-100 rounded-md transition-colors"
                                                     title="Manage Form"
                                                 >
                                                     <Edit2 className="w-4 h-4" /> Manage
                                                 </button>
                                                 <button
                                                     onClick={() => handleDeleteForm(form.id)}
-                                                    className="p-1.5 text-zinc-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                                                    className="flex items-center justify-center p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
                                                     title="Delete Form"
                                                 >
                                                     <Trash2 className="w-4 h-4" />
                                                 </button>
                                             </div>
                                         </div>
+
                                     </div>
                                 ))}
                             </div>

@@ -6,8 +6,7 @@ import { definitionService } from './definitionService.js';
 
 /**
  * VerificationService
- * 
- * Handles One-Time Password (OTP) generation and verification for form submissions.
+ * * Handles One-Time Password (OTP) generation and verification for form submissions.
  */
 export const verificationService = {
     async requestEmailOtp(id, email) {
@@ -31,7 +30,9 @@ export const verificationService = {
                 html: `<p>Your One-Time Password is: <strong>${otp}</strong></p><p>It expires in 5 minutes.</p>`
             });
 
-            logger.info(`OTP sent to ${email} for form ${slug}`);
+            // FIX: Use 'id' or 'definition.slug' instead of undefined 'slug'
+            logger.info(`OTP sent to ${email} for form ${id}`);
+            
             return { message: "OTP sent successfully." };
         } catch (error) {
             logger.error(`Failed to request OTP for ${email}: ${error.message}`);

@@ -57,6 +57,7 @@ export const acquisitionService = {
     generateFormalReport: accessionService.generateFormalReport.bind(accessionService),
     exportFormalReport: accessionService.exportFormalReport.bind(accessionService),
     rollbackAccession: (staffId, id) => baseService._transitionRecord(staffId, 'accession', 'accessions', id, 'in_research'),
+    rejectAccession: accessionService.rejectAccession.bind(accessionService),
 
     // ==========================================
     // INVENTORY DOMAIN (Phase 4 & Beyond)

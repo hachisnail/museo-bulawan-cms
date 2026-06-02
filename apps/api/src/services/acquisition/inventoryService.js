@@ -120,6 +120,14 @@ export const inventoryService = {
 
                     await baseService._transitionRecord(staffId, 'accession', 'accessions', accessionId, 'finalized', {}, tx);
 
+                    // Also mark the intake as fully accessioned now that the accession process is complete
+                    if (accession.intake_id) {
+                        const intake = await baseService._getRecord('intakes', accession.intake_id, {}, tx);
+                        if (intake.status === 'processed') {
+                            await baseService._transitionRecord(staffId, 'intake', 'intakes', accession.intake_id, 'accessioned', {}, tx);
+                        }
+                    }
+
                     notificationService.sendGlobal('New Artifact Cataloged', 
                         `Item ${catalogNumber} has been moved to ${location}.`, 'success', { actionUrl: `/inventory?id=${inventory.id}` });
                     

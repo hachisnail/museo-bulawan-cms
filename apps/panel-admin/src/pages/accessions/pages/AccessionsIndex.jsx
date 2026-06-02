@@ -13,8 +13,12 @@ const STATUS_STYLES = {
     pending_approval: 'text-[#A68A27] bg-[#D4AF37]/10 border-[#D4AF37]/30',
     in_research: 'text-blue-700 bg-blue-50 border-blue-200',
     finalized: 'text-black bg-zinc-200 border-black',
+    rejected: 'text-red-700 bg-red-50 border-red-200',
     archived: 'text-zinc-500 bg-white border-zinc-200'
 };
+
+/** Statuses that should appear in the archive tab instead of active */
+const ACCESSION_ARCHIVE_STATUSES = ['finalized', 'rejected'];
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Columns definitions
@@ -36,10 +40,25 @@ const activeColumns = [
 ];
 
 const archiveColumns = [
-    { key: 'catalog_number', label: 'Catalog Number', isBold: true },
+    { key: 'ref_number', label: 'Catalog / Accession No.', isBold: true },
     { key: 'title', label: 'Artifact Name' },
-    { key: 'deaccession_reason', label: 'Reason for Deaccession' },
-    { key: 'date', label: 'Date Archived' }
+    { 
+        key: 'record_type', 
+        label: 'Record Type',
+        render: (val) => (
+            <span className={`px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-wider border ${
+                val === 'Deaccessioned'
+                    ? 'bg-red-50 border-red-200 text-red-600'
+                    : val === 'Accession'
+                        ? 'bg-[#D4AF37]/5 border-[#D4AF37]/20 text-[#A68A27]'
+                        : 'bg-zinc-50 border-zinc-200 text-zinc-500'
+            }`}>
+                {val}
+            </span>
+        )
+    },
+    { key: 'status_reason', label: 'Status / Reason' },
+    { key: 'date', label: 'Date Logged' }
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -47,18 +66,21 @@ const archiveColumns = [
 // ─────────────────────────────────────────────────────────────────────────────
 function getAccessionSidebarStats({ activeTab, accessions, archived }) {
     if (activeTab === 'active') {
-        const pending = accessions.filter(a => a.status === 'pending_approval').length;
-        const research = accessions.filter(a => a.status === 'in_research').length;
-        const finalized = accessions.filter(a => a.status === 'finalized').length;
+        const activeAccessions = accessions.filter(a => !ACCESSION_ARCHIVE_STATUSES.includes(a.status));
+        const pending = activeAccessions.filter(a => a.status === 'pending_approval').length;
+        const research = activeAccessions.filter(a => a.status === 'in_research').length;
         return [
             { label: 'Pending Approval', count: pending, bgClass: 'bg-amber-50/50', badgeClass: 'bg-amber-100 text-amber-800' },
-            { label: 'In Research', count: research, bgClass: 'bg-blue-50/50', badgeClass: 'bg-blue-100 text-blue-800' },
-            { label: 'Finalized', count: finalized, bgClass: 'bg-zinc-50', badgeClass: 'bg-zinc-200 text-zinc-900' }
+            { label: 'In Research', count: research, bgClass: 'bg-blue-50/50', badgeClass: 'bg-blue-100 text-blue-800' }
         ];
     }
     // archive tab
+    const finalizedCount = accessions.filter(a => a.status === 'finalized').length;
+    const rejectedCount = accessions.filter(a => a.status === 'rejected').length;
     return [
-        { label: 'Archived Inventory', count: archived.length, bgClass: 'bg-zinc-50', badgeClass: 'bg-zinc-100 text-zinc-600' }
+        { label: 'Finalized Accessions', count: finalizedCount, bgClass: 'bg-green-50/50', badgeClass: 'bg-green-100 text-green-800' },
+        { label: 'Rejected Accessions', count: rejectedCount, bgClass: 'bg-red-50/50', badgeClass: 'bg-red-100 text-red-800' },
+        { label: 'Deaccessioned Inventory', count: archived.length, bgClass: 'bg-zinc-50', badgeClass: 'bg-zinc-100 text-zinc-600' }
     ];
 }
 
@@ -68,8 +90,8 @@ function getAccessionSidebarTitle(activeTab) {
 }
 
 function getAccessionSidebarCount({ activeTab, accessions, archived }) {
-    if (activeTab === 'active') return accessions.length;
-    return archived.length;
+    if (activeTab === 'active') return accessions.filter(a => !ACCESSION_ARCHIVE_STATUSES.includes(a.status)).length;
+    return accessions.filter(a => ACCESSION_ARCHIVE_STATUSES.includes(a.status)).length + archived.length;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -157,37 +179,60 @@ export default function AccessionsIndex() {
     // ------------------------------------------------------------------ //
     const tableData = useMemo(() => {
         if (activeTab === 'active') {
-            return accessions.map(item => {
+            return accessions
+                .filter(a => !ACCESSION_ARCHIVE_STATUSES.includes(a.status))
+                .map(item => {
+                    const dateVal = item.created || item.created_at;
+                    return {
+                        id: item.id,
+                        type: 'accession',
+                        accession_number: item.accession_number,
+                        title: item.expand?.intake_id?.proposed_item_name || 'Unnamed Artifact',
+                        contract_type: item.contract_type || 'N/A',
+                        date: dateVal ? new Date(dateVal).toLocaleDateString() : '',
+                        rawDate: dateVal,
+                        status: item.status,
+                        rawItem: item
+                    };
+                });
+        }
+
+        // activeTab === 'archive' — mix of finalized/rejected accessions + deaccessioned inventory
+        const accessionArchived = accessions
+            .filter(a => ACCESSION_ARCHIVE_STATUSES.includes(a.status))
+            .map(item => {
                 const dateVal = item.created || item.created_at;
                 return {
                     id: item.id,
-                    type: 'active',
-                    accession_number: item.accession_number,
+                    type: 'accession',
+                    ref_number: item.accession_number,
                     title: item.expand?.intake_id?.proposed_item_name || 'Unnamed Artifact',
-                    contract_type: item.contract_type || 'N/A',
+                    record_type: 'Accession',
+                    status_reason: item.status === 'rejected' ? 'Rejected' : 'Finalized',
                     date: dateVal ? new Date(dateVal).toLocaleDateString() : '',
                     rawDate: dateVal,
                     status: item.status,
                     rawItem: item
                 };
             });
-        }
 
-        // activeTab === 'archive'
-        return archived.map(item => {
+        const inventoryArchived = archived.map(item => {
             const dateVal = item.created || item.created_at;
             return {
                 id: item.id,
-                type: 'archive',
-                catalog_number: item.catalog_number,
+                type: 'inventory_archive',
+                ref_number: item.catalog_number,
                 title: item.expand?.accession_id?.expand?.intake_id?.proposed_item_name || 'Archived Artifact',
-                deaccession_reason: item.deaccession_reason || 'No specific reason provided.',
+                record_type: 'Deaccessioned',
+                status_reason: item.deaccession_reason || 'No specific reason provided.',
                 date: dateVal ? new Date(dateVal).toLocaleDateString() : '',
                 rawDate: dateVal,
                 status: 'archived',
                 rawItem: item
             };
         });
+
+        return [...accessionArchived, ...inventoryArchived];
     }, [activeTab, accessions, archived]);
 
     // ------------------------------------------------------------------ //
@@ -200,7 +245,7 @@ export default function AccessionsIndex() {
             result = result.filter(item =>
                 (item.title && item.title.toLowerCase().includes(q)) ||
                 (item.accession_number && item.accession_number.toLowerCase().includes(q)) ||
-                (item.catalog_number && item.catalog_number.toLowerCase().includes(q))
+                (item.ref_number && item.ref_number.toLowerCase().includes(q))
             );
         }
         if (tableFilters.date) {
@@ -267,8 +312,20 @@ export default function AccessionsIndex() {
         setSearchParams({ tab: value });
     };
 
+    // Row click — route correctly based on item type
     const handleRowClick = useCallback((row) => {
-        navigate(`/accessions/${row.id}?tab=${activeTab}`);
+        if (row.type === 'inventory_archive') {
+            // Deaccessioned inventory item — route to accession detail via accession_id
+            const accessionId = row.rawItem?.accession_id || row.rawItem?.expand?.accession_id?.id;
+            if (accessionId) {
+                navigate(`/accessions/${accessionId}?tab=archive`);
+            } else {
+                navigate(`/accessions/${row.id}?tab=archive`);
+            }
+        } else {
+            // Accession records (active or archived accessions)
+            navigate(`/accessions/${row.id}?tab=${activeTab}`);
+        }
     }, [navigate, activeTab]);
 
     // ------------------------------------------------------------------ //

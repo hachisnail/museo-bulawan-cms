@@ -108,6 +108,14 @@ export const accessionController = {
         } catch (error) { next(error); }
     },
 
+    rejectAccession: async (req, res, next) => {
+        try {
+            const { accessionId } = req.params;
+            const result = await acquisitionService.rejectAccession(req.user.id, accessionId, req.body.reason);
+            res.status(200).json({ status: 'success', message: 'Accession rejected and intake returned to custody.', data: result });
+        } catch (error) { next(error); }
+    },
+
     async getFullChain(req, res, next) {
         try {
             const { intakeId } = req.params;

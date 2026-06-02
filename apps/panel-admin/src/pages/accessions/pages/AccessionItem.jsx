@@ -13,6 +13,7 @@ const STATUS_STYLES = {
     pending_approval: 'text-[#A68A27] bg-[#D4AF37]/10 border-[#D4AF37]/30',
     in_research: 'text-blue-700 bg-blue-50 border-blue-200',
     finalized: 'text-black bg-zinc-200 border-black',
+    rejected: 'text-red-700 bg-red-50 border-red-200',
     archived: 'text-zinc-500 bg-white border-zinc-200'
 };
 
@@ -340,6 +341,34 @@ Would you like to reload the latest record and try again?`,
 
     const handleFinalizeSubmit = (finalizeData) => {
         handleAction(selected.id, 'finalize', finalizeData);
+    };
+
+    const handleRejectAccession = async (reason) => {
+        setModal(prev => ({ ...prev, isOpen: false }));
+        setActionLoading(true);
+        try {
+            const res = await apiFetch(`/api/v1/acquisitions/accessions/${selected.id}/reject`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reason })
+            });
+            const json = await res.json();
+            if (res.ok) {
+                navigate('/accessions?tab=active');
+            } else {
+                setModal({
+                    isOpen: true,
+                    title: 'Rejection Failed',
+                    message: json.error || json.message || 'Could not reject this accession.',
+                    type: 'alert',
+                    variant: 'error'
+                });
+            }
+        } catch (err) {
+            setModal({ isOpen: true, title: 'Error', message: 'Request failed.', type: 'alert', variant: 'error' });
+        } finally {
+            setActionLoading(false);
+        }
     };
 
     if (loading) return <AccessionItemSkeleton />;
@@ -711,6 +740,24 @@ Would you like to reload the latest record and try again?`,
                         <button form="research-form" type="submit" disabled={actionLoading} className="px-6 py-2.5 bg-white border border-zinc-300 text-black text-xs font-bold uppercase tracking-widest hover:bg-zinc-100 transition-colors rounded-sm disabled:opacity-50">
                             Save Research
                         </button>
+
+                        {/* Reject / Cancel button — available for pending_approval and in_research */}
+                        {(selected.status === 'pending_approval' || selected.status === 'in_research') && (
+                            <button 
+                                onClick={() => setModal({
+                                    isOpen: true,
+                                    title: 'Reject Accession',
+                                    message: 'This will reject the accession, remove its records, and return the intake to custody. Provide a reason:',
+                                    type: 'prompt',
+                                    variant: 'warning',
+                                    onConfirm: (val) => handleRejectAccession(val)
+                                })}
+                                disabled={actionLoading}
+                                className="px-6 py-2.5 bg-white border border-red-200 text-red-700 text-xs font-bold uppercase tracking-widest hover:bg-red-50 transition-colors rounded-sm disabled:opacity-50"
+                            >
+                                Reject Accession
+                            </button>
+                        )}
 
                         {selected.status === 'pending_approval' && (
                             <button onClick={() => handleAction(selected.id, 'approve')} disabled={actionLoading} className="px-6 py-2.5 bg-black text-[#D4AF37] text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-sm disabled:opacity-50">

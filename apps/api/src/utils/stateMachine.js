@@ -13,7 +13,8 @@ const INTAKE_TRANSITIONS = {
     'approved':           ['awaiting_delivery', 'rejected'],
     'rejected':           ['under_review'],              // reopen
     'awaiting_delivery':  ['in_custody', 'under_review'], // rollback allowed
-    'in_custody':         ['accessioned'],
+    'in_custody':         ['processed'],
+    'processed':          ['in_custody', 'accessioned'],  // revert on accession reject, or finalize
     'accessioned':        []                              // terminal
 };
 
@@ -22,9 +23,9 @@ const INTAKE_TRANSITIONS = {
 // ==========================================
 const ACCESSION_TRANSITIONS = {
     'pending_approval': ['in_research', 'rejected'],
-    'in_research':      ['finalized'],
+    'in_research':      ['finalized', 'rejected'],
     'finalized':        ['in_research'],                  // allow correction/updates
-    'rejected':         ['pending_approval']              // re-submit
+    'rejected':         []                                // terminal — record deleted, intake reverted
 };
 
 // ==========================================

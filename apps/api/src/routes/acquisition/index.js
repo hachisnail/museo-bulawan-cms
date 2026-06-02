@@ -147,6 +147,12 @@ router.post('/accessions/:accessionId/rollback',
     acquisitionController.rollbackAccession
 );
 
+router.post('/accessions/:accessionId/reject', 
+    requireAuth, 
+    checkPermission('update', 'Accession'), 
+    acquisitionController.rejectAccession
+);
+
 router.patch('/accessions/:accessionId/research', 
     requireAuth, 
     checkPermission('update', 'Accession'),

@@ -52,6 +52,7 @@ export const acquisitionController = {
     getFullChain: accessionController.getFullChain.bind(accessionController),
     getUniqueTags: accessionController.getUniqueTags.bind(accessionController),
     rollbackAccession: accessionController.rollbackAccession.bind(accessionController),
+    rejectAccession: accessionController.rejectAccession.bind(accessionController),
     exportMOA: intakeController.exportMOA.bind(intakeController),
 
     // ==========================================

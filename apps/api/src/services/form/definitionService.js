@@ -13,7 +13,7 @@ function parseJsonFields(def) {
 export const definitionService = {
     async getFormDefinition(id) {
         try {
-            const rows = await db.query('SELECT * FROM form_definitions WHERE id = ?', [id.toUpperCase()]);
+            const rows = await db.query('SELECT * FROM form_definitions WHERE id = ? OR slug = ?', [id.toUpperCase(), id.toLowerCase()]);
             if (!rows || rows.length === 0) {
                 throw new Error('FORM_NOT_FOUND');
             }

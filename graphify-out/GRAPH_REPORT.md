@@ -1,16 +1,16 @@
 # Graph Report - museo-bulawan-cms  (2026-06-02)
 
 ## Corpus Check
-- 315 files · ~174,901 words
+- 314 files · ~174,345 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1633 nodes · 2428 edges · 151 communities (126 shown, 25 thin omitted)
+- 1622 nodes · 2405 edges · 148 communities (123 shown, 25 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a3f1b688`
+- Built from commit: `1bc009ec`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -110,24 +110,22 @@
 - [[_COMMUNITY_Community 131|Community 131]]
 - [[_COMMUNITY_Community 132|Community 132]]
 - [[_COMMUNITY_Community 133|Community 133]]
-- [[_COMMUNITY_Community 136|Community 136]]
+- [[_COMMUNITY_Community 135|Community 135]]
 - [[_COMMUNITY_Community 137|Community 137]]
 - [[_COMMUNITY_Community 138|Community 138]]
 - [[_COMMUNITY_Community 139|Community 139]]
-- [[_COMMUNITY_Community 140|Community 140]]
 - [[_COMMUNITY_Community 145|Community 145]]
-- [[_COMMUNITY_Community 146|Community 146]]
 - [[_COMMUNITY_Community 147|Community 147]]
 - [[_COMMUNITY_Community 148|Community 148]]
 - [[_COMMUNITY_Community 149|Community 149]]
-- [[_COMMUNITY_Community 150|Community 150]]
+- [[_COMMUNITY_Community 152|Community 152]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `useAuth()` - 63 edges
+1. `useAuth()` - 65 edges
 2. `db` - 46 edges
-3. `logger` - 42 edges
+3. `logger` - 40 edges
 4. `useSSE()` - 30 edges
-5. `env` - 21 edges
+5. `env` - 19 edges
 6. `10. Additional Article Builder recommendations (Payload-specific)` - 18 edges
 7. `10. Additional Article Builder recommendations (Payload-specific)` - 18 edges
 8. `compilerOptions` - 16 edges
@@ -141,27 +139,27 @@
   apps/api/src/controllers/scheduleController.js → apps/api/src/middlewares/validateRequest.js
 - `AccessionItem()` --calls--> `useAuth()`  [EXTRACTED]
   apps/panel-admin/src/pages/accessions/pages/AccessionItem.jsx → apps/panel-admin/src/context/authContext.jsx
+- `FormDetail()` --calls--> `useAuth()`  [EXTRACTED]
+  apps/panel-admin/src/pages/forms/pages/FormDetail.jsx → apps/panel-admin/src/context/authContext.jsx
 - `IntakeItem()` --calls--> `useAuth()`  [EXTRACTED]
   apps/panel-admin/src/pages/intakes/pages/IntakeItem.jsx → apps/panel-admin/src/context/authContext.jsx
-- `IntakeManualNew()` --calls--> `useAuth()`  [EXTRACTED]
-  apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx → apps/panel-admin/src/context/authContext.jsx
 
 ## Import Cycles
 - None detected.
 
-## Communities (151 total, 25 thin omitted)
+## Communities (148 total, 25 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.18
-Nodes (10): accessionService, baseService, exhibitionService, intakeService, inventoryService, loanService, locationService, valuationService (+2 more)
+Cohesion: 0.21
+Nodes (12): accessionService, baseService, constituentService, exhibitionService, intakeService, inventoryService, loanService, locationService (+4 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.11
-Nodes (16): ProtectedRoute(), AuthContext, AuthProvider(), useAuth(), Analytics(), COLORS, AuditLogsIndex(), AuditLogView() (+8 more)
+Cohesion: 0.10
+Nodes (18): ProtectedRoute(), AuthContext, AuthProvider(), useAuth(), SSEContext, SSEProvider(), Analytics(), COLORS (+10 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.18
-Nodes (13): buildAbility(), checkPermission(), requireAuth(), router, router, router, router, entityPermissionMap (+5 more)
+Cohesion: 0.16
+Nodes (15): defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES, buildAbility(), requireAuth(), router, router (+7 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.04
@@ -192,8 +190,8 @@ Cohesion: 0.07
 Nodes (27): ../layouts/Layout.astro, ../styles/global.css, connectSSE(), deliverySlipContainer, detailDate, detailId, detailMethodBadge, detailsContent (+19 more)
 
 ### Community 10 - "Community 10"
-Cohesion: 0.10
-Nodes (19): accessionController, complianceController, VALID_ENTITY_TYPES, intakeController, inventoryController, schemas, acquisitionController, loansController (+11 more)
+Cohesion: 0.11
+Nodes (20): accessionController, complianceController, VALID_ENTITY_TYPES, intakeController, inventoryController, schemas, acquisitionController, loansController (+12 more)
 
 ### Community 11 - "Community 11"
 Cohesion: 0.07
@@ -236,8 +234,8 @@ Cohesion: 0.10
 Nodes (19): 1. Acceptance, 1. Confirm Delivery, 1. Create Accession Record, 1. Finalize to Inventory, 1. Initial Intake Creation, 1. Internal Movement (Transfer), 1. Update Research Data, 2. Attaching Initial Media (The Multi-Step Upload) (+11 more)
 
 ### Community 21 - "Community 21"
-Cohesion: 0.07
-Nodes (19): ExternalForm(), InternalForm(), ../components/ui/Footer.astro, ../components/ui/Header.astro, ../components/ui/Nav.astro, ../../layouts/BaseLayout.astro, escapeHtml(), renderLexicalNode() (+11 more)
+Cohesion: 0.05
+Nodes (30): ExternalForm(), InternalForm(), ../components/ui/Footer.astro, ../components/ui/Header.astro, ../components/ui/Nav.astro, ../../layouts/BaseLayout.astro, FormRenderer(), escapeHtml() (+22 more)
 
 ### Community 22 - "Community 22"
 Cohesion: 0.11
@@ -255,6 +253,10 @@ Nodes (15): dependencies, astro, @astrojs/node, tailwindcss, @tailwindcss/vite, 
 Cohesion: 0.15
 Nodes (12): 1. Directory Structure and Architectural Roles, 2. API Routing Reference, 3. Step-by-Step Donation Submission Guide, 4. Processing Submissions into Intakes, 5. Under-the-Hood: The Donation Pipeline Workflow, A. Public Forms Endpoints, API Routing Guide: Forms Service & Donation Form Lifecycle, B. Staff Administration Endpoints (+4 more)
 
+### Community 26 - "Community 26"
+Cohesion: 0.12
+Nodes (3): FormDetail(), CHART_COLORS, FormsIndex()
+
 ### Community 28 - "Community 28"
 Cohesion: 0.18
 Nodes (10): 1. Acquisition Lifecycle (Intake → Accession → Inventory), 2. Dynamic Forms & Submissions, 3. Media & Attachments, 4. Compliance & Museum Standards, 5. Authority Control & Management, 6. Authentication, Accessions (The Registry), Intakes (The Pipeline) (+2 more)
@@ -268,7 +270,7 @@ Cohesion: 0.27
 Nodes (3): MemoryQueueAdapter, NativeRedisQueueAdapter, processTask()
 
 ### Community 32 - "Community 32"
-Cohesion: 0.12
+Cohesion: 0.16
 Nodes (9): getManagementSidebarCount(), getManagementSidebarStats(), getManagementSidebarTitle(), ManagementIndex(), ROLE_STYLES, STATUS_STYLES, ManagementUser(), ROLE_STYLES (+1 more)
 
 ### Community 33 - "Community 33"
@@ -341,23 +343,19 @@ Nodes (9): AccessionItem(), STATUS_STYLES, AccessionsIndex(), activeColumns, arc
 
 ### Community 61 - "Community 61"
 Cohesion: 0.09
-Nodes (7): getIntakeDonorEmail(), getIntakeDonorPhone(), IntakeDetail(), STATUS_STYLES, IntakeItem(), IntakeManualNew(), OfferItem()
-
-### Community 105 - "Community 105"
-Cohesion: 0.16
-Nodes (9): Icons, MainLayout(), SSEContext, SSEProvider(), useSSEGlobal(), useSSE(), Dashboard(), CHART_COLORS (+1 more)
+Nodes (8): getIntakeDonorEmail(), getIntakeDonorPhone(), IntakeDetail(), STATUS_STYLES, Intakes(), IntakeItem(), IntakeManualNew(), OfferItem()
 
 ### Community 106 - "Community 106"
 Cohesion: 0.35
 Nodes (6): formController, definitionController, queryController, schemas, submissionController, formService
 
 ### Community 107 - "Community 107"
-Cohesion: 0.09
-Nodes (24): FormRenderer(), MiniCal(), DeleteModal(), ScheduleAdd(), EventCard(), EventDetail(), Schedule(), convertTo24Hour() (+16 more)
+Cohesion: 0.15
+Nodes (14): MiniCal(), DeleteModal(), ScheduleAdd(), EventCard(), EventDetail(), Schedule(), convertTo24Hour(), FC_COLORS (+6 more)
 
 ### Community 108 - "Community 108"
-Cohesion: 0.35
-Nodes (8): archiveColumns, intakesColumns, offersColumns, getSidebarCount(), getSidebarStats(), getSidebarTitle(), Intakes(), IntakesIndex()
+Cohesion: 0.40
+Nodes (7): archiveColumns, intakesColumns, offersColumns, getSidebarCount(), getSidebarStats(), getSidebarTitle(), IntakesIndex()
 
 ### Community 109 - "Community 109"
 Cohesion: 0.06
@@ -380,8 +378,8 @@ Cohesion: 0.11
 Nodes (18): 10. Additional Article Builder recommendations (Payload-specific), A. Switch Payload's DB adapter from SQLite to MariaDB-compatible Postgres — or keep SQLite explicitly, B. Article ↔ Artifact link should be a real lookup, not a free-text catalog number, C. Author display name pipeline, D. Slug uniqueness and collision handling, E. SEO defaults and Open Graph, F. Tags should be a relationship, not free-text array, G. Reading time / word count (+10 more)
 
 ### Community 114 - "Community 114"
-Cohesion: 0.15
-Nodes (6): getStatusStyles(), INVENTORY_DATA, InventoryIndex(), STATS, getStatusStyles(), InventoryItem()
+Cohesion: 0.13
+Nodes (11): Icons, MainLayout(), useSSEGlobal(), useSSE(), Dashboard(), getStatusStyles(), INVENTORY_DATA, InventoryIndex() (+3 more)
 
 ### Community 115 - "Community 115"
 Cohesion: 0.36
@@ -424,56 +422,48 @@ Cohesion: 0.40
 Nodes (5): 3. Things in the doc that are slightly misleading, A. §1 calls Payload a "microservice", B. §2.C "delete `apps/cms/data/payload.db`", C. §2.A "Payload automatically saves an empty draft when the create page opens", D. §3.B "slug || id"
 
 ### Community 129 - "Community 129"
-Cohesion: 0.17
-Nodes (10): app, corsOptions, csrfProtection(), errorHandler(), errorMessages, pbService, customFormat, logger (+2 more)
+Cohesion: 0.16
+Nodes (14): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), getPrivateFile() (+6 more)
 
 ### Community 130 - "Community 130"
-Cohesion: 0.21
-Nodes (7): formUpload, router, authLimiter, globalLimiter, publicFormLimiter, strictActionLimiter, router
+Cohesion: 0.16
+Nodes (10): router, upload, formUpload, router, requireVisitorAuth(), authLimiter, globalLimiter, publicFormLimiter (+2 more)
 
 ### Community 131 - "Community 131"
-Cohesion: 0.24
-Nodes (7): router, upload, createAppointment(), createSchedule(), requireVisitorAuth(), validate(), router
+Cohesion: 0.33
+Nodes (5): createAppointment(), createSchedule(), checkPermission(), validate(), router
 
 ### Community 132 - "Community 132"
 Cohesion: 0.32
 Nodes (4): ajv, formatTime(), getAppointmentById(), serializeAppointment()
 
 ### Community 133 - "Community 133"
-Cohesion: 0.27
-Nodes (5): ajv, formatTime(), getScheduleById(), serializeSchedule(), appEvents
-
-### Community 136 - "Community 136"
-Cohesion: 0.50
-Nodes (4): defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES
+Cohesion: 0.32
+Nodes (4): ajv, formatTime(), getScheduleById(), serializeSchedule()
 
 ### Community 137 - "Community 137"
-Cohesion: 0.20
-Nodes (10): startServer(), initMariaDB(), envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), getPrivateFile(), resourceMap (+2 more)
+Cohesion: 0.26
+Nodes (8): auditService, identityService, lifecycleService, managementService, securityService, customFormat, sendEmail(), sendEmailWithRetry()
 
 ### Community 139 - "Community 139"
 Cohesion: 0.32
 Nodes (4): definitionService, queryService, verificationService, otpStore
 
-### Community 140 - "Community 140"
-Cohesion: 0.15
-Nodes (13): constituentService, db, pool, ajv, submissionService, compliancePipeline, donationPipeline, acquisitionService (+5 more)
-
 ### Community 145 - "Community 145"
 Cohesion: 0.13
 Nodes (8): AppointmentDetail(), getApptStatus(), getVisitorName(), AppointmentsIndex(), columns, getApptStatus(), STATUS_STYLE, normalizeStatus()
-
-### Community 147 - "Community 147"
-Cohesion: 0.15
-Nodes (12): __dirname, documentService, __filename, NotificationService, ALLOWED_TABLES, CONTRACT_TYPE_MAP, getContractType(), getLegalStatus() (+4 more)
 
 ### Community 148 - "Community 148"
 Cohesion: 0.47
 Nodes (4): handleDonationUpload(), handleUpload(), router, upload
 
 ### Community 149 - "Community 149"
-Cohesion: 0.23
-Nodes (8): env, loginSchema, identityService, lifecycleService, managementService, securityService, sendEmail(), sendEmailWithRetry()
+Cohesion: 0.12
+Nodes (16): startServer(), db, pool, initMariaDB(), loginSchema, ajv, submissionService, compliancePipeline (+8 more)
+
+### Community 152 - "Community 152"
+Cohesion: 0.19
+Nodes (11): __dirname, documentService, __filename, ALLOWED_TABLES, CONTRACT_TYPE_MAP, getContractType(), getLegalStatus(), LEGAL_STATUS_MAP (+3 more)
 
 ## Knowledge Gaps
 - **800 isolated node(s):** `version`, `records`, `fired`, `falsePositive`, `precision` (+795 more)
@@ -483,14 +473,14 @@ Nodes (8): env, loginSchema, identityService, lifecycleService, managementServic
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `PocketBaseService` connect `Community 26` to `Community 129`?**
+- **Why does `db` connect `Community 149` to `Community 0`, `Community 129`, `Community 132`, `Community 133`, `Community 135`, `Community 137`, `Community 10`, `Community 138`, `Community 106`, `Community 139`, `Community 147`, `Community 152`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
-- **Why does `logger` connect `Community 129` to `Community 0`, `Community 137`, `Community 139`, `Community 140`, `Community 147`, `Community 149`?**
-  _High betweenness centrality (0.007) - this node is a cross-community bridge._
+- **Why does `useAuth()` connect `Community 1` to `Community 32`, `Community 105`, `Community 107`, `Community 108`, `Community 145`, `Community 114`, `Community 51`, `Community 26`, `Community 61`?**
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **What connects `version`, `records`, `fired` to the rest of the system?**
   _800 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.10887096774193548 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
   _Cohesion score 0.04081632653061224 - nodes in this community are weakly interconnected._
 - **Should `Community 4` be split into smaller, more focused modules?**

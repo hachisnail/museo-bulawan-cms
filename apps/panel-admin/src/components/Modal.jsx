@@ -38,7 +38,7 @@ export default function Modal({
             <div className="bg-white w-full max-w-[28rem] rounded-xl shadow-2xl relative p-8 pb-10 animate-in zoom-in-95 duration-200">
                 
                 {/* Close Button Icon */}
-                {type !== 'confirm' && type !== 'alert' && (
+                {type !== 'confirm' && (
                     <button 
                         onClick={onClose}
                         className="absolute top-4 right-4 text-zinc-500 hover:text-zinc-800 transition-colors"
@@ -83,7 +83,7 @@ export default function Modal({
                     {children && <div className="w-full">{children}</div>}
 
                     {/* Buttons */}
-                    {(type === 'confirm' || type === 'prompt' || (type === 'alert' && onConfirm)) && (
+                    {(type === 'confirm' || type === 'prompt' || type === 'alert') && (
                         <div className="flex justify-center gap-3 w-full pt-4">
                             <button 
                                 onClick={() => {
@@ -92,7 +92,7 @@ export default function Modal({
                                 }}
                                 className="px-6 py-2 bg-[#7A40F2] hover:bg-[#6A30E2] text-white text-sm font-medium rounded transition-colors shadow-sm min-w-[100px]"
                             >
-                                {confirmText}
+                                {type === 'alert' && !onConfirm ? 'OK' : confirmText}
                             </button>
                             
                             {(type === 'confirm' || type === 'prompt') && (

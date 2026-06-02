@@ -43,7 +43,11 @@ import Nav from '../components/ui/Nav.astro';
   )}
 
   <!-- Massively increased horizontal padding (lg:px-32) for that "roomier" side feel -->
-  <main class="flex-1 z-10 flex flex-col items-center h-auto min-h-fit w-full max-w-[140rem] mx-auto pt-28 pb-8 px-8 md:px-16 lg:px-32">
+ <main
+  class="flex-1 z-10 flex flex-col items-center
+         w-full max-w-[140rem] mx-auto
+         pb-8 px-8 md:px-16 lg:px-32"
+>
     <slot /> 
   </main>
 

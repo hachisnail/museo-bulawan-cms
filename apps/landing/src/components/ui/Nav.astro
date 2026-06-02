@@ -17,7 +17,7 @@ const flags = {
 
 const bgClass = theme === "dark" ? "bg-transparent border-white" : "bg-transparent border-black";
 const textClass = theme === "dark" ? "text-white" : "text-black";
-const dividerClass = theme === "dark" ? "bg-transparent" : "bg-gray-700";
+const dividerClass = theme === "dark" ? "bg-white" : "bg-gray-700";
 const activeBorderClass = `border-b-2 border-yellow-500 ${theme === "dark" ? "text-white" : "text-black"}`;
 
 const isActive = (path: string) => currentPath === path || (path !== "/" && currentPath.startsWith(path));
@@ -57,17 +57,17 @@ const navItems = [
 
 <nav
   id="main-navbar-top" 
-  class={`w-full max-w-[140rem] mx-auto flex items-center justify-between px-8 md:px-16 lg:px-32 py-2 border-b-2 ${bgClass}`}
+  class={`w-full max-w-7xl mx-auto flex items-center justify-between  py-2 border-b-2 ${bgClass}`}
 >
-  <div class="flex items-center gap-x-5">
+  <div class="flex items-center gap-x-3">
     <a href="/" title="Home">
-      <img src={Logo.src} alt="Museo Bulawan Logo" class="w-10" />
+      <img src={Logo.src} alt="Museo Bulawan Logo" class="w-14" />
     </a>
     <div class="flex items-center gap-x-2">
-      <i class={`h-8 w-1 rounded-sm ${dividerClass}`}></i>
+      <i class={`h-10 w-0.5 rounded-sm ${dividerClass}`}></i>
       <a href="/" class={`flex flex-col text-lg justify-center ${textClass}`}>
-        <span class="font-bold leading-tight tracking-wide">Museo</span>
-        <span class="font-bold leading-tight tracking-wide">Bulawan</span>
+        <span class="font-medium text-2xl leading-5 tracking-wide">Museo</span>
+        <span class="font-medium text-2xl leading-5 tracking-wide">Bulawan</span>
       </a>
     </div>
   </div>

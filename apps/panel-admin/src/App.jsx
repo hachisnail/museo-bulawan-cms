@@ -32,7 +32,7 @@ import { ScheduleIndex, ScheduleAdd } from './pages/schedule';
 import { AppointmentsIndex, AppointmentDetail, WalkInAdd } from './pages/appointments';
 
 import { AcquisitionsPage } from './pages/acquisitions';
-import { FormsPage } from './pages/forms';
+import { FormsPage, FormDetailPage } from './pages/forms';
 import PublicFormViewer from './pages/PublicFormViewer';
 
 import NotFound from './pages/NotFound';
@@ -104,6 +104,7 @@ function App() {
                     <Route path="/settings" element={<SettingsPage />} />
                     <Route path="/analytics" element={<Analytics />} />
                     <Route path="/forms" element={<FormsPage />} />
+                    <Route path="/forms/builder/:id" element={<FormDetailPage />} />
                     <Route path="/forms/submissions/:id" element={<SubmissionViewer />} />
                     <Route path="/forms/proof/:id" element={<SubmissionViewer />} />
                     <Route path="/audit-logs" element={<AuditLogsIndex />} />

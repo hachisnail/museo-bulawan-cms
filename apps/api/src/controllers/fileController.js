@@ -1,7 +1,8 @@
 import { db } from '../config/db.js';
-import { minioClient } from '../services/minioService.js';
 import { logger } from '../utils/logger.js';
 import { env } from '../config/env.js';
+import fs from 'fs';
+import path from 'path';
 
 const resourceMap = {
     'inventory': 'Inventory',
@@ -49,12 +50,19 @@ export const getPrivateFile = async (req, res, next) => {
             return res.status(404).json({ error: "File not found." });
         }
 
-        // 3. Stream from MinIO
+        // 3. Stream from local file system
+        const targetPath = path.join(env.uploadDir, fileData.storage_key);
+
+        if (!fs.existsSync(targetPath)) {
+            logger.error(`File missing on disk: ${targetPath}`);
+            return res.status(404).json({ error: "File not found on disk." });
+        }
+
         res.setHeader('Content-Type', fileData.mime_type);
         res.setHeader('Content-Length', fileData.size_bytes);
         res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
 
-        const dataStream = await minioClient.getObject(env.minio.bucket, fileData.storage_key);
+        const dataStream = fs.createReadStream(targetPath);
         dataStream.pipe(res);
 
     } catch (error) {

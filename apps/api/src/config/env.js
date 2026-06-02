@@ -3,7 +3,7 @@ import Joi from 'joi';
 
 dotenv.config();
 
-const minioRequiredStr = Joi.string().when('MINIO_ENABLED', { is: true, then: Joi.required() });
+
 
 const envSchema = Joi.object({
     NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
@@ -35,14 +35,9 @@ const envSchema = Joi.object({
 
 
     // ==========================================
-    // NEW: MinIO / S3 Config
+    // File Storage Config
     // ==========================================
-    MINIO_ENABLED: Joi.boolean().default(false),
-    MINIO_ENDPOINT: minioRequiredStr,
-    MINIO_BUCKET: minioRequiredStr,
-    MINIO_ACCESS_KEY: minioRequiredStr,
-    MINIO_SECRET_KEY: minioRequiredStr,
-    MINIO_REGION: Joi.string().default('us-east-1'),
+    UPLOAD_DIR: Joi.string().default('./uploads'),
 
     // Redis (optional — used for OTP store in production)
     REDIS_URL: Joi.string().optional().default(''),
@@ -83,13 +78,6 @@ export const env = {
         from: envVars.EMAIL_FROM
     },
 
-    minio: {
-        enabled: envVars.MINIO_ENABLED,
-        endpoint: envVars.MINIO_ENDPOINT,
-        bucket: envVars.MINIO_BUCKET,
-        accessKey: envVars.MINIO_ACCESS_KEY,
-        secret: envVars.MINIO_SECRET_KEY,
-        region: envVars.MINIO_REGION
-    },
+    uploadDir: envVars.UPLOAD_DIR,
     redisUrl: envVars.REDIS_URL || ''
 };

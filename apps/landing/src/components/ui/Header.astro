@@ -6,7 +6,6 @@ interface Props {
 const { theme = "light" } = Astro.props;
 const currentPath = Astro.url.pathname;
 
-// Removed catalogs_public
 const flags = {
   home: true,
   articles_public: true,
@@ -20,32 +19,37 @@ const initialText = theme === "dark" ? "text-white" : "text-black";
 <header
   id="public-header"
   data-theme={theme}
-  class={`w-full fixed top-0 z-50 transition-all h-10 duration-300 ${initialBg}`}
+  class={`w-full fixed top-0 z-50 transition-all h-8 duration-300 ${initialBg}`}
 >
-  <div class="flex w-full max-w-[140rem] mx-auto h-full justify-between px-8 md:px-16 lg:px-32">
+  <div class="flex w-full max-w-[140rem] mx-auto h-full justify-between items-center px-8 md:px-16 lg:px-32">
     
     <span
       id="header-text"
-      class={`${initialText} text-[0.65rem] sm:text-xs md:text-sm h-fit w-fit my-auto transition-colors duration-300`}
+      class={`${initialText} text-[0.65rem]  transition-colors duration-300`}
     >
       Open Daily 9:00am-5:00pm, Monday- Friday, Close During Holidays
     </span>
 
-    <div class="w-auto flex items-center">
-      <div class="inline-block transition-opacity duration-300">
+    <div class="flex items-center h-full">
+      
+      <div 
+        id="header-links" 
+        class="flex items-center h-full transition-all duration-300 opacity-0 -translate-y-4 pointer-events-none mr-3"
+      >
         {flags.about && (
-          <a href="/about" class={`mx-3 text-xs my-auto hover:text-gray-400 transition-colors ${initialText}`}>
+          <a href="/about" class={`nav-item px-3 text-xs flex items-center h-full hover:text-gray-400 transition-colors ${initialText}`}>
             About us
           </a>
         )}
-        <a href="/appointment" class={`mx-3 text-xs my-auto hover:text-gray-400 transition-colors ${initialText}`}>
+
+        <a href="/appointment" class={`nav-item px-3 text-xs flex items-center h-full hover:text-gray-400 transition-colors ${initialText}`}>
           Visit Us
         </a>
       </div>
 
-     <a
+      <a
         href={import.meta.env.PUBLIC_LOGIN_URL}
-        class={`ml-3 my-auto ${currentPath === "/login" ? "hidden" : ""}`}
+        class={`flex items-center h-full pl-3 ${currentPath === "/login" ? "hidden" : ""}`}
       >
         <span
           id="login-btn"
@@ -55,6 +59,7 @@ const initialText = theme === "dark" ? "text-white" : "text-black";
         </span>
       </a>
     </div>
+
   </div>
 </header>
 
@@ -62,29 +67,55 @@ const initialText = theme === "dark" ? "text-white" : "text-black";
   const header = document.getElementById("public-header");
   const headerText = document.getElementById("header-text");
   const loginBtn = document.getElementById("login-btn");
-  const navLinksContainer = document.getElementById("nav-links");
+  const headerLinks = document.getElementById("header-links");
   const navItems = document.querySelectorAll(".nav-item");
+
   const theme = header?.getAttribute("data-theme");
 
-  const handleScroll = () => {
-    const isScrolled = window.scrollY > 5;
+  function handleScroll() {
+    const isScrolled = window.scrollY > 20;
+
     if (isScrolled) {
-      header?.classList.replace("bg-transparent", "bg-[#1C1B19]");
-      
+      headerLinks?.classList.remove("opacity-0", "-translate-y-4", "pointer-events-none");
+      headerLinks?.classList.add("opacity-100", "translate-y-0");
+
+      header?.classList.remove("bg-transparent");
+      header?.classList.add("bg-[#1C1B19]");
+
       if (theme === "light") {
-        headerText?.classList.replace("text-black", "text-white");
-        loginBtn?.classList.replace("text-black", "text-white");
-        navItems.forEach(item => item.classList.replace("text-black", "text-white"));
+        headerText?.classList.remove("text-black");
+        headerText?.classList.add("text-white");
+
+        loginBtn?.classList.remove("text-black");
+        loginBtn?.classList.add("text-white");
+
+        navItems.forEach((item) => {
+          item.classList.remove("text-black");
+          item.classList.add("text-white");
+        });
       }
-      navLinksContainer?.classList.remove("opacity-0", "pointer-events-none");
     } else {
+      headerLinks?.classList.remove("opacity-100", "translate-y-0");
+      headerLinks?.classList.add("opacity-0", "-translate-y-4", "pointer-events-none");
+
       if (theme === "light") {
-        header?.classList.replace("bg-[#1C1B19]", "bg-transparent");
-        headerText?.classList.replace("text-white", "text-black");
-        loginBtn?.classList.replace("text-white", "text-black");
-        navItems.forEach(item => item.classList.replace("text-white", "text-black"));
+        header?.classList.remove("bg-[#1C1B19]");
+        header?.classList.add("bg-transparent");
+
+        headerText?.classList.remove("text-white");
+        headerText?.classList.add("text-black");
+
+        loginBtn?.classList.remove("text-white");
+        loginBtn?.classList.add("text-black");
+
+        navItems.forEach((item) => {
+          item.classList.remove("text-white");
+          item.classList.add("text-black");
+        });
       }
     }
-  };
+  }
+
+  handleScroll();
   window.addEventListener("scroll", handleScroll);
 </script>

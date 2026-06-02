@@ -1,9 +1,10 @@
 import { db } from '../config/db.js';
-import { minioClient } from '../services/minioService.js';
 import { auditService } from '../services/auditService.js';
 import { logger } from '../utils/logger.js';
 import { env } from '../config/env.js';
 import { ulid } from 'ulidx';
+import fs from 'fs/promises';
+import path from 'path';
 
 export const mediaService = {
     /**
@@ -19,15 +20,13 @@ export const mediaService = {
             const extension = file.originalname.split('.').pop();
             const storageKey = `media/${mediaId}.${extension}`; // Normalized storage path
 
-            // 1. Stream to MinIO
+            // 1. Save to local disk
+            const targetPath = path.join(env.uploadDir, storageKey);
+            
             if (file.buffer) {
-                await minioClient.putObject(env.minio.bucket, storageKey, file.buffer, file.size, {
-                    'Content-Type': file.mimetype
-                });
+                await fs.writeFile(targetPath, file.buffer);
             } else {
-                await minioClient.fPutObject(env.minio.bucket, storageKey, file.path, {
-                    'Content-Type': file.mimetype
-                });
+                await fs.copyFile(file.path, targetPath);
             }
 
             // 2. Write to Media Metadata (Single Source of Truth)
@@ -109,7 +108,12 @@ export const mediaService = {
             // No more references, safe to delete physical file and metadata
             const metadata = await db.query(`SELECT storage_key FROM media_metadata WHERE id = ?`, [mediaId], connection);
             if (metadata[0]) {
-                await minioClient.removeObject(env.minio.bucket, metadata[0].storage_key);
+                const targetPath = path.join(env.uploadDir, metadata[0].storage_key);
+                try {
+                    await fs.unlink(targetPath);
+                } catch (err) {
+                    logger.warn(`Failed to delete physical file: ${targetPath}`, { error: err.message });
+                }
             }
             await db.executeAndBroadcast(`DELETE FROM media_metadata WHERE id = ?`, [mediaId], 'delete', 'media_metadata', mediaId, connection);
             logger.info(`Purged unreferenced media metadata: ${mediaId}`);

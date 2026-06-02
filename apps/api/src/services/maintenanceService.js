@@ -1,9 +1,9 @@
 import cron from 'node-cron';
 import { db } from '../config/db.js';
 import { logger } from '../utils/logger.js';
-import { minioClient } from './minioService.js';
 import { env } from '../config/env.js';
-
+import fs from 'fs/promises';
+import path from 'path';
 /**
  * MaintenanceService
  * 
@@ -137,7 +137,7 @@ export const maintenanceService = {
 
     /**
      * TASK 4: Orphaned Media
-     * Purges media_metadata and physical MinIO files that are no longer linked to any entity.
+     * Purges media_metadata and physical local files that are no longer linked to any entity.
      */
     async cleanupOrphanedMedia() {
         try {
@@ -155,8 +155,13 @@ export const maintenanceService = {
 
             for (const media of orphans) {
                 try {
-                    // 1. Delete from MinIO
-                    await minioClient.removeObject(env.minio.bucket, media.storage_key);
+                    // 1. Delete physical file
+                    const targetPath = path.join(env.uploadDir, media.storage_key);
+                    try {
+                        await fs.unlink(targetPath);
+                    } catch (err) {
+                        logger.warn(`Failed to delete orphaned physical file: ${targetPath}`, { error: err.message });
+                    }
                     
                     // 2. Delete from DB
                     await db.query(`DELETE FROM media_metadata WHERE id = ?`, [media.id]);

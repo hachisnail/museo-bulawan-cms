@@ -632,7 +632,7 @@ Would you like to reload the latest record and try again?`,
                                         <button onClick={() => setShowHealthForm(false)} className="text-xs text-zinc-400 hover:text-black">Cancel</button>
                                     </div>
                                     <FormRenderer 
-                                        slug="artifact-health"
+                                        id="01KQEAAX7RAE9CEYNBV2VF512M"
                                         hideHeader={true}
                                         compact={true}
                                         customFetch={apiFetch}

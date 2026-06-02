@@ -73,12 +73,12 @@ export const definitionController = {
 
     async exportSubmissions(req, res, next) {
         try {
-            const { slug } = req.query;
-            if (!slug) {
-                return res.status(400).json({ error: "slug query parameter is required" });
+            const { id } = req.query;
+            if (!id) {
+                return res.status(400).json({ error: "id query parameter is required" });
             }
 
-            const definition = await definitionService.getFormDefinition(slug);
+            const definition = await definitionService.getFormDefinition(id);
             const submissions = await db.query(
                 `SELECT * FROM form_submissions WHERE form_id = ? AND status != 'pending' ORDER BY created_at DESC`, 
                 [definition.id]

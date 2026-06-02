@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 
 
 
@@ -170,10 +171,15 @@ export default function DataTable({
                     >
                       <div className="flex items-center gap-1.5">
                         {col.label}
-                        <div className="flex flex-col text-[9px] leading-[0.6] opacity-30 group-hover:opacity-100 transition-opacity">
-                          <span className={sortConfig?.key === col.key && sortConfig.direction === 'asc' ? 'text-black font-extrabold opacity-100' : ''}>▲</span>
-                          <span className={sortConfig?.key === col.key && sortConfig.direction === 'desc' ? 'text-black font-extrabold opacity-100 mt-[1px]' : 'mt-[1px]'}>▼</span>
-                        </div>
+                        {col.key && (
+                            <div className="flex items-center text-zinc-400 group-hover:text-black transition-colors">
+                            {sortConfig?.key === col.key ? (
+                                sortConfig.direction === 'asc' ? <ArrowUp className="w-3 h-3 text-black" /> : <ArrowDown className="w-3 h-3 text-black" />
+                            ) : (
+                                <ArrowUpDown className="w-3 h-3 opacity-0 group-hover:opacity-50 transition-opacity" />
+                            )}
+                            </div>
+                        )}
                       </div>
                     </th>
                   ))}

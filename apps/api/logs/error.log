@@ -1398,3 +1398,121 @@ sql: UPDATE `accessions` SET dimensions = ?, materials = ?, research_notes = ?, 
 2026-06-01 07:41:43 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
 2026-06-01 11:14:55 [error]: Form definition not found: schedule
 2026-06-01 14:48:00 [error]: Form definition not found: pangit-si-gref
+2026-06-02 00:45:35 [error]: Form definition not found: pangit-si-gref
+2026-06-02 00:46:02 [error]: Error: schema is invalid: data.properties['asd'].enum should NOT have duplicate items (items ## 1 and 2 are identical)
+    at Ajv.validateSchema (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\ajv.js:178:16)
+    at Ajv._addSchema (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\ajv.js:307:10)
+    at Ajv.compile (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\ajv\lib\ajv.js:113:24)
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:48:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/01kt0z0xb3ce28bhfzqetvpc7k/submit","ip":"::1","user":"Guest"}
+2026-06-02 00:59:19 [error]: Form definition not found: pangit-si-gref
+2026-06-02 00:59:19 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/pangit-si-gref","ip":"::1","user":"Guest"}
+2026-06-02 00:59:22 [error]: Form definition not found: pangit-si-gref
+2026-06-02 00:59:22 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/pangit-si-gref","ip":"::1","user":"Guest"}
+2026-06-02 01:00:15 [error]: Form submission validation failed for 01kt0z0xb3ce28bhfzqetvpc7k. Errors: data should have required property 'greg_bogo'. Payload: {"email":"asds@asdasd.sd","radio":"asdad","time":"17:02","asd":"asdasd"}
+2026-06-02 01:00:15 [error]: Error: VALIDATION_FAILED: data should have required property 'greg_bogo'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:58:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/01kt0z0xb3ce28bhfzqetvpc7k/submit","ip":"::1","user":"Guest"}
+2026-06-02 10:47:37 [error]: Form definition not found: user-feedback
+2026-06-02 10:47:37 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/user-feedback","ip":"::1","user":"Guest"}
+2026-06-02 10:47:43 [error]: Form definition not found: user-feedback
+2026-06-02 10:47:43 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/user-feedback","ip":"::1","user":"Guest"}
+2026-06-02 10:55:14 [error]: Form definition not found: user-feedback
+2026-06-02 10:55:14 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/user-feedback","ip":"::1","user":"Guest"}
+2026-06-02 10:55:23 [error]: Form definition not found: user-feedback
+2026-06-02 10:55:23 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/user-feedback","ip":"::1","user":"Guest"}
+2026-06-02 11:02:16 [error]: Form definition not found: user-feedback
+2026-06-02 11:02:16 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/user-feedback","ip":"::1","user":"Guest"}
+2026-06-02 11:03:10 [error]: Form definition not found: user-feedback
+2026-06-02 11:03:10 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/user-feedback","ip":"::1","user":"Guest"}
+2026-06-02 11:03:25 [error]: Form definition not found: user-feedback
+2026-06-02 11:03:25 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/user-feedback","ip":"::1","user":"Guest"}
+2026-06-02 11:08:46 [error]: Form definition not found: user-feedback
+2026-06-02 11:08:46 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/user-feedback","ip":"::1","user":"Guest"}
+2026-06-02 11:09:38 [error]: Form definition not found: user-feedback
+2026-06-02 11:09:38 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/user-feedback","ip":"::1","user":"Guest"}
+2026-06-02 11:09:45 [error]: Form definition not found: user-feedback
+2026-06-02 11:09:45 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/user-feedback","ip":"::1","user":"Guest"}
+2026-06-02 11:17:44 [error]: Form definition not found: user-feedback
+2026-06-02 11:17:44 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/user-feedback","ip":"::1","user":"Guest"}
+2026-06-02 11:17:52 [error]: Form definition not found: USER-FEEDBACK
+2026-06-02 11:17:52 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/USER-FEEDBACK","ip":"::1","user":"Guest"}
+2026-06-02 11:25:38 [error]: Form submission validation failed for 01KT0Z0XB3CE28BHFZQETVPC7K. Errors: data should have required property 'email'. Payload: {}
+2026-06-02 11:25:38 [error]: Error: VALIDATION_FAILED: data should have required property 'email'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:58:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K/submit","ip":"::1","user":"Guest"}
+2026-06-02 11:25:41 [error]: Form submission validation failed for 01KT0Z0XB3CE28BHFZQETVPC7K. Errors: data should have required property 'email'. Payload: {}
+2026-06-02 11:25:41 [error]: Error: VALIDATION_FAILED: data should have required property 'email'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:58:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K/submit","ip":"::1","user":"Guest"}
+2026-06-02 11:27:00 [error]: Form submission validation failed for 01KT0Z0XB3CE28BHFZQETVPC7K. Errors: data should have required property 'email'. Payload: {}
+2026-06-02 11:27:00 [error]: Error: VALIDATION_FAILED: data should have required property 'email'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:58:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K/submit","ip":"::1","user":"Guest"}
+2026-06-02 11:27:03 [error]: Form submission validation failed for 01KT0Z0XB3CE28BHFZQETVPC7K. Errors: data should have required property 'email'. Payload: {}
+2026-06-02 11:27:03 [error]: Error: VALIDATION_FAILED: data should have required property 'email'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:58:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K/submit","ip":"::1","user":"Guest"}
+2026-06-02 11:27:06 [error]: Form submission validation failed for 01KT0Z0XB3CE28BHFZQETVPC7K. Errors: data should have required property 'email'. Payload: {}
+2026-06-02 11:27:06 [error]: Error: VALIDATION_FAILED: data should have required property 'email'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:58:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K/submit","ip":"::1","user":"Guest"}
+2026-06-02 11:31:37 [error]: Form submission validation failed for 01KQEFB1FEEDBACKFORMSEED00. Errors: data should have required property 'email'. Payload: {}
+2026-06-02 11:31:37 [error]: Error: VALIDATION_FAILED: data should have required property 'email'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:58:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/01KQEFB1FEEDBACKFORMSEED00/submit","ip":"::1","user":"Guest"}
+2026-06-02 11:32:08 [error]: Form submission validation failed for 01KQEFB1FEEDBACKFORMSEED00. Errors: data should have required property 'email'. Payload: {}
+2026-06-02 11:32:08 [error]: Error: VALIDATION_FAILED: data should have required property 'email'
+    at Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/submissionService.js:58:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.submitForm (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:55:28) | Meta: {"method":"POST","url":"/api/v1/forms/01KQEFB1FEEDBACKFORMSEED00/submit","ip":"::1","user":"Guest"}

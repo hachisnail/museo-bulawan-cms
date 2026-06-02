@@ -402,7 +402,7 @@ export default function Schedule() {
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
-    <div className="flex flex-col gap-y-6 bg-white h-full" style={{ height: 'calc(100vh - 3.5rem)' }}>
+    <div className="flex flex-col gap-y-6 px-4 sm:px-6 lg:px-8 pt-8 bg-white h-full" style={{ height: 'calc(100vh - 3.5rem)' }}>
       <style>{FC_STYLES}</style>
 
       {/* Toast */}

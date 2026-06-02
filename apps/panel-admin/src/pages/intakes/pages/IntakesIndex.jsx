@@ -69,7 +69,7 @@ export default function IntakesIndex() {
                 });
                 setSubmissions(
                     enriched.filter(s =>
-                        s.form_slug === 'donation-form' || s.expand?.form_id?.type === 'donation'
+                        s.form_id === '01KQE81CSDZ6D68JYXB34JXZX5' || s.expand?.form_id?.type === 'donation'
                     )
                 );
             }

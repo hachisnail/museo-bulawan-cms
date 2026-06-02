@@ -1,0 +1,42 @@
+---
+import '../../../styles/global.css';
+import FormRenderer from '../../../components/FormRenderer';
+
+const { id } = Astro.params;
+const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embed Form | Museo Bulawan</title>
+  <style>
+    /* Embed specific styles to ensure it integrates seamlessly in iframes */
+    html, body { 
+        background-color: transparent !important; 
+        margin: 0; 
+        padding: 0; 
+        min-height: 100vh;
+        width: 100%;
+        overflow-x: hidden;
+    }
+  </style>
+</head>
+<body class="w-full min-h-screen bg-transparent py-4 md:py-8 px-2 md:px-4 flex justify-center items-start">
+      {id ? (
+        <div class="w-full max-w-5xl">
+            <FormRenderer 
+            client:only="react" 
+            id={id.toUpperCase()} 
+            apiBaseUrl={API_URL} 
+            />
+        </div>
+      ) : (
+        <div class="text-center py-20 text-zinc-500 font-serif text-xl border border-zinc-200 bg-white/50 rounded-xl w-full max-w-2xl mx-auto backdrop-blur-md">
+          Form not found.
+        </div>
+      )}
+</body>
+</html>

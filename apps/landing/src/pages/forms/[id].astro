@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FormRenderer from '../../components/FormRenderer';
+
+const { id } = Astro.params;
+const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
+---
+
+<BaseLayout title="Form Submissions Portal | Museo Bulawan" >
+  <div class="w-full min-h-screen py-20 px-4 md:px-10 relative bg-[#1C1B19] flex justify-center items-start overflow-hidden border-t border-[#D4AF37]/20">
+      
+      <!-- Decorative background elements -->
+      <div class="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-[#D4AF37]/10 to-transparent pointer-events-none"></div>
+      <div class="absolute -top-40 -right-40 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none opacity-50"></div>
+      <div class="absolute top-60 -left-20 w-80 h-80 bg-[#D4AF37]/5 rounded-full blur-3xl pointer-events-none opacity-50"></div>
+
+      <div class="relative z-10 w-full max-w-5xl mt-10 md:mt-16">
+          {id ? (
+            <FormRenderer 
+              client:only="react" 
+              id={id.toUpperCase()} 
+              apiBaseUrl={API_URL} 
+            />
+          ) : (
+            <div class="text-center py-32 text-[#D4AF37] font-serif text-3xl tracking-wide flex flex-col items-center gap-6">
+              <span class="text-6xl">🏛️</span>
+              Form Not Found
+              <p class="text-sm font-sans text-zinc-400 font-light tracking-widest uppercase">The requested form does not exist or has been moved.</p>
+            </div>
+          )}
+      </div>
+  </div>
+</BaseLayout>

@@ -10,7 +10,7 @@ import { sseManager } from "../../utils/sseFactory.js";
  * Handles admin-level user management actions like role updates, deactivation, and session termination.
  */
 export const managementService = {
-    async updateUserById(adminId, targetId, { fname, lname, role, email }) {
+    async updateUserById(adminId, targetId, { fname, lname, role, email, phone, address, title }) {
         try {
             const [target] = await db.query('SELECT id, role FROM users WHERE id = ?', [targetId]);
             if (!target) throw new Error('USER_NOT_FOUND');
@@ -26,20 +26,23 @@ export const managementService = {
             if (lname !== undefined) { fields.push('lname = ?'); values.push(lname); }
             if (role !== undefined)  { fields.push('role = ?');  values.push(role);  }
             if (email !== undefined) { fields.push('email = ?'); values.push(email); }
+            if (phone !== undefined) { fields.push('phone = ?'); values.push(phone); }
+            if (address !== undefined) { fields.push('address = ?'); values.push(address); }
+            if (title !== undefined) { fields.push('title = ?'); values.push(title); }
 
             if (fields.length === 0) throw new Error('NO_FIELDS_TO_UPDATE');
 
             values.push(targetId);
             await db.query(`UPDATE users SET ${fields.join(', ')} WHERE id = ?`, values);
 
-            const [updated] = await db.query('SELECT id, email, role, fname, lname FROM users WHERE id = ?', [targetId]);
+            const [updated] = await db.query('SELECT id, email, role, fname, lname, phone, address, title FROM users WHERE id = ?', [targetId]);
 
 
             await auditService.log({
                 userId: adminId,
                 action: 'UPDATE',
                 resource: 'User',
-                details: { message: `Admin updated user ${targetId}`, changes: { fname, lname, role, email } }
+                details: { message: `Admin updated user ${targetId}`, changes: { fname, lname, role, email, phone, address, title } }
             });
 
             logger.info('User updated by admin', { action: 'UPDATE', resource: 'User', adminId, targetId });

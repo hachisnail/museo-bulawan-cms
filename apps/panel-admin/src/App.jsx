@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './context/authContext';
 import { useSSE } from './hooks/useSSE';
 import { Navigate } from 'react-router-dom';
 import { useUmami } from './hooks/useUmami';
+import { Modal } from './components';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
@@ -25,7 +26,7 @@ import Constituents from './pages/Constituents';
 import Exhibitions from './pages/Exhibitions';
 import ArticlesCMS from './pages/ArticlesCMS';
 import { SettingsPage } from './pages/settings/index.js';
-import { AuditLogsPage } from './pages/audit-logs/index.js';
+import { AuditLogsIndex, AuditLogView } from './pages/audit-logs/index.js';
 import Locations from './pages/Locations';
 import { ScheduleIndex, ScheduleAdd } from './pages/schedule';
 import { AppointmentsIndex, AppointmentDetail, WalkInAdd } from './pages/appointments';
@@ -42,6 +43,7 @@ function App() {
     const { track } = useUmami();
 
     const { user, localLogout } = useAuth();
+    const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'alert', variant: 'warning' });
 
     // Log route changes; Umami also auto-tracks page views via its script.
     useEffect(() => {
@@ -51,12 +53,18 @@ function App() {
 
     useSSE(user ? {
         'force_logout': (data) => {
-            alert(data.message); 
-            
-            // FIX: Only wipe the local UI state. 
-            // Do NOT send a /logout request to the backend!
-            localLogout(); 
-            navigate('/login');
+            setModal({
+                isOpen: true,
+                title: 'Session Terminated',
+                message: data.message,
+                type: 'alert',
+                variant: 'warning',
+                onConfirm: () => {
+                    setModal(prev => ({ ...prev, isOpen: false }));
+                    localLogout();
+                    navigate('/login');
+                }
+            });
         },
         'connected': (data) => {
             console.log("Joined realtime channels:", data.channels);
@@ -64,6 +72,7 @@ function App() {
     } : {});
 
  return (
+        <>
         <Routes>
             {/* Public Routes */}
             <Route path="/home" element={<Home />} />
@@ -72,7 +81,7 @@ function App() {
             <Route path="/setup" element={<SetupAccount />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/forms/display/:slug" element={<PublicFormViewer />} />
+            <Route path="/forms/display/:id" element={<PublicFormViewer />} />
 
             {/* Protected Shell */}
             <Route element={<ProtectedRoute />}>
@@ -97,7 +106,8 @@ function App() {
                     <Route path="/forms" element={<FormsPage />} />
                     <Route path="/forms/submissions/:id" element={<SubmissionViewer />} />
                     <Route path="/forms/proof/:id" element={<SubmissionViewer />} />
-                    <Route path="/audit-logs" element={<AuditLogsPage />} />
+                    <Route path="/audit-logs" element={<AuditLogsIndex />} />
+                    <Route path="/audit-logs/:id" element={<AuditLogView />} />
                     <Route path="/schedule" element={<ScheduleIndex />} />
                     <Route path="/schedule/add" element={<ScheduleAdd />} />
                     <Route path="/appointments" element={<AppointmentsIndex />} />
@@ -111,8 +121,13 @@ function App() {
             </Route>
             
             {/* Global Public Catch All */}
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
+        <Modal 
+            {...modal} 
+            onClose={() => setModal(prev => ({ ...prev, isOpen: false }))} 
+        />
+        </>
     );
 }
 

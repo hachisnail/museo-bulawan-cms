@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormLogic } from './useFormLogic';
-import { Check, AlertCircle, FileText, Upload } from 'lucide-react';
+import { Check, AlertCircle, FileText, Upload, Star } from 'lucide-react';
 
 const InternalForm = (props) => {
     const { 
@@ -20,7 +20,55 @@ const InternalForm = (props) => {
         handleFileChange,
         removeFile,
         handleSubmit
-    } = useFormLogic(props);
+    } = useFormLogic({ 
+        ...props, 
+        onError: (err) => alert(err.message || err)
+    });
+
+    const [fieldErrors, setFieldErrors] = useState({});
+
+    const onInputChange = (e) => {
+        if (e && e.target && e.target.name && fieldErrors[e.target.name]) {
+            setFieldErrors(prev => ({ ...prev, [e.target.name]: null }));
+        }
+        handleInputChange(e);
+    };
+
+    const handleInternalSubmit = (e) => {
+        e.preventDefault();
+        setFieldErrors({});
+        const newErrors = {};
+        
+        const properties = definition?.schema?.properties || {};
+        const required = definition?.schema?.required || [];
+        
+        Object.entries(properties).forEach(([key, prop]) => {
+            const dependency = prop['ui:dependsOn'] || prop['dependsOn'];
+            let isVisible = true;
+            if (dependency) {
+                const { field, value, values, operator = 'eq' } = dependency;
+                const actualValue = formData[field];
+                if (operator === 'eq') isVisible = actualValue === value;
+                else if (operator === 'neq') isVisible = actualValue !== value;
+                else if (operator === 'in') isVisible = values?.includes(actualValue);
+                else if (operator === 'not_empty') isVisible = !!actualValue;
+            }
+            if (!isVisible) return;
+            if (prop['ui:widget'] === 'hidden') return;
+            
+            const isRequired = required.includes(key);
+            const val = formData[key];
+            if (isRequired && (val === undefined || val === null || (typeof val === 'string' && val.trim() === ''))) {
+                newErrors[key] = 'This field is required';
+            }
+        });
+
+        if (Object.keys(newErrors).length > 0) {
+            setFieldErrors(newErrors);
+            return;
+        }
+        handleSubmit(e);
+    };
 
     if (loading) return (
         <div className="py-10 text-center flex flex-col items-center justify-center gap-4 min-h-[400px]">
@@ -36,7 +84,13 @@ const InternalForm = (props) => {
         </div>
     );
 
-    if (!definition) return null;
+    if (!definition) return (
+        <div className="p-6 bg-zinc-50 border border-zinc-200 rounded-sm flex flex-col items-center gap-4 text-center">
+            <AlertCircle className="w-8 h-8 text-zinc-400" />
+            <h3 className="text-lg font-serif text-black">Form Not Found</h3>
+            <p className="text-[10px] text-zinc-500 font-medium uppercase tracking-widest">The requested form does not exist or has been removed.</p>
+        </div>
+    );
 
     const { schema, settings } = definition;
     const properties = schema?.properties || {};
@@ -57,6 +111,16 @@ const InternalForm = (props) => {
 
     return (
         <div className={`internal-form-compact ${className}`}>
+            <style>{`
+                @keyframes form-shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+                    20%, 40%, 60%, 80% { transform: translateX(3px); }
+                }
+                .animate-form-shake {
+                    animation: form-shake 0.4s ease-in-out;
+                }
+            `}</style>
             {!hideHeader && (
                 <header className="mb-8 pb-4 border-b border-zinc-200">
                     <h2 className="text-xl font-serif text-black uppercase tracking-tight">{definition.title}</h2>
@@ -83,7 +147,7 @@ const InternalForm = (props) => {
                 </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleInternalSubmit} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
                     {Object.entries(properties).map(([key, prop]) => {
                         if (!isFieldVisible(key, prop)) return null;
@@ -101,43 +165,157 @@ const InternalForm = (props) => {
                                     {isRequired && <span className="text-[#D4AF37]">•</span>}
                                 </label>
 
+                                <div className={fieldErrors[key] ? 'animate-form-shake' : ''}>
                                 {prop.type === 'boolean' ? (
                                     <label className="relative inline-flex items-center cursor-pointer group py-1.5">
-                                        <input type="checkbox" name={key} checked={!!formData[key]} onChange={handleInputChange} className="sr-only peer" />
+                                        <input type="checkbox" name={key} checked={!!formData[key]} onChange={onInputChange} className="sr-only peer" />
                                         <div className="w-10 h-5 bg-zinc-100 rounded-sm peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-zinc-400 after:rounded-sm after:h-4 after:w-4 after:transition-all peer-checked:bg-black after:peer-checked:bg-[#D4AF37]"></div>
                                         <span className="ml-3 text-[10px] text-zinc-500 group-hover:text-black transition-colors uppercase font-bold tracking-tighter">{prop.description || 'Enable'}</span>
                                     </label>
+                                ) : prop['ui:widget'] === 'radio' ? (
+                                    <div className="flex flex-col gap-2 py-2">
+                                        {prop.enum?.map((opt, i) => (
+                                            <label key={`${opt}_${i}`} className="flex items-center cursor-pointer group">
+                                                <input type="radio" name={key} required={isRequired} value={opt} checked={formData[key] === opt} onChange={onInputChange} className="w-4 h-4 text-[#D4AF37] border-zinc-300 focus:ring-[#D4AF37]" />
+                                                <span className="ml-3 text-[11px] text-zinc-600 font-medium group-hover:text-black transition-colors">{opt}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                ) : prop['ui:widget'] === 'checkbox' ? (
+                                    <div className="flex flex-col gap-2 py-2">
+                                        {prop.items?.enum?.map((opt, i) => {
+                                            const currentVals = Array.isArray(formData[key]) ? formData[key] : [];
+                                            return (
+                                                <label key={`${opt}_${i}`} className="flex items-center cursor-pointer group">
+                                                    <input type="checkbox" name={key} value={opt} checked={currentVals.includes(opt)} onChange={(e) => {
+                                                        const newVals = e.target.checked ? [...currentVals, opt] : currentVals.filter(v => v !== opt);
+                                                        onInputChange({ target: { name: key, value: newVals }});
+                                                    }} className="w-4 h-4 text-[#D4AF37] border-zinc-300 rounded-sm focus:ring-[#D4AF37]" />
+                                                    <span className="ml-3 text-[11px] text-zinc-600 font-medium group-hover:text-black transition-colors">{opt}</span>
+                                                </label>
+                                            );
+                                        })}
+                                    </div>
+                                ) : prop['ui:widget'] === 'rating' ? (
+                                    <div className="flex items-center gap-1 py-2">
+                                        {[1, 2, 3, 4, 5].map(star => (
+                                            <button
+                                                key={star}
+                                                type="button"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    onInputChange({ target: { name: key, value: star }});
+                                                }}
+                                                className={`transition-all hover:scale-110 focus:outline-none`}
+                                            >
+                                                <Star className={`w-8 h-8 ${Number(formData[key]) >= star ? 'text-[#D4AF37] fill-[#D4AF37]' : 'text-zinc-300 hover:text-[#D4AF37]/50'}`} />
+                                            </button>
+                                        ))}
+                                    </div>
+                                ) : prop['ui:widget'] === 'range' ? (
+                                    <div className="flex flex-col gap-2 py-2">
+                                        <div className="flex justify-between text-[10px] text-zinc-400 font-bold px-1">
+                                            <span>1</span>
+                                            <span>10</span>
+                                        </div>
+                                        <input type="range" name={key} min="1" max="10" value={formData[key] || 1} onChange={onInputChange} className="w-full h-1.5 bg-zinc-200 rounded-lg appearance-none cursor-pointer accent-[#D4AF37]" />
+                                        <div className="text-center font-black text-xs text-[#D4AF37]">{formData[key] || 1}</div>
+                                    </div>
+                                ) : prop['ui:widget'] === 'linear_scale' ? (
+                                    <div className="flex flex-col gap-4 py-2">
+                                        <div className="flex justify-between items-center text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                                            <span>{prop['ui:minLabel'] || ''}</span>
+                                            <span>{prop['ui:maxLabel'] || ''}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            {Array.from({ length: 10 }, (_, i) => i + 1).map(num => (
+                                                <label key={num} className="flex flex-col items-center gap-2 cursor-pointer">
+                                                    <span className="text-[10px] font-bold text-zinc-400">{num}</span>
+                                                    <input type="radio" name={key} required={isRequired} value={num} checked={Number(formData[key]) === num} onChange={onInputChange} className="w-4 h-4 text-[#D4AF37] border-zinc-300 focus:ring-[#D4AF37]" />
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ) : prop['ui:widget'] === 'multiple_choice_grid' || prop['ui:widget'] === 'checkbox_grid' ? (
+                                    <div className="overflow-x-auto w-full py-2">
+                                        <table className="w-full text-[11px] text-left border-collapse min-w-[400px]">
+                                            <thead>
+                                                <tr>
+                                                    <th className="p-2 border-b border-zinc-200"></th>
+                                                    {prop['ui:columns']?.map(col => (
+                                                        <th key={col} className="p-2 border-b border-zinc-200 text-center font-bold text-zinc-500 uppercase tracking-wider">{col}</th>
+                                                    ))}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {prop['ui:rows']?.map((row, rIdx) => (
+                                                    <tr key={row} className="border-b border-zinc-100 hover:bg-zinc-50">
+                                                        <td className="p-2 font-bold text-zinc-700">{row}</td>
+                                                        {prop['ui:columns']?.map((col, cIdx) => {
+                                                            const isRadio = prop['ui:widget'] === 'multiple_choice_grid';
+                                                            const inputType = isRadio ? 'radio' : 'checkbox';
+                                                            const fieldName = `${key}_${rIdx}`;
+                                                            
+                                                            const gridData = formData[key] || {};
+                                                            const isChecked = isRadio ? gridData[row] === col : (Array.isArray(gridData[row]) && gridData[row].includes(col));
+                                                            
+                                                            return (
+                                                                <td key={col} className="p-2 text-center">
+                                                                    <input type={inputType} name={fieldName} value={col} checked={isChecked} onChange={(e) => {
+                                                                        const newData = { ...gridData };
+                                                                        if (isRadio) {
+                                                                            newData[row] = e.target.value;
+                                                                        } else {
+                                                                            const currentVals = Array.isArray(newData[row]) ? newData[row] : [];
+                                                                            newData[row] = e.target.checked ? [...currentVals, col] : currentVals.filter(v => v !== col);
+                                                                        }
+                                                                        onInputChange({ target: { name: key, value: newData }});
+                                                                    }} className={`w-4 h-4 text-[#D4AF37] border-zinc-300 focus:ring-[#D4AF37] ${!isRadio && 'rounded-sm'}`} />
+                                                                </td>
+                                                            );
+                                                        })}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 ) : prop.enum ? (
                                     <select
                                         name={key}
                                         required={isRequired}
                                         value={formData[key] || ''}
-                                        onChange={handleInputChange}
-                                        className="w-full bg-zinc-100 border border-zinc-300 rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none focus:border-[#D4AF37] transition-all appearance-none font-medium"
+                                        onChange={onInputChange}
+                                        className={`w-full bg-zinc-100 border rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none transition-all appearance-none font-medium ${fieldErrors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-300 focus:border-[#D4AF37]'}`}
                                     >
                                         <option value="" disabled>Select...</option>
-                                        {prop.enum.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                                        {prop.enum.map((opt, i) => <option key={`${opt}_${i}`} value={opt}>{opt}</option>)}
                                     </select>
                                 ) : prop.format === 'textarea' ? (
                                     <textarea
                                         name={key}
                                         required={isRequired}
                                         value={formData[key] || ''}
-                                        onChange={handleInputChange}
+                                        onChange={onInputChange}
                                         rows={3}
                                         placeholder={prop.description}
-                                        className="w-full bg-zinc-100 border border-zinc-300 rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none focus:border-[#D4AF37] transition-all resize-none placeholder:text-zinc-400 font-light"
+                                        className={`w-full bg-zinc-100 border rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none transition-all resize-none placeholder:text-zinc-400 font-light ${fieldErrors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-300 focus:border-[#D4AF37]'}`}
                                     />
                                 ) : (
                                     <input
-                                        type={prop.format === 'date' ? 'date' : prop.type === 'number' ? 'number' : 'text'}
+                                        type={prop.format === 'date' ? 'date' : prop.format === 'time' ? 'time' : prop.type === 'number' ? 'number' : 'text'}
                                         name={key}
                                         required={isRequired}
                                         value={formData[key] || ''}
-                                        onChange={handleInputChange}
+                                        onChange={onInputChange}
                                         placeholder={prop.description}
-                                        className="w-full bg-zinc-100 border border-zinc-300 rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none focus:border-[#D4AF37] transition-all placeholder:text-zinc-400 font-medium"
+                                        className={`w-full bg-zinc-100 border rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none transition-all placeholder:text-zinc-400 font-medium ${fieldErrors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-300 focus:border-[#D4AF37]'}`}
                                     />
+                                )}
+                                </div>
+                                {fieldErrors[key] && (
+                                    <p className="text-[9px] text-red-500 font-bold uppercase tracking-widest flex items-center gap-1 mt-1">
+                                        <AlertCircle className="w-3 h-3" /> {fieldErrors[key]}
+                                    </p>
                                 )}
                             </div>
                         );

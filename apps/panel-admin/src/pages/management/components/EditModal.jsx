@@ -7,6 +7,9 @@ export default function EditModal({ isOpen, onClose, user, targetUser, onUpdate,
         fname: '',
         lname: '',
         email: '',
+        phone: '',
+        address: '',
+        title: '',
         role: ''
     });
 
@@ -16,6 +19,9 @@ export default function EditModal({ isOpen, onClose, user, targetUser, onUpdate,
                 fname: targetUser.fname || '',
                 lname: targetUser.lname || '',
                 email: targetUser.email || '',
+                phone: targetUser.phone || '',
+                address: targetUser.address || '',
+                title: targetUser.title || '',
                 role: targetUser.role || 'visitor'
             });
         }
@@ -32,6 +38,7 @@ export default function EditModal({ isOpen, onClose, user, targetUser, onUpdate,
 
     const roles = [
         { value: 'admin', label: 'Administrator' },
+        { value: 'curator', label: 'Curator' },
         { value: 'registrar', label: 'Registrar' },
         { value: 'conservator', label: 'Conservator' },
         { value: 'inventory_staff', label: 'Inventory Staff' },
@@ -52,9 +59,6 @@ export default function EditModal({ isOpen, onClose, user, targetUser, onUpdate,
                             <h2 className="text-2xl font-serif text-black uppercase tracking-widest">Modify Permissions</h2>
                             <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold italic">Update user information and access controls</p>
                         </div>
-                        <button onClick={onClose} disabled={actionLoading} className="text-zinc-300 hover:text-black transition-colors disabled:opacity-50">
-                            <X className="w-6 h-6" />
-                        </button>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -67,7 +71,7 @@ export default function EditModal({ isOpen, onClose, user, targetUser, onUpdate,
                                     value={editForm.fname}
                                     onChange={e => setEditForm({...editForm, fname: e.target.value})}
                                     className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37]"
-                                    disabled={actionLoading}
+                                    disabled={actionLoading || user?.role !== 'admin'}
                                 />
                             </div>
                             <div className="space-y-2">
@@ -78,7 +82,7 @@ export default function EditModal({ isOpen, onClose, user, targetUser, onUpdate,
                                     value={editForm.lname}
                                     onChange={e => setEditForm({...editForm, lname: e.target.value})}
                                     className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37]"
-                                    disabled={actionLoading}
+                                    disabled={actionLoading || user?.role !== 'admin'}
                                 />
                             </div>
                         </div>
@@ -91,7 +95,44 @@ export default function EditModal({ isOpen, onClose, user, targetUser, onUpdate,
                                 value={editForm.email}
                                 onChange={e => setEditForm({...editForm, email: e.target.value})}
                                 className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37]"
-                                disabled={actionLoading}
+                                disabled={actionLoading || user?.role !== 'admin'}
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black text-zinc-400 uppercase tracking-widest">Title</label>
+                                <input 
+                                    type="text" 
+                                    value={editForm.title}
+                                    onChange={e => setEditForm({...editForm, title: e.target.value})}
+                                    className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37]"
+                                    disabled={actionLoading || user?.role !== 'admin'}
+                                    placeholder="e.g. Senior Curator"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[9px] font-black text-zinc-400 uppercase tracking-widest">Phone</label>
+                                <input 
+                                    type="text" 
+                                    value={editForm.phone}
+                                    onChange={e => setEditForm({...editForm, phone: e.target.value})}
+                                    className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37]"
+                                    disabled={actionLoading || user?.role !== 'admin'}
+                                    placeholder="+63 900 000 0000"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-[9px] font-black text-zinc-400 uppercase tracking-widest">Address</label>
+                            <input 
+                                type="text" 
+                                value={editForm.address}
+                                onChange={e => setEditForm({...editForm, address: e.target.value})}
+                                className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37]"
+                                disabled={actionLoading || user?.role !== 'admin'}
+                                placeholder="Full Address"
                             />
                         </div>
 
@@ -106,7 +147,7 @@ export default function EditModal({ isOpen, onClose, user, targetUser, onUpdate,
                                     value={editForm.role}
                                     onChange={e => setEditForm({...editForm, role: e.target.value})}
                                     className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37] appearance-none"
-                                    disabled={actionLoading}
+                                    disabled={actionLoading || user?.role !== 'admin'}
                                 >
                                     {roles.map(r => (
                                         <option key={r.value} value={r.value}>{r.label}</option>
@@ -115,12 +156,23 @@ export default function EditModal({ isOpen, onClose, user, targetUser, onUpdate,
                             )}
                         </div>
 
-                        <button 
-                            disabled={actionLoading}
-                            className="w-full py-5 bg-black text-[#D4AF37] rounded-sm font-black uppercase tracking-widest text-[10px] hover:bg-zinc-900 shadow-xl shadow-black/10 disabled:opacity-50 flex items-center justify-center gap-3 transition-all"
-                        >
-                            {actionLoading ? 'Saving Changes...' : <><Save className="w-4 h-4" /> Save Access Rules</>}
-                        </button>
+                        <div className="flex gap-4">
+                            <button 
+                                type="button"
+                                onClick={onClose}
+                                disabled={actionLoading}
+                                className="flex-1 py-5 bg-zinc-100 text-zinc-500 rounded-sm font-black uppercase tracking-widest text-[10px] hover:bg-zinc-200 transition-all"
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                type="submit"
+                                disabled={actionLoading}
+                                className="flex-[2] py-5 bg-black text-[#D4AF37] rounded-sm font-black uppercase tracking-widest text-[10px] hover:bg-zinc-900 shadow-xl shadow-black/10 disabled:opacity-50 flex items-center justify-center gap-3 transition-all"
+                            >
+                                {actionLoading ? 'Saving Changes...' : <><Save className="w-4 h-4" /> Save Access Rules</>}
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>

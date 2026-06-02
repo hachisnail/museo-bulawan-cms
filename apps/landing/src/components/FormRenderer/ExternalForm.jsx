@@ -38,9 +38,12 @@ const ExternalForm = (props) => {
         handleRequestOtp,
         handleSubmit,
         setOtp,
-        setOtpSent
+        setOtpSent,
+        alertConfig,
+        setAlertConfig
     } = useFormLogic({
         ...props,
+        onError: (err) => setAlertConfig({ type: 'error', title: 'Error', message: err.message || err }),
         onSuccess: (result) => {
             setIsSubmitted(true);
             setSubmittedId(result.id);
@@ -50,12 +53,14 @@ const ExternalForm = (props) => {
 
     const [currentStepIdx, setCurrentStepIdx] = useState(0);
     const [localError, setLocalError] = useState(null);
+    const [fieldErrors, setFieldErrors] = useState({});
 
     const handleResetForm = () => {
         setIsSubmitted(false);
         setSubmittedId(null);
         setCurrentStepIdx(0);
         setLocalError(null);
+        setFieldErrors({});
         setOtp('');
         setOtpSent(false);
     };
@@ -154,15 +159,16 @@ const ExternalForm = (props) => {
 
     if (loading) return (
         <div className={`flex flex-col w-full max-w-4xl min-w-[320px] md:min-w-[600px] mx-auto font-sans ${className}`}>
-            <div className="w-full bg-white rounded-2xl  shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-20 flex items-center justify-center min-h-[400px]">
-                <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+            <div className="w-full bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-20 flex flex-col items-center justify-center min-h-[500px]">
+                <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin mb-4"></div>
+                <div className="text-xs text-gray-500 uppercase tracking-widest font-bold">Loading Form...</div>
             </div>
         </div>
     );
 
     if (apiError && !definition) return (
-        <div className={`flex flex-col w-full max-w-4xl min-w-[320px]w md:min-w-[600px] mx-auto font-sans ${className}`}>
-            <div className="w-full bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-12 text-center min-h-[400px] flex flex-col justify-center items-center">
+        <div className={`flex flex-col w-full max-w-4xl min-w-[320px] md:min-w-[600px] mx-auto font-sans ${className}`}>
+            <div className="w-full bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-12 text-center min-h-[500px] flex flex-col justify-center items-center">
                 <AlertCircle className="w-10 h-10 text-red-500 mx-auto mb-4" />
                 <h3 className="text-2xl font-serif text-black tracking-wide mb-2">Error</h3>
                 <p className="text-sm text-gray-500 mb-8 max-w-md">{apiError}</p>
@@ -171,12 +177,20 @@ const ExternalForm = (props) => {
         </div>
     );
 
-    if (!definition) return null;
+    if (!definition) return (
+        <div className={`flex flex-col w-full max-w-4xl min-w-[320px] md:min-w-[600px] mx-auto font-sans ${className}`}>
+            <div className="w-full bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-12 text-center min-h-[500px] flex flex-col justify-center items-center">
+                <AlertCircle className="w-10 h-10 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-2xl font-serif text-black tracking-wide mb-2">Form Not Found</h3>
+                <p className="text-sm text-gray-500 mb-8 max-w-md">The form you are looking for is no longer available or does not exist.</p>
+            </div>
+        </div>
+    );
 
     if (isSubmitted) {
         return (
             <div className={`flex flex-col w-full max-w-4xl min-w-[320px] md:min-w-[600px] mx-auto font-sans ${className}`}>
-                <div className="w-full bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-16 text-center animate-in fade-in duration-500 min-h-[400px] flex flex-col justify-center items-center">
+                <div className="w-full bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-16 text-center animate-in fade-in duration-500 min-h-[500px] flex flex-col justify-center items-center">
                     <h3 className="text-4xl font-serif text-black tracking-wide mb-4 uppercase">Success!</h3>
                     <hr className="border-t border-gray-300 w-32 mx-auto mb-8" />
                     <p className="text-sm text-gray-600 font-light max-w-md mx-auto leading-relaxed mb-8">
@@ -204,11 +218,12 @@ const ExternalForm = (props) => {
     const activeStep = visibleSteps[currentVisibleIdx];
 
     // ── Navigation ──
-    const nextStep = (e) => {
-        if (e) e.preventDefault();
+    const validateCurrentStep = () => {
         setLocalError(null);
+        setFieldErrors({});
 
         if (activeStep?.type === 'fields') {
+            const newErrors = {};
             for (const [key, prop] of activeStep.fields) {
                 if (!isFieldVisible(key, prop)) continue;
                 if (prop['ui:widget'] === 'hidden') continue;
@@ -217,20 +232,36 @@ const ExternalForm = (props) => {
                 
                 const value = formData[key];
                 if (isRequired && (value === undefined || value === null || (typeof value === 'string' && value.trim() === ''))) {
-                    setLocalError(`"${prop.title || key}" is required.`);
-                    return;
+                    newErrors[key] = `This field is required`;
                 }
             }
+            if (Object.keys(newErrors).length > 0) {
+                setFieldErrors(newErrors);
+                return false;
+            }
         }
+        return true;
+    };
+
+    const nextStep = (e) => {
+        if (e) e.preventDefault();
+        if (!validateCurrentStep()) return;
 
         if (currentVisibleIdx < visibleSteps.length - 1) {
             setCurrentStepIdx(currentVisibleIdx + 1);
         }
     };
 
+    const handleFinalSubmit = (e) => {
+        if (e) e.preventDefault();
+        if (!validateCurrentStep()) return;
+        handleSubmit(e);
+    };
+
     const prevStep = (e) => {
         if (e) e.preventDefault();
         setLocalError(null);
+        setFieldErrors({});
         if (currentVisibleIdx > 0) {
             setCurrentStepIdx(currentVisibleIdx - 1);
         }
@@ -238,6 +269,9 @@ const ExternalForm = (props) => {
 
     const onInputChange = (e) => {
         setLocalError(null);
+        if (fieldErrors[e.target.name]) {
+            setFieldErrors(prev => ({ ...prev, [e.target.name]: null }));
+        }
         handleInputChange(e);
     };
 
@@ -250,15 +284,16 @@ const ExternalForm = (props) => {
 
         const isRequired = required.includes(key);
         const showRequired = isRequired && !(formData.is_anonymous === true && ['donor_first_name', 'donor_last_name'].includes(key));
+        const isFullWidth = prop['ui:width'] === 'full';
 
         return (
-            <div key={key} className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 mb-5">
-                <label className="text-[11px] font-medium text-gray-800 w-32 shrink-0 capitalize">
+            <div key={key} className={`${isFullWidth ? 'md:col-span-2' : ''} space-y-3`}>
+                <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500 flex items-center gap-2">
                     {prop.title || key}
-                    {showRequired && <span className="text-red-500 ml-1">*</span>}
+                    {showRequired && <span className="text-red-500">*</span>}
                 </label>
 
-                <div className="flex-1">
+                <div className={fieldErrors[key] ? 'animate-form-shake' : ''}>
                    {prop.type === 'boolean' ? (
                         <label className="flex items-center cursor-pointer py-2">
                             <input type="checkbox" name={key} checked={!!formData[key]} onChange={onInputChange} className="w-4 h-4 text-black border-gray-400 rounded-sm focus:ring-black" />
@@ -273,15 +308,116 @@ const ExternalForm = (props) => {
                                 onChange={onInputChange}
                                 className="w-full bg-transparent border border-gray-400 rounded-full px-5 py-2.5 text-sm text-black focus:outline-none focus:border-black transition-colors appearance-none"
                             >
-                                <option value="" disabled>Select...</option>
-                                {prop.enum.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                                <option value="" disabled>Select an option...</option>
+                                {prop.enum.map((opt, i) => <option key={`${opt}_${i}`} value={opt}>{opt}</option>)}
                             </select>
                             <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-500">
                                 <ChevronRight className="w-4 h-4 rotate-90" />
                             </div>
                         </div>
+                    ) : prop['ui:widget'] === 'radio' ? (
+                        <div className="flex flex-col gap-2 py-2">
+                            {prop.enum?.map((opt, i) => (
+                                <label key={`${opt}_${i}`} className="flex items-center cursor-pointer">
+                                    <input type="radio" name={key} required={showRequired} value={opt} checked={formData[key] === opt} onChange={(e) => {
+                                        setLocalError(null);
+                                        handleInputChange(e);
+                                    }} className="w-4 h-4 text-black border-gray-300 focus:ring-black" />
+                                    <span className="ml-3 text-sm text-gray-600">{opt}</span>
+                                </label>
+                            ))}
+                        </div>
+                    ) : prop['ui:widget'] === 'checkbox' ? (
+                        <div className="flex flex-col gap-2 py-2">
+                            {prop.items?.enum?.map((opt, i) => {
+                                const currentVals = Array.isArray(formData[key]) ? formData[key] : [];
+                                return (
+                                    <label key={`${opt}_${i}`} className="flex items-center cursor-pointer">
+                                        <input type="checkbox" name={key} value={opt} checked={currentVals.includes(opt)} onChange={(e) => {
+                                            setLocalError(null);
+                                            const newVals = e.target.checked ? [...currentVals, opt] : currentVals.filter(v => v !== opt);
+                                            handleInputChange({ target: { name: key, value: newVals }});
+                                        }} className="w-4 h-4 text-black border-gray-300 rounded focus:ring-black" />
+                                        <span className="ml-3 text-sm text-gray-600">{opt}</span>
+                                    </label>
+                                );
+                            })}
+                        </div>
+                    ) : prop['ui:widget'] === 'toggle' ? (
+                        <label className="relative inline-flex items-center cursor-pointer py-2">
+                            <input type="checkbox" name={key} checked={!!formData[key]} onChange={(e) => handleInputChange({ target: { name: key, value: e.target.checked }})} className="sr-only peer" />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+                            <span className="ml-3 text-sm text-gray-600">{prop.description || 'Enabled'}</span>
+                        </label>
+                    ) : prop['ui:widget'] === 'range' ? (
+                        <div className="flex flex-col gap-2 py-2">
+                            <div className="flex justify-between text-xs text-gray-400 px-1">
+                                <span>1</span>
+                                <span>10</span>
+                            </div>
+                            <input type="range" name={key} min="1" max="10" value={formData[key] || 1} onChange={onInputChange} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black" />
+                            <div className="text-center font-bold text-sm">{formData[key] || 1}</div>
+                        </div>
+                    ) : prop['ui:widget'] === 'linear_scale' ? (
+                        <div className="flex flex-col gap-4 py-2">
+                            <div className="flex justify-between items-center text-sm font-medium text-gray-600">
+                                <span>{prop['ui:minLabel'] || ''}</span>
+                                <span>{prop['ui:maxLabel'] || ''}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                {Array.from({ length: 10 }, (_, i) => i + 1).map(num => (
+                                    <label key={num} className="flex flex-col items-center gap-2 cursor-pointer">
+                                        <span className="text-xs text-gray-500">{num}</span>
+                                        <input type="radio" name={key} required={showRequired} value={num} checked={Number(formData[key]) === num} onChange={onInputChange} className="w-4 h-4 text-black border-gray-400 focus:ring-black" />
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                    ) : prop['ui:widget'] === 'multiple_choice_grid' || prop['ui:widget'] === 'checkbox_grid' ? (
+                        <div className="overflow-x-auto w-full py-2">
+                            <table className="w-full text-sm text-left border-collapse">
+                                <thead>
+                                    <tr>
+                                        <th className="p-2 border-b border-gray-200"></th>
+                                        {prop['ui:columns']?.map(col => (
+                                            <th key={col} className="p-2 border-b border-gray-200 text-center font-medium text-gray-600">{col}</th>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {prop['ui:rows']?.map((row, rIdx) => (
+                                        <tr key={row} className="border-b border-gray-100 hover:bg-gray-50">
+                                            <td className="p-2 font-medium text-gray-700">{row}</td>
+                                            {prop['ui:columns']?.map((col, cIdx) => {
+                                                const isRadio = prop['ui:widget'] === 'multiple_choice_grid';
+                                                const inputType = isRadio ? 'radio' : 'checkbox';
+                                                const fieldName = `${key}_${rIdx}`;
+                                                
+                                                const gridData = formData[key] || {};
+                                                const isChecked = isRadio ? gridData[row] === col : (Array.isArray(gridData[row]) && gridData[row].includes(col));
+                                                
+                                                return (
+                                                    <td key={col} className="p-2 text-center">
+                                                        <input type={inputType} name={fieldName} value={col} checked={isChecked} onChange={(e) => {
+                                                            const newData = { ...gridData };
+                                                            if (isRadio) {
+                                                                newData[row] = e.target.value;
+                                                            } else {
+                                                                const currentVals = Array.isArray(newData[row]) ? newData[row] : [];
+                                                                newData[row] = e.target.checked ? [...currentVals, col] : currentVals.filter(v => v !== col);
+                                                            }
+                                                            handleInputChange({ target: { name: key, value: newData }});
+                                                        }} className="w-4 h-4 text-black border-gray-400 focus:ring-black" />
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     ) : prop['ui:widget'] === 'rating' ? (
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 py-2">
                             {[1, 2, 3, 4, 5].map(star => (
                                 <button
                                     key={star}
@@ -289,11 +425,12 @@ const ExternalForm = (props) => {
                                     onClick={(e) => {
                                         e.preventDefault();
                                         setLocalError(null);
-                                        setFormData(prev => ({...prev, [key]: star}));
+                                        if (fieldErrors[key]) setFieldErrors(prev => ({ ...prev, [key]: null }));
+                                        handleInputChange({ target: { name: key, value: star } });
                                     }}
-                                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors border ${Number(formData[key]) >= star ? 'bg-black text-white border-black' : 'bg-white text-gray-300 border-gray-300 hover:border-black hover:text-black'}`}
+                                    className={`transition-all hover:scale-110 focus:outline-none`}
                                 >
-                                    <Star className={`w-5 h-5 ${Number(formData[key]) >= star ? 'fill-current' : ''}`} />
+                                    <Star className={`w-10 h-10 ${Number(formData[key]) >= star ? 'text-[#F5A623] fill-[#F5A623] drop-shadow-sm' : 'text-gray-300 hover:text-[#F5A623]/50'}`} />
                                 </button>
                             ))}
                         </div>
@@ -309,38 +446,48 @@ const ExternalForm = (props) => {
                         />
                     ) : (
                         <input
-                            type={prop.format === 'email' ? 'email' : prop.format === 'date' ? 'date' : prop.type === 'number' ? 'number' : 'text'}
+                            type={prop.format === 'email' ? 'email' : prop.format === 'date' ? 'date' : prop.format === 'time' ? 'time' : prop.type === 'number' ? 'number' : 'text'}
                             name={key}
                             required={showRequired}
                             value={formData[key] || ''}
                             onChange={onInputChange}
                             placeholder={prop.description}
-                            className="w-full bg-transparent border border-gray-400 rounded-full px-5 py-2 text-sm text-black focus:outline-none focus:border-black transition-colors placeholder:text-gray-300"
+                            className={`w-full bg-transparent border rounded-full px-5 py-2 text-sm text-black focus:outline-none transition-colors placeholder:text-gray-300 ${fieldErrors[key] ? 'border-red-500 focus:border-red-500' : 'border-gray-400 focus:border-black'}`}
                         />
                     )}
                 </div>
+                {fieldErrors[key] && (
+                    <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-1.5">
+                        <AlertCircle className="w-3 h-3" /> {fieldErrors[key]}
+                    </p>
+                )}
             </div>
         );
     };
 
     return (
         <div className={`flex flex-col w-full max-w-4xl min-w-[320px] md:min-w-[600px] mx-auto font-sans ${className}`}>
+            <style>{`
+                @keyframes form-shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+                    20%, 40%, 60%, 80% { transform: translateX(3px); }
+                }
+                .animate-form-shake {
+                    animation: form-shake 0.4s ease-in-out;
+                }
+            `}</style>
             
             {/* MAIN INNER CARD */}
-            <div className="w-full bg-white rounded-2xl border border-gray-300 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-10 md:p-16 lg:p-20 relative">
+            <div className="w-full bg-white rounded-2xl border border-gray-300 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-10 md:p-16 lg:p-20 relative min-h-[500px] flex flex-col">
                 
                 {/* Header Section */}
-                <header className="mb-10">
+                <header className="mb-8">
                     {activeStep?.type === 'info_block' ? (
                         <div className="text-left animate-in fade-in duration-500">
-                            <h2 className="text-3xl md:text-4xl font-serif text-black tracking-wide">
+                            <h2 className="text-4xl md:text-5xl font-serif text-black tracking-widest uppercase">
                                 {finalInfoBlock.header || finalInfoBlock.title || "Notice"}
                             </h2>
-                            {(finalInfoBlock.description || finalInfoBlock.text) && (
-                                <p className="text-sm text-gray-500 mt-4 leading-relaxed font-light whitespace-pre-wrap">
-                                    {finalInfoBlock.description || finalInfoBlock.text}
-                                </p>
-                            )}
                         </div>
                     ) : currentVisibleIdx === 0 && !hideHeader ? (
                         <div className={activeStep?.type !== 'fields' ? 'text-center' : 'text-left'}>
@@ -358,12 +505,12 @@ const ExternalForm = (props) => {
                             {activeStep?.label}
                         </h2>
                     )}
-                    <hr className="border-t border-gray-300 mt-6" />
+                    {activeStep?.type !== 'info_block' && <hr className="border-t border-gray-300 mt-6" />}
                 </header>
 
 
                 <form 
-                    className={`flex flex-col ${activeStep?.type !== 'info_block' ? 'min-h-[240px]' : ''}`}
+                    className={`flex flex-col flex-1`}
                     onSubmit={(e) => {
                         e.preventDefault();
                         if (currentVisibleIdx < visibleSteps.length - 1) nextStep();
@@ -373,6 +520,17 @@ const ExternalForm = (props) => {
                         if (e.key === 'Enter') e.preventDefault();
                     }}
                 >
+
+                    {/* ── INFO BLOCK STEP ── */}
+                    {activeStep?.type === 'info_block' && (
+                        <div className="w-full animate-in fade-in duration-500 flex-1 flex flex-col justify-start items-start pb-10 pt-4">
+                            {(finalInfoBlock.description || finalInfoBlock.text) && (
+                                <p className="text-base md:text-lg font-sans text-gray-700 leading-relaxed font-normal whitespace-pre-wrap text-left max-w-3xl indent-8 md:indent-12">
+                                    {finalInfoBlock.description || finalInfoBlock.text}
+                                </p>
+                            )}
+                        </div>
+                    )}
 
                     {/* ── FIELD STEPS ── */}
                     {activeStep?.type === 'fields' && (
@@ -460,7 +618,7 @@ const ExternalForm = (props) => {
             )}
 
             {/* BOTTOM NAVIGATION (Outside Card) */}
-            <div className="w-full flex items-center justify-between mt-6 px-2 md:px-0">
+            <div className="w-full relative flex items-center justify-between mt-6 px-2 md:px-0">
                 <button
                     type="button"
                     onClick={prevStep}
@@ -471,8 +629,8 @@ const ExternalForm = (props) => {
 
                 <div className="flex items-center gap-4">
                     {currentVisibleIdx === 0 && !hideHeader && (
-                        <span className="text-[10px] text-gray-500 uppercase tracking-widest hidden md:inline">
-                            Proceed to the Form
+                        <span className="text-xs font-sans text-gray-500 hidden md:inline">
+                            Proceed to the {definition.type ? definition.type.charAt(0).toUpperCase() + definition.type.slice(1).replace('_', ' ') : 'Appointment'} form.
                         </span>
                     )}
                     
@@ -487,7 +645,7 @@ const ExternalForm = (props) => {
                     ) : (
                         <button
                             type="button"
-                            onClick={handleSubmit}
+                            onClick={handleFinalSubmit}
                             disabled={submitting || (definition.otp && otpSent && !otp)}
                             className="bg-black text-white px-8 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-sm hover:bg-gray-800 transition-colors disabled:opacity-50"
                         >
@@ -497,6 +655,29 @@ const ExternalForm = (props) => {
                 </div>
             </div>
 
+            {/* Custom Alert Modal */}
+            {alertConfig && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 animate-in fade-in">
+                    <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center flex flex-col items-center">
+                        {alertConfig.type === 'success' ? (
+                            <Check className="w-12 h-12 text-green-500 mb-4" />
+                        ) : alertConfig.type === 'warning' ? (
+                            <AlertCircle className="w-12 h-12 text-amber-500 mb-4" />
+                        ) : (
+                            <AlertCircle className="w-12 h-12 text-red-500 mb-4" />
+                        )}
+                        <h3 className="text-2xl font-serif text-black mb-2">{alertConfig.title || 'Notification'}</h3>
+                        <p className="text-sm text-gray-600 mb-8">{alertConfig.message}</p>
+                        <button 
+                            type="button"
+                            onClick={() => setAlertConfig(null)}
+                            className="px-8 py-3 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-gray-800 transition-colors"
+                        >
+                            Okay
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

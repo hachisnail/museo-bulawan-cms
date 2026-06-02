@@ -15,6 +15,7 @@ describe('Museum System Integration Tests', () => {
     let testIntakeId;
     let testAccessionId;
     let testInventoryId;
+    let formId;
 
     const donorEmail = `test_${Date.now()}@example.com`;
 
@@ -36,7 +37,9 @@ describe('Museum System Integration Tests', () => {
         }
 
         // Seed Form
+        formId = '01KQE81CSDZ6D68JYXB34JXZX5';
         const formDefinition = {
+            id: formId,
             slug: 'donation-form',
             title: 'Artifact Donation & Temporary Loan Form',
             type: 'donation',
@@ -65,7 +68,7 @@ describe('Museum System Integration Tests', () => {
         await db.query(`
             REPLACE INTO form_definitions (id, slug, title, type, schema_data, settings, otp)
             VALUES (?, ?, ?, ?, ?, ?, ?)
-        `, [ulid(), formDefinition.slug, formDefinition.title, formDefinition.type, 
+        `, [formDefinition.id, formDefinition.slug, formDefinition.title, formDefinition.type, 
             JSON.stringify(formDefinition.schema_data), 
             JSON.stringify(formDefinition.settings), 
             false]);
@@ -86,7 +89,7 @@ describe('Museum System Integration Tests', () => {
             acquisition_type: 'Gift'
         };
 
-        const submission = await submissionService.submitForm('donation-form', payload, null, [], { ip: '127.0.0.1' });
+        const submission = await submissionService.submitForm(formId, payload, null, [], { ip: '127.0.0.1' });
         expect(submission).toBeDefined();
         expect(submission.id).toBeDefined();
         testSubmissionId = submission.id;

@@ -11,7 +11,7 @@ export const schemas = {
         lname: Joi.string().trim().min(1).max(100).required(),
         email: Joi.string().email().required(),
         role: Joi.string().valid(
-            'admin', 'registrar', 'conservator', 'inventory_staff',
+            'admin', 'curator', 'registrar', 'conservator', 'inventory_staff',
             'content_editor', 'content_writer', 'appointment_coordinator', 'donor', 'visitor'
         ).default('visitor')
     }),
@@ -30,8 +30,11 @@ export const schemas = {
         fname: Joi.string().trim().min(1).max(100).optional(),
         lname: Joi.string().trim().min(1).max(100).optional(),
         email: Joi.string().email().optional(),
+        phone: Joi.string().trim().max(50).optional().allow(null, ''),
+        address: Joi.string().trim().max(1000).optional().allow(null, ''),
+        title: Joi.string().trim().max(100).optional().allow(null, ''),
         role: Joi.string().valid(
-            'admin', 'registrar', 'conservator', 'inventory_staff',
+            'admin', 'curator', 'registrar', 'conservator', 'inventory_staff',
             'content_editor', 'content_writer', 'appointment_coordinator', 'donor', 'visitor'
         ).optional()
     }).min(1)

@@ -532,7 +532,7 @@ Would you like to reload the latest record and try again?`,
                                 <div className="bg-zinc-50 border border-zinc-200 rounded p-6 relative animate-in slide-in-from-top-4 duration-300">
                                     <button onClick={() => setShowHealthForm(false)} className="absolute top-4 right-4 text-gray-400 hover:text-black">✕</button>
                                     <FormRenderer 
-                                        slug="artifact-health"
+                                        id="01KQEAAX7RAE9CEYNBV2VF512M"
                                         compact={true}
                                         hideHeader={true}
                                         customFetch={apiFetch}
@@ -660,7 +660,7 @@ Would you like to reload the latest record and try again?`,
                                 <div className="bg-zinc-50 border border-zinc-200 rounded p-6 relative animate-in slide-in-from-top-4 duration-300">
                                     <button onClick={() => setShowConservationForm(false)} className="absolute top-4 right-4 text-gray-400 hover:text-black">✕</button>
                                     <FormRenderer 
-                                        slug="artifact-conservation"
+                                        id="01KQEAAX7RAE9CEYNBV2VF512P"
                                         compact={true}
                                         hideHeader={true}
                                         customFetch={apiFetch}

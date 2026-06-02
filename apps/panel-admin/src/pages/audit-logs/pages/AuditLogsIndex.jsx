@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../../../context/authContext';
 import { DataTable } from '../../../components';
 import Modal from '../../../components/Modal';
+import { useNavigate } from 'react-router-dom';
 import { User, Download } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -42,6 +43,9 @@ export default function AuditLogsIndex() {
     // --- Table & Search ---
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
+    const [actionFilter, setActionFilter] = useState('All');
+    const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' });
+    const navigate = useNavigate();
 
     // ─────────────────────────────────────────────────────────────────────────────
     //  Data Fetching
@@ -49,9 +53,15 @@ export default function AuditLogsIndex() {
     const fetchLogs = useCallback(async (silent = false) => {
         if (!silent) setLoading(true);
         try {
-            const res = await apiFetch(
-                `/api/v1/audit-logs?page=${currentPage}&limit=20&search=${searchTerm}`
-            );
+            const queryParams = new URLSearchParams({
+                page: currentPage,
+                limit: 20,
+                search: searchTerm,
+                sortKey: sortConfig.key,
+                sortDir: sortConfig.direction,
+                ...(actionFilter !== 'All' && { action: actionFilter })
+            });
+            const res = await apiFetch(`/api/v1/audit-logs?${queryParams.toString()}`);
             const data = await res.json();
             if (data.status === 'success') {
                 setLogs(data.data.items || []);
@@ -62,23 +72,34 @@ export default function AuditLogsIndex() {
         } finally {
             setLoading(false);
         }
-    }, [apiFetch, currentPage, searchTerm]);
+    }, [apiFetch, currentPage, searchTerm, sortConfig, actionFilter]);
 
     useEffect(() => {
         fetchLogs();
     }, [fetchLogs]);
 
-    // Reset pagination page on search change
     useEffect(() => {
         setCurrentPage(1);
-    }, [searchTerm]);
+    }, [searchTerm, actionFilter]);
 
     // ─────────────────────────────────────────────────────────────────────────────
     //  Handlers
     // ─────────────────────────────────────────────────────────────────────────────
     const handleQueryChange = useCallback((filters) => {
         setSearchTerm(filters.search || '');
+        if (filters.filter) setActionFilter(filters.filter);
     }, []);
+
+    const handleSort = (key) => {
+        setSortConfig(current => ({
+            key,
+            direction: current.key === key && current.direction === 'asc' ? 'desc' : 'asc'
+        }));
+    };
+
+    const handleRowClick = (row) => {
+        navigate(`/audit-logs/${row.id}`);
+    };
 
     const handleExport = async () => {
         try {
@@ -185,6 +206,11 @@ export default function AuditLogsIndex() {
                     showExtraActions={false}
                     isExpandable={false}
                     isLoading={loading}
+                    sortConfig={sortConfig}
+                    onSort={handleSort}
+                    onRowClick={handleRowClick}
+                    filterOptions={['All', 'CREATE', 'UPDATE', 'DELETE', 'LOGIN']}
+                    searchPlaceholder="Search resources, actions or actors..."
                 />
             </div>
 

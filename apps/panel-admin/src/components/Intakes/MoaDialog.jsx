@@ -179,22 +179,10 @@ export default function MoaDialog({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/40 backdrop-blur-sm">
             <div className={`bg-white w-full ${moaDraft.docxData ? 'max-w-4xl' : 'max-w-xl'} border border-zinc-200 rounded-sm shadow-2xl flex flex-col max-h-[90vh]`}>
                 
-                <div className="p-6 border-b border-zinc-200 flex justify-between items-center bg-zinc-50">
+                <div className="p-6 border-b border-zinc-200 flex items-center bg-zinc-50">
                     <h3 className="font-serif text-xl text-black tracking-wide">
                         {moaDraft.isVerifyModal ? 'Delivery Verification' : 'Legal Documentation'}
                     </h3>
-                    <button 
-                        onClick={() => {
-                            setScanActive(false);
-                            setVerifyToken('');
-                            setVerifyResult(null);
-                            onClose();
-                            fetchData();
-                        }} 
-                        className="text-zinc-400 hover:text-black"
-                    >
-                        ✕
-                    </button>
                 </div>
                 
                 <div className="p-8 overflow-y-auto">
@@ -247,6 +235,21 @@ export default function MoaDialog({
                                     </button>
                                 </div>
                             )}
+
+                            <div className="flex justify-center mt-6">
+                                <button
+                                    onClick={() => {
+                                        setScanActive(false);
+                                        setVerifyToken('');
+                                        setVerifyResult(null);
+                                        onClose();
+                                        fetchData();
+                                    }}
+                                    className="px-6 py-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-500 rounded-sm text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     ) : (
                         <div className="space-y-6">

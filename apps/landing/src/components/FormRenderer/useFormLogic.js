@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
  * useFormLogic: Shared hook for both Internal and External form renderers.
  */
 export const useFormLogic = ({ 
-    slug, 
+    id, 
     apiBaseUrl = '', 
     customFetch = fetch,
     onSuccess,
@@ -24,17 +24,20 @@ export const useFormLogic = ({
     const [otp, setOtp] = useState('');
     const [otpLoading, setOtpLoading] = useState(false);
     const [otpEmail, setOtpEmail] = useState('');
+    
+    // UI Alert State
+    const [alertConfig, setAlertConfig] = useState(null);
 
     const fetchDefinition = useCallback(async () => {
-        if (!slug) {
+        if (!id) {
             setLoading(false);
             return;
         }
 
         setLoading(true);
         try {
-            const res = await customFetch(`${apiBaseUrl}/api/v1/forms/${slug}`);
-            if (!res.ok) throw new Error(`Form definition '${slug}' not found`);
+            const res = await customFetch(`${apiBaseUrl}/api/v1/forms/${id}`);
+            if (!res.ok) throw new Error(`Form definition '${id}' not found`);
             const data = await res.json();
             setDefinition(data);
         } catch (err) {
@@ -44,7 +47,7 @@ export const useFormLogic = ({
         } finally {
             setLoading(false);
         }
-    }, [slug, apiBaseUrl, customFetch, onError]);
+    }, [id, apiBaseUrl, customFetch, onError]);
 
     // Initialize/Update form data when definition or prefillData changes
     useEffect(() => {
@@ -67,10 +70,10 @@ export const useFormLogic = ({
     }, [definition, JSON.stringify(prefillData)]);
 
     useEffect(() => {
-        if (slug) {
+        if (id) {
             fetchDefinition();
         }
-    }, [slug, fetchDefinition]);
+    }, [id]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -118,13 +121,13 @@ export const useFormLogic = ({
         const email = formData[emailField || 'email'];
 
         if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-            alert('Please enter a valid email address in the form to receive a verification code.');
+            setAlertConfig({ type: 'warning', title: 'Invalid Email', message: 'Please enter a valid email address in the form to receive a verification code.' });
             return;
         }
 
         setOtpLoading(true);
         try {
-            const res = await customFetch(`${apiBaseUrl}/api/v1/forms/${slug}/request-otp`, {
+            const res = await customFetch(`${apiBaseUrl}/api/v1/forms/${id}/request-otp`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -140,9 +143,9 @@ export const useFormLogic = ({
 
             setOtpSent(true);
             setOtpEmail(email);
-            alert('Verification code sent to your email.');
+            setAlertConfig({ type: 'success', title: 'Code Sent', message: 'Verification code sent to your email.' });
         } catch (err) {
-            alert(err.message);
+            setAlertConfig({ type: 'error', title: 'Failed to Send', message: err.message });
         } finally {
             setOtpLoading(false);
         }
@@ -190,7 +193,7 @@ export const useFormLogic = ({
                 body.append('attachments', file);
             });
 
-            const res = await customFetch(`${apiBaseUrl}/api/v1/forms/${slug}/submit`, {
+            const res = await customFetch(`${apiBaseUrl}/api/v1/forms/${id}/submit`, {
                 method: 'POST',
                 headers: {
                     'X-XSRF-TOKEN': getCsrfToken()
@@ -203,7 +206,16 @@ export const useFormLogic = ({
 
             if (onSuccess) onSuccess(result);
             
-            setFormData({});
+            const initialData = { ...prefillData };
+            if (definition.schema && definition.schema.properties) {
+                Object.keys(definition.schema.properties).forEach(k => {
+                    if (initialData[k] === undefined) {
+                        initialData[k] = definition.schema.properties[k].default || '';
+                    }
+                });
+            }
+            setFormData(initialData);
+
             setFiles([]);
             setOtp('');
             setOtpSent(false);
@@ -235,6 +247,8 @@ export const useFormLogic = ({
         handleRequestOtp,
         handleSubmit,
         setOtp,
-        setOtpSent
+        setOtpSent,
+        alertConfig,
+        setAlertConfig
     };
 };

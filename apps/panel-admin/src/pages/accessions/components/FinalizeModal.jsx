@@ -100,15 +100,8 @@ export default function FinalizeModal({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/40 backdrop-blur-sm">
             <div className="bg-white w-full max-w-md border border-zinc-200 rounded-sm shadow-2xl flex flex-col">
-                <div className="p-6 border-b border-zinc-200 flex justify-between items-center bg-zinc-50">
+                <div className="p-6 border-b border-zinc-200 flex items-center bg-zinc-50">
                     <h3 className="font-serif text-lg text-black uppercase tracking-wider">Finalize to Inventory</h3>
-                    <button 
-                        onClick={onClose} 
-                        className="text-zinc-400 hover:text-black"
-                        type="button"
-                    >
-                        ✕
-                    </button>
                 </div>
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-6">
@@ -272,13 +265,23 @@ export default function FinalizeModal({
                         </div>
                     )}
 
-                    <button
-                        type="submit"
-                        disabled={actionLoading}
-                        className="w-full py-4 bg-black text-[#D4AF37] rounded-sm text-[10px] font-black uppercase tracking-widest hover:bg-zinc-900 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-                    >
-                        {actionLoading ? 'Finalizing...' : 'Finalize & Archive Accession'}
-                    </button>
+                    <div className="flex gap-4">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            disabled={actionLoading}
+                            className="flex-1 py-4 bg-zinc-100 text-zinc-500 rounded-sm text-[10px] font-black uppercase tracking-widest hover:bg-zinc-200 transition-all disabled:opacity-50"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={actionLoading}
+                            className="flex-[2] py-4 bg-black text-[#D4AF37] rounded-sm text-[10px] font-black uppercase tracking-widest hover:bg-zinc-900 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                        >
+                            {actionLoading ? 'Finalizing...' : 'Finalize & Archive Accession'}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

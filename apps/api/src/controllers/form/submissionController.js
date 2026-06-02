@@ -9,18 +9,18 @@ import { schemas } from './schemas.js';
 export const submissionController = {
     async getFormDefinition(req, res, next) {
         try {
-            const definition = await formService.getFormDefinition(req.params.slug);
+            const definition = await formService.getFormDefinition(req.params.id);
             res.status(200).json(definition);
         } catch (error) { next(error); }
     },
 
     async requestOtp(req, res, next) {
         try {
-            const { slug } = req.params;
+            const { id } = req.params;
             const { error, value } = schemas.requestOtp.validate(req.body);
             if (error) return res.status(400).json({ error: error.details[0].message });
 
-            const result = await formService.requestEmailOtp(slug, value.email);
+            const result = await formService.requestEmailOtp(id, value.email);
             res.status(200).json(result);
         } catch (error) { next(error); }
     },
@@ -35,7 +35,7 @@ export const submissionController = {
 
     async submitForm(req, res, next) {
         try {
-            const { slug } = req.params;
+            const { id } = req.params;
             const { error, value } = schemas.submitForm.validate(req.body);
             if (error) return res.status(400).json({ error: error.details[0].message });
 
@@ -52,7 +52,7 @@ export const submissionController = {
                 userAgent: req.get('User-Agent') || 'unknown'
             };
 
-            const result = await formService.submitForm(slug, parsedData, value.otp, files, requestMeta, req.user?.id);
+            const result = await formService.submitForm(id, parsedData, value.otp, files, requestMeta, req.user?.id);
             
             res.status(201).json({
                 message: "Submission received successfully.",

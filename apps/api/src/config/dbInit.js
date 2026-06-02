@@ -777,6 +777,7 @@ export async function initMariaDB() {
                             minimum: 1,
                             maximum: 5,
                             description: "Rate us from 1 to 5",
+                            "ui:widget": "rating",
                             "ui:group": "visitor_feedback"
                         },
                         comments: {
@@ -985,25 +986,38 @@ export async function initMariaDB() {
                 type: 'appointment',
                 schema_data: {
                     properties: {
-                        firstName: { title: "First Name", type: "string" },
-                        lastName: { title: "Last Name", type: "string" },
-                        email: { format: "email", title: "Email Address", type: "string" },
-                        phone: { title: "Phone Number", type: "string" },
-                        organization: { title: "Organization (Optional)", type: "string" },
-                        province: { title: "Province", type: "string" },
-                        city: { title: "City / Municipality", type: "string" },
-                        barangay: { title: "Barangay", type: "string" },
-                        purpose: { enum: ["Walk-in Visit", "School Field Trip", "Heritage Research", "Tourism"], title: "Purpose of Visit", type: "string" },
-                        populationCount: { type: "integer", title: "Number of Visitors", minimum: 1, maximum: 30 },
-                        visitDate: { format: "date", title: "Date of Visit", type: "string" },
-                        startTime: { format: "time", title: "Start Time", type: "string" },
-                        endTime: { format: "time", title: "End Time", type: "string" }
+                        firstName: { title: "First Name", type: "string", "ui:group": "visitor_details" },
+                        lastName: { title: "Last Name", type: "string", "ui:group": "visitor_details" },
+                        email: { format: "email", title: "Email Address", type: "string", "ui:group": "visitor_details" },
+                        phone: { title: "Phone Number", type: "string", "ui:group": "visitor_details" },
+                        organization: { title: "Organization (Optional)", type: "string", "ui:group": "visitor_details" },
+                        province: { title: "Province", type: "string", "ui:group": "location_info" },
+                        city: { title: "City / Municipality", type: "string", "ui:group": "location_info" },
+                        barangay: { title: "Barangay", type: "string", "ui:group": "location_info" },
+                        purpose: { enum: ["Walk-in Visit", "School Field Trip", "Heritage Research", "Tourism"], title: "Purpose of Visit", type: "string", "ui:group": "appointment_details" },
+                        populationCount: { type: "integer", title: "Number of Visitors", minimum: 1, maximum: 30, "ui:group": "appointment_details" },
+                        visitDate: { format: "date", title: "Date of Visit", type: "string", "ui:group": "appointment_details" },
+                        startTime: { format: "time", title: "Start Time", type: "string", "ui:group": "appointment_details" },
+                        endTime: { format: "time", title: "End Time", type: "string", "ui:group": "appointment_details" }
                     },
                     required: ["firstName", "lastName", "email", "phone", "province", "city", "barangay", "purpose", "populationCount", "visitDate", "startTime", "endTime"],
                     type: "object"
                 },
-                settings: { allow_attachments: true, description: "Book an official visitor session.", layout: "double_column" },
-                otp: false
+                settings: { 
+                    allow_attachments: true, 
+                    description: "Book an official visitor session.", 
+                    layout: "wizard",
+                    info_block: {
+                        header: "Notice",
+                        description: "Welcome to our online booking system! Scheduling your appointment is quick and easy. Simply fill out the form ahead with your details and preferred date/time, and we'll confirm your appointment shortly."
+                    },
+                    step_groups: [
+                        { id: "visitor_details", label: "Visitor Details", icon: "user" },
+                        { id: "location_info", label: "Location", icon: "map-pin" },
+                        { id: "appointment_details", label: "Appointment Details", icon: "calendar" }
+                    ]
+                },
+                otp: true
             }
         ];
 

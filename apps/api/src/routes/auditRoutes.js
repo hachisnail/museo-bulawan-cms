@@ -9,5 +9,6 @@ router.use(buildAbility);
 
 router.get('/', checkPermission('manage', 'AuditLog'), auditController.listAuditLogs);
 router.get('/export', checkPermission('manage', 'AuditLog'), auditController.exportAuditLogs);
+router.get('/:id', checkPermission('manage', 'AuditLog'), auditController.getAuditLog);
 
 export default router;

@@ -64,7 +64,7 @@ export default function Intakes() {
                     return { ...s, parsedData };
                 });
                 const donationOnly = enriched.filter(s => 
-                    s.form_slug === 'donation-form' || 
+                    s.form_id === '01KQE81CSDZ6D68JYXB34JXZX5' || 
                     s.expand?.form_id?.type === 'donation'
                 );
                 setSubmissions(donationOnly);

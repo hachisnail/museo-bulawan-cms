@@ -8,8 +8,8 @@ import { formService } from '../../services/formService.js';
 export const queryController = {
     async listSubmissions(req, res, next) {
         try {
-            const { slug } = req.params;
-            const result = await formService.listSubmissions(slug, req.query);
+            const { id } = req.params;
+            const result = await formService.listSubmissions(id, req.query);
             res.status(200).json({ status: 'success', data: result });
         } catch (error) { next(error); }
     },

@@ -29,10 +29,10 @@ const formUpload = multer({
 // ==========================================
 // PUBLIC ROUTES
 // ==========================================
-router.get('/:slug', formController.getFormDefinition);
-router.post('/:slug/request-otp', strictActionLimiter, formController.requestOtp);
-router.post('/:slug/verify-otp', strictActionLimiter, formController.verifyOtp);
-router.post('/:slug/submit', publicFormLimiter, formUpload.array('attachments', 5), formController.submitForm);
+router.get('/:id', formController.getFormDefinition);
+router.post('/:id/request-otp', strictActionLimiter, formController.requestOtp);
+router.post('/:id/verify-otp', strictActionLimiter, formController.verifyOtp);
+router.post('/:id/submit', publicFormLimiter, formUpload.array('attachments', 5), formController.submitForm);
 
 // ==========================================
 // ADMIN/STAFF ROUTES
@@ -86,7 +86,7 @@ router.get('/admin/submissions/:submissionId',
     formController.getSubmission
 );
 
-router.get('/:slug/submissions', 
+router.get('/:id/submissions', 
     requireAuth, 
     buildAbility, 
     checkPermission('read', 'Intake'), 

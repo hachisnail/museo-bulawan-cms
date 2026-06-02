@@ -240,7 +240,7 @@ export default function InventoryIndex() {
     );
 
     return (
-        <div className="flex flex-col gap-y-8 bg-white min-h-screen pb-12 px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="flex flex-col gap-y-8 bg-white  px-4 sm:px-6 lg:px-8 pt-8">
             
             {/* ── Header ── */}
             <div className="flex items-center justify-between">

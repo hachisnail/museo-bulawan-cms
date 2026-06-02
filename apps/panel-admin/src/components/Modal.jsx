@@ -38,15 +38,17 @@ export default function Modal({
             <div className="bg-white w-full max-w-[28rem] rounded-xl shadow-2xl relative p-8 pb-10 animate-in zoom-in-95 duration-200">
                 
                 {/* Close Button Icon */}
-                <button 
-                    onClick={onClose}
-                    className="absolute top-4 right-4 text-zinc-500 hover:text-zinc-800 transition-colors"
-                    aria-label="Close"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </button>
+                {type !== 'confirm' && type !== 'alert' && (
+                    <button 
+                        onClick={onClose}
+                        className="absolute top-4 right-4 text-zinc-500 hover:text-zinc-800 transition-colors"
+                        aria-label="Close"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                )}
 
                 <div className="flex flex-col items-center text-center space-y-4">
                     

@@ -17,8 +17,8 @@ ajv.addFormat('file', {
 });
 
 export const submissionService = {
-    async submitForm(slug, payload, otp, files = null, requestMeta = {}, actingStaffId = null) {
-        const definition = await definitionService.getFormDefinition(slug);
+    async submitForm(id, payload, otp, files = null, requestMeta = {}, actingStaffId = null) {
+        const definition = await definitionService.getFormDefinition(id);
         
         // 1. JSON Schema Validation (with conditional required adjustments)
         if (definition.schema && Object.keys(definition.schema).length > 0) {
@@ -42,13 +42,19 @@ export const submissionService = {
                     if (prop.format && !['textarea', 'file'].includes(prop.format)) {
                         delete prop.format;
                     }
+                    if (Array.isArray(prop.enum)) {
+                        prop.enum = [...new Set(prop.enum)];
+                    }
+                    if (prop.items && Array.isArray(prop.items.enum)) {
+                        prop.items.enum = [...new Set(prop.items.enum)];
+                    }
                 }
             }
 
             const validate = ajv.compile(schemaForValidation);
             const valid = validate(payload);
             if (!valid) {
-                logger.error(`Form submission validation failed for ${slug}. Errors: ${ajv.errorsText(validate.errors)}. Payload: ${JSON.stringify(payload)}`);
+                logger.error(`Form submission validation failed for ${id}. Errors: ${ajv.errorsText(validate.errors)}. Payload: ${JSON.stringify(payload)}`);
                 throw new Error(`VALIDATION_FAILED: ${ajv.errorsText(validate.errors)}`);
             }
         }
@@ -74,10 +80,10 @@ export const submissionService = {
         // 3. Build anonymous fingerprint
         const fingerprint = this._buildFingerprint(requestMeta);
 
-        const id = ulid();
+        const submissionId = ulid();
 
         const submission = {
-            id,
+            id: submissionId,
             form_id: definition.id,
             data: payload,
             status: 'pending',
@@ -120,7 +126,7 @@ export const submissionService = {
                 await formPipelineService.processAppointmentForm(actingStaffId, record.id, files);
             }
         } catch (postError) {
-            logger.error(`Post-submission hook failed for ${slug}: ${postError.message}`);
+            logger.error(`Post-submission hook failed for ${id}: ${postError.message}`);
         }
 
         return record;

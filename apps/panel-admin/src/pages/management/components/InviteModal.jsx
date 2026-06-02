@@ -21,6 +21,7 @@ export default function InviteModal({ isOpen, onClose, onInvite, actionLoading }
 
     const roles = [
         { value: 'admin', label: 'Administrator' },
+        { value: 'curator', label: 'Curator' },
         { value: 'registrar', label: 'Registrar' },
         { value: 'conservator', label: 'Conservator' },
         { value: 'inventory_staff', label: 'Inventory Staff' },
@@ -41,9 +42,6 @@ export default function InviteModal({ isOpen, onClose, onInvite, actionLoading }
                             <h2 className="text-2xl font-serif text-black uppercase tracking-widest">Invite Personnel / Donor</h2>
                             <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold italic">Dispatch an official access token to a new directory record</p>
                         </div>
-                        <button onClick={onClose} disabled={actionLoading} className="text-zinc-300 hover:text-black transition-colors disabled:opacity-50">
-                            <X className="w-6 h-6" />
-                        </button>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -99,12 +97,23 @@ export default function InviteModal({ isOpen, onClose, onInvite, actionLoading }
                             </select>
                         </div>
 
-                        <button 
-                            disabled={actionLoading}
-                            className="w-full py-5 bg-black text-[#D4AF37] rounded-sm font-black uppercase tracking-widest text-[10px] hover:bg-zinc-900 shadow-xl shadow-black/10 disabled:opacity-50 flex items-center justify-center gap-3 transition-all"
-                        >
-                            {actionLoading ? 'Provisioning Account...' : <><Mail className="w-4 h-4" /> Send Access Invitation</>}
-                        </button>
+                        <div className="flex gap-4">
+                            <button 
+                                type="button"
+                                onClick={onClose}
+                                disabled={actionLoading}
+                                className="flex-1 py-5 bg-zinc-100 text-zinc-500 rounded-sm font-black uppercase tracking-widest text-[10px] hover:bg-zinc-200 transition-all"
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                type="submit"
+                                disabled={actionLoading}
+                                className="flex-[2] py-5 bg-black text-[#D4AF37] rounded-sm font-black uppercase tracking-widest text-[10px] hover:bg-zinc-900 shadow-xl shadow-black/10 disabled:opacity-50 flex items-center justify-center gap-3 transition-all"
+                            >
+                                {actionLoading ? 'Provisioning Account...' : <><Mail className="w-4 h-4" /> Send Access Invitation</>}
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>

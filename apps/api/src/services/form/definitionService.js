@@ -11,15 +11,15 @@ function parseJsonFields(def) {
 }
 
 export const definitionService = {
-    async getFormDefinition(slug) {
+    async getFormDefinition(id) {
         try {
-            const rows = await db.query('SELECT * FROM form_definitions WHERE slug = ?', [slug]);
+            const rows = await db.query('SELECT * FROM form_definitions WHERE id = ?', [id.toUpperCase()]);
             if (!rows || rows.length === 0) {
                 throw new Error('FORM_NOT_FOUND');
             }
             return parseJsonFields(rows[0]);
         } catch (error) {
-            logger.error(`Form definition not found: ${slug}`);
+            logger.error(`Form definition not found: ${id}`);
             throw new Error('FORM_NOT_FOUND');
         }
     },

@@ -31,6 +31,8 @@ export const auditService = {
         const search = query.search || '';
         const action = query.action || '';
         const userId = query.userId || '';
+        const sortKey = query.sortKey || 'created_at';
+        const sortDir = (query.sortDir || 'desc').toUpperCase();
         
         let sql = `
             SELECT a.*, u.email as user_email, u.fname, u.lname 
@@ -72,7 +74,15 @@ export const auditService = {
         
         const countParams = [...params];
         
-        sql += ` ORDER BY a.created_at DESC LIMIT ? OFFSET ?`;
+        const validSortKeys = {
+            'created_at': 'a.created_at',
+            'action': 'a.action',
+            'resource': 'a.resource',
+            'actor': 'u.fname'
+        };
+        const orderSql = validSortKeys[sortKey] ? `${validSortKeys[sortKey]} ${sortDir === 'ASC' ? 'ASC' : 'DESC'}` : 'a.created_at DESC';
+        
+        sql += ` ORDER BY ${orderSql} LIMIT ? OFFSET ?`;
         params.push(perPage, offset);
         
         const countResult = await db.query(countSql, countParams);
@@ -129,5 +139,16 @@ export const auditService = {
         }
 
         throw new Error(`Unsupported export format: ${format}`);
+    },
+
+    async fetchById(id) {
+        const sql = `
+            SELECT a.*, u.email as user_email, u.fname, u.lname 
+            FROM audit_logs a 
+            LEFT JOIN users u ON a.user_id = u.id 
+            WHERE a.id = ?
+        `;
+        const rows = await db.query(sql, [id]);
+        return rows[0] || null;
     }
 };

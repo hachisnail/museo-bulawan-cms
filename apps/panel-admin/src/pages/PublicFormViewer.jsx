@@ -3,7 +3,7 @@ import FormRenderer from '../components/FormRenderer';
 import { ArrowLeft, Landmark } from 'lucide-react';
 
 export default function PublicFormViewer() {
-    const { slug } = useParams();
+    const { id } = useParams();
 
     return (
         <div className="min-h-screen bg-[#121212] text-zinc-100 flex flex-col font-sans select-none">
@@ -32,7 +32,7 @@ export default function PublicFormViewer() {
             <main className="flex-1 py-16 px-4 flex justify-center items-center">
                 <div className="w-full max-w-4xl">
                     <FormRenderer 
-                        slug={slug} 
+                        id={id} 
                         variant="external" 
                         className="bg-transparent"
                     />

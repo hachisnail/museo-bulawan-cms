@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { Modal } from '../../../components';
 import { useAuth } from '../../../context/authContext';
 import { useSSE } from '../../../hooks/useSSE';
 import { 
@@ -24,6 +25,8 @@ export default function FormsIndex() {
     const [definitions, setDefinitions] = useState([]);
     const [loadingDefinitions, setLoadingDefinitions] = useState(true);
 
+    const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'alert', variant: 'info' });
+
     // ── Load Definitions ──
     const fetchDefinitions = useCallback(async () => {
         setLoadingDefinitions(true);
@@ -34,9 +37,8 @@ export default function FormsIndex() {
                 setDefinitions(json.data || []);
             }
         } catch (err) {
-            console.error("Failed to load definitions", err);
-        } finally {
-            setLoadingDefinitions(false);
+            setModal({ isOpen: true, title: 'Save Error', message: err.message, type: 'alert', variant: 'error' });
+        } finally {  setLoadingDefinitions(false);
         }
     }, [apiFetch]);
 
@@ -56,11 +58,11 @@ export default function FormsIndex() {
 
     // Find the user-feedback definition
     const feedbackDefinition = useMemo(() => {
-        return definitions.find(d => d.type === 'feedback' || d.slug === 'user-feedback');
+        return definitions.find(d => d.type === 'feedback' || d.id === '01KQEFB1FEEDBACKFORMSEED00');
     }, [definitions]);
 
     return (
-        <div className="flex flex-col gap-y-8 bg-white min-h-screen pb-12 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="flex flex-col gap-y-8 bg-white min-h-fit max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
@@ -114,6 +116,7 @@ export default function FormsIndex() {
     <SubmissionsTab 
         forms={customDefinitions} 
         apiFetch={apiFetch} 
+        setModal={setModal}
     />
 )}
                 {activeTab === 'builder' && (
@@ -121,6 +124,7 @@ export default function FormsIndex() {
                         customDefinitions={customDefinitions} 
                         fetchDefinitions={fetchDefinitions} 
                         apiFetch={apiFetch} 
+                        setModal={setModal}
                     />
                 )}
                 {activeTab === 'analytics' && (
@@ -130,6 +134,11 @@ export default function FormsIndex() {
                     />
                 )}
             </div>
+
+            <Modal 
+                {...modal} 
+                onClose={() => setModal(prev => ({ ...prev, isOpen: false }))} 
+            />
         </div>
     );
 }
@@ -137,18 +146,18 @@ export default function FormsIndex() {
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. SUBMISSIONS TAB
 // ─────────────────────────────────────────────────────────────────────────────
-const SubmissionsTab = ({ forms, apiFetch }) => {
-    const [selectedSlug, setSelectedSlug] = useState(forms.length > 0 ? forms[0].slug : '');
+const SubmissionsTab = ({ forms, apiFetch, setModal }) => {
+    const [selectedId, setSelectedId] = useState(forms.length > 0 ? forms[0].id : '');
     const [submissions, setSubmissions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
-        if (!selectedSlug) return;
+        if (!selectedId) return;
         const fetchSubmissions = async () => {
             setLoading(true);
             try {
-                const res = await apiFetch(`/api/v1/forms/${selectedSlug}/submissions`);
+                const res = await apiFetch(`/api/v1/forms/${selectedId}/submissions`);
                 const json = await res.json();
                 if (json.status === 'success') {
                     setSubmissions(json.data.items || []);
@@ -160,14 +169,14 @@ const SubmissionsTab = ({ forms, apiFetch }) => {
             }
         };
         fetchSubmissions();
-    }, [selectedSlug, apiFetch]);
+    }, [selectedId, apiFetch]);
 
-    const selectedForm = forms.find(f => f.slug === selectedSlug);
+    const selectedForm = forms.find(f => f.id === selectedId);
     const schemaProperties = selectedForm?.schema?.properties || {};
     const propertyKeys = Object.keys(schemaProperties);
     
     // Generate a public URL based on current environment (Handles standard dev ports automatically)
-    const publicUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? (window.location.port === '5173' ? ':4321' : ':' + window.location.port) : ''}/forms/${selectedSlug}`;
+    const publicUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? (window.location.port === '5173' ? ':4321' : ':' + window.location.port) : ''}/forms/${selectedId?.toLowerCase()}`;
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(publicUrl);
@@ -177,23 +186,22 @@ const SubmissionsTab = ({ forms, apiFetch }) => {
 
     const handleExport = async () => {
         try {
-            const res = await apiFetch(`/api/v1/forms/admin/submissions/export?slug=${selectedSlug}`);
+            const res = await apiFetch(`/api/v1/forms/admin/submissions/export?id=${selectedId}`);
             if (!res.ok) {
-                alert('Failed to export submissions.');
+                setModal({ isOpen: true, title: 'Export Failed', message: 'Failed to export submissions.', type: 'alert', variant: 'error' });
                 return;
             }
             const blob = await res.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `submissions-${selectedSlug}.csv`;
+            a.download = `submissions-${selectedId}.csv`;
             document.body.appendChild(a);
             a.click();
             a.remove();
             window.URL.revokeObjectURL(url);
         } catch (err) {
-            console.error(err);
-            alert('Error exporting submissions.');
+            setModal({ isOpen: true, title: 'Export Error', message: 'Error exporting submissions.', type: 'alert', variant: 'error' });
         }
     };
 
@@ -208,10 +216,10 @@ const SubmissionsTab = ({ forms, apiFetch }) => {
                     )}
                     {forms.map(form => (
                         <button
-                            key={form.slug}
-                            onClick={() => setSelectedSlug(form.slug)}
+                            key={form.id}
+                            onClick={() => setSelectedId(form.id)}
                             className={`px-5 py-2.5 text-sm font-semibold rounded-xl border transition-all duration-200 ${
-                                selectedSlug === form.slug 
+                                selectedId === form.id 
                                     ? 'bg-black text-white border-black shadow-md scale-[1.02]' 
                                     : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
                             }`}
@@ -223,7 +231,7 @@ const SubmissionsTab = ({ forms, apiFetch }) => {
             </div>
 
             {/* Sharing Link Bar */}
-            {selectedSlug && (
+            {selectedId && (
                 <div className="bg-amber-50 border border-amber-200 p-5 rounded-xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <h3 className="text-sm font-bold text-amber-900 flex items-center gap-2">
@@ -258,7 +266,7 @@ const SubmissionsTab = ({ forms, apiFetch }) => {
             )}
 
             {/* Submissions List */}
-            {!selectedSlug ? null : (
+            {!selectedId ? null : (
                 <>
                     <div className="flex justify-between items-center px-1">
                         <h3 className="text-sm font-bold text-zinc-800 uppercase tracking-widest">Received Submissions ({submissions.length})</h3>
@@ -356,7 +364,7 @@ const SubmissionsTab = ({ forms, apiFetch }) => {
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. FORM BUILDER TAB
 // ─────────────────────────────────────────────────────────────────────────────
-function FormBuilderTab({ customDefinitions, fetchDefinitions, apiFetch }) {
+function FormBuilderTab({ customDefinitions, fetchDefinitions, apiFetch, setModal }) {
     const [editorOpen, setEditorOpen] = useState(false);
     const [editingForm, setEditingForm] = useState(null); // null means "Create"
 
@@ -382,7 +390,7 @@ function FormBuilderTab({ customDefinitions, fetchDefinitions, apiFetch }) {
         setAllowAttachments(false);
         setDescription('');
         setFields([
-            { key: 'email', title: 'Email Address', type: 'string', format: 'email', options: '', required: true, stepGroup: '' }
+            { key: 'email', title: 'Email Address', type: 'string', format: 'email', options: '', rows: '', columns: '', minLabel: '', maxLabel: '', required: true, stepGroup: '' }
         ]);
         setStepGroups([]);
         setEditorOpen(true);
@@ -406,49 +414,60 @@ function FormBuilderTab({ customDefinitions, fetchDefinitions, apiFetch }) {
         const props = schema.properties || {};
         const requiredFields = schema.required || [];
 
-const loadedFields = Object.entries(props).map(([key, value]) => {
+        const loadedFields = Object.entries(props).map(([key, value]) => {
+            const format = value['ui:widget'] || value.format || (value.type === 'boolean' ? 'toggle' : 'text');
             return {
                 key,
                 title: value.title || key,
                 type: value.type || 'string',
-                format: value['ui:widget'] === 'rating' ? 'rating' : (value.format || 'text'),
+                format: format,
                 options: Array.isArray(value.enum) ? value.enum.join(', ') : '',
+                rows: Array.isArray(value['ui:rows']) ? value['ui:rows'].join(', ') : '',
+                columns: Array.isArray(value['ui:columns']) ? value['ui:columns'].join(', ') : '',
+                minLabel: value['ui:minLabel'] || '',
+                maxLabel: value['ui:maxLabel'] || '',
                 required: requiredFields.includes(key),
                 stepGroup: value['ui:group'] || ''
             };
         });
 
         setFields(loadedFields.length ? loadedFields : [
-            { key: 'email', title: 'Email Address', type: 'string', format: 'email', options: '', required: true, stepGroup: '' }
+            { key: 'email', title: 'Email Address', type: 'string', format: 'email', options: '', rows: '', columns: '', minLabel: '', maxLabel: '', required: true, stepGroup: '' }
         ]);
         
         setEditorOpen(true);
     };
 
     // Handle delete form
-    const handleDeleteForm = async (id) => {
-        if (!confirm("Are you sure you want to delete this custom form definition? This will permanently delete all associated submissions.")) {
-            return;
-        }
-
-        try {
-            const res = await apiFetch(`/api/v1/forms/admin/definitions/${id}`, {
-                method: 'DELETE'
-            });
-            if (res.ok) {
-                fetchDefinitions();
-            } else {
-                const json = await res.json();
-                alert(json.error || 'Failed to delete form definition.');
+    const handleDeleteForm = (id) => {
+        setModal({
+            isOpen: true,
+            title: 'Confirm Deletion',
+            message: 'Are you sure you want to delete this custom form definition? This will permanently delete all associated submissions.',
+            type: 'confirm',
+            variant: 'warning',
+            onConfirm: async () => {
+                setModal(prev => ({ ...prev, isOpen: false }));
+                try {
+                    const res = await apiFetch(`/api/v1/forms/admin/definitions/${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (res.ok) {
+                        fetchDefinitions();
+                    } else {
+                        const json = await res.json();
+                        setModal({ isOpen: true, title: 'Deletion Failed', message: json.error || 'Failed to delete form definition.', type: 'alert', variant: 'error' });
+                    }
+                } catch (err) {
+                    setModal({ isOpen: true, title: 'Error', message: err.message, type: 'alert', variant: 'error' });
+                }
             }
-        } catch (err) {
-            alert(err.message);
-        }
+        });
     };
 
     // Field lists management
     const addField = () => {
-        setFields([...fields, { key: '', title: '', type: 'string', format: 'text', options: '', required: false, stepGroup: '' }]);
+        setFields([...fields, { key: '', title: '', type: 'string', format: 'text', options: '', rows: '', columns: '', minLabel: '', maxLabel: '', required: false, stepGroup: '' }]);
     };
 
     const removeField = (idx) => {
@@ -478,20 +497,19 @@ const loadedFields = Object.entries(props).map(([key, value]) => {
         
         // Validation checks
         if (!title.trim() || !slug.trim()) {
-            alert("Title and Slug are required.");
+            setModal({ isOpen: true, title: 'Validation Error', message: 'Title and Slug are required.', type: 'alert', variant: 'warning' });
             return;
         }
 
         const cleanSlug = slug.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-');
-        if (cleanSlug !== slug) {
-            alert("Slug must contain only alphanumeric lowercase characters and hyphens.");
-            setSlug(cleanSlug);
+        if (!/^[a-z0-9-]+$/.test(slug)) {
+            setModal({ isOpen: true, title: 'Validation Error', message: 'Slug must contain only alphanumeric lowercase characters and hyphens.', type: 'alert', variant: 'warning' });
             return;
         }
 
-        const hasInvalidKeys = fields.some(f => !f.key.trim() || !/^[a-zA-Z0-9_]+$/.test(f.key));
-        if (hasInvalidKeys) {
-            alert("All fields must have a valid Field Key (letters, numbers, underscores only).");
+        const validKeys = fields.every(f => /^[a-zA-Z0-9_]+$/.test(f.key));
+        if (!validKeys) {
+            setModal({ isOpen: true, title: 'Validation Error', message: 'All fields must have a valid Field Key (letters, numbers, underscores only).', type: 'alert', variant: 'warning' });
             return;
         }
 
@@ -509,17 +527,36 @@ const loadedFields = Object.entries(props).map(([key, value]) => {
                     type: f.type
                 };
 
-                if (f.format === 'rating') {
+                if (['rating', 'range', 'linear_scale'].includes(f.format)) {
                     prop.type = 'integer';
-                    prop['ui:widget'] = 'rating';
+                    prop['ui:widget'] = f.format;
                     prop.minimum = 1;
-                    prop.maximum = 5;
+                    prop.maximum = f.format === 'rating' ? 5 : 10;
+                    if (f.format === 'linear_scale') {
+                        prop['ui:minLabel'] = f.minLabel;
+                        prop['ui:maxLabel'] = f.maxLabel;
+                    }
+                } else if (f.format === 'toggle') {
+                    prop.type = 'boolean';
+                    prop['ui:widget'] = 'toggle';
+                } else if (f.format === 'checkbox') {
+                    prop.type = 'array';
+                    prop['ui:widget'] = 'checkbox';
+                    prop.items = { type: 'string', enum: f.options ? [...new Set(f.options.split(',').map(o => o.trim()).filter(Boolean))] : [] };
+                } else if (['multiple_choice_grid', 'checkbox_grid'].includes(f.format)) {
+                    prop.type = 'object';
+                    prop['ui:widget'] = f.format;
+                    prop['ui:rows'] = f.rows ? f.rows.split(',').map(o => o.trim()).filter(Boolean) : [];
+                    prop['ui:columns'] = f.columns ? f.columns.split(',').map(o => o.trim()).filter(Boolean) : [];
                 } else if (f.format !== 'text') {
                     prop.format = f.format;
+                    if (['radio', 'select'].includes(f.format)) {
+                        prop['ui:widget'] = f.format;
+                    }
                 }
 
-                if (f.format === 'select' && f.options.trim()) {
-                    prop.enum = f.options.split(',').map(o => o.trim()).filter(Boolean);
+                if (['select', 'radio'].includes(f.format) && f.options?.trim()) {
+                    prop.enum = [...new Set(f.options.split(',').map(o => o.trim()).filter(Boolean))];
                 }
 
                 if (layout === 'wizard' && f.stepGroup) {
@@ -617,7 +654,7 @@ const loadedFields = Object.entries(props).map(([key, value]) => {
                                             )}
                                         </div>
                                         <h3 className="text-md font-bold text-zinc-950 mb-1">{form.title}</h3>
-                                        <p className="text-xs text-zinc-400 font-mono mb-2">/{form.slug}</p>
+                                        <p className="text-xs text-zinc-400 font-mono mb-2">/{form.id.toLowerCase()}</p>
                                         <p className="text-xs text-zinc-600 font-light line-clamp-2 leading-relaxed mb-6">
                                             {form.settings?.description || 'No description provided.'}
                                         </p>
@@ -625,7 +662,7 @@ const loadedFields = Object.entries(props).map(([key, value]) => {
 
                                     <div className="flex items-center justify-between border-t border-zinc-100 pt-4 mt-auto">
                                         <a
-                                            href={`/forms/${form.slug}`}
+                                            href={`/forms/${form.id.toLowerCase()}`}
                                             target="_blank"
                                             rel="noreferrer"
                                             className="text-xs font-semibold text-amber-600 hover:text-amber-800 hover:underline flex items-center gap-1"
@@ -868,8 +905,16 @@ const loadedFields = Object.entries(props).map(([key, value]) => {
                                                 <option value="textarea">Multi-line Text</option>
                                                 <option value="email">Email Input</option>
                                                 <option value="date">Date Input</option>
+                                                <option value="time">Time Input</option>
                                                 <option value="select">Dropdown Select</option>
-                                                <option value="rating">Rating (1-5)</option>
+                                                <option value="radio">Multiple Choice (Radio)</option>
+                                                <option value="checkbox">Checkboxes</option>
+                                                <option value="toggle">Toggle / Switch</option>
+                                                <option value="rating">Rating (1-5 Stars)</option>
+                                                <option value="range">Slider Range (1-10)</option>
+                                                <option value="linear_scale">Linear Scale</option>
+                                                <option value="multiple_choice_grid">Multiple Choice Grid</option>
+                                                <option value="checkbox_grid">Checkbox Grid</option>
                                             </select>
                                         </div>
 
@@ -886,10 +931,10 @@ const loadedFields = Object.entries(props).map(([key, value]) => {
                                         </div>
                                     </div>
 
-                                    {/* Select Options details */}
-                                    {f.format === 'select' && (
+                                    {/* Select/Radio/Checkbox Options */}
+                                    {['select', 'radio', 'checkbox'].includes(f.format) && (
                                         <div className="space-y-1 w-full max-w-xl">
-                                            <label className="text-[10px] font-bold text-zinc-500 uppercase">Select Options (comma-separated)</label>
+                                            <label className="text-[10px] font-bold text-zinc-500 uppercase">Options (comma-separated)</label>
                                             <input
                                                 type="text"
                                                 required
@@ -898,6 +943,60 @@ const loadedFields = Object.entries(props).map(([key, value]) => {
                                                 placeholder="Website, Museum, Staff, Social Media"
                                                 className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none"
                                             />
+                                        </div>
+                                    )}
+
+                                    {/* Grid Options */}
+                                    {['multiple_choice_grid', 'checkbox_grid'].includes(f.format) && (
+                                        <div className="grid grid-cols-2 gap-4 w-full max-w-xl">
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] font-bold text-zinc-500 uppercase">Rows (comma-separated)</label>
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    value={f.rows}
+                                                    onChange={e => updateField(idx, { rows: e.target.value })}
+                                                    placeholder="Quality, Speed, Price"
+                                                    className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none"
+                                                />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] font-bold text-zinc-500 uppercase">Columns (comma-separated)</label>
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    value={f.columns}
+                                                    onChange={e => updateField(idx, { columns: e.target.value })}
+                                                    placeholder="Poor, Fair, Good, Excellent"
+                                                    className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Linear Scale Options */}
+                                    {f.format === 'linear_scale' && (
+                                        <div className="grid grid-cols-2 gap-4 w-full max-w-xl">
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] font-bold text-zinc-500 uppercase">Min Label (Optional)</label>
+                                                <input
+                                                    type="text"
+                                                    value={f.minLabel}
+                                                    onChange={e => updateField(idx, { minLabel: e.target.value })}
+                                                    placeholder="Not Satisfied"
+                                                    className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none"
+                                                />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] font-bold text-zinc-500 uppercase">Max Label (Optional)</label>
+                                                <input
+                                                    type="text"
+                                                    value={f.maxLabel}
+                                                    onChange={e => updateField(idx, { maxLabel: e.target.value })}
+                                                    placeholder="Very Satisfied"
+                                                    className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none"
+                                                />
+                                            </div>
                                         </div>
                                     )}
 
@@ -955,7 +1054,7 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
         if (!feedbackDefinition) return;
         setLoading(true);
         try {
-            const res = await apiFetch(`/api/v1/forms/${feedbackDefinition.slug}/submissions`);
+            const res = await apiFetch(`/api/v1/forms/${feedbackDefinition.id}/submissions`);
             const json = await res.json();
             if (json.status === 'success') {
                 setSubmissions(json.data.items || []);

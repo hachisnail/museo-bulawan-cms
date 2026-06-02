@@ -10,9 +10,9 @@ import { definitionService } from './definitionService.js';
  * Handles One-Time Password (OTP) generation and verification for form submissions.
  */
 export const verificationService = {
-    async requestEmailOtp(slug, email) {
+    async requestEmailOtp(id, email) {
         try {
-            const definition = await definitionService.getFormDefinition(slug);
+            const definition = await definitionService.getFormDefinition(id);
             
             // Generate 6-digit OTP
             const otp = crypto.randomInt(100000, 999999).toString();

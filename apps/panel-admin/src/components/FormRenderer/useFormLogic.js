@@ -4,12 +4,13 @@ import { useState, useEffect, useCallback, useRef } from 'react';
  * useFormLogic: Shared hook for both Internal and External form renderers.
  */
 export const useFormLogic = ({ 
-    slug, 
+    id, 
     apiBaseUrl = '', 
     customFetch = fetch,
     onSuccess,
     onError,
-    prefillData = {}
+    prefillData = {},
+    setModal
 }) => {
     const [definition, setDefinition] = useState(null);
     const [formData, setFormData] = useState({});
@@ -26,15 +27,15 @@ export const useFormLogic = ({
     const [otpEmail, setOtpEmail] = useState('');
 
     const fetchDefinition = useCallback(async () => {
-        if (!slug) {
+        if (!id) {
             setLoading(false);
             return;
         }
 
         setLoading(true);
         try {
-            const res = await customFetch(`${apiBaseUrl}/api/v1/forms/${slug}`);
-            if (!res.ok) throw new Error(`Form definition '${slug}' not found`);
+            const res = await customFetch(`${apiBaseUrl}/api/v1/forms/${id}`);
+            if (!res.ok) throw new Error(`Form definition '${id}' not found`);
             const data = await res.json();
             setDefinition(data);
         } catch (err) {
@@ -44,7 +45,7 @@ export const useFormLogic = ({
         } finally {
             setLoading(false);
         }
-    }, [slug, apiBaseUrl, customFetch, onError]);
+    }, [id, apiBaseUrl, customFetch, onError]);
 
     // Initialize/Update form data when definition or prefillData changes
     useEffect(() => {
@@ -67,10 +68,10 @@ export const useFormLogic = ({
     }, [definition, JSON.stringify(prefillData)]);
 
     useEffect(() => {
-        if (slug) {
+        if (id) {
             fetchDefinition();
         }
-    }, [slug, fetchDefinition]);
+    }, [id]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -118,13 +119,15 @@ export const useFormLogic = ({
         const email = formData[emailField || 'email'];
 
         if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-            alert('Please enter a valid email address in the form to receive a verification code.');
+            const msg = 'Please enter a valid email address in the form to receive a verification code.';
+            if (setModal) setModal({ isOpen: true, title: 'Validation Error', message: msg, type: 'alert', variant: 'warning' });
+            else alert(msg);
             return;
         }
 
         setOtpLoading(true);
         try {
-            const res = await customFetch(`${apiBaseUrl}/api/v1/forms/${slug}/request-otp`, {
+            const res = await customFetch(`${apiBaseUrl}/api/v1/forms/${id}/request-otp`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -140,9 +143,12 @@ export const useFormLogic = ({
 
             setOtpSent(true);
             setOtpEmail(email);
-            alert('Verification code sent to your email.');
+            const msg = 'Verification code sent to your email.';
+            if (setModal) setModal({ isOpen: true, title: 'OTP Sent', message: msg, type: 'alert', variant: 'success' });
+            else alert(msg);
         } catch (err) {
-            alert(err.message);
+            if (setModal) setModal({ isOpen: true, title: 'Error', message: err.message, type: 'alert', variant: 'error' });
+            else alert(err.message);
         } finally {
             setOtpLoading(false);
         }
@@ -190,7 +196,7 @@ export const useFormLogic = ({
                 body.append('attachments', file);
             });
 
-            const res = await customFetch(`${apiBaseUrl}/api/v1/forms/${slug}/submit`, {
+            const res = await customFetch(`${apiBaseUrl}/api/v1/forms/${id}/submit`, {
                 method: 'POST',
                 headers: {
                     'X-XSRF-TOKEN': getCsrfToken()
@@ -203,7 +209,16 @@ export const useFormLogic = ({
 
             if (onSuccess) onSuccess(result);
             
-            setFormData({});
+            const initialData = { ...prefillData };
+            if (definition.schema && definition.schema.properties) {
+                Object.keys(definition.schema.properties).forEach(k => {
+                    if (initialData[k] === undefined) {
+                        initialData[k] = definition.schema.properties[k].default || '';
+                    }
+                });
+            }
+            setFormData(initialData);
+
             setFiles([]);
             setOtp('');
             setOtpSent(false);

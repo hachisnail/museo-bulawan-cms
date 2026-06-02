@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/authContext';
+import { Modal } from '../components';
 
 export default function Constituents() {
     const { apiFetch } = useAuth();
@@ -8,6 +9,7 @@ export default function Constituents() {
     const [selected, setSelected] = useState(null);
     const [search, setSearch] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+    const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'alert', variant: 'info' });
     
     const [formData, setFormData] = useState({
         name: '',
@@ -54,13 +56,13 @@ export default function Constituents() {
             });
 
             if (res.ok) {
-                alert('Constituent record saved.');
+                setModal({ isOpen: true, title: 'Success', message: 'Constituent record saved.', type: 'alert', variant: 'success' });
                 setIsEditing(false);
                 setSelected(null);
                 fetchData();
             }
         } catch (err) {
-            alert('Save failed');
+            setModal({ isOpen: true, title: 'Error', message: 'Save failed.', type: 'alert', variant: 'error' });
         }
     };
 
@@ -285,6 +287,11 @@ export default function Constituents() {
                     )}
                 </div>
             </div>
+
+            <Modal 
+                {...modal} 
+                onClose={() => setModal(prev => ({ ...prev, isOpen: false }))} 
+            />
         </div>
     );
 }

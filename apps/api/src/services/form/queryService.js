@@ -8,9 +8,9 @@ function escapeLikePattern(val) {
 }
 
 export const queryService = {
-    async listSubmissions(slug, query = {}) {
+    async listSubmissions(id, query = {}) {
         try {
-            const definition = await definitionService.getFormDefinition(slug);
+            const definition = await definitionService.getFormDefinition(id);
             const page = query.page || 1;
             const perPage = query.perPage || 50;
             const offset = (page - 1) * perPage;
@@ -38,7 +38,7 @@ export const queryService = {
 
             return { page, perPage, items: rows };
         } catch (error) {
-            logger.error(`Failed to list submissions for ${slug}: ${error.message}`);
+            logger.error(`Failed to list submissions for ${id}: ${error.message}`);
             throw error;
         }
     },

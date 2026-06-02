@@ -24,7 +24,7 @@ export const accessionService = {
             try {
                 return await db.transaction(async (tx) => {
                     const intake = await baseService._getRecord('intakes', intakeId, {}, tx);
-                    assertTransition('intake', intake.status, 'accessioned');
+                    assertTransition('intake', intake.status, 'processed');
 
                     const rows = await tx.query(`SELECT id FROM accessions WHERE intake_id = ?`, [intakeId]);
                     if (rows && rows.length > 0) {
@@ -50,7 +50,7 @@ export const accessionService = {
                         await baseService.createConditionReport(staffId, 'accession', accession.id, accessionData.conditionReport, '', null, '', {}, tx);
                     }
 
-                    await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'accessioned', {
+                    await baseService._transitionRecord(staffId, 'intake', 'intakes', intakeId, 'processed', {
                         moa_status: accessionData.isMoaSigned ? 'signed' : intake.moa_status
                     }, tx);
 
@@ -173,6 +173,57 @@ export const accessionService = {
                 
                 return await baseService._updateRecord(staffId, 'accessions', accessionId, updateData, tx); // <-- PASS TX
             });
+        });
+    },
+
+    // ==========================================
+    // PHASE 3E: Reject / Cancel Accession
+    // ==========================================
+    async rejectAccession(staffId, accessionId, reason = '') {
+        return await globalMutex.runExclusive(`accession_${accessionId}`, async () => {
+            try {
+                return await db.transaction(async (tx) => {
+                    const accession = await baseService._getRecord('accessions', accessionId, {}, tx);
+                    assertTransition('accession', accession.status, 'rejected');
+
+                    // 1. Revert the linked intake from 'processed' back to 'in_custody'
+                    if (accession.intake_id) {
+                        const intake = await baseService._getRecord('intakes', accession.intake_id, {}, tx);
+                        if (intake.status === 'processed') {
+                            await baseService._transitionRecord(staffId, 'intake', 'intakes', accession.intake_id, 'in_custody', {}, tx);
+                        }
+                    }
+
+                    // 2. Clean up media links for this accession
+                    const mediaLinks = await tx.query(
+                        `SELECT id FROM media_links WHERE entity_type = 'accession' AND entity_id = ?`,
+                        [accessionId]
+                    );
+                    for (const link of mediaLinks) {
+                        try {
+                            await mediaService.deleteMedia(staffId, link.id, tx);
+                        } catch (mErr) {
+                            logger.error(`Non-blocking error cleaning up media: ${mErr.message}`);
+                        }
+                    }
+
+                    // 3. Delete accession approvals
+                    await tx.query(`DELETE FROM accession_approvals WHERE accession_id = ?`, [accessionId]);
+
+                    // 4. Delete the accession record itself
+                    await tx.query(`DELETE FROM accessions WHERE id = ?`, [accessionId]);
+
+                    // 5. Notify
+                    notificationService.sendToRole('curator', 'Accession Rejected',
+                        `Accession ${accession.accession_number} has been rejected${reason ? ': ' + reason : ''}. The intake has been returned to custody.`,
+                        'warning', { actionUrl: `/intakes?tab=intakes` });
+
+                    return { success: true, accession_number: accession.accession_number, intake_id: accession.intake_id };
+                });
+            } catch (error) {
+                logger.error(`Error rejecting accession: ${error.message}`);
+                throw error;
+            }
         });
     },
 

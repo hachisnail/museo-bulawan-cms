@@ -99,7 +99,7 @@ export default function IntakesIndex() {
     const tableData = useMemo(() => {
         if (activeTab === 'submissions') {
             return submissions
-                .filter(s => s.status !== 'archived')
+                .filter(s => s.status !== 'archived' && s.status !== 'processed')
                 .map(s => {
                     const pd = s.parsedData || {};
                     const isAnon = pd.is_anonymous === true;
@@ -119,7 +119,7 @@ export default function IntakesIndex() {
 
         if (activeTab === 'intakes') {
             return intakes
-                .filter(i => i.status !== 'rejected')
+                .filter(i => i.status !== 'rejected' && i.status !== 'accessioned' && i.status !== 'processed')
                 .map(i => {
                     const dateVal = i.created || i.created_at;
                     return {
@@ -134,8 +134,8 @@ export default function IntakesIndex() {
                 });
         }
 
-        // archive — mix of rejected intakes + archived submissions
-        const subArchived = submissions.filter(s => s.status === 'archived').map(s => {
+        // archive — mix of rejected intakes + archived/processed submissions + accessioned intakes
+        const subArchived = submissions.filter(s => s.status === 'archived' || s.status === 'processed').map(s => {
             const pd = s.parsedData || {};
             const isAnon = pd.is_anonymous === true;
             const fullName = `${pd.donor_first_name || ''} ${pd.donor_last_name || ''}`.trim();
@@ -149,7 +149,7 @@ export default function IntakesIndex() {
             };
         });
 
-        const intakeArchived = intakes.filter(i => i.status === 'rejected').map(i => {
+        const intakeArchived = intakes.filter(i => i.status === 'rejected' || i.status === 'accessioned' || i.status === 'processed').map(i => {
             const dateVal = i.created || i.created_at;
             return {
                 id: i.id, type: 'intake',

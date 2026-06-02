@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../../context/authContext';
 import { useSSE } from '../../../hooks/useSSE';
 import { DataTable } from '../../../components';
+import Locations from '../../Locations';
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Status Pill Styles
@@ -11,6 +12,7 @@ const getStatusStyles = (status) => {
     switch (status?.toLowerCase()) {
         case 'maintenance':
             return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+        case 'loan':
         case 'loaned':
             return 'bg-blue-100 text-blue-800 border-blue-200';
         case 'active':
@@ -34,7 +36,7 @@ export default function InventoryIndex() {
     // Filter, Sort, Pagination States
     const [activeTab, setActiveTab] = useState(() => {
         const tab = searchParams.get('tab');
-        return ['Artifact', 'Acquired', 'Borrowing', 'Deaccessioned'].includes(tab) ? tab : 'Artifact';
+        return ['Artifact', 'Acquired', 'Borrowing', 'Locations', 'Deaccessioned'].includes(tab) ? tab : 'Artifact';
     });
     const [searchTerm, setSearchTerm] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
@@ -87,8 +89,8 @@ export default function InventoryIndex() {
         const acquired = activeItems.filter(i => i.expand?.accession_id?.contract_type !== 'loan').length;
         const borrowing = activeItems.filter(i => i.expand?.accession_id?.contract_type === 'loan').length;
         const maintenance = activeItems.filter(i => i.status === 'maintenance').length;
-        const onDisplay = activeItems.filter(i => i.status === 'loaned' || i.current_location?.toLowerCase().includes('display') || i.current_location?.toLowerCase().includes('gallery')).length;
-        const inStorage = activeItems.filter(i => i.current_location?.toLowerCase().includes('storage') || (!i.current_location && i.status === 'active')).length;
+        const onDisplay = activeItems.filter(i => i.status === 'loan' || i.status === 'loaned' || i.current_location?.toLowerCase().includes('display') || i.current_location?.toLowerCase().includes('gallery')).length;
+        const inStorage = activeItems.filter(i => i.status === 'storage' || i.current_location?.toLowerCase().includes('storage') || (!i.current_location && (i.status === 'active' || i.status === 'storage'))).length;
 
         return [
             { label: 'Total Artifacts', value: String(totalActive) },
@@ -132,7 +134,7 @@ export default function InventoryIndex() {
                 date: dateVal ? new Date(dateVal).toLocaleDateString() : '—',
                 rawDate: dateVal,
                 type: accession.contract_type ? accession.contract_type.replace(/_/g, ' ') : 'Donation',
-                status: item.status === 'deaccessioned' ? 'Deaccessioned' : (item.status === 'loaned' ? 'On Display' : (item.status === 'maintenance' ? 'Under Maintenance' : 'In Storage')),
+                status: item.status === 'deaccessioned' ? 'Deaccessioned' : ((item.status === 'loan' || item.status === 'loaned') ? 'On Display' : (item.status === 'maintenance' ? 'Under Maintenance' : 'In Storage')),
                 rawStatus: item.status,
                 maintenance: item.last_checked ? new Date(item.last_checked).toLocaleDateString() : (dateVal ? new Date(dateVal).toLocaleDateString() : '—'),
                 expiration: accession.contract_type?.toLowerCase() === 'loan' 
@@ -223,7 +225,7 @@ export default function InventoryIndex() {
 
     const tabsNode = (
         <div className="flex items-center gap-2">
-            {['Artifact', 'Acquired', 'Borrowing', 'Deaccessioned'].map(tab => (
+            {['Artifact', 'Acquired', 'Borrowing', 'Locations', 'Deaccessioned'].map(tab => (
                 <button
                     key={tab}
                     onClick={() => handleTabChange(tab)}
@@ -233,7 +235,7 @@ export default function InventoryIndex() {
                             : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
                     }`}
                 >
-                    {tab === 'Deaccessioned' ? 'Deaccessioned' : (tab === 'Artifact' ? 'All Active' : tab)}
+                    {tab === 'Deaccessioned' ? 'Deaccessioned' : (tab === 'Artifact' ? 'All Active' : (tab === 'Locations' ? 'Locations Setup' : tab))}
                 </button>
             ))}
         </div>
@@ -243,10 +245,19 @@ export default function InventoryIndex() {
         <div className="flex flex-col gap-y-8 bg-white  px-4 sm:px-6 lg:px-8 pt-8">
             
             {/* ── Header ── */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-4">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Inventory</h1>
                     <p className="text-sm text-zinc-500 mt-1">Master catalog list, display statuses, and collection tracking.</p>
+                </div>
+                <div>
+                    <a 
+                        href={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/v1/acquisitions/inventory/export-all`}
+                        target="_blank" rel="noreferrer"
+                        className="px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors rounded-md shadow-sm flex items-center gap-2"
+                    >
+                        Export Collection Ledger
+                    </a>
                 </div>
             </div>
 
@@ -265,21 +276,30 @@ export default function InventoryIndex() {
             </div>
 
             <div className="mt-4">
-                <DataTable 
-                    columns={columns}
-                    data={paginatedData}
-                    onQueryChange={handleQueryChange}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                    showExtraActions={false}
-                    sortConfig={sortConfig}
-                    onSort={requestSort}
-                    isLoading={loading}
-                    searchPlaceholder="Search catalog..."
-                    leftHeaderContent={tabsNode}
-                    totalItems={sortedData.length}
-                />
+                {activeTab === 'Locations' ? (
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center bg-white p-4 border border-zinc-200 rounded-sm">
+                            {tabsNode}
+                        </div>
+                        <Locations />
+                    </div>
+                ) : (
+                    <DataTable 
+                        columns={columns}
+                        data={paginatedData}
+                        onQueryChange={handleQueryChange}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                        showExtraActions={false}
+                        sortConfig={sortConfig}
+                        onSort={requestSort}
+                        isLoading={loading}
+                        searchPlaceholder="Search catalog..."
+                        leftHeaderContent={tabsNode}
+                        totalItems={sortedData.length}
+                    />
+                )}
             </div>
         </div>
     );

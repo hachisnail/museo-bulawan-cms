@@ -36,12 +36,15 @@ export const definitionService = {
 
     async createDefinition(data) {
         try {
+            if (data.type && data.type !== 'custom') {
+                throw new Error('ONLY_CUSTOM_FORMS_ALLOWED');
+            }
             const id = ulid();
             const record = {
                 id,
                 slug: data.slug,
                 title: data.title,
-                type: data.type || 'custom',
+                type: 'custom',
                 schema_data: data.schema_data || {},
                 settings: data.settings || {},
                 otp: data.otp === true || data.otp === 'true'
@@ -56,6 +59,14 @@ export const definitionService = {
 
     async updateDefinition(id, data) {
         try {
+            const existing = await definitionService.getFormDefinition(id);
+            if (existing.type !== 'custom') {
+                throw new Error('SYSTEM_FORM_READONLY');
+            }
+            if (data.type && data.type !== 'custom') {
+                throw new Error('ONLY_CUSTOM_FORMS_ALLOWED');
+            }
+
             const updateData = {};
             if (data.slug !== undefined) updateData.slug = data.slug;
             if (data.title !== undefined) updateData.title = data.title;
@@ -74,6 +85,11 @@ export const definitionService = {
 
     async deleteDefinition(id) {
         try {
+            const existing = await definitionService.getFormDefinition(id);
+            if (existing.type !== 'custom') {
+                throw new Error('SYSTEM_FORM_READONLY');
+            }
+
             await db.executeAndBroadcast('DELETE FROM form_definitions WHERE id = ?', [id], 'delete', 'form_definitions', id);
             return { id };
         } catch (error) {

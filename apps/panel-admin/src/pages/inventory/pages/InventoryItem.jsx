@@ -23,6 +23,7 @@ const getStatusStyles = (status) => {
     switch (status?.toLowerCase()) {
         case 'maintenance':
             return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+        case 'loan':
         case 'loaned':
             return 'bg-blue-100 text-blue-800 border-blue-200';
         case 'active':
@@ -128,6 +129,7 @@ export default function InventoryItem() {
     const [conservationLogs, setConservationLogs] = useState([]);
     const [exhibitionHistory, setExhibitionHistory] = useState([]);
     const [locations, setLocations] = useState([]);
+    const [media, setMedia] = useState([]);
 
     // Subsystem sub-forms visibility
     const [showMovementForm, setShowMovementForm] = useState(false);
@@ -168,7 +170,75 @@ export default function InventoryItem() {
             const cJson = await cRes.json();
             const eJson = await eRes.json();
 
-            if (itemJson.status === 'success') setArtifact(itemJson.data);
+            if (itemJson.status === 'success') {
+                const itemData = itemJson.data;
+                setArtifact(itemData);
+
+                const accId = itemData.expand?.accession_id?.id;
+                const intakeId = itemData.expand?.accession_id?.expand?.intake_id?.id;
+
+                let accessionMedia = [];
+                let intakeMedia = [];
+                let inventoryMedia = [];
+
+                const mediaPromises = [];
+                if (accId) {
+                    mediaPromises.push(
+                        apiFetch(`/api/v1/media/accession/${accId}`)
+                            .then(res => res.json())
+                            .then(j => { if (j.status === 'success') accessionMedia = j.data?.items || []; })
+                            .catch(() => {})
+                    );
+                }
+                if (intakeId) {
+                    mediaPromises.push(
+                        apiFetch(`/api/v1/media/intake/${intakeId}`)
+                            .then(res => res.json())
+                            .then(j => { if (j.status === 'success') intakeMedia = j.data?.items || []; })
+                            .catch(() => {})
+                    );
+                }
+                mediaPromises.push(
+                    apiFetch(`/api/v1/media/inventory/${id}`)
+                        .then(res => res.json())
+                        .then(j => { if (j.status === 'success') inventoryMedia = j.data?.items || []; })
+                        .catch(() => {})
+                );
+
+                await Promise.all(mediaPromises);
+
+                const allMediaList = [];
+                accessionMedia.forEach(m => {
+                    if (m.context !== 'Signed MOA Document') {
+                        allMediaList.push({
+                            ...m,
+                            url: `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/v1/files/accession/${accId}/${m.file_name}`
+                        });
+                    }
+                });
+                intakeMedia.forEach(m => {
+                    allMediaList.push({
+                        ...m,
+                        url: `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/v1/files/intake/${intakeId}/${m.file_name}`
+                    });
+                });
+                inventoryMedia.forEach(m => {
+                    allMediaList.push({
+                        ...m,
+                        url: `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/v1/files/inventory/${id}/${m.file_name}`
+                    });
+                });
+
+                const uniqueMedia = [];
+                const seen = new Set();
+                for (const mItem of allMediaList) {
+                    if (!seen.has(mItem.file_name)) {
+                        seen.add(mItem.file_name);
+                        uniqueMedia.push(mItem);
+                    }
+                }
+                setMedia(uniqueMedia);
+            }
             if (mJson.status === 'success') setMovementTrails(mJson.data.items || []);
             if (hJson.status === 'success') setHealthLogs(hJson.data.items || []);
             if (vJson.status === 'success') setValuations(vJson.data.items || []);
@@ -252,6 +322,56 @@ Would you like to reload the latest record and try again?`,
                     }
                 } catch (err) {
                     setModal({ isOpen: true, title: 'Error', message: 'Deaccession failed.', type: 'alert', variant: 'error' });
+                } finally { 
+                    setActionLoading(false); 
+                }
+            }
+        });
+    };
+
+    const handleToggleDisplay = () => {
+        const isOnDisplay = artifact.status?.toLowerCase() === 'loan' || artifact.status?.toLowerCase() === 'loaned';
+        const nextStatus = isOnDisplay ? 'storage' : 'loan';
+        const actionText = isOnDisplay ? 'Remove from Display' : 'Place on Display';
+        
+        setModal({
+            isOpen: true,
+            title: `${actionText}`,
+            message: `Provide a justification (at least 5 characters) for manually updating the display status:`,
+            type: 'prompt',
+            promptValue: '',
+            onConfirm: async (reason) => {
+                if (!reason || reason.trim().length < 5) {
+                    setModal({ isOpen: true, title: 'Validation Failed', message: 'Justification must be at least 5 characters long.', type: 'alert', variant: 'error' });
+                    return;
+                }
+                setActionLoading(true);
+                try {
+                    const res = await apiFetch(`/api/v1/acquisitions/inventory/${id}/status`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: nextStatus, isManual: true, reason })
+                    });
+                    const json = await res.json();
+                    
+                    if (res.ok) {
+                        setModal({ 
+                            isOpen: true, 
+                            title: 'Success', 
+                            message: `Artifact successfully ${isOnDisplay ? 'removed from display' : 'placed on display'}.`, 
+                            type: 'alert', 
+                            variant: 'success' 
+                        });
+                        fetchDetails(true);
+                    } else {
+                        if (res.status === 409) {
+                            handleConflict(json);
+                        } else {
+                            setModal({ isOpen: true, title: 'Action Failed', message: json.error || json.message || 'Operation failed.', type: 'alert', variant: 'error' });
+                        }
+                    }
+                } catch (err) {
+                    setModal({ isOpen: true, title: 'Error', message: 'Status update failed.', type: 'alert', variant: 'error' });
                 } finally { 
                     setActionLoading(false); 
                 }
@@ -390,7 +510,7 @@ Would you like to reload the latest record and try again?`,
                     <div className="flex items-center gap-4 flex-wrap">
                         <h1 className="text-2xl font-bold text-gray-900">{intake.proposed_item_name || 'Unnamed Artifact'}</h1>
                         <span className={`px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wider border ${getStatusStyles(artifact.status)}`}>
-                            {artifact.status === 'deaccessioned' ? 'Deaccessioned' : (artifact.status === 'loaned' ? 'On Display' : (artifact.status === 'maintenance' ? 'Under Maintenance' : 'In Storage'))}
+                            {artifact.status === 'deaccessioned' ? 'Deaccessioned' : ((artifact.status === 'loan' || artifact.status === 'loaned') ? 'On Display' : (artifact.status === 'maintenance' ? 'Under Maintenance' : 'In Storage'))}
                         </span>
                     </div>
                     <p className="text-base text-gray-500 mt-2">
@@ -460,6 +580,29 @@ Would you like to reload the latest record and try again?`,
                             <Section title="Historical Significance & Story">
                                 <TextBlock label="Story Summary" value={accession.historical_significance || 'Ongoing archival research.'} italic={true} />
                             </Section>
+
+                            {media.length > 0 && (
+                                <div className="space-y-4 pt-6 border-t border-gray-200 col-span-full">
+                                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Visual Documentation</h4>
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                        {media.map((m) => (
+                                            <a 
+                                                key={m.id} 
+                                                href={m.url}
+                                                target="_blank" rel="noreferrer"
+                                                className="aspect-square border border-zinc-200 rounded-sm overflow-hidden bg-zinc-50 group relative block shadow-sm"
+                                            >
+                                                <img 
+                                                    src={m.url} 
+                                                    className="w-full h-full object-cover transition-all group-hover:scale-105 duration-300" 
+                                                    alt="Artifact Visual Documentation" 
+                                                />
+                                                <div className="absolute inset-x-0 bottom-0 bg-black/70 p-1.5 text-[8px] text-white font-mono truncate text-center opacity-0 group-hover:opacity-100 transition-opacity">View Full Size</div>
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
 
@@ -731,6 +874,15 @@ Would you like to reload the latest record and try again?`,
                         </button>
                     )}
 
+                    {artifact.status !== 'deaccessioned' && (
+                        <button 
+                            onClick={handleToggleDisplay}
+                            className="px-5 py-2.5 bg-white border border-blue-300 text-blue-700 text-sm font-semibold hover:bg-blue-50 hover:text-blue-800 transition-colors rounded-md"
+                        >
+                            {(artifact.status?.toLowerCase() === 'loan' || artifact.status?.toLowerCase() === 'loaned') ? 'Remove from Display' : 'Place on Display'}
+                        </button>
+                    )}
+
                     <a 
                         href={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/v1/acquisitions/inventory/${artifact.id}/export`}
                         target="_blank" rel="noreferrer"
@@ -759,12 +911,13 @@ Would you like to reload the latest record and try again?`,
                         </a>
                     )}
 
-                    <button 
-                        onClick={() => window.print()}
-                        className="px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors rounded-md"
+                    <a 
+                        href={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/v1/acquisitions/inventory/${artifact.id}/export-label`}
+                        target="_blank" rel="noreferrer"
+                        className="px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors rounded-md flex items-center justify-center"
                     >
                         Print ID Label
-                    </button>
+                    </a>
                 </div>
             </div>
 

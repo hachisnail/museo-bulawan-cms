@@ -78,6 +78,8 @@ export const acquisitionService = {
     exportInventoryReport: inventoryService.exportReport.bind(inventoryService),
     getConditionReportDocument: inventoryService.getConditionReportDocument.bind(inventoryService),
     getDeaccessionReport: inventoryService.getDeaccessionReport.bind(inventoryService),
+    exportIDLabel: inventoryService.exportIDLabel.bind(inventoryService),
+    exportAllInventory: inventoryService.exportAllInventory.bind(inventoryService),
 
     // SPECTRUM: Inventory Audit & Object Summary
     recordAuditCheck: inventoryService.recordAuditCheck.bind(inventoryService),

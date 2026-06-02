@@ -26,41 +26,40 @@ const articles = [...displayEvents, ...displayEvents];
 ---
 
 <BaseLayout title="Home | Museo Bulawan" theme="dark">
+  
+  <style is:global>
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+
   <div class="w-screen h-auto flex flex-col items-center overflow-x-hidden">
+    
     <div
       id="home"
-      class="w-full min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center relative"
+      class="w-full min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center relative scroll-mt-20"
       style={`background-image: url('${heroImage.src}')`}
     >
-      <div
-        class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent pointer-events-none"
-      >
-      </div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent pointer-events-none"></div>
 
-      <div
-        class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 relative z-10 pt-32 lg:pt-20"
-      >
-        <h2
-          class="text-[#d8ad69] font-bold tracking-[0.15em] uppercase text-4xl md:text-5xl leading-20 drop-shadow-lg"
-        >
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 relative z-10 pt-32 lg:pt-20">
+        <h2 class="text-[#d8ad69] font-bold tracking-[0.15em] uppercase text-4xl md:text-5xl leading-20 drop-shadow-lg">
           Welcome to
         </h2>
 
-        <h1
-          class="text-white font-extrabold text-6xl md:text-8xl lg:text-9xl leading-25 tracking-tight drop-shadow-2xl mb-10"
-        >
+        <h1 class="text-white font-extrabold text-6xl md:text-8xl lg:text-9xl leading-25 tracking-tight drop-shadow-2xl mb-10">
           MUSEO <br /> BULAWAN
         </h1>
 
         <div class="flex flex-wrap items-center gap-4 mb-16">
           <a
-            href="#"
-            class="bg-white text-gray-900 font-semibold py-3.5 px-10 text-sm hover:bg-gray-200 transition-colors duration-300"
+            href="#learn_more"
+            class="bg-white text-gray-900 font-semibold py-3.5 px-10 text-sm hover:bg-gray-200 transition-colors duration-300 scroll-link"
           >
             Learn More
           </a>
           <a
-            href="#"
+            href="/appointment"
             class="bg-transparent border border-white text-white font-semibold py-3.5 px-10 text-sm uppercase tracking-wider hover:bg-white hover:text-gray-900 transition-colors duration-300"
           >
             Book a Visit
@@ -69,262 +68,136 @@ const articles = [...displayEvents, ...displayEvents];
 
         <div class="flex flex-col gap-6 text-white/95">
           <div class="flex items-start gap-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              class="w-6 h-6 shrink-0 mt-0.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 shrink-0 mt-0.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
             </svg>
             <div>
-              <h3 class="font-semibold text-white text-base tracking-wide">
-                Museum Hours
-              </h3>
-              <p class="text-sm font-light text-gray-200 mt-1">
-                Open Daily 9:00am-5:00pm, Monday- Friday
-              </p>
+              <h3 class="font-semibold text-white text-base tracking-wide">Museum Hours</h3>
+              <p class="text-sm font-light text-gray-200 mt-1">Open Daily 9:00am-5:00pm, Monday- Friday</p>
             </div>
           </div>
 
           <div class="flex items-start gap-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              class="w-6 h-6 shrink-0 mt-0.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
-              ></path>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 shrink-0 mt-0.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"></path>
             </svg>
             <div>
-              <h3 class="font-semibold text-white text-base tracking-wide">
-                Museum Location
-              </h3>
-              <p class="text-sm font-light text-gray-200 mt-1 max-w-sm">
-                Camarines Norte Provincial Capitol Grounds, Daet Philippines
-              </p>
+              <h3 class="font-semibold text-white text-base tracking-wide">Museum Location</h3>
+              <p class="text-sm font-light text-gray-200 mt-1 max-w-sm">Camarines Norte Provincial Capitol Grounds, Daet Philippines</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div
-        class="hidden xl:block absolute left-8 px-15 top-1/2 -translate-y-1/2 z-10 w-0 h-0"
-      >
-        <div
-          class="flex flex-row items-center gap-10 text-white text-sm -rotate-90 whitespace-nowrap absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-        >
-          <a
-            href="#"
-            class="flex items-center gap-2 hover:text-[#d8ad69] transition-colors"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-              ><path
-                d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"
-              ></path></svg
-            >
+      <div class="hidden xl:block absolute left-8 px-15 top-1/2 -translate-y-1/2 z-10 w-0 h-0">
+        <div class="flex flex-row items-center gap-10 text-white text-sm -rotate-90 whitespace-nowrap absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <a href="#" class="flex items-center gap-2 hover:text-[#d8ad69] transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"></path></svg>
             <span class="px-1 text-lg leading-none mt-0.5">&bull;</span>
             <span>museobulawanofficial</span>
           </a>
 
-          <a
-            href="#"
-            class="flex items-center gap-2 hover:text-[#d8ad69] transition-colors"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-              ><path
-                d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"
-              ></path></svg
-            >
+          <a href="#" class="flex items-center gap-2 hover:text-[#d8ad69] transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"></path></svg>
             <span class="px-1 text-lg leading-none mt-0.5">&bull;</span>
             <span>Museo Bulawan</span>
           </a>
         </div>
       </div>
 
-      <div
-        class="hidden xl:block absolute right-8 px-15 top-1/2 -translate-y-1/2 z-10 w-0 h-0"
-      >
-        <div
-          class="flex flex-row items-center gap-10 text-white text-sm rotate-90 whitespace-nowrap absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-        >
-          <a
-            href="#"
-            class="flex items-center gap-3 hover:text-[#d8ad69] transition-colors"
-          >
+      <div class="hidden xl:block absolute right-8 px-15 top-1/2 -translate-y-1/2 z-10 w-0 h-0">
+        <div class="flex flex-row items-center gap-10 text-white text-sm rotate-90 whitespace-nowrap absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <a href="#" class="flex items-center gap-3 hover:text-[#d8ad69] transition-colors">
             <span>Museo Bulawan (Abel C. Icatlo)</span>
           </a>
-          <a
-            href="#"
-            class="flex items-center gap-3 hover:text-[#d8ad69] transition-colors"
-          >
+          <a href="#" class="flex items-center gap-3 hover:text-[#d8ad69] transition-colors">
             <span>museobulawan</span>
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Learn More Section -->
-    <section
-      id="learn_more"
-      class="w-full bg-white min-h-screen py-24 flex items-center"
-    >
-      <div
-        class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row items-center gap-16 lg:gap-24"
-      >
-        <!-- Text Content -->
+    <section id="learn_more" class="w-full bg-white min-h-screen py-12 flex flex-col justify-between items-center relative overflow-hidden scroll-mt-20">
+      
+      <!-- Top Navigation Anchor -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex justify-start z-10 shrink-0">
+        <a href="#home" class="items-center text-xl flex text-gray-400 hover:text-gray-900 transition scroll-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12l10 0" /><path d="M4 12l4 4" /><path d="M4 12l4 -4" /><path d="M20 4l0 16" />
+          </svg>
+          <span class="ml-2 font-medium tracking-wide">Home</span>
+        </a>
+      </div>
+
+      <!-- Content -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row items-center gap-16 lg:gap-24 my-auto py-8">
         <div class="flex-1 flex flex-col justify-center max-w-4xl">
-          <p
-            class="text-xl md:text-2xl text-justify text-gray-900 leading-[2.2] font-serif"
-          >
-            <span class="text-4xl md:text-5xl text-[#EFBF04]"
-              >Museo Bulawan,</span
-            >
-            known as the "Golden Museum," is the leading and the most viewer-friendly
-            community museum that serves as the nerve center for education and communication
-            of the rich cultural, artistic and natural heritage and history of Camarines
-            Norte, the ultimate medium for preservation, exhibition of significant
-            objects that strengthen the values of the people and deepen their patriotism
-            and sense of identity.
+          <p class="text-xl md:text-2xl text-justify text-gray-900 leading-[2.2] font-serif">
+            <span class="text-4xl md:text-5xl text-[#EFBF04]">Museo Bulawan,</span>
+            known as the "Golden Museum," is the leading and the most viewer-friendly community museum that serves as the nerve center for education and communication of the rich cultural, artistic and natural heritage and history of Camarines Norte, the ultimate medium for preservation, exhibition of significant objects that strengthen the values of the people and deepen their patriotism and sense of identity.
           </p>
-          <a
-            href="/about"
-            class="mt-8 flex items-center gap-x-3 text-gray-400 hover:text-gray-800 transition-colors"
-          >
+          <a href="/about" class="mt-8 flex items-center gap-x-3 text-gray-400 hover:text-gray-800 transition-colors">
             <div class="w-8 h-[1px] bg-gray-400"></div>
-            <span class="text-lg font-light tracking-wide"
-              >About Museo Bulawan</span
-            >
+            <span class="text-lg font-light tracking-wide">About Museo Bulawan</span>
           </a>
         </div>
 
-        <!-- Image with Stacked Frame Effect -->
         <div class="flex-1 relative w-full flex justify-center mt-12 lg:mt-0">
           <div class="relative w-full max-w-[40rem] aspect-[16/10]">
-            <!-- Cream Backing Paper -->
-            <div
-              class="absolute -top-6 -left-6 md:-top-10 md:-left-10 w-full h-full bg-[#FDF8E4] shadow-md border border-black/5 z-0"
-            >
-            </div>
-
-            <!-- Brown Frame -->
-            <div
-              class="absolute inset-0 bg-[#A69576] shadow-2xl p-4 md:p-6 z-10 flex"
-            >
-              <!-- Actual Image -->
-              <img
-                src={block1}
-                alt="Museum Heritage"
-                class="w-full h-full object-cover shadow-inner"
-              />
+            <div class="absolute -top-6 -left-6 md:-top-10 md:-left-10 w-full h-full bg-[#FDF8E4] shadow-md border border-black/5 z-0"></div>
+            <div class="absolute inset-0 bg-[#A69576] shadow-2xl p-4 md:p-6 z-10 flex">
+              <img src={block1} alt="Museum Heritage" class="w-full h-full object-cover shadow-inner" />
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Bottom Navigation Anchor -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex justify-end z-10 shrink-0">
+        <a href="#whats_on" class="items-center text-xl flex text-gray-400 hover:text-gray-900 transition scroll-link">
+          <span class="mr-2 font-medium tracking-wide">What's On</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 12l-10 0" /><path d="M20 12l-4 4" /><path d="M20 12l-4 -4" /><path d="M4 4l0 16" />
+          </svg>
+        </a>
+      </div>
     </section>
 
-    <section
-      id="whats_on"
-      class="w-full bg-white h-screen flex items-center overflow-hidden py-12"
-    >
-      <div
-        class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row gap-16 lg:gap-24 items-center h-full"
-      >
-        <div
-          class="flex-1 relative w-full h-full flex items-center justify-center min-h-0"
-        >
-          <div class="relative w-full max-w-[38rem] h-[80%] max-h-[45rem]">
-            <div class="absolute top-0 left-0 w-[60%] h-[90%] bg-[#FCF8ED] z-0">
-            </div>
-            <div
-              class="absolute bottom-4 right-0 w-[75%] h-[70%] bg-[#A89A7E] z-0"
-            >
-            </div>
+    <section id="whats_on" class="w-full bg-white min-h-screen py-12 flex flex-col justify-between items-center relative overflow-hidden scroll-mt-20">
+      
+      <!-- Top Navigation Anchor -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex justify-start z-10 shrink-0">
+        <a href="#learn_more" class="items-center text-xl flex text-gray-400 hover:text-gray-900 transition scroll-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12l10 0" /><path d="M4 12l4 4" /><path d="M4 12l4 -4" /><path d="M20 4l0 16" />
+          </svg>
+          <span class="ml-2 font-medium tracking-wide">About</span>
+        </a>
+      </div>
 
-            <h3
-              class="absolute top-12 left-10 text-6xl md:text-7xl font-serif text-[#2B2B2B] z-20 tracking-wide"
-            >
+      <!-- Content -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row gap-16 lg:gap-24 items-center my-auto py-8">
+        <div class="flex-1 relative w-full flex items-center justify-center min-h-0">
+          <div class="relative w-full max-w-[38rem] h-[80%] max-h-[45rem] aspect-[16/18] lg:aspect-auto">
+            <div class="absolute top-0 left-0 w-[60%] h-[90%] bg-[#FCF8ED] z-0"></div>
+            <div class="absolute bottom-4 right-0 w-[75%] h-[70%] bg-[#A89A7E] z-0"></div>
+            <h3 class="absolute top-12 left-10 text-6xl md:text-7xl font-serif text-[#2B2B2B] z-20 tracking-wide">
               April
             </h3>
+            <div class="absolute top-[28%] left-[5%] right-[-5%] z-10 bg-white shadow-2xl p-6 md:p-8">
+              <div class="grid grid-cols-7 text-right text-[10px] md:text-xs font-semibold text-[#4A4A4A]">
+                <div class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black">Sun</div>
+                <div class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black">Mon</div>
+                <div class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black">Tue</div>
+                <div class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black">Wed</div>
+                <div class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black">Thur</div>
+                <div class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black">Fri</div>
+                <div class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black">Sat</div>
 
-            <div
-              class="absolute top-[28%] left-[5%] right-[-5%] z-10 bg-white shadow-2xl p-6 md:p-8"
-            >
-              <div
-                class="grid grid-cols-7 text-right text-[10px] md:text-xs font-semibold text-[#4A4A4A]"
-              >
-                <div
-                  class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black"
-                >
-                  Sun
-                </div>
-                <div
-                  class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black"
-                >
-                  Mon
-                </div>
-                <div
-                  class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black"
-                >
-                  Tue
-                </div>
-                <div
-                  class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black"
-                >
-                  Wed
-                </div>
-                <div
-                  class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black"
-                >
-                  Thur
-                </div>
-                <div
-                  class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black"
-                >
-                  Fri
-                </div>
-                <div
-                  class="pb-4 pr-2 text-center font-bold uppercase tracking-wider text-black"
-                >
-                  Sat
-                </div>
-
-                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-gray-300">
-                  30
-                </div>
-                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-gray-300">
-                  31
-                </div>
-                <div
-                  class="h-10 md:h-12 lg:h-14 pr-2 pt-2 bg-[#F3E4C2] shadow-lg relative z-30 transform -translate-y-2 -translate-x-2 text-black font-bold border border-black/5"
-                >
-                  1
-                </div>
+                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-gray-300">30</div>
+                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-gray-300">31</div>
+                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 bg-[#F3E4C2] shadow-lg relative z-30 transform -translate-y-2 -translate-x-2 text-black font-bold border border-black/5">1</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">2</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">3</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">4</div>
@@ -333,11 +206,7 @@ const articles = [...displayEvents, ...displayEvents];
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">6</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">7</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">8</div>
-                <div
-                  class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-white font-bold bg-[#7C8159] shadow-md relative z-20 transform scale-110"
-                >
-                  9
-                </div>
+                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-white font-bold bg-[#7C8159] shadow-md relative z-20 transform scale-110">9</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">10</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">11</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">12</div>
@@ -346,27 +215,11 @@ const articles = [...displayEvents, ...displayEvents];
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">14</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">15</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">16</div>
-                <div
-                  class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-black bg-[#F3E4C2] border-r border-black/10 z-10"
-                >
-                  17
-                </div>
-                <div
-                  class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-black bg-[#F3E4C2] border-r border-black/10 z-10"
-                >
-                  18
-                </div>
-                <div
-                  class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-black bg-[#F3E4C2] z-10"
-                >
-                  19
-                </div>
+                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-black bg-[#F3E4C2] border-r border-black/10 z-10">17</div>
+                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-black bg-[#F3E4C2] border-r border-black/10 z-10">18</div>
+                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-black bg-[#F3E4C2] z-10">19</div>
 
-                <div
-                  class="h-10 md:h-12 lg:h-14 pr-2 pt-2 bg-[#F3E4C2] shadow-lg relative z-30 transform translate-y-1 -translate-x-2 text-black font-bold border border-black/5"
-                >
-                  20
-                </div>
+                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 bg-[#F3E4C2] shadow-lg relative z-30 transform translate-y-1 -translate-x-2 text-black font-bold border border-black/5">20</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">21</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">22</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">23</div>
@@ -378,63 +231,67 @@ const articles = [...displayEvents, ...displayEvents];
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">28</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">29</div>
                 <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2">30</div>
-                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-gray-300">
-                  1
-                </div>
-                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-gray-300">
-                  2
-                </div>
-                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-gray-300">
-                  3
-                </div>
+                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-gray-300">1</div>
+                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-gray-300">2</div>
+                <div class="h-10 md:h-12 lg:h-14 pr-2 pt-2 text-gray-300">3</div>
               </div>
             </div>
           </div>
         </div>
 
-        <div
-          class="flex-1 flex flex-col h-full max-h-[45rem] justify-center w-full min-h-0"
-        >
+        <div class="flex-1 flex flex-col h-full max-h-[45rem] justify-center w-full min-h-0">
           <div class="flex items-center gap-6 mb-8 w-full">
             <div class="flex flex-col gap-2.5 w-24 md:w-32 pt-2">
               <div class="h-[3px] w-full bg-black"></div>
               <div class="h-[3px] w-3/4 bg-black mx-auto mr-0"></div>
             </div>
-            <h2
-              class="text-5xl md:text-6xl lg:text-7xl font-serif text-[#1C1B19] whitespace-nowrap tracking-wide"
-            >
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-serif text-[#1C1B19] whitespace-nowrap tracking-wide">
               Whats On?
             </h2>
           </div>
 
-          <div
-            class="flex-1 w-full min-h-0 flex flex-col gap-6 overflow-hidden pt-4"
-          >
-            {
-              displayEvents.map((article) => (
-                <a
-                  href={`/articles`}
-                  class="flex-1 w-full relative shadow-md group block overflow-hidden bg-gray-100 border border-black/5"
-                >
-                  <img
-                    src={article.images}
-                    alt={article.title}
-                    class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
-                  />
-                </a>
-              ))
-            }
+          <div class="flex-1 w-full min-h-0 flex flex-col gap-6 overflow-hidden pt-4">
+            {displayEvents.map((article) => (
+              <a
+                href={`/articles`}
+                class="flex-1 w-full relative shadow-md group block overflow-hidden bg-gray-100 border border-black/5"
+              >
+                <img
+                  src={article.images}
+                  alt={article.title}
+                  class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
+                />
+              </a>
+            ))}
           </div>
         </div>
       </div>
+
+      <!-- Bottom Navigation Anchor -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex justify-end z-10 shrink-0">
+        <a href="#news_events" class="items-center text-xl flex text-gray-400 hover:text-gray-900 transition scroll-link">
+          <span class="mr-2 font-medium tracking-wide">News & Events</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 12l-10 0" /><path d="M20 12l-4 4" /><path d="M20 12l-4 -4" /><path d="M4 4l0 16" />
+          </svg>
+        </a>
+      </div>
     </section>
 
-<!-- News & Events Section -->
-    <section id="news_events" class="w-full bg-[#1C1B19] h-screen pt-16 pb-8 flex items-center overflow-hidden">
-      <!-- h-full and min-h-0 on the wrapper ensure the content flexes inside the screen height -->
-      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col h-full justify-center min-h-0">
-        
-        <!-- Header Section -->
+    <section id="news_events" class="w-full bg-[#1C1B19] min-h-screen py-12 flex flex-col justify-between items-center relative overflow-hidden scroll-mt-20 border-t border-white/5">
+      
+      <!-- Top Navigation Anchor -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex justify-start z-10 shrink-0">
+        <a href="#whats_on" class="items-center text-xl flex text-gray-500 hover:text-white transition scroll-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12l10 0" /><path d="M4 12l4 4" /><path d="M4 12l4 -4" /><path d="M20 4l0 16" />
+          </svg>
+          <span class="ml-2 font-medium tracking-wide">What's On</span>
+        </a>
+      </div>
+
+      <!-- Content -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col justify-center my-auto py-8">
         <div class="flex items-center text-gray-500 gap-4 mb-3 shrink-0">
           <div class="w-8 h-[1px] bg-gray-500"></div>
           <span class="text-xs md:text-sm font-light uppercase tracking-[0.2em]">
@@ -445,70 +302,74 @@ const articles = [...displayEvents, ...displayEvents];
           News & Events
         </h2>
 
-        <!-- Event Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-6 md:gap-y-10 flex-1 min-h-0 overflow-y-auto pr-2 lg:pr-0">
-          {
-            articles.slice(0, 4).map((article) => (
-              <a
-                href={`/articles`}
-                class="flex flex-col sm:flex-row gap-5 md:gap-6 group"
-              >
-                <!-- Scaled down Square Image to prevent vertical overflow -->
-                <div
-                  class="w-full sm:w-[140px] md:w-[180px] lg:w-[200px] shrink-0 aspect-square bg-cover bg-center object-cover border border-white/5"
-                  style={`background-image: url('${article.images}')`}
-                />
-                
-                <!-- Text Content -->
-                <div class="flex flex-col py-1 justify-center">
-                  <!-- Title -->
-                  <h3 class="text-lg md:text-xl font-bold text-white uppercase leading-snug mb-2 group-hover:text-gray-300 transition-colors line-clamp-2">
-                    {article.title}
-                  </h3>
-                  <!-- Date -->
-                  <span class="text-gray-500 text-xs md:text-sm mb-3">
-                    {article.upload_date}
-                  </span>
-                  <!-- Placeholder Description matching Mockup with line clamping -->
-                  <p class="text-gray-200 text-xs md:text-sm leading-relaxed max-w-sm line-clamp-3 md:line-clamp-4">
-                    Brief description of the event will be placed here. Brief description of the event will be placed here.
-                  </p>
-                </div>
-              </a>
-            ))
-          }
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-6 md:gap-y-10 min-h-0 overflow-y-auto pr-2 lg:pr-0">
+          {articles.slice(0, 4).map((article) => (
+            <a
+              href={`/articles`}
+              class="flex flex-col sm:flex-row gap-5 md:gap-6 group"
+            >
+              <div
+                class="w-full sm:w-[140px] md:w-[180px] lg:w-[200px] shrink-0 aspect-square bg-cover bg-center object-cover border border-white/5"
+                style={`background-image: url('${article.images}')`}
+              />
+              
+              <div class="flex flex-col py-1 justify-center">
+                <h3 class="text-lg md:text-xl font-bold text-white uppercase leading-snug mb-2 group-hover:text-gray-300 transition-colors line-clamp-2">
+                  {article.title}
+                </h3>
+                <span class="text-gray-500 text-xs md:text-sm mb-3">
+                  {article.upload_date}
+                </span>
+                <p class="text-gray-200 text-xs md:text-sm leading-relaxed max-w-sm line-clamp-3 md:line-clamp-4">
+                  Brief description of the event will be placed here. Brief description of the event will be placed here.
+                </p>
+              </div>
+            </a>
+          ))}
         </div>
         
-        <!-- See All Link -->
         <div class="flex justify-end shrink-0 mt-6">
-          <a
-            href="/articles"
-            class="text-sm md:text-base text-gray-200 hover:text-white flex items-center gap-3 transition-colors"
-          >
-            See all Events <span class="text-xl leading-none pt-0.5">&#10230;</span>
+          <a href="/articles" class="text-sm md:text-base text-gray-200 hover:text-white flex items-center transition-colors">
+            <span class="mr-2 font-medium tracking-wide">See all Events</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 12l-10 0" /><path d="M20 12l-4 4" /><path d="M20 12l-4 -4" /><path d="M4 4l0 16" />
+            </svg>
           </a>
         </div>
-        
+      </div>
+
+      <!-- Bottom Navigation Anchor -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex justify-end z-10 shrink-0">
+        <a href="#support" class="items-center text-xl flex text-gray-500 hover:text-white transition scroll-link">
+          <span class="mr-2 font-medium tracking-wide">Support Us</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 12l-10 0" /><path d="M20 12l-4 4" /><path d="M20 12l-4 -4" /><path d="M4 4l0 16" />
+          </svg>
+        </a>
       </div>
     </section>
 
-<!-- Support Us Section -->
-    <section id="support" class="w-full bg-white h-screen pt-8 flex items-center justify-center overflow-hidden">
-      <!-- Wrapper max width and flexible padding -->
-      <div class="w-full max-w-[140rem] mx-auto px-6 md:px-16 lg:px-32 h-full flex items-center justify-center min-h-0 py-6">
-        
-        <!-- 2x2 Checkerboard Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 grid-rows-4 md:grid-rows-2 w-full max-w-6xl h-full max-h-[55rem] min-h-0 shadow-sm border border-gray-100">
+    <section id="support" class="w-full bg-white min-h-screen py-12 flex flex-col justify-between items-center relative overflow-hidden scroll-mt-20">
+      
+      <!-- Top Navigation Anchor -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex justify-start z-10 shrink-0">
+        <a href="#news_events" class="items-center text-xl flex text-gray-400 hover:text-gray-900 transition scroll-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12l10 0" /><path d="M4 12l4 4" /><path d="M4 12l4 -4" /><path d="M20 4l0 16" />
+          </svg>
+          <span class="ml-2 font-medium tracking-wide">News & Events</span>
+        </a>
+      </div>
+
+      <!-- Content -->
+      <div class="w-full max-w-[140rem] mx-auto px-6 md:px-16 lg:px-32 flex items-center justify-center my-auto py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 grid-rows-4 md:grid-rows-2 w-full max-w-6xl shadow-sm border border-gray-100">
           
-          <!-- Top Left: Image 1 -->
-          <div class="relative w-full h-full min-h-[150px] bg-cover bg-center order-1" style={`background-image: url('${na1}')`}>
-            <!-- Inner white frame -->
+          <div class="relative w-full min-h-[150px] aspect-[16/10] md:aspect-auto bg-cover bg-center order-1" style={`background-image: url('${na1}')`}>
             <div class="absolute inset-4 md:inset-6 border-[1.5px] border-white/90 pointer-events-none"></div>
           </div>
           
-          <!-- Top Right: Visit Us Text -->
           <div class="flex items-center justify-center p-8 md:p-12 lg:p-16 order-2 bg-white">
-            <!-- Inner bounded box to replicate exact text wrapping -->
             <div class="flex flex-col items-start text-left max-w-[26rem] w-full">
               <h2 class="text-5xl md:text-6xl lg:text-[4.5rem] font-black text-black mb-3 uppercase leading-none tracking-tighter">
                 VISIT US!
@@ -522,9 +383,7 @@ const articles = [...displayEvents, ...displayEvents];
             </div>
           </div>
 
-          <!-- Bottom Left: Support Matters Text -->
           <div class="flex items-center justify-center p-8 md:p-12 lg:p-16 order-4 md:order-3 bg-white">
-            <!-- Inner bounded box to replicate exact text wrapping -->
             <div class="flex flex-col items-end text-right max-w-[26rem] w-full">
               <h2 class="text-5xl md:text-6xl lg:text-[4.5rem] font-black text-black mb-4 uppercase leading-[0.85] tracking-tighter flex flex-col items-end">
                 <span>YOUR</span>
@@ -540,25 +399,40 @@ const articles = [...displayEvents, ...displayEvents];
             </div>
           </div>
 
-          <!-- Bottom Right: Image 2 -->
-          <div class="relative w-full h-full min-h-[150px] bg-cover bg-center order-3 md:order-4" style={`background-image: url('${na2}')`}>
-            <!-- Inner white frame -->
+          <div class="relative w-full h-full min-h-[150px] aspect-[16/10] md:aspect-auto bg-cover bg-center order-3 md:order-4" style={`background-image: url('${na2}')`}>
             <div class="absolute inset-4 md:inset-6 border-[1.5px] border-white/90 pointer-events-none"></div>
           </div>
 
         </div>
       </div>
+
+      <!-- Bottom Navigation Anchor -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex justify-end z-10 shrink-0">
+        <a href="#feedback" class="items-center text-xl flex text-gray-400 hover:text-gray-900 transition scroll-link">
+          <span class="mr-2 font-medium tracking-wide">Feedback</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 12l-10 0" /><path d="M20 12l-4 4" /><path d="M20 12l-4 -4" /><path d="M4 4l0 16" />
+          </svg>
+        </a>
+      </div>
     </section>
 
-<!-- Feedback Section -->
     <section 
       id="feedback" 
-      class="w-full bg-[#1C1B19] h-[110vh] flex overflow-hidden border-t border-white/5"
+      class="w-full bg-[#1C1B19] min-h-screen py-12 flex flex-col justify-between items-center relative overflow-hidden border-t border-white/5 scroll-mt-20"
     >
-      <!-- Changed items-center to items-stretch to allow full vertical stretching -->
-      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row items-stretch gap-12 lg:gap-24 h-full min-h-0">
-        
-        <!-- Left Block: Typography & Information -->
+      <!-- Top Navigation Anchor -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex justify-start z-10 shrink-0">
+        <a href="#support" class="items-center text-xl flex text-gray-500 hover:text-white transition scroll-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12l10 0" /><path d="M4 12l4 4" /><path d="M4 12l4 -4" /><path d="M20 4l0 16" />
+          </svg>
+          <span class="ml-2 font-medium tracking-wide">Support Us</span>
+        </a>
+      </div>
+
+      <!-- Content -->
+      <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row items-stretch gap-12 lg:gap-24 my-auto py-8">
         <div class="flex-1 w-full flex flex-col justify-center text-left max-w-2xl py-12">
           <div class="flex items-center text-gray-500 gap-4 mb-6">
             <div class="w-8 h-[1px] bg-gray-500"></div>
@@ -574,20 +448,48 @@ const articles = [...displayEvents, ...displayEvents];
           </p>
         </div>
 
-        <!-- Right Block: Form Container -->
-        <!-- Removed py-4 and items-center to let the inner div scale 100% vertically -->
-        <div class="flex-1 w-full h-full min-h-0 flex justify-center relative">
-          <!-- Scrollable bounds pulling 100% of the h-[110vh] remainder -->
-          <div class="w-full max-w-2xl h-full overflow-y-auto rounded-t-xl lg:rounded-xl shadow-2xl">
+        <div class="flex-1 w-full min-h-[400px] lg:min-h-0 flex justify-center relative">
+          <div class="w-full max-w-2xl overflow-y-auto rounded-t-xl lg:rounded-xl shadow-2xl">
             <FormRenderer 
               client:only="react" 
               id="01KQEFB1FEEDBACKFORMSEED00" 
               apiBaseUrl={API_URL} 
+              className="w-full"
             />
           </div>
         </div>
-
       </div>
+      
+      <!-- Placeholder div to maintain symmetric flex layout -->
+      <div class="h-8 w-full shrink-0"></div>
     </section>
   </div>
+
+  <script>
+    // Exact Javascript anchoring for smooth scroll
+    const scrollLinks = document.querySelectorAll('.scroll-link');
+    
+    scrollLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (!href || !href.startsWith('#') || href === '#') return;
+        
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          const header = document.querySelector('header');
+          const headerHeight = header ? header.offsetHeight : 80;
+          const elementPosition = target.getBoundingClientRect().top + window.scrollY;
+          const offsetPosition = elementPosition - headerHeight;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+          
+          history.pushState(null, '', href);
+        }
+      });
+    });
+  </script>
 </BaseLayout>

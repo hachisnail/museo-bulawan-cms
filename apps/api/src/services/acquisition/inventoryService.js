@@ -161,7 +161,8 @@ export const inventoryService = {
                 }, tx);
 
                 await baseService._updateRecord(staffId, 'inventory', inventoryId, {
-                    current_location: toLocation
+                    current_location: toLocation,
+                    manual_status_override: false
                 }, tx);
 
                 return await this._autoDeriveArtifactStatus(staffId, inventoryId, tx);
@@ -203,7 +204,8 @@ export const inventoryService = {
 
                     // 2. Update inventory
                     const updated = await baseService._updateRecord(staffId, 'inventory', id, {
-                        current_location: toLocation
+                        current_location: toLocation,
+                        manual_status_override: false
                     }, tx);
 
                     // 3. Auto-derive status
@@ -666,7 +668,6 @@ export const inventoryService = {
 
         let derivedStatus = 'active';
 
-        // M-5 FIX: Query loans table to check if there is an active outbound loan for this inventory item.
         const activeLoans = await db.query(
             `SELECT 1 FROM loans l 
              INNER JOIN loan_artifacts la ON la.loan_id = l.id 
@@ -677,14 +678,32 @@ export const inventoryService = {
 
         if (activeLoans.length > 0) {
             derivedStatus = 'loan';
-        } else if (latestMovement) {
-            const loc = (latestMovement.to_location || '').toLowerCase();
-            if (loc.includes('storage') || loc.includes('vault')) {
-                derivedStatus = 'storage';
+        } else {
+            const locationRecords = await db.query(
+                `SELECT type FROM locations WHERE name = ? LIMIT 1`,
+                [item.current_location],
+                connection
+            );
+            if (locationRecords && locationRecords.length > 0) {
+                const locType = locationRecords[0].type;
+                if (locType === 'exhibit') {
+                    derivedStatus = 'loan';
+                } else if (locType === 'storage') {
+                    derivedStatus = 'storage';
+                } else if (locType === 'lab') {
+                    derivedStatus = 'maintenance';
+                }
+            } else if (latestMovement) {
+                const loc = (latestMovement.to_location || '').toLowerCase();
+                if (loc.includes('storage') || loc.includes('vault')) {
+                    derivedStatus = 'storage';
+                } else if (loc.includes('display') || loc.includes('gallery') || loc.includes('exhibit')) {
+                    derivedStatus = 'loan';
+                }
             }
         }
 
-        if (latestHealth && derivedStatus !== 'loan') {
+        if (latestHealth && derivedStatus !== 'loan' && derivedStatus !== 'maintenance') {
             const condition = latestHealth.condition_status;
             if (condition === 'Critical' || condition === 'Poor') {
                 derivedStatus = 'maintenance';
@@ -767,5 +786,46 @@ export const inventoryService = {
         const accession = await baseService._getRecord('accessions', inventory.accession_id);
         
         return await documentService.generateDeaccessionReport(inventory, accession, format);
+    },
+
+    async exportIDLabel(inventoryId) {
+        const inventory = await baseService._getRecord('inventory', inventoryId);
+        const accession = await baseService._getRecord('accessions', inventory.accession_id);
+        const intake = await baseService._getRecord('intakes', accession.intake_id);
+        return await documentService.generateIDLabel(inventory, accession, intake, 'docx');
+    },
+
+    async exportAllInventory() {
+        const items = await db.query(`
+            SELECT i.*, a.accession_number, a.contract_type, a.object_type, a.dimensions, a.materials,
+                   intake.proposed_item_name, intake.loan_end_date,
+                   (SELECT condition_status FROM condition_reports WHERE entity_type = 'inventory' AND entity_id = i.id ORDER BY id DESC LIMIT 1) AS current_condition
+            FROM inventory i
+            LEFT JOIN accessions a ON i.accession_id = a.id
+            LEFT JOIN intakes intake ON a.intake_id = intake.id
+            WHERE i.status != 'deaccessioned'
+            ORDER BY i.catalog_number ASC
+        `);
+
+        // Fetch overall stats
+        const [totalActive] = await db.query("SELECT COUNT(*) as count FROM inventory WHERE status != 'deaccessioned'");
+        const [totalValuePHP] = await db.query(`
+            SELECT SUM(amount) as total
+            FROM valuations v
+            WHERE v.id IN (SELECT MAX(id) FROM valuations GROUP BY inventory_id)
+        `);
+
+        const stats = {
+            totalItems: totalActive.count,
+            totalValue: totalValuePHP?.total || 0,
+            statusCounts: {
+                active: items.filter(i => i.status === 'active').length,
+                loaned: items.filter(i => i.status === 'loaned' || i.status === 'loan').length,
+                maintenance: items.filter(i => i.status === 'maintenance').length,
+                storage: items.filter(i => i.status === 'storage').length
+            }
+        };
+
+        return await documentService.generateCollectionInventoryLedger(items, stats, 'docx');
     }
 };

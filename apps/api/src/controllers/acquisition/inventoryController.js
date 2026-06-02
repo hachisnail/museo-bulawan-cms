@@ -232,5 +232,24 @@ export const inventoryController = {
             const result = await acquisitionService.cancelDeaccession(req.user.id, inventoryId);
             res.status(200).json({ message: 'Deaccession cancelled. Item restored to active status.', item: result });
         } catch (error) { next(error); }
+    },
+
+    async exportIDLabel(req, res, next) {
+        try {
+            const { inventoryId } = req.params;
+            const buffer = await acquisitionService.exportIDLabel(inventoryId);
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            res.setHeader('Content-Disposition', `attachment; filename=ID_Label_${inventoryId}.docx`);
+            res.status(200).send(buffer);
+        } catch (error) { next(error); }
+    },
+
+    async exportAllInventory(req, res, next) {
+        try {
+            const buffer = await acquisitionService.exportAllInventory();
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            res.setHeader('Content-Disposition', 'attachment; filename=Collection_Inventory_Ledger.docx');
+            res.status(200).send(buffer);
+        } catch (error) { next(error); }
     }
 };

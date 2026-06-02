@@ -30,6 +30,9 @@ export const definitionController = {
             const result = await definitionService.createDefinition(value);
             res.status(201).json({ status: 'success', data: result });
         } catch (error) {
+            if (error.message === 'ONLY_CUSTOM_FORMS_ALLOWED') {
+                return res.status(400).json({ error: 'Only custom forms can be created via the API.' });
+            }
             next(error);
         }
     },
@@ -57,6 +60,12 @@ export const definitionController = {
             const result = await definitionService.updateDefinition(id, value);
             res.status(200).json({ status: 'success', data: result });
         } catch (error) {
+            if (error.message === 'SYSTEM_FORM_READONLY') {
+                return res.status(400).json({ error: 'System form definitions are read-only and cannot be updated via the API. Overrides must be performed directly in the database.' });
+            }
+            if (error.message === 'ONLY_CUSTOM_FORMS_ALLOWED') {
+                return res.status(400).json({ error: 'Form type cannot be changed to a non-custom system type.' });
+            }
             next(error);
         }
     },
@@ -67,6 +76,9 @@ export const definitionController = {
             await definitionService.deleteDefinition(id);
             res.status(200).json({ status: 'success', message: "Form definition deleted successfully." });
         } catch (error) {
+            if (error.message === 'SYSTEM_FORM_READONLY') {
+                return res.status(400).json({ error: 'System form definitions are read-only and cannot be deleted via the API. Overrides must be performed directly in the database.' });
+            }
             next(error);
         }
     },

@@ -25,6 +25,8 @@ router.get('/intakes/:intakeId', requireAuth, acquisitionController.getIntakeIte
 router.get('/accessions', requireAuth, acquisitionController.listAccessions);
 router.get('/inventory', requireAuth, acquisitionController.listInventory);
 router.get('/inventory/archive', requireAuth, acquisitionController.listDeaccessioned);
+router.get('/inventory/overdue-audits', requireAuth, acquisitionController.getOverdueAudits);
+router.get('/inventory/export-all', requireAuth, acquisitionController.exportAllInventory);
 
 router.get('/intakes/:intakeId/chain', requireAuth, acquisitionController.getFullChain);
 router.get('/accessions/:accessionId', requireAuth, acquisitionController.getAccessionItem);
@@ -206,7 +208,6 @@ router.patch('/inventory/:inventoryId/status',
     acquisitionController.updateArtifactStatus
 );
 
-router.get('/inventory/overdue-audits', requireAuth, acquisitionController.getOverdueAudits);
 router.get('/inventory/:inventoryId/summary', requireAuth, acquisitionController.getObjectSummary);
 router.get('/inventory/:inventoryId/audits', requireAuth, acquisitionController.getAuditHistory);
 router.post('/inventory/:inventoryId/audit', 
@@ -220,6 +221,7 @@ router.get('/inventory/:inventoryId/report', requireAuth, acquisitionController.
 router.get('/inventory/:inventoryId/export', requireAuth, acquisitionController.exportInventoryReport);
 router.get('/inventory/:inventoryId/export-condition', requireAuth, acquisitionController.exportConditionReport);
 router.get('/inventory/:inventoryId/export-deaccession', requireAuth, acquisitionController.exportDeaccessionReport);
+router.get('/inventory/:inventoryId/export-label', requireAuth, acquisitionController.exportIDLabel);
 
 // ==========================================
 // COMPLIANCE & HISTORY

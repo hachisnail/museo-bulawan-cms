@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/authContext';
-import { Plus, MapPin, Warehouse, Beaker, Landmark, MoreVertical, X, Boxes, Search } from 'lucide-react';
+import { Plus, MapPin, Warehouse, Beaker, Landmark, MoreVertical, X, Boxes, Search, Activity } from 'lucide-react';
 import Modal from '../components/Modal';
 
 const TYPE_STYLES = {

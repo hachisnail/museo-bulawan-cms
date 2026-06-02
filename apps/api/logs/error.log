@@ -1530,3 +1530,51 @@ sql: UPDATE `accessions` SET dimensions = ?, materials = ?, research_notes = ?, 
     at Object.requestEmailOtp (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/verificationService.js:34:58)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
     at async Object.requestOtp (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:23:28) | Meta: {"method":"POST","url":"/api/v1/forms/01KT3GTV8XXG0P7XQTQFGR5DBR/request-otp","ip":"::ffff:127.0.0.1","user":"Guest"}
+2026-06-02 15:55:24 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780386921154@example.com","notes":12345,"attachment":"file.png"}
+2026-06-02 15:55:24 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780386921154@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-06-02 15:55:24 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-06-02 15:55:43 [error]: Failed to create form definition: ONLY_CUSTOM_FORMS_ALLOWED
+2026-06-02 15:55:43 [error]: Failed to update form definition 01JSEEDEDSYSTEMFORMID0001: SYSTEM_FORM_READONLY
+2026-06-02 15:55:43 [error]: Failed to update form definition 01KT3N9MSDHVMMHNH1DEM9FAZZ: ONLY_CUSTOM_FORMS_ALLOWED
+2026-06-02 15:55:43 [error]: Failed to delete form definition 01JSEEDEDSYSTEMFORMID0002: SYSTEM_FORM_READONLY
+2026-06-02 16:09:03 [error]: Failed to create form definition: ONLY_CUSTOM_FORMS_ALLOWED
+2026-06-02 16:09:03 [error]: Failed to update form definition 01JSEEDEDSYSTEMFORMID0001: SYSTEM_FORM_READONLY
+2026-06-02 16:09:03 [error]: Failed to update form definition 01KT3P223420RMTQGHTDN2TSN2: ONLY_CUSTOM_FORMS_ALLOWED
+2026-06-02 16:09:03 [error]: Failed to delete form definition 01JSEEDEDSYSTEMFORMID0002: SYSTEM_FORM_READONLY
+2026-06-02 16:09:04 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780387740852@example.com","notes":12345,"attachment":"file.png"}
+2026-06-02 16:09:04 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780387740852@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-06-02 16:09:07 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-06-02 16:09:46 [error]: Error: Record not found in inventory with id export-all
+    at Object._getRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/baseService.js:147:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/inventoryController.js:67:26) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/export-all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-02 16:10:53 [error]: Failed to create form definition: ONLY_CUSTOM_FORMS_ALLOWED
+2026-06-02 16:10:53 [error]: Failed to update form definition 01JSEEDEDSYSTEMFORMID0001: SYSTEM_FORM_READONLY
+2026-06-02 16:10:53 [error]: Failed to update form definition 01KT3P5DJ0S7AST3QZY4S32DDK: ONLY_CUSTOM_FORMS_ALLOWED
+2026-06-02 16:10:53 [error]: Failed to delete form definition 01JSEEDEDSYSTEMFORMID0002: SYSTEM_FORM_READONLY
+2026-06-02 16:10:56 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780387852219@example.com","notes":12345,"attachment":"file.png"}
+2026-06-02 16:10:56 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780387852219@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-06-02 16:10:56 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-06-02 16:13:56 [error]: SqlError: (conn:252, no: 1054, SQLState: 42S22) Unknown column 'intake.origin' in 'SELECT'
+sql: 
+            SELECT i.*, a.accession_number, a.contract_type, a.object_type, a.dimensions, a.materials,
+                   intake.proposed_item_name, intake.origin, intake.loan_end_date,
+                   (SELECT condition_status FROM condition_reports WH...
+    at Module.createError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/misc/errors.js:66:10)
+    at PacketNodeEncoded.readError (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet.js:595:19)
+    at Query.handleErrorPacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:92:24)
+    at Query.readResponsePacket (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/cmd/parser.js:70:21)
+    at PacketInputStream.receivePacketBasic (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:94:9)
+    at PacketInputStream.onData (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/mariadb/lib/io/packet-input-stream.js:151:20)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/export-all","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-02 16:26:44 [error]: Failed to create form definition: ONLY_CUSTOM_FORMS_ALLOWED
+2026-06-02 16:26:44 [error]: Failed to update form definition 01JSEEDEDSYSTEMFORMID0001: SYSTEM_FORM_READONLY
+2026-06-02 16:26:44 [error]: Failed to update form definition 01KT3Q2DT75ZYQE2J6K3GGN7JM: ONLY_CUSTOM_FORMS_ALLOWED
+2026-06-02 16:26:44 [error]: Failed to delete form definition 01JSEEDEDSYSTEMFORMID0002: SYSTEM_FORM_READONLY
+2026-06-02 16:26:46 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-06-02 16:26:47 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780388802605@example.com","notes":12345,"attachment":"file.png"}
+2026-06-02 16:26:47 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780388802605@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-06-02 16:27:05 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.

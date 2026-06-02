@@ -1,16 +1,16 @@
 # Graph Report - museo-bulawan-cms  (2026-06-02)
 
 ## Corpus Check
-- 314 files · ~174,345 words
+- 315 files · ~386,622 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1622 nodes · 2405 edges · 148 communities (123 shown, 25 thin omitted)
+- 1623 nodes · 2412 edges · 151 communities (127 shown, 24 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1bc009ec`
+- Built from commit: `c97665be`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -110,11 +110,13 @@
 - [[_COMMUNITY_Community 131|Community 131]]
 - [[_COMMUNITY_Community 132|Community 132]]
 - [[_COMMUNITY_Community 133|Community 133]]
-- [[_COMMUNITY_Community 135|Community 135]]
+- [[_COMMUNITY_Community 136|Community 136]]
 - [[_COMMUNITY_Community 137|Community 137]]
 - [[_COMMUNITY_Community 138|Community 138]]
 - [[_COMMUNITY_Community 139|Community 139]]
+- [[_COMMUNITY_Community 140|Community 140]]
 - [[_COMMUNITY_Community 145|Community 145]]
+- [[_COMMUNITY_Community 146|Community 146]]
 - [[_COMMUNITY_Community 147|Community 147]]
 - [[_COMMUNITY_Community 148|Community 148]]
 - [[_COMMUNITY_Community 149|Community 149]]
@@ -122,7 +124,7 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `useAuth()` - 65 edges
-2. `db` - 46 edges
+2. `db` - 47 edges
 3. `logger` - 40 edges
 4. `useSSE()` - 30 edges
 5. `env` - 19 edges
@@ -147,19 +149,19 @@
 ## Import Cycles
 - None detected.
 
-## Communities (148 total, 25 thin omitted)
+## Communities (151 total, 24 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.21
-Nodes (12): accessionService, baseService, constituentService, exhibitionService, intakeService, inventoryService, loanService, locationService (+4 more)
+Cohesion: 0.16
+Nodes (18): accessionService, baseService, constituentService, exhibitionService, intakeService, inventoryService, loanService, locationService (+10 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.10
 Nodes (18): ProtectedRoute(), AuthContext, AuthProvider(), useAuth(), SSEContext, SSEProvider(), Analytics(), COLORS (+10 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.16
-Nodes (15): defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES, buildAbility(), requireAuth(), router, router (+7 more)
+Cohesion: 0.24
+Nodes (9): buildAbility(), requireAuth(), router, router, router, router, router, router (+1 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.04
@@ -190,8 +192,8 @@ Cohesion: 0.07
 Nodes (27): ../layouts/Layout.astro, ../styles/global.css, connectSSE(), deliverySlipContainer, detailDate, detailId, detailMethodBadge, detailsContent (+19 more)
 
 ### Community 10 - "Community 10"
-Cohesion: 0.11
-Nodes (20): accessionController, complianceController, VALID_ENTITY_TYPES, intakeController, inventoryController, schemas, acquisitionController, loansController (+12 more)
+Cohesion: 0.17
+Nodes (13): accessionController, complianceController, VALID_ENTITY_TYPES, intakeController, inventoryController, schemas, acquisitionController, loansController (+5 more)
 
 ### Community 11 - "Community 11"
 Cohesion: 0.07
@@ -346,8 +348,8 @@ Cohesion: 0.09
 Nodes (8): getIntakeDonorEmail(), getIntakeDonorPhone(), IntakeDetail(), STATUS_STYLES, Intakes(), IntakeItem(), IntakeManualNew(), OfferItem()
 
 ### Community 106 - "Community 106"
-Cohesion: 0.35
-Nodes (6): formController, definitionController, queryController, schemas, submissionController, formService
+Cohesion: 0.40
+Nodes (5): definitionController, queryController, schemas, submissionController, formService
 
 ### Community 107 - "Community 107"
 Cohesion: 0.15
@@ -382,8 +384,8 @@ Cohesion: 0.13
 Nodes (11): Icons, MainLayout(), useSSEGlobal(), useSSE(), Dashboard(), getStatusStyles(), INVENTORY_DATA, InventoryIndex() (+3 more)
 
 ### Community 115 - "Community 115"
-Cohesion: 0.36
-Nodes (6): userController, identityController, lifecycleController, managementController, schemas, securityController
+Cohesion: 0.23
+Nodes (11): loginSchema, userController, userService, identityController, identityService, lifecycleController, lifecycleService, managementController (+3 more)
 
 ### Community 116 - "Community 116"
 Cohesion: 0.12
@@ -422,16 +424,16 @@ Cohesion: 0.40
 Nodes (5): 3. Things in the doc that are slightly misleading, A. §1 calls Payload a "microservice", B. §2.C "delete `apps/cms/data/payload.db`", C. §2.A "Payload automatically saves an empty draft when the create page opens", D. §3.B "slug || id"
 
 ### Community 129 - "Community 129"
-Cohesion: 0.16
-Nodes (14): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), getPrivateFile() (+6 more)
+Cohesion: 0.13
+Nodes (19): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), getPrivateFile() (+11 more)
 
 ### Community 130 - "Community 130"
-Cohesion: 0.16
-Nodes (10): router, upload, formUpload, router, requireVisitorAuth(), authLimiter, globalLimiter, publicFormLimiter (+2 more)
+Cohesion: 0.19
+Nodes (8): formController, formUpload, router, authLimiter, globalLimiter, publicFormLimiter, strictActionLimiter, router
 
 ### Community 131 - "Community 131"
-Cohesion: 0.33
-Nodes (5): createAppointment(), createSchedule(), checkPermission(), validate(), router
+Cohesion: 0.24
+Nodes (7): router, upload, createAppointment(), createSchedule(), requireVisitorAuth(), validate(), router
 
 ### Community 132 - "Community 132"
 Cohesion: 0.32
@@ -441,17 +443,33 @@ Nodes (4): ajv, formatTime(), getAppointmentById(), serializeAppointment()
 Cohesion: 0.32
 Nodes (4): ajv, formatTime(), getScheduleById(), serializeSchedule()
 
+### Community 136 - "Community 136"
+Cohesion: 0.21
+Nodes (10): startServer(), db, initMariaDB(), compliancePipeline, donationPipeline, run(), acquisitionService, formPipelineService (+2 more)
+
 ### Community 137 - "Community 137"
-Cohesion: 0.26
-Nodes (8): auditService, identityService, lifecycleService, managementService, securityService, customFormat, sendEmail(), sendEmailWithRetry()
+Cohesion: 0.50
+Nodes (4): defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES
 
 ### Community 139 - "Community 139"
-Cohesion: 0.32
-Nodes (4): definitionService, queryService, verificationService, otpStore
+Cohesion: 0.29
+Nodes (6): definitionService, queryService, ajv, submissionService, verificationService, otpStore
+
+### Community 140 - "Community 140"
+Cohesion: 0.40
+Nodes (4): checkPermission(), entityPermissionMap, mediaUpload, router
 
 ### Community 145 - "Community 145"
 Cohesion: 0.13
 Nodes (8): AppointmentDetail(), getApptStatus(), getVisitorName(), AppointmentsIndex(), columns, getApptStatus(), STATUS_STYLE, normalizeStatus()
+
+### Community 146 - "Community 146"
+Cohesion: 0.83
+Nodes (3): generateAccessionNumber(), generateCatalogNumber(), nextSequenceValue()
+
+### Community 147 - "Community 147"
+Cohesion: 0.22
+Nodes (7): ACCESSION_TRANSITIONS, assertTransition(), INTAKE_TRANSITIONS, INVENTORY_TRANSITIONS, SUBMISSION_TRANSITIONS, TRANSITION_REGISTRY, validateTransition()
 
 ### Community 148 - "Community 148"
 Cohesion: 0.47
@@ -459,24 +477,20 @@ Nodes (4): handleDonationUpload(), handleUpload(), router, upload
 
 ### Community 149 - "Community 149"
 Cohesion: 0.12
-Nodes (16): startServer(), db, pool, initMariaDB(), loginSchema, ajv, submissionService, compliancePipeline (+8 more)
-
-### Community 152 - "Community 152"
-Cohesion: 0.19
-Nodes (11): __dirname, documentService, __filename, ALLOWED_TABLES, CONTRACT_TYPE_MAP, getContractType(), getLegalStatus(), LEGAL_STATUS_MAP (+3 more)
+Nodes (5): pool, checkMedia(), serialize(), appEvents, sseManager
 
 ## Knowledge Gaps
 - **800 isolated node(s):** `version`, `records`, `fired`, `falsePositive`, `precision` (+795 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **25 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **24 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `db` connect `Community 149` to `Community 0`, `Community 129`, `Community 132`, `Community 133`, `Community 135`, `Community 137`, `Community 10`, `Community 138`, `Community 106`, `Community 139`, `Community 147`, `Community 152`?**
+- **Why does `db` connect `Community 136` to `Community 0`, `Community 129`, `Community 132`, `Community 133`, `Community 135`, `Community 138`, `Community 106`, `Community 139`, `Community 146`, `Community 149`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **Why does `useAuth()` connect `Community 1` to `Community 32`, `Community 105`, `Community 107`, `Community 108`, `Community 145`, `Community 114`, `Community 51`, `Community 26`, `Community 61`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **What connects `version`, `records`, `fired` to the rest of the system?**
   _800 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 1` be split into smaller, more focused modules?**

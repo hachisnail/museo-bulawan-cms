@@ -70,6 +70,8 @@ export const acquisitionController = {
     exportInventoryReport: inventoryController.exportReport.bind(inventoryController),
     exportConditionReport: inventoryController.exportConditionReport.bind(inventoryController),
     exportDeaccessionReport: inventoryController.exportDeaccessionReport.bind(inventoryController),
+    exportIDLabel: inventoryController.exportIDLabel.bind(inventoryController),
+    exportAllInventory: inventoryController.exportAllInventory.bind(inventoryController),
     recordAuditCheck: inventoryController.recordAuditCheck.bind(inventoryController),
     getAuditHistory: inventoryController.getAuditHistory.bind(inventoryController),
     getOverdueAudits: inventoryController.getOverdueAudits.bind(inventoryController),

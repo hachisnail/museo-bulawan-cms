@@ -1085,5 +1085,213 @@ export const documentService = {
             }]
         });
         return await Packer.toBuffer(doc);
+    },
+
+    // ==========================================
+    // 7. ARTIFACT ID LABEL
+    // ==========================================
+
+    async generateIDLabel(inventory, accession, intake, format = 'docx') {
+        const data = {
+            catNum: inventory.catalog_number,
+            accNum: accession.accession_number,
+            itemName: intake.proposed_item_name || accession.object_type || 'Unnamed Artifact',
+            legalStatus: accession.legal_status || 'Unknown',
+            contractType: (accession.contract_type || 'Unknown').replace(/_/g, ' ').toUpperCase(),
+            location: inventory.current_location || 'Not Assigned',
+            date: new Date(inventory.created_at || inventory.created || new Date()).toLocaleDateString(undefined, { dateStyle: 'long' })
+        };
+
+        if (format === 'docx') {
+            return await this._buildIDLabelDOCX(data);
+        }
+        return `
+            <div style="font-family: 'Inter', sans-serif; padding: 30px; border: 3px solid #000; max-width: 400px; margin: 0 auto; background: white;">
+                <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px;">
+                    <div style="font-size: 20px; font-weight: bold; color: #D4AF37; letter-spacing: 1px;">MUSEO BULAWAN</div>
+                    <div style="font-size: 10px; font-weight: bold; text-transform: uppercase; color: #666; tracking: 1px;">Artifact ID Label</div>
+                </div>
+                <div style="font-size: 13px; line-height: 1.6;">
+                    <strong>Catalog Number:</strong> <span style="font-size: 16px; font-weight: bold;">#${data.catNum}</span><br/>
+                    <strong>Accession Reference:</strong> ${data.accNum}<br/>
+                    <strong>Object Name:</strong> ${data.itemName}<br/>
+                    <strong>Legal Status:</strong> ${data.legalStatus}<br/>
+                    <strong>Contract Type:</strong> ${data.contractType}<br/>
+                    <strong>Location:</strong> ${data.location}<br/>
+                    <strong>Date Cataloged:</strong> ${data.date}
+                </div>
+            </div>
+        `;
+    },
+
+    async _buildIDLabelDOCX(data) {
+        const doc = new Document({
+            sections: [{
+                children: [
+                    new Table({
+                        width: { size: 90, type: WidthType.PERCENTAGE },
+                        alignment: AlignmentType.CENTER,
+                        borders: {
+                            top: { style: BorderStyle.SINGLE, size: 12, color: "000000" },
+                            bottom: { style: BorderStyle.SINGLE, size: 12, color: "000000" },
+                            left: { style: BorderStyle.SINGLE, size: 12, color: "000000" },
+                            right: { style: BorderStyle.SINGLE, size: 12, color: "000000" },
+                            insideHorizontal: { style: BorderStyle.NONE },
+                            insideVertical: { style: BorderStyle.NONE }
+                        },
+                        rows: [
+                            new TableRow({
+                                children: [
+                                    new TableCell({
+                                        margins: { top: 200, bottom: 200, left: 300, right: 300 },
+                                        children: [
+                                            new Paragraph({
+                                                alignment: AlignmentType.CENTER,
+                                                children: [
+                                                    new TextRun({ text: "MUSEO BULAWAN", bold: true, size: 28, color: "B28900" }),
+                                                    new TextRun({ break: 1, text: "ARTIFACT ID LABEL", bold: true, size: 16, color: "666666" })
+                                                ]
+                                            }),
+                                            new Paragraph({ border: { bottom: { color: "CCCCCC", space: 4, style: BorderStyle.SINGLE, size: 6 } } }),
+                                            new Paragraph({ break: 1 }),
+                                            new Paragraph({
+                                                children: [
+                                                    new TextRun({ text: "Catalog Number: ", bold: true, size: 18 }),
+                                                    new TextRun({ text: `#${data.catNum}`, bold: true, size: 22, color: "000000" }),
+                                                    new TextRun({ break: 1, text: "Accession Reference: ", bold: true, size: 18 }),
+                                                    new TextRun({ text: data.accNum, size: 18 }),
+                                                    new TextRun({ break: 1, text: "Object Name: ", bold: true, size: 18 }),
+                                                    new TextRun({ text: data.itemName, size: 18 }),
+                                                    new TextRun({ break: 1, text: "Legal Status: ", bold: true, size: 18 }),
+                                                    new TextRun({ text: data.legalStatus, size: 18 }),
+                                                    new TextRun({ break: 1, text: "Contract Type: ", bold: true, size: 18 }),
+                                                    new TextRun({ text: data.contractType, size: 18 }),
+                                                    new TextRun({ break: 1, text: "Location: ", bold: true, size: 18 }),
+                                                    new TextRun({ text: data.location, size: 18 }),
+                                                    new TextRun({ break: 1, text: "Date Cataloged: ", bold: true, size: 18 }),
+                                                    new TextRun({ text: data.date, size: 18 })
+                                                ]
+                                            })
+                                        ]
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }]
+        });
+
+        return await Packer.toBuffer(doc);
+    },
+
+    // ==========================================
+    // 8. MASTER COLLECTION INVENTORY LEDGER
+    // ==========================================
+
+    async generateCollectionInventoryLedger(items, stats, format = 'docx') {
+        if (format === 'docx') {
+            return await this._buildCollectionLedgerDOCX(items, stats);
+        }
+        // HTML fallback (not explicitly requested, but good practice for API design patterns in this repo)
+        return `
+            <div style="font-family: 'Inter', sans-serif; padding: 40px; color: #111;">
+                <h2>Museo Bulawan - Master Inventory Ledger</h2>
+                <p>Total Items: ${stats.totalItems}</p>
+                <p>Total Value: PHP ${stats.totalValue.toLocaleString()}</p>
+            </div>
+        `;
+    },
+
+    async _buildCollectionLedgerDOCX(items, stats) {
+        const doc = new Document({
+            sections: [{
+                children: [
+                    new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                            new TextRun({ text: "MUSEO BULAWAN", bold: true, size: 36, color: "000000" }),
+                            new TextRun({ break: 1, text: "Collection Management System • Master Ledger", size: 20, color: "666666" }),
+                        ],
+                    }),
+                    new Paragraph({ border: { bottom: { color: "000000", space: 4, style: BorderStyle.SINGLE, size: 12 } } }),
+                    new Paragraph({ break: 1 }),
+                    new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                            new TextRun({ text: "COLLECTION INVENTORY & ANALYTICS REPORT", bold: true, size: 24 }),
+                            new TextRun({ break: 1, text: `As of ${new Date().toLocaleDateString(undefined, { dateStyle: 'long' })}`, size: 14, color: "666666" })
+                        ],
+                    }),
+                    new Paragraph({ break: 1 }),
+                    
+                    new Paragraph({
+                        children: [
+                            new TextRun({ text: "I. EXECUTIVE SUMMARY STATISTICS", bold: true, size: 20 }),
+                        ]
+                    }),
+                    new Paragraph({ break: 1 }),
+                    new Table({
+                        width: { size: 100, type: WidthType.PERCENTAGE },
+                        rows: [
+                            new TableRow({
+                                children: [
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: "Total Collection Size:", bold: true }), new TextRun({ text: ` ${stats.totalItems} Artifacts` })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: "Total Estimated Value:", bold: true }), new TextRun({ text: ` PHP ${Number(stats.totalValue).toLocaleString()}` })] })] }),
+                                ]
+                            }),
+                            new TableRow({
+                                children: [
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: "Items in Storage:", bold: true }), new TextRun({ text: ` ${stats.statusCounts.storage}` })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: "Items on Display:", bold: true }), new TextRun({ text: ` ${stats.statusCounts.loaned}` })] })] }),
+                                ]
+                            }),
+                            new TableRow({
+                                children: [
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: "Items in Maintenance:", bold: true }), new TextRun({ text: ` ${stats.statusCounts.maintenance}` })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: "Items Active/Available:", bold: true }), new TextRun({ text: ` ${stats.statusCounts.active}` })] })] }),
+                                ]
+                            })
+                        ]
+                    }),
+                    new Paragraph({ break: 2 }),
+                    
+                    new Paragraph({
+                        children: [
+                            new TextRun({ text: "II. MASTER ARTIFACT INVENTORY REGISTRY", bold: true, size: 20 }),
+                        ]
+                    }),
+                    new Paragraph({ break: 1 }),
+                    new Table({
+                        width: { size: 100, type: WidthType.PERCENTAGE },
+                        rows: [
+                            new TableRow({
+                                children: [
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: "Catalog ID", bold: true, size: 16 })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: "Registry Ref", bold: true, size: 16 })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: "Title / Description", bold: true, size: 16 })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: "Location", bold: true, size: 16 })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: "Status", bold: true, size: 16 })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: "Condition", bold: true, size: 16 })] })] }),
+                                ]
+                            }),
+                            ...items.map(item => new TableRow({
+                                children: [
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: item.catalog_number || '—', size: 14 })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: item.accession_number || 'N/A', size: 14 })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: item.proposed_item_name || item.object_type || 'Unnamed', size: 14 })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: item.current_location || 'Receiving', size: 14 })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: (item.status || 'active').toUpperCase(), size: 14 })] })] }),
+                                    new TableCell({ margins: { top: 100, bottom: 100, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: item.current_condition || 'Good', size: 14 })] })] }),
+                                ]
+                            }))
+                        ]
+                    })
+                ]
+            }]
+        });
+
+        return await Packer.toBuffer(doc);
     }
 };
+

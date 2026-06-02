@@ -1,3 +1,4 @@
+// Trigger restart
 import { createServer } from 'http';
 import app from './src/app.js';
 import { env } from './src/config/env.js';

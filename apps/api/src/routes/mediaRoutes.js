@@ -6,7 +6,7 @@ import { requireAuth, buildAbility, checkPermission } from '../middlewares/autho
 const router = Router();
 
 const mediaUpload = multer({
-    dest: 'uploads/',
+    dest: '/uploads/',
     limits: {
         fileSize: 20 * 1024 * 1024, // 20MB per file
         files: 10

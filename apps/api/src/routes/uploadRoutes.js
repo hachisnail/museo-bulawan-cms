@@ -7,7 +7,7 @@ import { strictActionLimiter } from '../middlewares/rateLimiter.js';
 const router = Router();
 
 const upload = multer({ 
-    dest: 'uploads/',
+    dest: '/uploads/',
     limits: { 
         fileSize: 50 * 1024 * 1024 
     }

@@ -1107,7 +1107,7 @@
       "source_file": "apps/api/server.js",
       "source_location": "L1",
       "id": "apps_api_server_js",
-      "community": 129,
+      "community": 149,
       "norm_label": "server.js"
     },
     {
@@ -1116,7 +1116,7 @@
       "source_file": "apps/api/server.js",
       "source_location": "L10",
       "id": "api_server_startserver",
-      "community": 136,
+      "community": 149,
       "norm_label": "startserver()"
     },
     {
@@ -1170,7 +1170,7 @@
       "source_file": "apps/api/scratch/init_db.js",
       "source_location": "L1",
       "id": "apps_api_scratch_init_db_js",
-      "community": 136,
+      "community": 149,
       "norm_label": "init_db.js"
     },
     {
@@ -1179,7 +1179,7 @@
       "source_file": "apps/api/scratch/init_db.js",
       "source_location": "L4",
       "id": "scratch_init_db_run",
-      "community": 136,
+      "community": 149,
       "norm_label": "run()"
     },
     {
@@ -1206,7 +1206,7 @@
       "source_file": "apps/api/scratch/manual_cleanup.js",
       "source_location": "L1",
       "id": "apps_api_scratch_manual_cleanup_js",
-      "community": 129,
+      "community": 149,
       "norm_label": "manual_cleanup.js"
     },
     {
@@ -1215,7 +1215,7 @@
       "source_file": "apps/api/scratch/manual_cleanup.js",
       "source_location": "L4",
       "id": "scratch_manual_cleanup_fullmaintenance",
-      "community": 129,
+      "community": 149,
       "norm_label": "fullmaintenance()"
     },
     {
@@ -1368,7 +1368,7 @@
       "source_file": "apps/api/src/config/db.js",
       "source_location": "L13",
       "id": "config_db_db",
-      "community": 136,
+      "community": 149,
       "norm_label": "db"
     },
     {
@@ -1377,7 +1377,7 @@
       "source_file": "apps/api/src/config/dbInit.js",
       "source_location": "L1",
       "id": "apps_api_src_config_dbinit_js",
-      "community": 136,
+      "community": 149,
       "norm_label": "dbinit.js"
     },
     {
@@ -1386,7 +1386,7 @@
       "source_file": "apps/api/src/config/dbInit.js",
       "source_location": "L10",
       "id": "config_dbinit_initmariadb",
-      "community": 136,
+      "community": 149,
       "norm_label": "initmariadb()"
     },
     {
@@ -1431,7 +1431,7 @@
       "source_file": "apps/api/src/config/passport.js",
       "source_location": "L1",
       "id": "apps_api_src_config_passport_js",
-      "community": 115,
+      "community": 136,
       "norm_label": "passport.js"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_file": "apps/api/src/config/passport.js",
       "source_location": "L8",
       "id": "config_passport_loginschema",
-      "community": 115,
+      "community": 136,
       "norm_label": "loginschema"
     },
     {
@@ -1458,7 +1458,7 @@
       "source_file": "apps/api/src/controllers/acquisitionController.js",
       "source_location": "L15",
       "id": "controllers_acquisitioncontroller_acquisitioncontroller",
-      "community": 131,
+      "community": 10,
       "norm_label": "acquisitioncontroller"
     },
     {
@@ -1602,7 +1602,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_authcontroller_js",
-      "community": 149,
+      "community": 139,
       "norm_label": "authcontroller.js"
     },
     {
@@ -1611,7 +1611,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L7",
       "id": "controllers_authcontroller_login",
-      "community": 149,
+      "community": 139,
       "norm_label": "login()"
     },
     {
@@ -1620,7 +1620,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L57",
       "id": "controllers_authcontroller_logout",
-      "community": 149,
+      "community": 139,
       "norm_label": "logout()"
     },
     {
@@ -1629,7 +1629,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L88",
       "id": "controllers_authcontroller_check",
-      "community": 149,
+      "community": 139,
       "norm_label": "check()"
     },
     {
@@ -1638,7 +1638,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L97",
       "id": "controllers_authcontroller_loginvisitor",
-      "community": 149,
+      "community": 139,
       "norm_label": "loginvisitor()"
     },
     {
@@ -1647,7 +1647,7 @@
       "source_file": "apps/api/src/controllers/fileController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_filecontroller_js",
-      "community": 129,
+      "community": 153,
       "norm_label": "filecontroller.js"
     },
     {
@@ -1656,7 +1656,7 @@
       "source_file": "apps/api/src/controllers/fileController.js",
       "source_location": "L7",
       "id": "controllers_filecontroller_resourcemap",
-      "community": 129,
+      "community": 153,
       "norm_label": "resourcemap"
     },
     {
@@ -1665,7 +1665,7 @@
       "source_file": "apps/api/src/controllers/fileController.js",
       "source_location": "L22",
       "id": "controllers_filecontroller_getcaslresource",
-      "community": 129,
+      "community": 153,
       "norm_label": "getcaslresource()"
     },
     {
@@ -1674,7 +1674,7 @@
       "source_file": "apps/api/src/controllers/fileController.js",
       "source_location": "L27",
       "id": "controllers_filecontroller_getprivatefile",
-      "community": 129,
+      "community": 153,
       "norm_label": "getprivatefile()"
     },
     {
@@ -1692,7 +1692,7 @@
       "source_file": "apps/api/src/controllers/formController.js",
       "source_location": "L17",
       "id": "controllers_formcontroller_formcontroller",
-      "community": 130,
+      "community": 106,
       "norm_label": "formcontroller"
     },
     {
@@ -2754,7 +2754,7 @@
       "source_file": "apps/api/src/services/formService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_formservice_js",
-      "community": 136,
+      "community": 114,
       "norm_label": "formservice.js"
     },
     {
@@ -2772,7 +2772,7 @@
       "source_file": "apps/api/src/services/maintenanceService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_maintenanceservice_js",
-      "community": 129,
+      "community": 149,
       "norm_label": "maintenanceservice.js"
     },
     {
@@ -2781,7 +2781,7 @@
       "source_file": "apps/api/src/services/maintenanceService.js",
       "source_location": "L13",
       "id": "services_maintenanceservice_maintenanceservice",
-      "community": 129,
+      "community": 149,
       "norm_label": "maintenanceservice"
     },
     {
@@ -2790,7 +2790,7 @@
       "source_file": "apps/api/src/services/mediaService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_mediaservice_js",
-      "community": 136,
+      "community": 139,
       "norm_label": "mediaservice.js"
     },
     {
@@ -2808,7 +2808,7 @@
       "source_file": "apps/api/src/services/notificationService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_notificationservice_js",
-      "community": 149,
+      "community": 139,
       "norm_label": "notificationservice.js"
     },
     {
@@ -2862,7 +2862,7 @@
       "source_file": "apps/api/src/services/userService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_userservice_js",
-      "community": 115,
+      "community": 136,
       "norm_label": "userservice.js"
     },
     {
@@ -2871,7 +2871,7 @@
       "source_file": "apps/api/src/services/userService.js",
       "source_location": "L18",
       "id": "services_userservice_userservice",
-      "community": 115,
+      "community": 136,
       "norm_label": "userservice"
     },
     {
@@ -2916,7 +2916,7 @@
       "source_file": "apps/api/src/services/acquisition/constituentService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_constituentservice_js",
-      "community": 114,
+      "community": 0,
       "norm_label": "constituentservice.js"
     },
     {
@@ -2925,7 +2925,7 @@
       "source_file": "apps/api/src/services/acquisition/constituentService.js",
       "source_location": "L12",
       "id": "acquisition_constituentservice_constituentservice",
-      "community": 114,
+      "community": 0,
       "norm_label": "constituentservice"
     },
     {
@@ -2970,7 +2970,7 @@
       "source_file": "apps/api/src/services/acquisition/intakeService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_intakeservice_js",
-      "community": 114,
+      "community": 0,
       "norm_label": "intakeservice.js"
     },
     {
@@ -3060,7 +3060,7 @@
       "source_file": "apps/api/src/services/form/definitionService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_definitionservice_js",
-      "community": 136,
+      "community": 114,
       "norm_label": "definitionservice.js"
     },
     {
@@ -3069,7 +3069,7 @@
       "source_file": "apps/api/src/services/form/definitionService.js",
       "source_location": "L5",
       "id": "form_definitionservice_parsejsonfields",
-      "community": 136,
+      "community": 114,
       "norm_label": "parsejsonfields()"
     },
     {
@@ -3078,7 +3078,7 @@
       "source_file": "apps/api/src/services/form/definitionService.js",
       "source_location": "L13",
       "id": "form_definitionservice_definitionservice",
-      "community": 136,
+      "community": 114,
       "norm_label": "definitionservice"
     },
     {
@@ -3087,7 +3087,7 @@
       "source_file": "apps/api/src/services/form/queryService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_queryservice_js",
-      "community": 136,
+      "community": 114,
       "norm_label": "queryservice.js"
     },
     {
@@ -3096,7 +3096,7 @@
       "source_file": "apps/api/src/services/form/queryService.js",
       "source_location": "L6",
       "id": "form_queryservice_escapelikepattern",
-      "community": 136,
+      "community": 114,
       "norm_label": "escapelikepattern()"
     },
     {
@@ -3105,7 +3105,7 @@
       "source_file": "apps/api/src/services/form/queryService.js",
       "source_location": "L10",
       "id": "form_queryservice_queryservice",
-      "community": 136,
+      "community": 114,
       "norm_label": "queryservice"
     },
     {
@@ -3141,7 +3141,7 @@
       "source_file": "apps/api/src/services/form/verificationService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_verificationservice_js",
-      "community": 136,
+      "community": 114,
       "norm_label": "verificationservice.js"
     },
     {
@@ -3150,7 +3150,7 @@
       "source_file": "apps/api/src/services/form/verificationService.js",
       "source_location": "L11",
       "id": "form_verificationservice_verificationservice",
-      "community": 136,
+      "community": 114,
       "norm_label": "verificationservice"
     },
     {
@@ -3177,7 +3177,7 @@
       "source_file": "apps/api/src/services/form/pipeline/donationPipeline.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_pipeline_donationpipeline_js",
-      "community": 114,
+      "community": 129,
       "norm_label": "donationpipeline.js"
     },
     {
@@ -3186,7 +3186,7 @@
       "source_file": "apps/api/src/services/form/pipeline/donationPipeline.js",
       "source_location": "L17",
       "id": "pipeline_donationpipeline_donationpipeline",
-      "community": 114,
+      "community": 129,
       "norm_label": "donationpipeline"
     },
     {
@@ -3204,7 +3204,7 @@
       "source_file": "apps/api/src/services/user/identityService.js",
       "source_location": "L11",
       "id": "user_identityservice_identityservice",
-      "community": 115,
+      "community": 136,
       "norm_label": "identityservice"
     },
     {
@@ -3213,7 +3213,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_lifecycleservice_js",
-      "community": 139,
+      "community": 129,
       "norm_label": "lifecycleservice.js"
     },
     {
@@ -3222,7 +3222,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L12",
       "id": "user_lifecycleservice_generatetoken",
-      "community": 139,
+      "community": 129,
       "norm_label": "generatetoken()"
     },
     {
@@ -3231,7 +3231,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L19",
       "id": "user_lifecycleservice_lifecycleservice",
-      "community": 115,
+      "community": 129,
       "norm_label": "lifecycleservice"
     },
     {
@@ -3249,7 +3249,7 @@
       "source_file": "apps/api/src/services/user/managementService.js",
       "source_location": "L12",
       "id": "user_managementservice_managementservice",
-      "community": 115,
+      "community": 136,
       "norm_label": "managementservice"
     },
     {
@@ -3258,7 +3258,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_securityservice_js",
-      "community": 139,
+      "community": 129,
       "norm_label": "securityservice.js"
     },
     {
@@ -3267,7 +3267,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L9",
       "id": "user_securityservice_generatetoken",
-      "community": 139,
+      "community": 129,
       "norm_label": "generatetoken()"
     },
     {
@@ -3276,7 +3276,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L17",
       "id": "user_securityservice_securityservice",
-      "community": 139,
+      "community": 129,
       "norm_label": "securityservice"
     },
     {
@@ -3384,7 +3384,7 @@
       "source_file": "apps/api/src/utils/eventBus.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_eventbus_js",
-      "community": 149,
+      "community": 132,
       "norm_label": "eventbus.js"
     },
     {
@@ -3393,7 +3393,7 @@
       "source_file": "apps/api/src/utils/eventBus.js",
       "source_location": "L2",
       "id": "utils_eventbus_appevents",
-      "community": 149,
+      "community": 132,
       "norm_label": "appevents"
     },
     {
@@ -3429,7 +3429,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_mailer_js",
-      "community": 114,
+      "community": 129,
       "norm_label": "mailer.js"
     },
     {
@@ -3438,7 +3438,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L18",
       "id": "utils_mailer_sendemail",
-      "community": 114,
+      "community": 129,
       "norm_label": "sendemail()"
     },
     {
@@ -3447,7 +3447,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L54",
       "id": "utils_mailer_sendemailwithretry",
-      "community": 114,
+      "community": 129,
       "norm_label": "sendemailwithretry()"
     },
     {
@@ -3456,7 +3456,7 @@
       "source_file": "apps/api/src/utils/mutex.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_mutex_js",
-      "community": 114,
+      "community": 0,
       "norm_label": "mutex.js"
     },
     {
@@ -3501,7 +3501,7 @@
       "source_file": "apps/api/src/utils/mutex.js",
       "source_location": "L37",
       "id": "utils_mutex_globalmutex",
-      "community": 114,
+      "community": 0,
       "norm_label": "globalmutex"
     },
     {
@@ -3510,7 +3510,7 @@
       "source_file": "apps/api/src/utils/otpStore.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_otpstore_js",
-      "community": 129,
+      "community": 114,
       "norm_label": "otpstore.js"
     },
     {
@@ -3573,7 +3573,7 @@
       "source_file": "apps/api/src/utils/otpStore.js",
       "source_location": "L46",
       "id": "utils_otpstore_otpstore",
-      "community": 136,
+      "community": 114,
       "norm_label": "otpstore"
     },
     {
@@ -3735,7 +3735,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_sequencegenerator_js",
-      "community": 0,
+      "community": 154,
       "norm_label": "sequencegenerator.js"
     },
     {
@@ -3744,7 +3744,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L28",
       "id": "utils_sequencegenerator_nextsequencevalue",
-      "community": 0,
+      "community": 154,
       "norm_label": "nextsequencevalue()"
     },
     {
@@ -3753,7 +3753,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L59",
       "id": "utils_sequencegenerator_generateaccessionnumber",
-      "community": 0,
+      "community": 154,
       "norm_label": "generateaccessionnumber()"
     },
     {
@@ -3762,7 +3762,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L72",
       "id": "utils_sequencegenerator_generatecatalognumber",
-      "community": 0,
+      "community": 154,
       "norm_label": "generatecatalognumber()"
     },
     {
@@ -3771,7 +3771,7 @@
       "source_file": "apps/api/src/utils/sseFactory.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_ssefactory_js",
-      "community": 149,
+      "community": 139,
       "norm_label": "ssefactory.js"
     },
     {
@@ -3825,7 +3825,7 @@
       "source_file": "apps/api/src/utils/sseFactory.js",
       "source_location": "L79",
       "id": "utils_ssefactory_ssemanager",
-      "community": 149,
+      "community": 139,
       "norm_label": "ssemanager"
     },
     {
@@ -3834,7 +3834,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_statemachine_js",
-      "community": 114,
+      "community": 10,
       "norm_label": "statemachine.js"
     },
     {
@@ -3843,7 +3843,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L11",
       "id": "utils_statemachine_intake_transitions",
-      "community": 114,
+      "community": 10,
       "norm_label": "intake_transitions"
     },
     {
@@ -3852,7 +3852,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L24",
       "id": "utils_statemachine_accession_transitions",
-      "community": 114,
+      "community": 10,
       "norm_label": "accession_transitions"
     },
     {
@@ -3861,7 +3861,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L34",
       "id": "utils_statemachine_inventory_transitions",
-      "community": 114,
+      "community": 10,
       "norm_label": "inventory_transitions"
     },
     {
@@ -3870,7 +3870,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L46",
       "id": "utils_statemachine_submission_transitions",
-      "community": 114,
+      "community": 10,
       "norm_label": "submission_transitions"
     },
     {
@@ -3879,7 +3879,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L55",
       "id": "utils_statemachine_transition_registry",
-      "community": 114,
+      "community": 10,
       "norm_label": "transition_registry"
     },
     {
@@ -3888,7 +3888,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L70",
       "id": "utils_statemachine_validatetransition",
-      "community": 114,
+      "community": 10,
       "norm_label": "validatetransition()"
     },
     {
@@ -3897,7 +3897,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L97",
       "id": "utils_statemachine_asserttransition",
-      "community": 114,
+      "community": 0,
       "norm_label": "asserttransition()"
     },
     {
@@ -3915,7 +3915,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L118",
       "id": "utils_statemachine_gettransitionmap",
-      "community": 114,
+      "community": 10,
       "norm_label": "gettransitionmap()"
     },
     {
@@ -3924,7 +3924,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L125",
       "id": "utils_statemachine_getstatuses",
-      "community": 114,
+      "community": 10,
       "norm_label": "getstatuses()"
     },
     {
@@ -3933,7 +3933,7 @@
       "source_file": "apps/api/src/utils/uploadQueue.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_uploadqueue_js",
-      "community": 149,
+      "community": 139,
       "norm_label": "uploadqueue.js"
     },
     {
@@ -4014,7 +4014,7 @@
       "source_file": "apps/api/tests/api_review_hardening.test.js",
       "source_location": "L1",
       "id": "apps_api_tests_api_review_hardening_test_js",
-      "community": 136,
+      "community": 114,
       "norm_label": "api_review_hardening.test.js"
     },
     {
@@ -4158,7 +4158,7 @@
       "source_file": "apps/api/tests/form_constraints.test.js",
       "source_location": "L1",
       "id": "apps_api_tests_form_constraints_test_js",
-      "community": 136,
+      "community": 149,
       "norm_label": "form_constraints.test.js"
     },
     {
@@ -5611,10 +5611,19 @@
       "norm_label": "astro"
     },
     {
-      "label": "react",
+      "label": "lucide-react",
       "file_type": "code",
       "source_file": "apps/landing/package.json",
       "source_location": "L21",
+      "id": "landing_package_dependencies_lucide_react",
+      "community": 19,
+      "norm_label": "lucide-react"
+    },
+    {
+      "label": "react",
+      "file_type": "code",
+      "source_file": "apps/landing/package.json",
+      "source_location": "L22",
       "id": "landing_package_dependencies_react",
       "community": 19,
       "norm_label": "react"
@@ -5623,7 +5632,7 @@
       "label": "react-dom",
       "file_type": "code",
       "source_file": "apps/landing/package.json",
-      "source_location": "L22",
+      "source_location": "L23",
       "id": "landing_package_dependencies_react_dom",
       "community": 19,
       "norm_label": "react-dom"
@@ -5632,7 +5641,7 @@
       "label": "tailwindcss",
       "file_type": "code",
       "source_file": "apps/landing/package.json",
-      "source_location": "L23",
+      "source_location": "L24",
       "id": "landing_package_dependencies_tailwindcss",
       "community": 19,
       "norm_label": "tailwindcss"
@@ -6673,7 +6682,7 @@
       "source_file": "apps/panel-admin/src/components/DataTable.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_datatable_jsx",
-      "community": 26,
+      "community": 61,
       "norm_label": "datatable.jsx"
     },
     {
@@ -6682,7 +6691,7 @@
       "source_file": "apps/panel-admin/src/components/DataTable.jsx",
       "source_location": "L6",
       "id": "components_datatable_datatable",
-      "community": 26,
+      "community": 61,
       "norm_label": "datatable()"
     },
     {
@@ -6763,7 +6772,7 @@
       "source_file": "apps/panel-admin/src/components/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_index_js",
-      "community": 26,
+      "community": 32,
       "norm_label": "index.js"
     },
     {
@@ -6853,7 +6862,7 @@
       "source_file": "apps/panel-admin/src/components/SidebarDashboard.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_sidebardashboard_jsx",
-      "community": 26,
+      "community": 32,
       "norm_label": "sidebardashboard.jsx"
     },
     {
@@ -6862,7 +6871,7 @@
       "source_file": "apps/panel-admin/src/components/SidebarDashboard.jsx",
       "source_location": "L3",
       "id": "components_sidebardashboard_sidebardashboard",
-      "community": 26,
+      "community": 32,
       "norm_label": "sidebardashboard()"
     },
     {
@@ -7609,7 +7618,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_appointments_index_js",
-      "community": 145,
+      "community": 107,
       "norm_label": "index.js"
     },
     {
@@ -7618,7 +7627,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_appointments_pages_appointmentdetail_jsx",
-      "community": 145,
+      "community": 107,
       "norm_label": "appointmentdetail.jsx"
     },
     {
@@ -7627,7 +7636,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L13",
       "id": "pages_appointmentdetail_getvisitorname",
-      "community": 145,
+      "community": 107,
       "norm_label": "getvisitorname()"
     },
     {
@@ -7636,7 +7645,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L20",
       "id": "pages_appointmentdetail_getapptstatus",
-      "community": 145,
+      "community": 107,
       "norm_label": "getapptstatus()"
     },
     {
@@ -7645,7 +7654,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L26",
       "id": "pages_appointmentdetail_inforow",
-      "community": 145,
+      "community": 107,
       "norm_label": "inforow()"
     },
     {
@@ -7654,7 +7663,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L40",
       "id": "pages_appointmentdetail_actionbtn",
-      "community": 145,
+      "community": 107,
       "norm_label": "actionbtn()"
     },
     {
@@ -7663,7 +7672,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L55",
       "id": "pages_appointmentdetail_statusbadge",
-      "community": 145,
+      "community": 107,
       "norm_label": "statusbadge()"
     },
     {
@@ -7672,7 +7681,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L74",
       "id": "pages_appointmentdetail_appointmentdetail",
-      "community": 145,
+      "community": 107,
       "norm_label": "appointmentdetail()"
     },
     {
@@ -7681,7 +7690,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_appointments_pages_appointmentsindex_jsx",
-      "community": 145,
+      "community": 105,
       "norm_label": "appointmentsindex.jsx"
     },
     {
@@ -7690,7 +7699,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L10",
       "id": "pages_appointmentsindex_getvisitorname",
-      "community": 145,
+      "community": 105,
       "norm_label": "getvisitorname()"
     },
     {
@@ -7699,7 +7708,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L17",
       "id": "pages_appointmentsindex_getapptstatus",
-      "community": 145,
+      "community": 107,
       "norm_label": "getapptstatus()"
     },
     {
@@ -7708,7 +7717,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L21",
       "id": "pages_appointmentsindex_getpreferredtime",
-      "community": 145,
+      "community": 105,
       "norm_label": "getpreferredtime()"
     },
     {
@@ -7717,7 +7726,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L34",
       "id": "pages_appointmentsindex_status_style",
-      "community": 145,
+      "community": 105,
       "norm_label": "status_style"
     },
     {
@@ -7726,7 +7735,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L43",
       "id": "pages_appointmentsindex_statusbadge",
-      "community": 145,
+      "community": 105,
       "norm_label": "statusbadge()"
     },
     {
@@ -7735,7 +7744,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L54",
       "id": "pages_appointmentsindex_columns",
-      "community": 145,
+      "community": 105,
       "norm_label": "columns"
     },
     {
@@ -7744,7 +7753,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L97",
       "id": "pages_appointmentsindex_appointmentsindex",
-      "community": 145,
+      "community": 105,
       "norm_label": "appointmentsindex()"
     },
     {
@@ -7753,7 +7762,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/WalkInAdd.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_appointments_pages_walkinadd_jsx",
-      "community": 145,
+      "community": 107,
       "norm_label": "walkinadd.jsx"
     },
     {
@@ -7762,7 +7771,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/WalkInAdd.jsx",
       "source_location": "L5",
       "id": "pages_walkinadd_walkinadd",
-      "community": 145,
+      "community": 107,
       "norm_label": "walkinadd()"
     },
     {
@@ -7879,7 +7888,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx",
-      "community": 105,
+      "community": 26,
       "norm_label": "formsindex.jsx"
     },
     {
@@ -7888,7 +7897,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
       "source_location": "L15",
       "id": "pages_formsindex_chart_colors",
-      "community": 105,
+      "community": 26,
       "norm_label": "chart_colors"
     },
     {
@@ -7897,7 +7906,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
       "source_location": "L17",
       "id": "pages_formsindex_formsindex",
-      "community": 105,
+      "community": 26,
       "norm_label": "formsindex()"
     },
     {
@@ -7906,7 +7915,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
       "source_location": "L317",
       "id": "pages_formsindex_feedbackanalyticstab",
-      "community": 105,
+      "community": 26,
       "norm_label": "feedbackanalyticstab()"
     },
     {
@@ -8158,7 +8167,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/components/MovementForm.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_components_movementform_jsx",
-      "community": 105,
+      "community": 145,
       "norm_label": "movementform.jsx"
     },
     {
@@ -8167,7 +8176,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/components/MovementForm.jsx",
       "source_location": "L3",
       "id": "components_movementform_movementform",
-      "community": 105,
+      "community": 145,
       "norm_label": "movementform()"
     },
     {
@@ -8239,7 +8248,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
       "source_location": "L10",
       "id": "pages_inventoryindex_getstatusstyles",
-      "community": 105,
+      "community": 145,
       "norm_label": "getstatusstyles()"
     },
     {
@@ -8257,7 +8266,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
-      "community": 105,
+      "community": 145,
       "norm_label": "inventoryitem.jsx"
     },
     {
@@ -8266,7 +8275,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L24",
       "id": "pages_inventoryitem_getstatusstyles",
-      "community": 105,
+      "community": 145,
       "norm_label": "getstatusstyles()"
     },
     {
@@ -8275,7 +8284,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L43",
       "id": "pages_inventoryitem_inventoryitemskeleton",
-      "community": 105,
+      "community": 145,
       "norm_label": "inventoryitemskeleton()"
     },
     {
@@ -8284,7 +8293,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L73",
       "id": "pages_inventoryitem_field",
-      "community": 105,
+      "community": 145,
       "norm_label": "field()"
     },
     {
@@ -8293,7 +8302,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L85",
       "id": "pages_inventoryitem_section",
-      "community": 105,
+      "community": 145,
       "norm_label": "section()"
     },
     {
@@ -8302,7 +8311,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L98",
       "id": "pages_inventoryitem_textblock",
-      "community": 105,
+      "community": 145,
       "norm_label": "textblock()"
     },
     {
@@ -8311,7 +8320,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L113",
       "id": "pages_inventoryitem_inventoryitem",
-      "community": 105,
+      "community": 145,
       "norm_label": "inventoryitem()"
     },
     {
@@ -8590,7 +8599,7 @@
       "source_file": "apps/panel-admin/src/pages/schedule/pages/ScheduleIndex.jsx",
       "source_location": "L214",
       "id": "pages_scheduleindex_schedule",
-      "community": 107,
+      "community": 105,
       "norm_label": "schedule()"
     },
     {
@@ -8599,7 +8608,7 @@
       "source_file": "apps/panel-admin/src/pages/settings/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_settings_index_js",
-      "community": 1,
+      "community": 32,
       "norm_label": "index.js"
     },
     {
@@ -8608,7 +8617,7 @@
       "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_settings_pages_settingsindex_jsx",
-      "community": 1,
+      "community": 32,
       "norm_label": "settingsindex.jsx"
     },
     {
@@ -8617,7 +8626,7 @@
       "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
       "source_location": "L7",
       "id": "pages_settingsindex_settingsindex",
-      "community": 1,
+      "community": 32,
       "norm_label": "settingsindex()"
     },
     {
@@ -8689,7 +8698,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleUtils.js",
       "source_location": "L62",
       "id": "utils_scheduleutils_normalizestatus",
-      "community": 145,
+      "community": 107,
       "norm_label": "normalizestatus()"
     },
     {
@@ -12343,7 +12352,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/utils/otpStore.js",
       "source_location": "L111",
-      "community": 129,
+      "community": 114,
       "norm_label": "createotpstore()",
       "id": "utils_otpstore_createotpstore"
     },
@@ -12460,7 +12469,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
       "source_location": "L149",
-      "community": 105,
+      "community": 26,
       "norm_label": "submissionstab()",
       "id": "pages_formsindex_submissionstab"
     },
@@ -12469,7 +12478,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
       "source_location": "L367",
-      "community": 105,
+      "community": 26,
       "norm_label": "formbuildertab()",
       "id": "pages_formsindex_formbuildertab"
     },
@@ -16600,9 +16609,9 @@
       "source_file": "apps/api/src/app.js",
       "source_location": "L55",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_app_js",
-      "target": "src_app_sessioncookieoptions",
-      "confidence_score": 1.0
+      "target": "src_app_sessioncookieoptions"
     },
     {
       "relation": "imports",
@@ -18062,9 +18071,9 @@
       "source_file": "apps/api/tests/csrf.test.js",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_tests_csrf_test_js",
-      "target": "apps_api_src_config_env_js",
-      "confidence_score": 1.0
+      "target": "apps_api_src_config_env_js"
     },
     {
       "relation": "imports",
@@ -18216,9 +18225,9 @@
       "source_file": "apps/api/tests/csrf.test.js",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_tests_csrf_test_js",
-      "target": "config_env_env",
-      "confidence_score": 1.0
+      "target": "config_env_env"
     },
     {
       "relation": "imports_from",
@@ -20689,9 +20698,9 @@
       "source_file": "apps/api/tests/csrf.test.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_tests_csrf_test_js",
-      "target": "apps_api_src_middlewares_csrfhandler_js",
-      "confidence_score": 1.0
+      "target": "apps_api_src_middlewares_csrfhandler_js"
     },
     {
       "relation": "imports",
@@ -20700,9 +20709,9 @@
       "source_file": "apps/api/tests/csrf.test.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_tests_csrf_test_js",
-      "target": "middlewares_csrfhandler_csrfprotection",
-      "confidence_score": 1.0
+      "target": "middlewares_csrfhandler_csrfprotection"
     },
     {
       "relation": "imports_from",
@@ -27789,6 +27798,16 @@
       "confidence_score": 1.0,
       "source": "landing_package_dependencies",
       "target": "landing_package_dependencies_astrojs_react"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/package.json",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "landing_package_dependencies",
+      "target": "landing_package_dependencies_lucide_react",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -40362,5 +40381,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "a260a836b406167cdb3b6d4338aecd651a1ac2ab"
+  "built_at_commit": "b8d3eaafcead8c4551871b887f045a931fcd44bf"
 }

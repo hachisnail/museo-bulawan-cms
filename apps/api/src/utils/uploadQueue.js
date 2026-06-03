@@ -4,7 +4,6 @@ import { db } from '../config/db.js';
 import { mediaService } from '../services/mediaService.js';
 import { sseManager } from './sseFactory.js';
 import { logger } from './logger.js';
-import { env } from '../config/env.js';
 import { redisManager } from './redisClient.js';
 
 // ==========================================
@@ -68,49 +67,9 @@ const processTask = async (task) => {
 };
 
 // ==========================================
-// 2. In-Memory Queue (Development)
+// 2. Redis-Backed Queue (Unified for Dev/Prod)
 // ==========================================
-class MemoryQueueAdapter {
-    constructor() {
-        this.queue = [];
-        this.isProcessing = false;
-        logger.info('Initialized In-Memory Upload Queue.');
-    }
-
-    add(task) {
-        this.queue.push(task);
-        this.updateQueuePositions();
-        this.processNext();
-    }
-
-    updateQueuePositions() {
-        this.queue.forEach((task, index) => {
-            sseManager.broadcast(`user_${task.userId}`, 'upload_status', {
-                taskId: task.taskId,
-                status: 'queued',
-                position: index + 1
-            });
-        });
-    }
-
-    async processNext() {
-        if (this.isProcessing || this.queue.length === 0) return;
-        this.isProcessing = true;
-        
-        const task = this.queue.shift();
-        
-        this.updateQueuePositions();
-        await processTask(task);
-        
-        this.isProcessing = false;
-        this.processNext();
-    }
-}
-
-// ==========================================
-// 3. Native Redis Queue (Production)
-// ==========================================
-class NativeRedisQueueAdapter {
+class RedisQueueAdapter {
     constructor() {
         this.queueKey = 'upload:queue';
         this.client = null;
@@ -124,7 +83,7 @@ class NativeRedisQueueAdapter {
             this.client = await redisManager.getClient();
             this.workerClient = await redisManager.getWorkerClient();
             
-            logger.info('Initialized Native Redis Upload Queue.');
+            logger.info('Initialized Redis Upload Queue.');
             this.startWorker();
         } catch (error) {
             logger.error('Failed to initialize Redis Queue Adapter', { error: error.message });
@@ -151,7 +110,7 @@ class NativeRedisQueueAdapter {
     }
 
     async startWorker() {
-        logger.info('Native Redis Worker listening for tasks...');
+        logger.info('Redis Queue Worker listening for tasks...');
         
         while (true) {
             try {
@@ -167,13 +126,11 @@ class NativeRedisQueueAdapter {
                     await processTask(task);
                 }
             } catch (error) {
-                logger.error('Redis Worker error during task processing', { error: error.message });
+                logger.error('Redis Queue Worker error during task processing', { error: error.message });
                 await new Promise(resolve => setTimeout(resolve, 3000));
             }
         }
     }
 }
 
-export const uploadQueue = (env.nodeEnv === 'production' && env.redis?.enabled) 
-    ? new NativeRedisQueueAdapter() 
-    : new MemoryQueueAdapter();
+export const uploadQueue = new RedisQueueAdapter();

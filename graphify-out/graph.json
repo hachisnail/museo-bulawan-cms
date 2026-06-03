@@ -1116,7 +1116,7 @@
       "source_file": "apps/api/scratch/check_media.js",
       "source_location": "L1",
       "id": "apps_api_scratch_check_media_js",
-      "community": 149,
+      "community": 136,
       "norm_label": "check_media.js"
     },
     {
@@ -1125,7 +1125,7 @@
       "source_file": "apps/api/scratch/check_media.js",
       "source_location": "L3",
       "id": "scratch_check_media_serialize",
-      "community": 149,
+      "community": 136,
       "norm_label": "serialize()"
     },
     {
@@ -1134,7 +1134,7 @@
       "source_file": "apps/api/scratch/check_media.js",
       "source_location": "L9",
       "id": "scratch_check_media_checkmedia",
-      "community": 149,
+      "community": 136,
       "norm_label": "checkmedia()"
     },
     {
@@ -1143,7 +1143,7 @@
       "source_file": "apps/api/scratch/fix_migration.js",
       "source_location": "L1",
       "id": "apps_api_scratch_fix_migration_js",
-      "community": 149,
+      "community": 136,
       "norm_label": "fix_migration.js"
     },
     {
@@ -1152,7 +1152,7 @@
       "source_file": "apps/api/scratch/fix_migration.js",
       "source_location": "L3",
       "id": "scratch_fix_migration_fix",
-      "community": 149,
+      "community": 136,
       "norm_label": "fix()"
     },
     {
@@ -1179,7 +1179,7 @@
       "source_file": "apps/api/scratch/list_forms.js",
       "source_location": "L1",
       "id": "apps_api_scratch_list_forms_js",
-      "community": 149,
+      "community": 136,
       "norm_label": "list_forms.js"
     },
     {
@@ -1188,7 +1188,7 @@
       "source_file": "apps/api/scratch/list_forms.js",
       "source_location": "L3",
       "id": "scratch_list_forms_run",
-      "community": 149,
+      "community": 136,
       "norm_label": "run()"
     },
     {
@@ -1215,7 +1215,7 @@
       "source_file": "apps/api/scratch/seed_forms.js",
       "source_location": "L1",
       "id": "apps_api_scratch_seed_forms_js",
-      "community": 149,
+      "community": 136,
       "norm_label": "seed_forms.js"
     },
     {
@@ -1224,7 +1224,7 @@
       "source_file": "apps/api/scratch/seed_forms.js",
       "source_location": "L4",
       "id": "scratch_seed_forms_seedforms",
-      "community": 149,
+      "community": 136,
       "norm_label": "seedforms()"
     },
     {
@@ -1233,7 +1233,7 @@
       "source_file": "apps/api/scratch/update_feedback_form.js",
       "source_location": "L1",
       "id": "apps_api_scratch_update_feedback_form_js",
-      "community": 149,
+      "community": 136,
       "norm_label": "update_feedback_form.js"
     },
     {
@@ -1242,7 +1242,7 @@
       "source_file": "apps/api/scratch/update_feedback_form.js",
       "source_location": "L3",
       "id": "scratch_update_feedback_form_run",
-      "community": 149,
+      "community": 136,
       "norm_label": "run()"
     },
     {
@@ -1269,7 +1269,7 @@
       "source_file": "apps/api/src/config/ability.js",
       "source_location": "L1",
       "id": "apps_api_src_config_ability_js",
-      "community": 146,
+      "community": 2,
       "norm_label": "ability.js"
     },
     {
@@ -1278,7 +1278,7 @@
       "source_file": "apps/api/src/config/ability.js",
       "source_location": "L4",
       "id": "config_ability_hierarchy",
-      "community": 146,
+      "community": 2,
       "norm_label": "hierarchy"
     },
     {
@@ -1287,7 +1287,7 @@
       "source_file": "apps/api/src/config/ability.js",
       "source_location": "L21",
       "id": "config_ability_role_rules",
-      "community": 146,
+      "community": 2,
       "norm_label": "role_rules"
     },
     {
@@ -1296,7 +1296,7 @@
       "source_file": "apps/api/src/config/ability.js",
       "source_location": "L84",
       "id": "config_ability_geteffectiveroles",
-      "community": 146,
+      "community": 2,
       "norm_label": "geteffectiveroles()"
     },
     {
@@ -1305,7 +1305,7 @@
       "source_file": "apps/api/src/config/ability.js",
       "source_location": "L93",
       "id": "config_ability_defineabilityfor",
-      "community": 146,
+      "community": 2,
       "norm_label": "defineabilityfor()"
     },
     {
@@ -1332,7 +1332,7 @@
       "source_file": "apps/api/src/config/db.js",
       "source_location": "L1",
       "id": "apps_api_src_config_db_js",
-      "community": 149,
+      "community": 136,
       "norm_label": "db.js"
     },
     {
@@ -1341,7 +1341,7 @@
       "source_file": "apps/api/src/config/db.js",
       "source_location": "L5",
       "id": "config_db_pool",
-      "community": 149,
+      "community": 136,
       "norm_label": "pool"
     },
     {
@@ -1683,7 +1683,7 @@
       "source_file": "apps/api/src/controllers/loansController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_loanscontroller_js",
-      "community": 129,
+      "community": 149,
       "norm_label": "loanscontroller.js"
     },
     {
@@ -2142,7 +2142,7 @@
       "source_file": "apps/api/src/middlewares/authorizationHandler.js",
       "source_location": "L30",
       "id": "middlewares_authorizationhandler_checkpermission",
-      "community": 147,
+      "community": 134,
       "norm_label": "checkpermission()"
     },
     {
@@ -2331,7 +2331,7 @@
       "source_file": "apps/api/src/routes/auditRoutes.js",
       "source_location": "L1",
       "id": "apps_api_src_routes_auditroutes_js",
-      "community": 2,
+      "community": 134,
       "norm_label": "auditroutes.js"
     },
     {
@@ -2340,7 +2340,7 @@
       "source_file": "apps/api/src/routes/auditRoutes.js",
       "source_location": "L5",
       "id": "routes_auditroutes_router",
-      "community": 2,
+      "community": 134,
       "norm_label": "router"
     },
     {
@@ -2403,7 +2403,7 @@
       "source_file": "apps/api/src/routes/mediaRoutes.js",
       "source_location": "L1",
       "id": "apps_api_src_routes_mediaroutes_js",
-      "community": 147,
+      "community": 2,
       "norm_label": "mediaroutes.js"
     },
     {
@@ -2412,7 +2412,7 @@
       "source_file": "apps/api/src/routes/mediaRoutes.js",
       "source_location": "L6",
       "id": "routes_mediaroutes_router",
-      "community": 147,
+      "community": 2,
       "norm_label": "router"
     },
     {
@@ -2421,7 +2421,7 @@
       "source_file": "apps/api/src/routes/mediaRoutes.js",
       "source_location": "L8",
       "id": "routes_mediaroutes_mediaupload",
-      "community": 147,
+      "community": 2,
       "norm_label": "mediaupload"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_file": "apps/api/src/routes/mediaRoutes.js",
       "source_location": "L17",
       "id": "routes_mediaroutes_entitypermissionmap",
-      "community": 147,
+      "community": 2,
       "norm_label": "entitypermissionmap"
     },
     {
@@ -2439,7 +2439,7 @@
       "source_file": "apps/api/src/routes/notificationRoutes.js",
       "source_location": "L1",
       "id": "apps_api_src_routes_notificationroutes_js",
-      "community": 2,
+      "community": 135,
       "norm_label": "notificationroutes.js"
     },
     {
@@ -2448,7 +2448,7 @@
       "source_file": "apps/api/src/routes/notificationRoutes.js",
       "source_location": "L5",
       "id": "routes_notificationroutes_router",
-      "community": 2,
+      "community": 135,
       "norm_label": "router"
     },
     {
@@ -2664,7 +2664,7 @@
       "source_file": "apps/api/src/services/auditService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_auditservice_js",
-      "community": 129,
+      "community": 149,
       "norm_label": "auditservice.js"
     },
     {
@@ -2673,7 +2673,7 @@
       "source_file": "apps/api/src/services/auditService.js",
       "source_location": "L5",
       "id": "services_auditservice_auditservice",
-      "community": 129,
+      "community": 149,
       "norm_label": "auditservice"
     },
     {
@@ -2682,7 +2682,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_documentservice_js",
-      "community": 0,
+      "community": 151,
       "norm_label": "documentservice.js"
     },
     {
@@ -2691,7 +2691,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L9",
       "id": "services_documentservice_filename",
-      "community": 0,
+      "community": 151,
       "norm_label": "__filename"
     },
     {
@@ -2700,7 +2700,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L10",
       "id": "services_documentservice_dirname",
-      "community": 0,
+      "community": 151,
       "norm_label": "__dirname"
     },
     {
@@ -2709,7 +2709,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L18",
       "id": "services_documentservice_documentservice",
-      "community": 0,
+      "community": 151,
       "norm_label": "documentservice"
     },
     {
@@ -2772,7 +2772,7 @@
       "source_file": "apps/api/src/services/mediaService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_mediaservice_js",
-      "community": 129,
+      "community": 136,
       "norm_label": "mediaservice.js"
     },
     {
@@ -2862,7 +2862,7 @@
       "source_file": "apps/api/src/services/acquisition/accessionService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_accessionservice_js",
-      "community": 0,
+      "community": 151,
       "norm_label": "accessionservice.js"
     },
     {
@@ -2898,7 +2898,7 @@
       "source_file": "apps/api/src/services/acquisition/constituentService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_constituentservice_js",
-      "community": 0,
+      "community": 114,
       "norm_label": "constituentservice.js"
     },
     {
@@ -2907,7 +2907,7 @@
       "source_file": "apps/api/src/services/acquisition/constituentService.js",
       "source_location": "L12",
       "id": "acquisition_constituentservice_constituentservice",
-      "community": 0,
+      "community": 114,
       "norm_label": "constituentservice"
     },
     {
@@ -2952,7 +2952,7 @@
       "source_file": "apps/api/src/services/acquisition/intakeService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_intakeservice_js",
-      "community": 0,
+      "community": 114,
       "norm_label": "intakeservice.js"
     },
     {
@@ -3159,7 +3159,7 @@
       "source_file": "apps/api/src/services/form/pipeline/donationPipeline.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_pipeline_donationpipeline_js",
-      "community": 136,
+      "community": 114,
       "norm_label": "donationpipeline.js"
     },
     {
@@ -3168,7 +3168,7 @@
       "source_file": "apps/api/src/services/form/pipeline/donationPipeline.js",
       "source_location": "L17",
       "id": "pipeline_donationpipeline_donationpipeline",
-      "community": 136,
+      "community": 114,
       "norm_label": "donationpipeline"
     },
     {
@@ -3177,7 +3177,7 @@
       "source_file": "apps/api/src/services/user/identityService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_identityservice_js",
-      "community": 129,
+      "community": 149,
       "norm_label": "identityservice.js"
     },
     {
@@ -3195,7 +3195,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_lifecycleservice_js",
-      "community": 129,
+      "community": 149,
       "norm_label": "lifecycleservice.js"
     },
     {
@@ -3204,7 +3204,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L12",
       "id": "user_lifecycleservice_generatetoken",
-      "community": 129,
+      "community": 149,
       "norm_label": "generatetoken()"
     },
     {
@@ -3213,7 +3213,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L19",
       "id": "user_lifecycleservice_lifecycleservice",
-      "community": 115,
+      "community": 149,
       "norm_label": "lifecycleservice"
     },
     {
@@ -3240,7 +3240,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_securityservice_js",
-      "community": 129,
+      "community": 149,
       "norm_label": "securityservice.js"
     },
     {
@@ -3249,7 +3249,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L9",
       "id": "user_securityservice_generatetoken",
-      "community": 129,
+      "community": 149,
       "norm_label": "generatetoken()"
     },
     {
@@ -3258,7 +3258,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L17",
       "id": "user_securityservice_securityservice",
-      "community": 129,
+      "community": 149,
       "norm_label": "securityservice"
     },
     {
@@ -3267,7 +3267,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_constants_js",
-      "community": 0,
+      "community": 151,
       "norm_label": "constants.js"
     },
     {
@@ -3276,7 +3276,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L13",
       "id": "utils_constants_contract_type_map",
-      "community": 0,
+      "community": 151,
       "norm_label": "contract_type_map"
     },
     {
@@ -3285,7 +3285,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L25",
       "id": "utils_constants_legal_status_map",
-      "community": 0,
+      "community": 151,
       "norm_label": "legal_status_map"
     },
     {
@@ -3294,7 +3294,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L30",
       "id": "utils_constants_getlegalstatus",
-      "community": 0,
+      "community": 151,
       "norm_label": "getlegalstatus()"
     },
     {
@@ -3303,7 +3303,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L34",
       "id": "utils_constants_getcontracttype",
-      "community": 0,
+      "community": 151,
       "norm_label": "getcontracttype()"
     },
     {
@@ -3312,7 +3312,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L45",
       "id": "utils_constants_allowed_tables",
-      "community": 0,
+      "community": 151,
       "norm_label": "allowed_tables"
     },
     {
@@ -3366,7 +3366,7 @@
       "source_file": "apps/api/src/utils/eventBus.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_eventbus_js",
-      "community": 149,
+      "community": 136,
       "norm_label": "eventbus.js"
     },
     {
@@ -3375,7 +3375,7 @@
       "source_file": "apps/api/src/utils/eventBus.js",
       "source_location": "L2",
       "id": "utils_eventbus_appevents",
-      "community": 149,
+      "community": 136,
       "norm_label": "appevents"
     },
     {
@@ -3384,7 +3384,7 @@
       "source_file": "apps/api/src/utils/logger.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_logger_js",
-      "community": 129,
+      "community": 149,
       "norm_label": "logger.js"
     },
     {
@@ -3393,7 +3393,7 @@
       "source_file": "apps/api/src/utils/logger.js",
       "source_location": "L6",
       "id": "utils_logger_customformat",
-      "community": 129,
+      "community": 149,
       "norm_label": "customformat"
     },
     {
@@ -3402,7 +3402,7 @@
       "source_file": "apps/api/src/utils/logger.js",
       "source_location": "L18",
       "id": "utils_logger_logger",
-      "community": 129,
+      "community": 149,
       "norm_label": "logger"
     },
     {
@@ -3411,7 +3411,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_mailer_js",
-      "community": 129,
+      "community": 114,
       "norm_label": "mailer.js"
     },
     {
@@ -3420,7 +3420,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L18",
       "id": "utils_mailer_sendemail",
-      "community": 129,
+      "community": 114,
       "norm_label": "sendemail()"
     },
     {
@@ -3429,7 +3429,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L54",
       "id": "utils_mailer_sendemailwithretry",
-      "community": 129,
+      "community": 114,
       "norm_label": "sendemailwithretry()"
     },
     {
@@ -3438,7 +3438,7 @@
       "source_file": "apps/api/src/utils/mutex.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_mutex_js",
-      "community": 0,
+      "community": 114,
       "norm_label": "mutex.js"
     },
     {
@@ -3483,7 +3483,7 @@
       "source_file": "apps/api/src/utils/mutex.js",
       "source_location": "L37",
       "id": "utils_mutex_globalmutex",
-      "community": 0,
+      "community": 114,
       "norm_label": "globalmutex"
     },
     {
@@ -3492,59 +3492,14 @@
       "source_file": "apps/api/src/utils/otpStore.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_otpstore_js",
-      "community": 139,
+      "community": 129,
       "norm_label": "otpstore.js"
-    },
-    {
-      "label": "MemoryOtpStore",
-      "file_type": "code",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L20",
-      "id": "utils_otpstore_memoryotpstore",
-      "community": 30,
-      "norm_label": "memoryotpstore"
-    },
-    {
-      "label": ".constructor()",
-      "file_type": "code",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L21",
-      "id": "utils_otpstore_memoryotpstore_constructor",
-      "community": 30,
-      "norm_label": ".constructor()"
-    },
-    {
-      "label": ".set()",
-      "file_type": "code",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L26",
-      "id": "utils_otpstore_memoryotpstore_set",
-      "community": 30,
-      "norm_label": ".set()"
-    },
-    {
-      "label": ".get()",
-      "file_type": "code",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L33",
-      "id": "utils_otpstore_memoryotpstore_get",
-      "community": 30,
-      "norm_label": ".get()"
-    },
-    {
-      "label": ".delete()",
-      "file_type": "code",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L45",
-      "id": "utils_otpstore_memoryotpstore_delete",
-      "community": 30,
-      "norm_label": ".delete()"
     },
     {
       "label": "RedisOtpStore",
       "file_type": "code",
       "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L53",
+      "source_location": "L15",
       "id": "utils_otpstore_redisotpstore",
       "community": 30,
       "norm_label": "redisotpstore"
@@ -3553,7 +3508,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L54",
+      "source_location": "L16",
       "id": "utils_otpstore_redisotpstore_constructor",
       "community": 30,
       "norm_label": ".constructor()"
@@ -3562,7 +3517,7 @@
       "label": "._ensureClient()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L59",
+      "source_location": "L20",
       "id": "utils_otpstore_redisotpstore_ensureclient",
       "community": 30,
       "norm_label": "._ensureclient()"
@@ -3571,7 +3526,7 @@
       "label": ".set()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L82",
+      "source_location": "L26",
       "id": "utils_otpstore_redisotpstore_set",
       "community": 30,
       "norm_label": ".set()"
@@ -3580,7 +3535,7 @@
       "label": ".get()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L90",
+      "source_location": "L32",
       "id": "utils_otpstore_redisotpstore_get",
       "community": 30,
       "norm_label": ".get()"
@@ -3589,43 +3544,142 @@
       "label": ".delete()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L99",
+      "source_location": "L39",
       "id": "utils_otpstore_redisotpstore_delete",
       "community": 30,
       "norm_label": ".delete()"
     },
     {
-      "label": "createOtpStore()",
-      "file_type": "code",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L111",
-      "id": "utils_otpstore_createotpstore",
-      "community": 139,
-      "norm_label": "createotpstore()"
-    },
-    {
       "label": "otpStore",
       "file_type": "code",
       "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L120",
+      "source_location": "L46",
       "id": "utils_otpstore_otpstore",
       "community": 139,
       "norm_label": "otpstore"
     },
     {
-      "label": "redisCLient.js",
+      "label": "redisClient.js",
       "file_type": "code",
-      "source_file": "apps/api/src/utils/redisCLient.js",
+      "source_file": "apps/api/src/utils/redisClient.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_redisclient_js",
       "community": 129,
       "norm_label": "redisclient.js"
     },
     {
+      "label": "InMemoryRedisClient",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L9",
+      "id": "utils_redisclient_inmemoryredisclient",
+      "community": 137,
+      "norm_label": "inmemoryredisclient"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L10",
+      "id": "utils_redisclient_inmemoryredisclient_constructor",
+      "community": 137,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".connect()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L14",
+      "id": "utils_redisclient_inmemoryredisclient_connect",
+      "community": 137,
+      "norm_label": ".connect()"
+    },
+    {
+      "label": ".on()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L18",
+      "id": "utils_redisclient_inmemoryredisclient_on",
+      "community": 137,
+      "norm_label": ".on()"
+    },
+    {
+      "label": ".duplicate()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L23",
+      "id": "utils_redisclient_inmemoryredisclient_duplicate",
+      "community": 137,
+      "norm_label": ".duplicate()"
+    },
+    {
+      "label": ".get()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L27",
+      "id": "utils_redisclient_inmemoryredisclient_get",
+      "community": 137,
+      "norm_label": ".get()"
+    },
+    {
+      "label": ".set()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L37",
+      "id": "utils_redisclient_inmemoryredisclient_set",
+      "community": 137,
+      "norm_label": ".set()"
+    },
+    {
+      "label": ".setEx()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L50",
+      "id": "utils_redisclient_inmemoryredisclient_setex",
+      "community": 137,
+      "norm_label": ".setex()"
+    },
+    {
+      "label": ".del()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L58",
+      "id": "utils_redisclient_inmemoryredisclient_del",
+      "community": 137,
+      "norm_label": ".del()"
+    },
+    {
+      "label": ".lPush()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L65",
+      "id": "utils_redisclient_inmemoryredisclient_lpush",
+      "community": 137,
+      "norm_label": ".lpush()"
+    },
+    {
+      "label": ".lLen()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L84",
+      "id": "utils_redisclient_inmemoryredisclient_llen",
+      "community": 137,
+      "norm_label": ".llen()"
+    },
+    {
+      "label": ".brPop()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L89",
+      "id": "utils_redisclient_inmemoryredisclient_brpop",
+      "community": 137,
+      "norm_label": ".brpop()"
+    },
+    {
       "label": "RedisManager",
       "file_type": "code",
-      "source_file": "apps/api/src/utils/redisCLient.js",
-      "source_location": "L5",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L146",
       "id": "utils_redisclient_redismanager",
       "community": 129,
       "norm_label": "redismanager"
@@ -3633,8 +3687,8 @@
     {
       "label": ".constructor()",
       "file_type": "code",
-      "source_file": "apps/api/src/utils/redisCLient.js",
-      "source_location": "L6",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L147",
       "id": "utils_redisclient_redismanager_constructor",
       "community": 129,
       "norm_label": ".constructor()"
@@ -3642,19 +3696,19 @@
     {
       "label": ".getClient()",
       "file_type": "code",
-      "source_file": "apps/api/src/utils/redisCLient.js",
-      "source_location": "L15",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L163",
       "id": "utils_redisclient_redismanager_getclient",
-      "community": 129,
+      "community": 137,
       "norm_label": ".getclient()"
     },
     {
       "label": ".getWorkerClient()",
       "file_type": "code",
-      "source_file": "apps/api/src/utils/redisCLient.js",
-      "source_location": "L40",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L199",
       "id": "utils_redisclient_redismanager_getworkerclient",
-      "community": 129,
+      "community": 137,
       "norm_label": ".getworkerclient()"
     },
     {
@@ -3762,7 +3816,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_statemachine_js",
-      "community": 0,
+      "community": 114,
       "norm_label": "statemachine.js"
     },
     {
@@ -3771,7 +3825,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L11",
       "id": "utils_statemachine_intake_transitions",
-      "community": 0,
+      "community": 114,
       "norm_label": "intake_transitions"
     },
     {
@@ -3780,7 +3834,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L24",
       "id": "utils_statemachine_accession_transitions",
-      "community": 0,
+      "community": 114,
       "norm_label": "accession_transitions"
     },
     {
@@ -3789,7 +3843,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L34",
       "id": "utils_statemachine_inventory_transitions",
-      "community": 0,
+      "community": 114,
       "norm_label": "inventory_transitions"
     },
     {
@@ -3798,7 +3852,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L46",
       "id": "utils_statemachine_submission_transitions",
-      "community": 0,
+      "community": 114,
       "norm_label": "submission_transitions"
     },
     {
@@ -3807,7 +3861,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L55",
       "id": "utils_statemachine_transition_registry",
-      "community": 0,
+      "community": 114,
       "norm_label": "transition_registry"
     },
     {
@@ -3816,7 +3870,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L70",
       "id": "utils_statemachine_validatetransition",
-      "community": 0,
+      "community": 114,
       "norm_label": "validatetransition()"
     },
     {
@@ -3825,7 +3879,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L97",
       "id": "utils_statemachine_asserttransition",
-      "community": 0,
+      "community": 114,
       "norm_label": "asserttransition()"
     },
     {
@@ -3843,7 +3897,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L118",
       "id": "utils_statemachine_gettransitionmap",
-      "community": 0,
+      "community": 114,
       "norm_label": "gettransitionmap()"
     },
     {
@@ -3852,7 +3906,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L125",
       "id": "utils_statemachine_getstatuses",
-      "community": 0,
+      "community": 114,
       "norm_label": "getstatuses()"
     },
     {
@@ -3868,71 +3922,26 @@
       "label": "processTask()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L13",
+      "source_location": "L12",
       "id": "utils_uploadqueue_processtask",
       "community": 31,
       "norm_label": "processtask()"
     },
     {
-      "label": "MemoryQueueAdapter",
+      "label": "RedisQueueAdapter",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L72",
+      "id": "utils_uploadqueue_redisqueueadapter",
+      "community": 31,
+      "norm_label": "redisqueueadapter"
+    },
+    {
+      "label": ".constructor()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/uploadQueue.js",
       "source_location": "L73",
-      "id": "utils_uploadqueue_memoryqueueadapter",
-      "community": 31,
-      "norm_label": "memoryqueueadapter"
-    },
-    {
-      "label": ".constructor()",
-      "file_type": "code",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L74",
-      "id": "utils_uploadqueue_memoryqueueadapter_constructor",
-      "community": 31,
-      "norm_label": ".constructor()"
-    },
-    {
-      "label": ".add()",
-      "file_type": "code",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L80",
-      "id": "utils_uploadqueue_memoryqueueadapter_add",
-      "community": 31,
-      "norm_label": ".add()"
-    },
-    {
-      "label": ".updateQueuePositions()",
-      "file_type": "code",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L86",
-      "id": "utils_uploadqueue_memoryqueueadapter_updatequeuepositions",
-      "community": 31,
-      "norm_label": ".updatequeuepositions()"
-    },
-    {
-      "label": ".processNext()",
-      "file_type": "code",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L96",
-      "id": "utils_uploadqueue_memoryqueueadapter_processnext",
-      "community": 31,
-      "norm_label": ".processnext()"
-    },
-    {
-      "label": "NativeRedisQueueAdapter",
-      "file_type": "code",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L113",
-      "id": "utils_uploadqueue_nativeredisqueueadapter",
-      "community": 31,
-      "norm_label": "nativeredisqueueadapter"
-    },
-    {
-      "label": ".constructor()",
-      "file_type": "code",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L114",
-      "id": "utils_uploadqueue_nativeredisqueueadapter_constructor",
+      "id": "utils_uploadqueue_redisqueueadapter_constructor",
       "community": 31,
       "norm_label": ".constructor()"
     },
@@ -3940,8 +3949,8 @@
       "label": ".init()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L122",
-      "id": "utils_uploadqueue_nativeredisqueueadapter_init",
+      "source_location": "L81",
+      "id": "utils_uploadqueue_redisqueueadapter_init",
       "community": 31,
       "norm_label": ".init()"
     },
@@ -3949,8 +3958,8 @@
       "label": ".add()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L134",
-      "id": "utils_uploadqueue_nativeredisqueueadapter_add",
+      "source_location": "L93",
+      "id": "utils_uploadqueue_redisqueueadapter_add",
       "community": 31,
       "norm_label": ".add()"
     },
@@ -3958,10 +3967,19 @@
       "label": ".startWorker()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L153",
-      "id": "utils_uploadqueue_nativeredisqueueadapter_startworker",
+      "source_location": "L112",
+      "id": "utils_uploadqueue_redisqueueadapter_startworker",
       "community": 31,
       "norm_label": ".startworker()"
+    },
+    {
+      "label": "uploadQueue",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L136",
+      "id": "utils_uploadqueue_uploadqueue",
+      "community": 148,
+      "norm_label": "uploadqueue"
     },
     {
       "label": "acquisition_flow.test.js",
@@ -12249,6 +12267,150 @@
       "norm_label": "done (recent)"
     },
     {
+      "label": "MemoryOtpStore",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L20",
+      "community": 30,
+      "norm_label": "memoryotpstore",
+      "id": "utils_otpstore_memoryotpstore"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L21",
+      "community": 30,
+      "norm_label": ".constructor()",
+      "id": "utils_otpstore_memoryotpstore_constructor"
+    },
+    {
+      "label": ".set()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L26",
+      "community": 30,
+      "norm_label": ".set()",
+      "id": "utils_otpstore_memoryotpstore_set"
+    },
+    {
+      "label": ".get()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L33",
+      "community": 30,
+      "norm_label": ".get()",
+      "id": "utils_otpstore_memoryotpstore_get"
+    },
+    {
+      "label": ".delete()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L45",
+      "community": 30,
+      "norm_label": ".delete()",
+      "id": "utils_otpstore_memoryotpstore_delete"
+    },
+    {
+      "label": "createOtpStore()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L111",
+      "community": 129,
+      "norm_label": "createotpstore()",
+      "id": "utils_otpstore_createotpstore"
+    },
+    {
+      "label": "MemoryQueueAdapter",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L73",
+      "community": 31,
+      "norm_label": "memoryqueueadapter",
+      "id": "utils_uploadqueue_memoryqueueadapter"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L74",
+      "community": 31,
+      "norm_label": ".constructor()",
+      "id": "utils_uploadqueue_memoryqueueadapter_constructor"
+    },
+    {
+      "label": ".add()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L80",
+      "community": 31,
+      "norm_label": ".add()",
+      "id": "utils_uploadqueue_memoryqueueadapter_add"
+    },
+    {
+      "label": ".updateQueuePositions()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L86",
+      "community": 31,
+      "norm_label": ".updatequeuepositions()",
+      "id": "utils_uploadqueue_memoryqueueadapter_updatequeuepositions"
+    },
+    {
+      "label": ".processNext()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L96",
+      "community": 31,
+      "norm_label": ".processnext()",
+      "id": "utils_uploadqueue_memoryqueueadapter_processnext"
+    },
+    {
+      "label": "NativeRedisQueueAdapter",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L113",
+      "community": 31,
+      "norm_label": "nativeredisqueueadapter",
+      "id": "utils_uploadqueue_nativeredisqueueadapter"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L114",
+      "community": 31,
+      "norm_label": ".constructor()",
+      "id": "utils_uploadqueue_nativeredisqueueadapter_constructor"
+    },
+    {
+      "label": ".init()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L122",
+      "community": 31,
+      "norm_label": ".init()",
+      "id": "utils_uploadqueue_nativeredisqueueadapter_init"
+    },
+    {
+      "label": ".add()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L134",
+      "community": 31,
+      "norm_label": ".add()",
+      "id": "utils_uploadqueue_nativeredisqueueadapter_add"
+    },
+    {
+      "label": ".startWorker()",
+      "file_type": "code",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L153",
+      "community": 31,
+      "norm_label": ".startworker()",
+      "id": "utils_uploadqueue_nativeredisqueueadapter_startworker"
+    },
+    {
       "label": "nestedColumns",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/acquisitions/pages/AcquisitionIndex.jsx",
@@ -19087,6 +19249,17 @@
       "target": "controllers_uploadcontroller_handleupload"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/controllers/uploadController.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "apps_api_src_controllers_uploadcontroller_js",
+      "target": "utils_uploadqueue_uploadqueue",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -24980,6 +25153,17 @@
       "target": "utils_mutex_asyncmutex_acquire"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "apps_api_src_utils_otpstore_js",
+      "target": "apps_api_src_utils_redisclient_js",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/utils/otpStore.js",
@@ -25020,6 +25204,17 @@
       "target": "utils_otpstore_redisotpstore"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "apps_api_src_utils_otpstore_js",
+      "target": "utils_redisclient_redismanager",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -25029,79 +25224,6 @@
       "confidence_score": 1.0,
       "source": "apps_api_tests_api_review_hardening_test_js",
       "target": "apps_api_src_utils_otpstore_js"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L21",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_otpstore_memoryotpstore",
-      "target": "utils_otpstore_memoryotpstore_constructor"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L45",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_otpstore_memoryotpstore",
-      "target": "utils_otpstore_memoryotpstore_delete"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L33",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_otpstore_memoryotpstore",
-      "target": "utils_otpstore_memoryotpstore_get"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L26",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_otpstore_memoryotpstore",
-      "target": "utils_otpstore_memoryotpstore_set"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L39",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_otpstore_memoryotpstore_get",
-      "target": "utils_otpstore_redisotpstore_delete"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L34",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_otpstore_memoryotpstore_get",
-      "target": "utils_otpstore_redisotpstore_get"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/otpStore.js",
-      "source_location": "L46",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_otpstore_memoryotpstore_delete",
-      "target": "utils_otpstore_redisotpstore_delete"
     },
     {
       "relation": "method",
@@ -25187,6 +25309,39 @@
       "target": "utils_otpstore_redisotpstore_ensureclient"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L34",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_otpstore_memoryotpstore_get",
+      "target": "utils_otpstore_redisotpstore_get"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L46",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_otpstore_memoryotpstore_delete",
+      "target": "utils_otpstore_redisotpstore_delete"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L39",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_otpstore_memoryotpstore_get",
+      "target": "utils_otpstore_redisotpstore_delete"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -25196,6 +25351,16 @@
       "confidence_score": 1.0,
       "source": "apps_api_tests_api_review_hardening_test_js",
       "target": "utils_otpstore_otpstore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "apps_api_src_utils_redisclient_js",
+      "target": "utils_redisclient_inmemoryredisclient",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -25217,6 +25382,204 @@
       "confidence_score": 1.0,
       "source": "apps_api_src_utils_uploadqueue_js",
       "target": "apps_api_src_utils_redisclient_js"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient",
+      "target": "utils_redisclient_inmemoryredisclient_brpop",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient",
+      "target": "utils_redisclient_inmemoryredisclient_connect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient",
+      "target": "utils_redisclient_inmemoryredisclient_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient",
+      "target": "utils_redisclient_inmemoryredisclient_del",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient",
+      "target": "utils_redisclient_inmemoryredisclient_duplicate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient",
+      "target": "utils_redisclient_inmemoryredisclient_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient",
+      "target": "utils_redisclient_inmemoryredisclient_llen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient",
+      "target": "utils_redisclient_inmemoryredisclient_lpush",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient",
+      "target": "utils_redisclient_inmemoryredisclient_on",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient",
+      "target": "utils_redisclient_inmemoryredisclient_set",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient",
+      "target": "utils_redisclient_inmemoryredisclient_setex",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L178",
+      "weight": 1.0,
+      "source": "utils_redisclient_redismanager_getclient",
+      "target": "utils_redisclient_inmemoryredisclient_connect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L212",
+      "weight": 1.0,
+      "source": "utils_redisclient_redismanager_getworkerclient",
+      "target": "utils_redisclient_inmemoryredisclient_connect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L177",
+      "weight": 1.0,
+      "source": "utils_redisclient_redismanager_getclient",
+      "target": "utils_redisclient_inmemoryredisclient_on",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L211",
+      "weight": 1.0,
+      "source": "utils_redisclient_redismanager_getworkerclient",
+      "target": "utils_redisclient_inmemoryredisclient_on",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L210",
+      "weight": 1.0,
+      "source": "utils_redisclient_redismanager_getworkerclient",
+      "target": "utils_redisclient_inmemoryredisclient_duplicate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient_brpop",
+      "target": "utils_redisclient_inmemoryredisclient_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient_llen",
+      "target": "utils_redisclient_inmemoryredisclient_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/redisClient.js",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "utils_redisclient_inmemoryredisclient_lpush",
+      "target": "utils_redisclient_inmemoryredisclient_get",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -25546,6 +25909,26 @@
       "target": "utils_uploadqueue_processtask"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "apps_api_src_utils_uploadqueue_js",
+      "target": "utils_uploadqueue_redisqueueadapter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L136",
+      "weight": 1.0,
+      "source": "apps_api_src_utils_uploadqueue_js",
+      "target": "utils_uploadqueue_uploadqueue",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -25568,139 +25951,77 @@
       "target": "utils_uploadqueue_processtask"
     },
     {
-      "relation": "method",
+      "relation": "calls",
+      "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L80",
+      "source_location": "L126",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_memoryqueueadapter",
-      "target": "utils_uploadqueue_memoryqueueadapter_add"
+      "source": "utils_uploadqueue_redisqueueadapter_startworker",
+      "target": "utils_uploadqueue_processtask",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L74",
+      "source_location": "L93",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_memoryqueueadapter",
-      "target": "utils_uploadqueue_memoryqueueadapter_constructor"
+      "source": "utils_uploadqueue_redisqueueadapter",
+      "target": "utils_uploadqueue_redisqueueadapter_add",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L96",
+      "source_location": "L73",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_memoryqueueadapter",
-      "target": "utils_uploadqueue_memoryqueueadapter_processnext"
+      "source": "utils_uploadqueue_redisqueueadapter",
+      "target": "utils_uploadqueue_redisqueueadapter_constructor",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L86",
+      "source_location": "L81",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_memoryqueueadapter",
-      "target": "utils_uploadqueue_memoryqueueadapter_updatequeuepositions"
+      "source": "utils_uploadqueue_redisqueueadapter",
+      "target": "utils_uploadqueue_redisqueueadapter_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L112",
+      "weight": 1.0,
+      "source": "utils_uploadqueue_redisqueueadapter",
+      "target": "utils_uploadqueue_redisqueueadapter_startworker",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L83",
+      "source_location": "L78",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_memoryqueueadapter_add",
-      "target": "utils_uploadqueue_memoryqueueadapter_processnext"
+      "source": "utils_uploadqueue_redisqueueadapter_constructor",
+      "target": "utils_uploadqueue_redisqueueadapter_init",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L82",
+      "source_location": "L87",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_memoryqueueadapter_add",
-      "target": "utils_uploadqueue_memoryqueueadapter_updatequeuepositions"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L102",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_memoryqueueadapter_processnext",
-      "target": "utils_uploadqueue_memoryqueueadapter_updatequeuepositions"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L134",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_nativeredisqueueadapter",
-      "target": "utils_uploadqueue_nativeredisqueueadapter_add"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L114",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_nativeredisqueueadapter",
-      "target": "utils_uploadqueue_nativeredisqueueadapter_constructor"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L122",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_nativeredisqueueadapter",
-      "target": "utils_uploadqueue_nativeredisqueueadapter_init"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L153",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_nativeredisqueueadapter",
-      "target": "utils_uploadqueue_nativeredisqueueadapter_startworker"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L119",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_nativeredisqueueadapter_constructor",
-      "target": "utils_uploadqueue_nativeredisqueueadapter_init"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/src/utils/uploadQueue.js",
-      "source_location": "L128",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "utils_uploadqueue_nativeredisqueueadapter_init",
-      "target": "utils_uploadqueue_nativeredisqueueadapter_startworker"
+      "source": "utils_uploadqueue_redisqueueadapter_init",
+      "target": "utils_uploadqueue_redisqueueadapter_startworker",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -29272,9 +29593,9 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_inventory_pages_inventoryconstituents_jsx",
-      "target": "apps_panel_admin_src_components_index_js",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_components_index_js"
     },
     {
       "relation": "imports_from",
@@ -29609,9 +29930,9 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryExhibitions.jsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_inventory_pages_inventoryexhibitions_jsx",
-      "target": "apps_panel_admin_src_components_modal_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_components_modal_jsx"
     },
     {
       "relation": "imports_from",
@@ -30402,9 +30723,9 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_inventory_pages_inventoryconstituents_jsx",
-      "target": "apps_panel_admin_src_context_authcontext_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
       "relation": "imports_from",
@@ -30413,9 +30734,9 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryExhibitions.jsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_inventory_pages_inventoryexhibitions_jsx",
-      "target": "apps_panel_admin_src_context_authcontext_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_context_authcontext_jsx"
     },
     {
       "relation": "imports_from",
@@ -30721,9 +31042,9 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_inventory_pages_inventoryconstituents_jsx",
-      "target": "context_authcontext_useauth",
-      "confidence_score": 1.0
+      "target": "context_authcontext_useauth"
     },
     {
       "relation": "imports",
@@ -30732,9 +31053,9 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryExhibitions.jsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_inventory_pages_inventoryexhibitions_jsx",
-      "target": "context_authcontext_useauth",
-      "confidence_score": 1.0
+      "target": "context_authcontext_useauth"
     },
     {
       "relation": "imports",
@@ -32848,9 +33169,9 @@
       "source_file": "apps/panel-admin/src/pages/inventory/index.js",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_inventory_index_js",
-      "target": "apps_panel_admin_src_pages_inventory_pages_inventoryconstituents_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_pages_inventory_pages_inventoryconstituents_jsx"
     },
     {
       "relation": "re_exports",
@@ -32859,9 +33180,9 @@
       "source_file": "apps/panel-admin/src/pages/inventory/index.js",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_inventory_index_js",
-      "target": "apps_panel_admin_src_pages_inventory_pages_inventoryexhibitions_jsx",
-      "confidence_score": 1.0
+      "target": "apps_panel_admin_src_pages_inventory_pages_inventoryexhibitions_jsx"
     },
     {
       "relation": "re_exports",
@@ -32923,9 +33244,9 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_inventory_pages_inventoryconstituents_jsx",
-      "target": "pages_inventoryconstituents_inventoryconstituents",
-      "confidence_score": 1.0
+      "target": "pages_inventoryconstituents_inventoryconstituents"
     },
     {
       "relation": "contains",
@@ -32933,9 +33254,9 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_inventory_pages_inventoryconstituents_jsx",
-      "target": "pages_inventoryconstituents_type_styles",
-      "confidence_score": 1.0
+      "target": "pages_inventoryconstituents_type_styles"
     },
     {
       "relation": "contains",
@@ -32943,9 +33264,9 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryExhibitions.jsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_inventory_pages_inventoryexhibitions_jsx",
-      "target": "pages_inventoryexhibitions_inventoryexhibitions",
-      "confidence_score": 1.0
+      "target": "pages_inventoryexhibitions_inventoryexhibitions"
     },
     {
       "relation": "contains",
@@ -32953,9 +33274,9 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryExhibitions.jsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_admin_src_pages_inventory_pages_inventoryexhibitions_jsx",
-      "target": "pages_inventoryexhibitions_status_styles",
-      "confidence_score": 1.0
+      "target": "pages_inventoryexhibitions_status_styles"
     },
     {
       "relation": "contains",
@@ -37392,6 +37713,181 @@
       "target": "misc_to_do_p5_open_architectural_decisions"
     },
     {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_otpstore_memoryotpstore",
+      "target": "utils_otpstore_memoryotpstore_constructor"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L45",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_otpstore_memoryotpstore",
+      "target": "utils_otpstore_memoryotpstore_delete"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_otpstore_memoryotpstore",
+      "target": "utils_otpstore_memoryotpstore_get"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/otpStore.js",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_otpstore_memoryotpstore",
+      "target": "utils_otpstore_memoryotpstore_set"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L80",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_memoryqueueadapter",
+      "target": "utils_uploadqueue_memoryqueueadapter_add"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L74",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_memoryqueueadapter",
+      "target": "utils_uploadqueue_memoryqueueadapter_constructor"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L96",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_memoryqueueadapter",
+      "target": "utils_uploadqueue_memoryqueueadapter_processnext"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L86",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_memoryqueueadapter",
+      "target": "utils_uploadqueue_memoryqueueadapter_updatequeuepositions"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L83",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_memoryqueueadapter_add",
+      "target": "utils_uploadqueue_memoryqueueadapter_processnext"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L82",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_memoryqueueadapter_add",
+      "target": "utils_uploadqueue_memoryqueueadapter_updatequeuepositions"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L102",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_memoryqueueadapter_processnext",
+      "target": "utils_uploadqueue_memoryqueueadapter_updatequeuepositions"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L134",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_nativeredisqueueadapter",
+      "target": "utils_uploadqueue_nativeredisqueueadapter_add"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L114",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_nativeredisqueueadapter",
+      "target": "utils_uploadqueue_nativeredisqueueadapter_constructor"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L122",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_nativeredisqueueadapter",
+      "target": "utils_uploadqueue_nativeredisqueueadapter_init"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L153",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_nativeredisqueueadapter",
+      "target": "utils_uploadqueue_nativeredisqueueadapter_startworker"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L119",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_nativeredisqueueadapter_constructor",
+      "target": "utils_uploadqueue_nativeredisqueueadapter_init"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/utils/uploadQueue.js",
+      "source_location": "L128",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "utils_uploadqueue_nativeredisqueueadapter_init",
+      "target": "utils_uploadqueue_nativeredisqueueadapter_startworker"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "api_documentation.md",
@@ -39775,5 +40271,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "df0fbeb77413ede28d0e6f78e1b0b847cd654267"
+  "built_at_commit": "27ffdd3ee3c3f4d7e22416f1a02d4be35b69636a"
 }

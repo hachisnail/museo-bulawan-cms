@@ -40,7 +40,7 @@ const envSchema = Joi.object({
     UPLOAD_DIR: Joi.string().default('./uploads'),
 
     // Redis (optional — used for OTP store in production)
-    REDIS_URL: Joi.string().optional().default(''),
+    REDIS_URL: Joi.string().allow('').optional().default(''),
 
 }).unknown().required();
 

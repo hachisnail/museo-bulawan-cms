@@ -17,6 +17,10 @@ const {
 
 const containerBg = theme === 'dark' ? 'bg-[#1C1B19]' : 'bg-white';
 
+// Umami Analytics configuration (falls back to HTTPS production endpoint)
+const umamiUrl = import.meta.env.PUBLIC_UMAMI_URL || 'https://umami-ussccgcg0ss04w4gc48os8wg.ipms-cnsc.com';
+const umamiWebsiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID || '1f9d2500-1f95-479f-8c01-66049615aa07';
+
 import Header from '../components/ui/Header.astro';
 import Footer from '../components/ui/Footer.astro';
 import Nav from '../components/ui/Nav.astro';
@@ -28,8 +32,12 @@ import Nav from '../components/ui/Nav.astro';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/LOGO.png" />
+  <link rel="icon" href="/favicon.ico" />
   <title>{title}</title>
-  <script defer src="http://umami-ussccgcg0ss04w4gc48os8wg.ipms-cnsc.com/script.js" data-website-id="1f9d2500-1f95-479f-8c01-66049615aa07"></script>
+  {umamiUrl && umamiWebsiteId && (
+    <script defer is:inline src={`${umamiUrl}/script.js`} data-website-id={umamiWebsiteId}></script>
+  )}
 </head>
 
 <body class={`${containerBg} flex flex-col min-h-screen w-full overflow-x-hidden relative m-0`}>

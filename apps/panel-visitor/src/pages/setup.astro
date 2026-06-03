@@ -121,7 +121,7 @@ import Layout from '../layouts/Layout.astro';
     const successAlert = document.getElementById('success-alert') as HTMLDivElement;
     const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
 
-    const API_BASE_URL = import.meta.env.DEV ? '' : 'http://localhost:3000';
+    const API_BASE_URL = import.meta.env.DEV ? '' : (import.meta.env.PUBLIC_API_URL || 'http://localhost:3000');
     
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');

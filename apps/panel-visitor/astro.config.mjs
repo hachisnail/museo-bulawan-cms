@@ -10,7 +10,7 @@ export default defineConfig({
     mode: 'standalone'
   }),
   server: {
-    port: 4321
+    port: process.env.PORT ? parseInt(process.env.PORT) : 4322
   },
   vite: {
     server: {

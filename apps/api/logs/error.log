@@ -1646,3 +1646,4 @@ sql:
     at processParams (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:582:12)
     at next (C:\Users\jeffe\Development\prod-dev\museo-bulawan-cms\node_modules\router\index.js:291:5)
     at internalNext (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/node_modules/helmet/index.mjs:527:6) | Meta: {"method":"POST","url":"/api/v1/auth/login","ip":"::1","user":"Guest"}
+2026-06-03 21:49:20 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}

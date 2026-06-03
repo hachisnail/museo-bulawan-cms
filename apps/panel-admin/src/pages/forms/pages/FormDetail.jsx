@@ -113,7 +113,8 @@ export default function FormDetail() {
 // SHARE & EMBED TAB
 // ─────────────────────────────────────────────────────────────────────────────
 function EmbedTab({ form }) {
-    const publicUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? (window.location.port === '5173' ? ':4321' : ':' + window.location.port) : ''}/forms/display/${form.id}`;
+    const landingUrl = import.meta.env.VITE_LANDING_URL || `${window.location.protocol}//${window.location.hostname}${window.location.port ? (window.location.port === '5173' ? ':4321' : ':' + window.location.port) : ''}`;
+    const publicUrl = `${landingUrl.replace(/\/$/, '')}/forms/display/${form.id}`;
     const embedUrl = `${window.location.origin}/forms/embed/${form.id}`;
     
     // Generate the dynamic embed code

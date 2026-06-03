@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "dev": "nodemon server.js"
   },

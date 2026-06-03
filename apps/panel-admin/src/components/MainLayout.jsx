@@ -397,7 +397,7 @@ export default function MainLayout() {
             {shouldLoadCms && (
               <iframe 
                   ref={cmsIframeRef}
-                  src="http://localhost:3001/admin/collections/articles" 
+                  src={`${import.meta.env.VITE_CMS_URL || 'http://localhost:3001'}/admin/collections/articles`} 
                   className="w-full h-full flex-1 border-0"
                   title="Payload CMS Editor Preloaded"
                   onLoad={() => setIsCmsLoading(false)}

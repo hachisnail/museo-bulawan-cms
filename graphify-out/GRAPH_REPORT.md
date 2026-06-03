@@ -1,16 +1,16 @@
 # Graph Report - museo-bulawan-cms  (2026-06-03)
 
 ## Corpus Check
-- 314 files · ~390,088 words
+- 314 files · ~390,127 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1645 nodes · 2439 edges · 150 communities (122 shown, 28 thin omitted)
+- 1646 nodes · 2440 edges · 152 communities (125 shown, 27 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `27ffdd3e`
+- Built from commit: `081e2b3d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -118,6 +118,8 @@
 - [[_COMMUNITY_Community 139|Community 139]]
 - [[_COMMUNITY_Community 140|Community 140]]
 - [[_COMMUNITY_Community 145|Community 145]]
+- [[_COMMUNITY_Community 146|Community 146]]
+- [[_COMMUNITY_Community 147|Community 147]]
 - [[_COMMUNITY_Community 148|Community 148]]
 - [[_COMMUNITY_Community 149|Community 149]]
 - [[_COMMUNITY_Community 150|Community 150]]
@@ -150,7 +152,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (150 total, 28 thin omitted)
+## Communities (152 total, 27 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.29
@@ -165,8 +167,8 @@ Cohesion: 0.16
 Nodes (14): defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES, buildAbility(), requireAuth(), router, router (+6 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.04
-Nodes (48): author, dependencies, ajv, bcrypt, @casl/ability, connect-redis, cors, docx (+40 more)
+Cohesion: 0.06
+Nodes (32): dependencies, ajv, bcrypt, @casl/ability, connect-redis, cors, docx, docxtemplater (+24 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.05
@@ -193,8 +195,8 @@ Cohesion: 0.07
 Nodes (27): ../layouts/Layout.astro, ../styles/global.css, connectSSE(), deliverySlipContainer, detailDate, detailId, detailMethodBadge, detailsContent (+19 more)
 
 ### Community 10 - "Community 10"
-Cohesion: 0.17
-Nodes (13): accessionController, complianceController, VALID_ENTITY_TYPES, intakeController, inventoryController, schemas, acquisitionController, loansController (+5 more)
+Cohesion: 0.18
+Nodes (12): accessionController, complianceController, VALID_ENTITY_TYPES, intakeController, inventoryController, schemas, loansController, formatTags() (+4 more)
 
 ### Community 11 - "Community 11"
 Cohesion: 0.07
@@ -349,8 +351,8 @@ Cohesion: 0.11
 Nodes (13): Icons, MainLayout(), useSSEGlobal(), useSSE(), Dashboard(), CHART_COLORS, FormsIndex(), getStatusStyles() (+5 more)
 
 ### Community 106 - "Community 106"
-Cohesion: 0.40
-Nodes (5): definitionController, queryController, schemas, submissionController, formService
+Cohesion: 0.35
+Nodes (6): formController, definitionController, queryController, schemas, submissionController, formService
 
 ### Community 107 - "Community 107"
 Cohesion: 0.15
@@ -385,8 +387,8 @@ Cohesion: 0.16
 Nodes (12): constituentService, donationPipeline, sendEmail(), sendEmailWithRetry(), globalMutex, ACCESSION_TRANSITIONS, assertTransition(), INTAKE_TRANSITIONS (+4 more)
 
 ### Community 115 - "Community 115"
-Cohesion: 0.25
-Nodes (10): loginSchema, userController, userService, identityController, identityService, lifecycleController, managementController, managementService (+2 more)
+Cohesion: 0.23
+Nodes (11): loginSchema, userController, userService, identityController, identityService, lifecycleController, lifecycleService, managementController (+3 more)
 
 ### Community 116 - "Community 116"
 Cohesion: 0.12
@@ -426,15 +428,15 @@ Nodes (5): 3. Things in the doc that are slightly misleading, A. §1 calls Paylo
 
 ### Community 129 - "Community 129"
 Cohesion: 0.15
-Nodes (13): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), getPrivateFile() (+5 more)
+Nodes (16): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), getPrivateFile() (+8 more)
 
 ### Community 130 - "Community 130"
-Cohesion: 0.19
-Nodes (8): formController, formUpload, router, authLimiter, globalLimiter, publicFormLimiter, strictActionLimiter, router
+Cohesion: 0.21
+Nodes (7): formUpload, router, authLimiter, globalLimiter, publicFormLimiter, strictActionLimiter, router
 
 ### Community 131 - "Community 131"
-Cohesion: 0.24
-Nodes (7): router, upload, createAppointment(), createSchedule(), requireVisitorAuth(), validate(), router
+Cohesion: 0.22
+Nodes (8): router, upload, acquisitionController, createAppointment(), createSchedule(), requireVisitorAuth(), validate(), router
 
 ### Community 132 - "Community 132"
 Cohesion: 0.32
@@ -445,33 +447,45 @@ Cohesion: 0.32
 Nodes (4): ajv, formatTime(), getScheduleById(), serializeSchedule()
 
 ### Community 136 - "Community 136"
-Cohesion: 0.13
-Nodes (13): startServer(), db, pool, initMariaDB(), compliancePipeline, checkMedia(), serialize(), run() (+5 more)
+Cohesion: 0.14
+Nodes (12): startServer(), db, pool, initMariaDB(), compliancePipeline, checkMedia(), serialize(), run() (+4 more)
 
 ### Community 139 - "Community 139"
-Cohesion: 0.33
+Cohesion: 0.29
 Nodes (6): definitionService, queryService, ajv, submissionService, verificationService, otpStore
 
 ### Community 145 - "Community 145"
 Cohesion: 0.13
 Nodes (8): AppointmentDetail(), getApptStatus(), getVisitorName(), AppointmentsIndex(), columns, getApptStatus(), STATUS_STYLE, normalizeStatus()
 
+### Community 146 - "Community 146"
+Cohesion: 0.22
+Nodes (8): author, description, keywords, license, main, name, type, version
+
+### Community 147 - "Community 147"
+Cohesion: 0.40
+Nodes (5): devDependencies, cross-env, daisyui, jest, nodemon
+
 ### Community 148 - "Community 148"
 Cohesion: 0.38
 Nodes (5): handleDonationUpload(), handleUpload(), router, upload, uploadQueue
 
 ### Community 149 - "Community 149"
-Cohesion: 0.20
-Nodes (6): auditService, lifecycleService, securityService, customFormat, logger, sseManager
+Cohesion: 0.19
+Nodes (3): NotificationService, appEvents, sseManager
+
+### Community 150 - "Community 150"
+Cohesion: 0.50
+Nodes (4): scripts, dev, start, test
 
 ### Community 151 - "Community 151"
 Cohesion: 0.19
 Nodes (11): __dirname, documentService, __filename, ALLOWED_TABLES, CONTRACT_TYPE_MAP, getContractType(), getLegalStatus(), LEGAL_STATUS_MAP (+3 more)
 
 ## Knowledge Gaps
-- **805 isolated node(s):** `version`, `records`, `fired`, `falsePositive`, `precision` (+800 more)
+- **806 isolated node(s):** `version`, `records`, `fired`, `falsePositive`, `precision` (+801 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **28 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **27 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -481,11 +495,11 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `useAuth()` connect `Community 1` to `Community 32`, `Community 105`, `Community 107`, `Community 140`, `Community 108`, `Community 145`, `Community 51`, `Community 26`, `Community 61`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **What connects `version`, `records`, `fired` to the rest of the system?**
-  _805 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _806 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.08362369337979095 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
-  _Cohesion score 0.04081632653061224 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0625 - nodes in this community are weakly interconnected._
 - **Should `Community 4` be split into smaller, more focused modules?**
   _Cohesion score 0.05410628019323672 - nodes in this community are weakly interconnected._
 - **Should `Community 5` be split into smaller, more focused modules?**

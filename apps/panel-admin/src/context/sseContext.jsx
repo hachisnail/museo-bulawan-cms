@@ -22,7 +22,10 @@ export const SSEProvider = ({ children }) => {
         
         if (evtSource.current) evtSource.current.close();
 
-        const baseURL = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000');
+        let baseURL = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000');
+        if (baseURL.endsWith('/')) {
+            baseURL = baseURL.slice(0, -1);
+        }
         
         console.log('[SSE] Connecting to global stream...');
         evtSource.current = new EventSource(`${baseURL}/api/v1/realtime/stream`, {
@@ -59,9 +62,17 @@ export const SSEProvider = ({ children }) => {
         evtSource.current.onerror = () => {
             setStatus('error');
             evtSource.current.close();
+            evtSource.current = null;
+            
+            if (reconnectTimeout.current) {
+                clearTimeout(reconnectTimeout.current);
+            }
             // Ensure we only reconnect if STILL logged in
-            if (!reconnectTimeout.current && user && user.id) {
-                reconnectTimeout.current = setTimeout(connect, 5000);
+            if (user && user.id) {
+                reconnectTimeout.current = setTimeout(() => {
+                    reconnectTimeout.current = null;
+                    connect();
+                }, 5000);
             }
         };
     }, [user]);

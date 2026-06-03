@@ -35,13 +35,22 @@ const envSchema = Joi.object({
     COOKIE_DOMAIN: Joi.string().optional().allow(''),
 
 
-    // ==========================================
     // File Storage Config
     // ==========================================
     UPLOAD_DIR: Joi.string().default('./uploads'),
 
     // Redis (optional — used for OTP store in production)
     REDIS_URL: Joi.string().allow('').optional().default(''),
+
+    // Umami Analytics Config
+    UMAMI_URL: Joi.string().optional().allow('').default('https://analytics.museobulawan.qzz.io'),
+    UMAMI_WEBSITE_ID: Joi.string().optional().allow('').default('1f9d2500-1f95-479f-8c01-66049615aa07'),
+    UMAMI_USERNAME: Joi.string().optional().allow('').default('admin'),
+    UMAMI_PASSWORD: Joi.string().optional().allow('').default('umami'),
+    UMAMI_API_TOKEN: Joi.string().optional().allow('').default(''),
+
+    // CMS Config
+    CMS_URL: Joi.string().optional().allow('').default('http://localhost:3001'),
 
 }).unknown().required();
 
@@ -81,5 +90,14 @@ export const env = {
     },
 
     uploadDir: envVars.UPLOAD_DIR,
-    redisUrl: envVars.REDIS_URL || ''
+    redisUrl: envVars.REDIS_URL || '',
+
+    umami: {
+        url: envVars.UMAMI_URL,
+        websiteId: envVars.UMAMI_WEBSITE_ID,
+        username: envVars.UMAMI_USERNAME,
+        password: envVars.UMAMI_PASSWORD,
+        apiToken: envVars.UMAMI_API_TOKEN
+    },
+    cmsUrl: envVars.CMS_URL
 };

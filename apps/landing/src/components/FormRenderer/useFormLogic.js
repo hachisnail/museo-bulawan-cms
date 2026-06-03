@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
  */
 export const useFormLogic = ({ 
     id, 
-    apiBaseUrl = '', 
+    apiBaseUrl = import.meta.env.PUBLIC_API_URL || '', 
     customFetch = fetch,
     onSuccess,
     onError,

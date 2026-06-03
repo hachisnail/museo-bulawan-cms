@@ -18,7 +18,8 @@ export const AuthProvider = ({ children }) => {
         if (!Cookies.get('user')) return; 
 
         try {
-            const baseURL = import.meta.env.DEV ? '' : import.meta.env.VITE_API_BASE_URL;
+            let baseURL = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_BASE_URL || '');
+            if (baseURL.endsWith('/')) baseURL = baseURL.slice(0, -1);
             const res = await fetch(`${baseURL}/api/v1/auth/check`, {
                 credentials: 'include'
             });
@@ -93,7 +94,8 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            const baseURL = import.meta.env.DEV ? '' : import.meta.env.VITE_API_BASE_URL;
+            let baseURL = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_BASE_URL || '');
+            if (baseURL.endsWith('/')) baseURL = baseURL.slice(0, -1);
             await fetch(`${baseURL}/api/v1/auth/logout`, { 
                 method: 'POST', 
                 credentials: 'include' 
@@ -110,7 +112,8 @@ export const AuthProvider = ({ children }) => {
      * by clearing local state, forcing the user back to the login screen.
      */
     const apiFetch = async (url, options = {}) => {
-        const baseURL = import.meta.env.DEV ? '' : import.meta.env.VITE_API_BASE_URL;
+        let baseURL = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_BASE_URL || '');
+        if (baseURL.endsWith('/')) baseURL = baseURL.slice(0, -1);
         const fetchUrl = url.startsWith('http') ? url : `${baseURL}${url}`;
         
         // Ensure headers object exists

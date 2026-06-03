@@ -9,5 +9,7 @@ router.get('/collection-health', requireAuth, analyticsController.getCollectionH
 router.get('/valuations', requireAuth, analyticsController.getValuationSummary);
 router.get('/inventory-status', requireAuth, analyticsController.getInventoryStatusSummary);
 router.get('/audits', requireAuth, analyticsController.getAuditStatistics);
+router.get('/umami', requireAuth, analyticsController.getUmamiAnalytics);
+router.get('/overview', requireAuth, analyticsController.getOverviewStats);
 
 export default router;

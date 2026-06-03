@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
  */
 export const useFormLogic = ({ 
     id, 
-    apiBaseUrl = '', 
+    apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '', 
     customFetch = fetch,
     onSuccess,
     onError,

@@ -14,7 +14,7 @@ import { validateAppointmentBooking } from '../../utils/scheduleValidation';
  * without touching useFormLogic, ExternalForm, or InternalForm.
  */
 const FormRenderer = (props) => {
-    const { variant, compact, apiBaseUrl = '', customFetch: baseFetch = fetch } = props;
+    const { variant, compact, apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '', customFetch: baseFetch = fetch } = props;
 
     // ── Appointment conflict check — fetch interceptor ───────────────────────
     // Intercepts POST calls to */submit. If the submitted data contains a

@@ -1,5 +1,8 @@
 import { db } from '../config/db.js';
 import { mapDTO } from '../utils/dtoMapper.js';
+import { env } from '../config/env.js';
+import { logger } from '../utils/logger.js';
+import { umamiService } from '../services/umamiService.js';
 
 export const analyticsController = {
     async getAcquisitionStats(req, res, next) {
@@ -213,5 +216,95 @@ export const analyticsController = {
                 }
             });
         } catch (error) { next(error); }
+    },
+
+    async getUmamiAnalytics(req, res, next) {
+        try {
+            const { period = '7d' } = req.query;
+            const data = await umamiService.getWebsiteAnalytics(period);
+            res.status(200).json({
+                status: 'success',
+                data
+            });
+        } catch (error) {
+            logger.error(`[Analytics] Failed to fetch Umami stats: ${error.message}`);
+            // Return empty graceful response instead of failing
+            res.status(200).json({
+                status: 'success',
+                data: {
+                    period: req.query.period || '7d',
+                    stats: {
+                        pageviews: { value: 0, change: 0 },
+                        visitors: { value: 0, change: 0 },
+                        visits: { value: 0, change: 0 },
+                        bounces: { value: 0, change: 0 },
+                        totaltime: { value: 0, change: 0 }
+                    },
+                    pageviews: { pageviews: [], sessions: [] },
+                    urls: [],
+                    referrers: [],
+                    devices: []
+                }
+            });
+        }
+    },
+
+    async getOverviewStats(req, res, next) {
+        try {
+            // Aggregate totals from database
+            const [inventoryCount] = await db.query("SELECT COUNT(*) as count FROM inventory");
+            const [accessionCount] = await db.query("SELECT COUNT(*) as count FROM accessions");
+            const [intakeCount] = await db.query("SELECT COUNT(*) as count FROM intakes");
+            const [appointmentCount] = await db.query("SELECT COUNT(*) as count FROM appointments");
+            const [schedulesCount] = await db.query("SELECT COUNT(*) as count FROM schedules");
+            const [submissionsCount] = await db.query("SELECT COUNT(*) as count FROM form_submissions");
+            
+            // Total valuation estimate of current active inventory (sum of latest valuations)
+            const [valuationSum] = await db.query(`
+                SELECT SUM(amount) as total
+                FROM valuations
+                WHERE id IN (
+                    SELECT MAX(id) FROM valuations GROUP BY inventory_id
+                )
+            `);
+
+            // Fetch from Payload CMS
+            let articlesCount = 0;
+            let mediaCount = 0;
+            try {
+                const cmsUrl = env.cmsUrl.replace(/\/$/, '');
+                const articlesRes = await fetch(`${cmsUrl}/api/articles?limit=1`, { signal: AbortSignal.timeout(2000) });
+                if (articlesRes.ok) {
+                    const data = await articlesRes.json();
+                    articlesCount = data.totalDocs || 0;
+                }
+                const mediaRes = await fetch(`${cmsUrl}/api/media?limit=1`, { signal: AbortSignal.timeout(2000) });
+                if (mediaRes.ok) {
+                    const data = await mediaRes.json();
+                    mediaCount = data.totalDocs || 0;
+                }
+            } catch (err) {
+                logger.warn(`[Analytics] Failed to fetch CMS stats: ${err.message}`);
+            }
+
+            res.status(200).json({
+                status: 'success',
+                data: {
+                    totals: {
+                        inventory: inventoryCount.count || 0,
+                        accessions: accessionCount.count || 0,
+                        intakes: intakeCount.count || 0,
+                        appointments: appointmentCount.count || 0,
+                        schedules: schedulesCount.count || 0,
+                        submissions: submissionsCount.count || 0,
+                        articles: articlesCount,
+                        cmsMedia: mediaCount,
+                        estimatedValue: valuationSum.total || 0
+                    }
+                }
+            });
+        } catch (error) {
+            next(error);
+        }
     }
 };

@@ -9,11 +9,15 @@ export const csrfProtection = (req, res, next) => {
     }
 
     // 2. Set the cookie so the frontend (like Axios) can automatically read and send it
-    res.cookie('XSRF-TOKEN', req.session.csrfToken, {
+    const cookieOptions = {
         sameSite: env.isProd ? 'none' : 'lax',
         secure: env.isProd,
         httpOnly: false // MUST be false so client-side JS can read it
-    });
+    };
+    if (env.cookieDomain) {
+        cookieOptions.domain = env.cookieDomain;
+    }
+    res.cookie('XSRF-TOKEN', req.session.csrfToken, cookieOptions);
 
     // 3. Skip validation for safe methods (read-only)
     if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {

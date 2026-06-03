@@ -52,19 +52,24 @@ if (env.isProd && env.redisUrl) {
     }
 }
 
+const sessionCookieOptions = {
+    // In production (cross-domain), SameSite MUST be 'none' and Secure MUST be true.
+    // In development (localhost), 'lax' and false are required because you don't have HTTPS.
+    sameSite: env.isProd ? 'none' : 'lax', 
+    secure: env.isProd, 
+    httpOnly: true, // Prevents JavaScript from reading the cookie (XSS protection)
+    maxAge: 1000 * 60 * 60 * 8 
+};
+if (env.cookieDomain) {
+    sessionCookieOptions.domain = env.cookieDomain;
+}
+
 app.use(session({
     store: sessionStore,
     secret: env.security.sessionSecret, 
     resave: false,
     saveUninitialized: false, 
-    cookie: {
-        // In production (cross-domain), SameSite MUST be 'none' and Secure MUST be true.
-        // In development (localhost), 'lax' and false are required because you don't have HTTPS.
-        sameSite: env.isProd ? 'none' : 'lax', 
-        secure: env.isProd, 
-        httpOnly: true, // Prevents JavaScript from reading the cookie (XSS protection)
-        maxAge: 1000 * 60 * 60 * 8 
-    }
+    cookie: sessionCookieOptions
 }));
 
 // Apply CSRF protection immediately after session is established

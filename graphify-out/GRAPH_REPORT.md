@@ -1,16 +1,16 @@
 # Graph Report - museo-bulawan-cms  (2026-06-03)
 
 ## Corpus Check
-- 314 files · ~390,127 words
+- 315 files · ~390,314 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1646 nodes · 2440 edges · 152 communities (125 shown, 27 thin omitted)
+- 1648 nodes · 2445 edges · 153 communities (127 shown, 26 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `081e2b3d`
+- Built from commit: `a260a836`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -110,8 +110,6 @@
 - [[_COMMUNITY_Community 131|Community 131]]
 - [[_COMMUNITY_Community 132|Community 132]]
 - [[_COMMUNITY_Community 133|Community 133]]
-- [[_COMMUNITY_Community 134|Community 134]]
-- [[_COMMUNITY_Community 135|Community 135]]
 - [[_COMMUNITY_Community 136|Community 136]]
 - [[_COMMUNITY_Community 137|Community 137]]
 - [[_COMMUNITY_Community 138|Community 138]]
@@ -124,13 +122,14 @@
 - [[_COMMUNITY_Community 149|Community 149]]
 - [[_COMMUNITY_Community 150|Community 150]]
 - [[_COMMUNITY_Community 151|Community 151]]
+- [[_COMMUNITY_Community 152|Community 152]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `useAuth()` - 64 edges
 2. `db` - 47 edges
 3. `logger` - 40 edges
 4. `useSSE()` - 28 edges
-5. `env` - 19 edges
+5. `env` - 20 edges
 6. `10. Additional Article Builder recommendations (Payload-specific)` - 18 edges
 7. `10. Additional Article Builder recommendations (Payload-specific)` - 18 edges
 8. `compilerOptions` - 16 edges
@@ -152,19 +151,19 @@
 ## Import Cycles
 - None detected.
 
-## Communities (152 total, 27 thin omitted)
+## Communities (153 total, 26 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.29
-Nodes (8): accessionService, baseService, exhibitionService, intakeService, inventoryService, loanService, locationService, valuationService
+Cohesion: 0.14
+Nodes (19): accessionService, baseService, exhibitionService, intakeService, inventoryService, loanService, locationService, valuationService (+11 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.08
 Nodes (20): ProtectedRoute(), AuthContext, AuthProvider(), useAuth(), SSEContext, SSEProvider(), Analytics(), COLORS (+12 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.16
-Nodes (14): defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES, buildAbility(), requireAuth(), router, router (+6 more)
+Cohesion: 0.18
+Nodes (13): buildAbility(), checkPermission(), requireAuth(), router, router, router, router, entityPermissionMap (+5 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.06
@@ -239,8 +238,8 @@ Cohesion: 0.10
 Nodes (19): 1. Acceptance, 1. Confirm Delivery, 1. Create Accession Record, 1. Finalize to Inventory, 1. Initial Intake Creation, 1. Internal Movement (Transfer), 1. Update Research Data, 2. Attaching Initial Media (The Multi-Step Upload) (+11 more)
 
 ### Community 21 - "Community 21"
-Cohesion: 0.05
-Nodes (30): ExternalForm(), InternalForm(), ../components/ui/Footer.astro, ../components/ui/Header.astro, ../components/ui/Nav.astro, ../../../layouts/BaseLayout.astro, FormRenderer(), escapeHtml() (+22 more)
+Cohesion: 0.07
+Nodes (20): ExternalForm(), InternalForm(), ../components/ui/Footer.astro, ../components/ui/Header.astro, ../components/ui/Nav.astro, ../../../layouts/BaseLayout.astro, escapeHtml(), renderLexicalNode() (+12 more)
 
 ### Community 22 - "Community 22"
 Cohesion: 0.11
@@ -271,7 +270,7 @@ Cohesion: 0.18
 Nodes (4): MemoryQueueAdapter, NativeRedisQueueAdapter, processTask(), RedisQueueAdapter
 
 ### Community 32 - "Community 32"
-Cohesion: 0.16
+Cohesion: 0.14
 Nodes (9): getManagementSidebarCount(), getManagementSidebarStats(), getManagementSidebarTitle(), ManagementIndex(), ROLE_STYLES, STATUS_STYLES, ManagementUser(), ROLE_STYLES (+1 more)
 
 ### Community 33 - "Community 33"
@@ -347,16 +346,16 @@ Cohesion: 0.09
 Nodes (7): getIntakeDonorEmail(), getIntakeDonorPhone(), IntakeDetail(), STATUS_STYLES, IntakeItem(), IntakeManualNew(), OfferItem()
 
 ### Community 105 - "Community 105"
-Cohesion: 0.11
-Nodes (13): Icons, MainLayout(), useSSEGlobal(), useSSE(), Dashboard(), CHART_COLORS, FormsIndex(), getStatusStyles() (+5 more)
+Cohesion: 0.10
+Nodes (14): Icons, MainLayout(), useSSEGlobal(), useSSE(), Dashboard(), CHART_COLORS, FormsIndex(), getStatusStyles() (+6 more)
 
 ### Community 106 - "Community 106"
-Cohesion: 0.35
-Nodes (6): formController, definitionController, queryController, schemas, submissionController, formService
+Cohesion: 0.40
+Nodes (5): definitionController, queryController, schemas, submissionController, formService
 
 ### Community 107 - "Community 107"
-Cohesion: 0.15
-Nodes (14): MiniCal(), DeleteModal(), ScheduleAdd(), EventCard(), EventDetail(), Schedule(), convertTo24Hour(), FC_COLORS (+6 more)
+Cohesion: 0.09
+Nodes (23): FormRenderer(), MiniCal(), DeleteModal(), EventCard(), EventDetail(), Schedule(), convertTo24Hour(), countOverlappingEvents() (+15 more)
 
 ### Community 108 - "Community 108"
 Cohesion: 0.35
@@ -427,12 +426,12 @@ Cohesion: 0.40
 Nodes (5): 3. Things in the doc that are slightly misleading, A. §1 calls Payload a "microservice", B. §2.C "delete `apps/cms/data/payload.db`", C. §2.A "Payload automatically saves an empty draft when the create page opens", D. §3.B "slug || id"
 
 ### Community 129 - "Community 129"
-Cohesion: 0.15
-Nodes (16): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), getPrivateFile() (+8 more)
+Cohesion: 0.13
+Nodes (14): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), getPrivateFile() (+6 more)
 
 ### Community 130 - "Community 130"
-Cohesion: 0.21
-Nodes (7): formUpload, router, authLimiter, globalLimiter, publicFormLimiter, strictActionLimiter, router
+Cohesion: 0.19
+Nodes (8): formController, formUpload, router, authLimiter, globalLimiter, publicFormLimiter, strictActionLimiter, router
 
 ### Community 131 - "Community 131"
 Cohesion: 0.22
@@ -447,12 +446,12 @@ Cohesion: 0.32
 Nodes (4): ajv, formatTime(), getScheduleById(), serializeSchedule()
 
 ### Community 136 - "Community 136"
-Cohesion: 0.14
-Nodes (12): startServer(), db, pool, initMariaDB(), compliancePipeline, checkMedia(), serialize(), run() (+4 more)
+Cohesion: 0.18
+Nodes (14): startServer(), db, initMariaDB(), definitionService, queryService, ajv, submissionService, verificationService (+6 more)
 
 ### Community 139 - "Community 139"
-Cohesion: 0.29
-Nodes (6): definitionService, queryService, ajv, submissionService, verificationService, otpStore
+Cohesion: 0.36
+Nodes (4): auditService, securityService, customFormat, logger
 
 ### Community 145 - "Community 145"
 Cohesion: 0.13
@@ -471,36 +470,36 @@ Cohesion: 0.38
 Nodes (5): handleDonationUpload(), handleUpload(), router, upload, uploadQueue
 
 ### Community 149 - "Community 149"
-Cohesion: 0.19
-Nodes (3): NotificationService, appEvents, sseManager
+Cohesion: 0.12
+Nodes (5): pool, checkMedia(), serialize(), appEvents, sseManager
 
 ### Community 150 - "Community 150"
 Cohesion: 0.50
 Nodes (4): scripts, dev, start, test
 
 ### Community 151 - "Community 151"
-Cohesion: 0.19
-Nodes (11): __dirname, documentService, __filename, ALLOWED_TABLES, CONTRACT_TYPE_MAP, getContractType(), getLegalStatus(), LEGAL_STATUS_MAP (+3 more)
+Cohesion: 0.50
+Nodes (4): defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES
 
 ## Knowledge Gaps
-- **806 isolated node(s):** `version`, `records`, `fired`, `falsePositive`, `precision` (+801 more)
+- **807 isolated node(s):** `version`, `records`, `fired`, `falsePositive`, `precision` (+802 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **27 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `db` connect `Community 136` to `Community 0`, `Community 129`, `Community 132`, `Community 133`, `Community 135`, `Community 138`, `Community 106`, `Community 139`, `Community 114`, `Community 149`, `Community 151`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **Why does `useAuth()` connect `Community 1` to `Community 32`, `Community 105`, `Community 107`, `Community 140`, `Community 108`, `Community 145`, `Community 51`, `Community 26`, `Community 61`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+- **Why does `db` connect `Community 136` to `Community 0`, `Community 129`, `Community 132`, `Community 133`, `Community 135`, `Community 138`, `Community 106`, `Community 139`, `Community 114`, `Community 149`?**
+  _High betweenness centrality (0.007) - this node is a cross-community bridge._
 - **What connects `version`, `records`, `fired` to the rest of the system?**
-  _806 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _807 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Community 0` be split into smaller, more focused modules?**
+  _Cohesion score 0.14260249554367202 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.08362369337979095 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
   _Cohesion score 0.0625 - nodes in this community are weakly interconnected._
 - **Should `Community 4` be split into smaller, more focused modules?**
   _Cohesion score 0.05410628019323672 - nodes in this community are weakly interconnected._
-- **Should `Community 5` be split into smaller, more focused modules?**
-  _Cohesion score 0.04878048780487805 - nodes in this community are weakly interconnected._

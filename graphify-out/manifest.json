@@ -65,8 +65,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\api\\src\\app.js": {
-    "mtime": 1780204159.0235229,
-    "ast_hash": "8fe5fdbe703ba3bee774ed32dbca69f9",
+    "mtime": 1780500816.1396425,
+    "ast_hash": "2f8ca93f4046bbef768e814becfb6c87",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\api\\src\\config\\ability.js": {
@@ -90,8 +90,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\api\\src\\config\\env.js": {
-    "mtime": 1780492237.0208788,
-    "ast_hash": "4b5ef9473a00f5d442332c4b2aa1cb33",
+    "mtime": 1780500800.5066078,
+    "ast_hash": "7e82c860680a78aa471625b763c71947",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\api\\src\\config\\passport.js": {
@@ -220,8 +220,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\api\\src\\middlewares\\csrfHandler.js": {
-    "mtime": 1779807529.6004806,
-    "ast_hash": "b2bcb3f7c06f23dd5239b9b87d445ba6",
+    "mtime": 1780500827.8693018,
+    "ast_hash": "cbef46d496b0010517982dbbd86adb4f",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\api\\src\\middlewares\\errorHandler.js": {
@@ -1637,6 +1637,11 @@
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\api\\src\\utils\\redisClient.js": {
     "mtime": 1780492229.1962492,
     "ast_hash": "15c809a982de15eb34af56ebd849b5ab",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\api\\tests\\csrf.test.js": {
+    "mtime": 1780500890.896766,
+    "ast_hash": "ad7828bce13dad3a101e2b975169be95",
     "semantic_hash": ""
   }
 }

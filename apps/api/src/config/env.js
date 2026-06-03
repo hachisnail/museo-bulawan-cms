@@ -32,6 +32,7 @@ const envSchema = Joi.object({
     ADMIN_PANEL_URL: Joi.string().default('http://localhost:3001'), // Staff management panel
     VISITOR_PORTAL_URL: Joi.string().default('http://localhost:4321'), // Donor/visitor portal
     CORS_ORIGINS: Joi.string().default('http://localhost:5173'),  // Comma-separated list for CORS
+    COOKIE_DOMAIN: Joi.string().optional().allow(''),
 
 
     // ==========================================
@@ -60,6 +61,7 @@ export const env = {
     visitorPortalUrl: envVars.VISITOR_PORTAL_URL,
     // Parse the comma-separated string into an array and trim whitespace
     corsOrigins: envVars.CORS_ORIGINS.split(',').map(origin => origin.trim()),
+    cookieDomain: envVars.COOKIE_DOMAIN || undefined,
 
     db: {
         host: envVars.DB_HOST,

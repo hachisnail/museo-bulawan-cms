@@ -23,19 +23,13 @@ const formUpload = multer({
 /**
  * Form Domain Routes
  * 
- * Handles public form definitions, OTP flows, and staff-facing submission management.
+ * IMPORTANT: All static /admin/* routes MUST be defined BEFORE the dynamic /:id
+ * catch-all route, otherwise Express will match 'admin' as the :id parameter
+ * and the admin routes will never be reached.
  */
 
 // ==========================================
-// PUBLIC ROUTES
-// ==========================================
-router.get('/:id', formController.getFormDefinition);
-router.post('/:id/request-otp', strictActionLimiter, formController.requestOtp);
-router.post('/:id/verify-otp', strictActionLimiter, formController.verifyOtp);
-router.post('/:id/submit', publicFormLimiter, formUpload.array('attachments', 5), formController.submitForm);
-
-// ==========================================
-// ADMIN/STAFF ROUTES
+// ADMIN/STAFF ROUTES (must be before /:id catch-all)
 // ==========================================
 router.get('/admin/definitions',
     requireAuth,
@@ -86,6 +80,9 @@ router.get('/admin/submissions/:submissionId',
     formController.getSubmission
 );
 
+// ==========================================
+// PUBLIC ROUTES (dynamic /:id catch-all last)
+// ==========================================
 router.get('/:id/submissions', 
     requireAuth, 
     buildAbility, 
@@ -93,5 +90,9 @@ router.get('/:id/submissions',
     formController.listSubmissions
 );
 
-export default router;
+router.get('/:id', formController.getFormDefinition);
+router.post('/:id/request-otp', strictActionLimiter, formController.requestOtp);
+router.post('/:id/verify-otp', strictActionLimiter, formController.verifyOtp);
+router.post('/:id/submit', publicFormLimiter, formUpload.array('attachments', 5), formController.submitForm);
 
+export default router;

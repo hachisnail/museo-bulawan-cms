@@ -39,6 +39,7 @@ export default function AuditLogsIndex() {
     const [logs, setLogs] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(true);
+    const [isUpdating, setIsUpdating] = useState(false);
 
     // --- Table & Search ---
     const [currentPage, setCurrentPage] = useState(1);
@@ -52,6 +53,7 @@ export default function AuditLogsIndex() {
     // ─────────────────────────────────────────────────────────────────────────────
     const fetchLogs = useCallback(async (silent = false) => {
         if (!silent) setLoading(true);
+        else setIsUpdating(true);
         try {
             const queryParams = new URLSearchParams({
                 page: currentPage,
@@ -71,11 +73,14 @@ export default function AuditLogsIndex() {
             console.error('Failed to fetch audit trail logs', err);
         } finally {
             setLoading(false);
+            setIsUpdating(false);
         }
     }, [apiFetch, currentPage, searchTerm, sortConfig, actionFilter]);
 
     useEffect(() => {
-        fetchLogs();
+        // Only show skeleton on first empty load
+        const silent = logs.length > 0;
+        fetchLogs(silent);
     }, [fetchLogs]);
 
     useEffect(() => {
@@ -91,10 +96,14 @@ export default function AuditLogsIndex() {
     }, []);
 
     const handleSort = (key) => {
-        setSortConfig(current => ({
-            key,
-            direction: current.key === key && current.direction === 'asc' ? 'desc' : 'asc'
-        }));
+        setSortConfig(current => {
+            if (current.key === key && current.direction === 'asc') {
+                return { key, direction: 'desc' };
+            } else if (current.key === key && current.direction === 'desc') {
+                return { key: null, direction: null };
+            }
+            return { key, direction: 'asc' };
+        });
     };
 
     const handleRowClick = (row) => {
@@ -206,6 +215,7 @@ export default function AuditLogsIndex() {
                     showExtraActions={false}
                     isExpandable={false}
                     isLoading={loading}
+                    isUpdating={isUpdating}
                     sortConfig={sortConfig}
                     onSort={handleSort}
                     onRowClick={handleRowClick}

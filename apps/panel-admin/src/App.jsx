@@ -18,16 +18,15 @@ import { ManagementPage, ManagementUserPage } from './pages/management/index.js'
 import Profile from './pages/Profile';
 import { IntakesPage, IntakePage, OfferPage, IntakeManualNewPage } from './pages/intakes/index.js';
 import { AccessionsPage, AccessionPage } from './pages/accessions';
-import { InventoryPage, InventoryItemPage } from './pages/inventory';
+import { InventoryPage, InventoryItemPage, InventoryLocationsPage, InventoryExhibitionsPage, InventoryConstituentsPage } from './pages/inventory';
 import Home from './pages/Home';
 import Analytics from './pages/Analytics';
 import SubmissionViewer from './pages/SubmissionViewer';
-import Constituents from './pages/Constituents';
-import Exhibitions from './pages/Exhibitions';
+
 import ArticlesCMS from './pages/ArticlesCMS';
 import { SettingsPage } from './pages/settings/index.js';
 import { AuditLogsIndex, AuditLogView } from './pages/audit-logs/index.js';
-import Locations from './pages/Locations';
+
 import { ScheduleIndex, ScheduleAdd } from './pages/schedule';
 import { AppointmentsIndex, AppointmentDetail, WalkInAdd } from './pages/appointments';
 
@@ -82,6 +81,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/forms/display/:id" element={<PublicFormViewer />} />
+            <Route path="/forms/embed/:id" element={<PublicFormViewer />} />
 
             {/* Protected Shell */}
             <Route element={<ProtectedRoute />}>
@@ -94,12 +94,13 @@ function App() {
                     <Route path="/accessions" element={<AccessionsPage />} />
                     <Route path="/accessions/:id" element={<AccessionPage />} />
                     <Route path="/inventory" element={<InventoryPage />} />
+                    <Route path="/inventory/locations" element={<InventoryLocationsPage />} />
+                    <Route path="/inventory/exhibitions" element={<InventoryExhibitionsPage />} />
+                    <Route path="/inventory/constituents" element={<InventoryConstituentsPage />} />
                     <Route path="/inventory/:id" element={<InventoryItemPage />} />
                     <Route path="/management" element={<ManagementPage />} />
                     <Route path="/management/:id" element={<ManagementUserPage />} />
-                    <Route path="/constituents" element={<Constituents />} />
-                    <Route path="/exhibitions" element={<Exhibitions />} />
-                    <Route path="/locations" element={<Locations />} />
+
                     <Route path="/articles" element={<ArticlesCMS />} />
                     <Route path="/settings" element={<SettingsPage />} />
                     <Route path="/analytics" element={<Analytics />} />

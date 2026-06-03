@@ -4,7 +4,7 @@
  */
 
 /** Statuses considered archived/completed for intakes */
-const INTAKE_ARCHIVE_STATUSES = ['rejected', 'accessioned', 'processed'];
+const INTAKE_ARCHIVE_STATUSES = ['rejected', 'accessioned'];
 
 /** Returns the stat rows for the sidebar based on the active tab. */
 export function getSidebarStats({ activeTab, submissions, intakes }) {
@@ -12,10 +12,11 @@ export function getSidebarStats({ activeTab, submissions, intakes }) {
     const awaitingDeliveryCount = activeIntakesList.filter(i => i.status === 'awaiting_delivery').length;
     const inCustodyCount        = activeIntakesList.filter(i => i.status === 'in_custody').length;
     const approvedIntakesCount  = activeIntakesList.filter(i => i.status === 'approved').length;
+    const inAccessioningCount   = activeIntakesList.filter(i => i.status === 'processed').length;
     const pendingOffersCount       = submissions.filter(s => ['pending', 'under_review'].includes(s.status)).length;
     const archivedSubmissionsCount = submissions.filter(s => s.status === 'archived' || s.status === 'processed').length;
     const rejectedIntakesCount     = intakes.filter(i => i.status === 'rejected').length;
-    const accessionedIntakesCount  = intakes.filter(i => i.status === 'accessioned' || i.status === 'processed').length;
+    const accessionedIntakesCount  = intakes.filter(i => i.status === 'accessioned').length;
 
     if (activeTab === 'submissions') {
         return [
@@ -26,6 +27,7 @@ export function getSidebarStats({ activeTab, submissions, intakes }) {
         return [
             { label: 'Awaiting Delivery',    count: awaitingDeliveryCount, bgClass: 'bg-zinc-50',     badgeClass: 'bg-zinc-100 text-zinc-800' },
             { label: 'In Custody',           count: inCustodyCount,        bgClass: 'bg-zinc-50',     badgeClass: 'bg-zinc-200 text-zinc-900' },
+            { label: 'In Accessioning',      count: inAccessioningCount,   bgClass: 'bg-blue-50/50',  badgeClass: 'bg-blue-100 text-blue-800' },
             { label: 'Approved',             count: approvedIntakesCount,  bgClass: 'bg-green-50/50', badgeClass: 'bg-green-100 text-green-800' }
         ];
     }

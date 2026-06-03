@@ -157,7 +157,7 @@ export const definitionController = {
 
             const csvContent = csvLines.join('\n');
             res.setHeader('Content-Type', 'text/csv');
-            res.setHeader('Content-Disposition', `attachment; filename=submissions-${slug}.csv`);
+            res.setHeader('Content-Disposition', `attachment; filename=submissions-${definition.slug}.csv`);
             return res.status(200).send(csvContent);
         } catch (error) {
             next(error);

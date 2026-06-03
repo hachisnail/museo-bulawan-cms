@@ -2,8 +2,7 @@ import { useState } from 'react';
 
 export default function ManualIntakeForm({
     actionLoading,
-    onSubmit,
-    onCancel
+    onSubmit
 }) {
     const [itemName, setItemName] = useState('');
     const [sourceInfo, setSourceInfo] = useState('');
@@ -26,20 +25,6 @@ export default function ManualIntakeForm({
 
     return (
         <div className="border border-zinc-200 bg-white rounded-sm flex flex-col h-full p-8 shadow-sm">
-            <div className="border-b border-zinc-200 pb-4 mb-6 flex justify-between items-center bg-zinc-50 -mx-8 -mt-8 p-8 rounded-t-sm">
-                <div>
-                    <h2 className="text-2xl font-serif text-black uppercase tracking-wider leading-tight">Register Manual Intake</h2>
-                    <p className="text-xs text-zinc-500 mt-1 font-light">Record an offline or legacy acquisition directly.</p>
-                </div>
-                <button 
-                    onClick={onCancel} 
-                    type="button"
-                    className="p-3 bg-white border border-zinc-300 rounded-sm hover:bg-zinc-50 transition-all text-zinc-400 hover:text-black"
-                >
-                    ✕
-                </button>
-            </div>
-            
             <form onSubmit={handleSubmit} className="flex-1 flex flex-col justify-between space-y-6 overflow-y-auto pr-1">
                 <div className="space-y-6">
                     <div className="space-y-2">

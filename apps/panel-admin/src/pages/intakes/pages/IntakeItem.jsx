@@ -5,14 +5,15 @@ import { useAuth } from '../../../context/authContext';
 import Modal from '../../../components/Modal';
 import MoaDialog from '../../../components/Intakes/MoaDialog';
 import { STATUS_STYLES } from '../../../components/Intakes/IntakeDetail';
+import { ArrowLeft } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Skeleton Loader
 // ─────────────────────────────────────────────────────────────────────────────
 function IntakeItemSkeleton() {
     return (
-        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 animate-pulse">
-            <div className="space-y-6 pt-4">
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 animate-pulse">
+            <div className="space-y-6">
                 <div className="h-4 bg-gray-200 rounded w-28" />
                 <div className="flex items-center gap-3 mt-2">
                     <div className="h-8 bg-gray-200 rounded w-1/3" />
@@ -239,9 +240,9 @@ export default function IntakeItem() {
 
     if (!intake) {
         return (
-            <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-                <button onClick={() => navigate(`/intakes?tab=${fromTab}`)} className="self-start text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1.5 mb-3">
-                    <span>←</span> Back to Intakes
+            <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+                <button onClick={() => navigate(`/intakes?tab=${fromTab}`)} className="text-xs text-zinc-500 hover:text-black transition-colors flex items-center gap-2 mb-4 font-bold uppercase tracking-widest">
+                    <ArrowLeft className="w-4 h-4" /> Back to Intakes
                 </button>
                 <p className="text-gray-500 text-base">Intake record not found.</p>
             </div>
@@ -261,23 +262,23 @@ export default function IntakeItem() {
     const allMedia = media;
 
     return (
-        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
-            <section className="flex items-start border-b border-gray-200 pb-6 mb-2">
+            <section className="flex items-start border-b border-gray-100 pb-4 mb-4">
                 <div className="flex-1">
                     <button
                         onClick={() => navigate(`/intakes?tab=${fromTab}`)}
-                        className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1.5 mb-3"
+                        className="text-xs text-zinc-500 hover:text-black transition-colors flex items-center gap-2 mb-4 font-bold uppercase tracking-widest"
                     >
-                        <span>←</span> Back to Intakes
+                        <ArrowLeft className="w-4 h-4" /> Back to Intakes
                     </button>
                     <div className="flex items-center gap-4 flex-wrap">
-                        <h1 className="text-2xl font-bold text-gray-900">{intake.proposed_item_name || 'Unnamed Record'}</h1>
+                        <h1 className="text-3xl font-bold text-black tracking-tight">{intake.proposed_item_name || 'Unnamed Record'}</h1>
                         <span className={`px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wider border ${STATUS_STYLES[intake.status] || STATUS_STYLES.pending}`}>
                             {intake.status?.replace(/_/g, ' ')}
                         </span>
                     </div>
-                    <p className="text-base text-gray-500 mt-2">
+                    <p className="text-sm text-gray-500 mt-1">
                         Intake Record &mdash; Logged {intake.created ? new Date(intake.created).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'}
                     </p>
                 </div>

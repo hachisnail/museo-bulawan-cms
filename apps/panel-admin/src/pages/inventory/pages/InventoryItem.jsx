@@ -2,8 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../../context/authContext';
 import { useSSE } from '../../../hooks/useSSE';
-import Modal from '../../../components/Modal';
 import FormRenderer from '../../../components/FormRenderer';
+import Modal from '../../../components/Modal';
+import { DataTable } from '../../../components';
 import MovementForm from '../components/MovementForm';
 import { 
     Box, 
@@ -13,7 +14,8 @@ import {
     FileText, 
     TrendingUp,
     Activity,
-    ClipboardList
+    ClipboardList,
+    ArrowLeft
 } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -40,8 +42,8 @@ const getStatusStyles = (status) => {
 // ─────────────────────────────────────────────────────────────────────────────
 function InventoryItemSkeleton() {
     return (
-        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 animate-pulse">
-            <div className="space-y-6 pt-4">
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 animate-pulse">
+            <div className="space-y-6">
                 <div className="h-4 bg-gray-200 rounded w-32" />
                 <div className="flex items-center gap-3 mt-2">
                     <div className="h-8 bg-gray-200 rounded w-1/3" />
@@ -212,20 +214,20 @@ export default function InventoryItem() {
                     if (m.context !== 'Signed MOA Document') {
                         allMediaList.push({
                             ...m,
-                            url: `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/v1/files/accession/${accId}/${m.file_name}`
+                            url: `${import.meta.env.VITE_API_BASE_URL || ''}/api/v1/files/accession/${accId}/${m.file_name}`
                         });
                     }
                 });
                 intakeMedia.forEach(m => {
                     allMediaList.push({
                         ...m,
-                        url: `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/v1/files/intake/${intakeId}/${m.file_name}`
+                        url: `${import.meta.env.VITE_API_BASE_URL || ''}/api/v1/files/intake/${intakeId}/${m.file_name}`
                     });
                 });
                 inventoryMedia.forEach(m => {
                     allMediaList.push({
                         ...m,
-                        url: `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/v1/files/inventory/${id}/${m.file_name}`
+                        url: `${import.meta.env.VITE_API_BASE_URL || ''}/api/v1/files/inventory/${id}/${m.file_name}`
                     });
                 });
 
@@ -479,9 +481,9 @@ Would you like to reload the latest record and try again?`,
     if (loading) return <InventoryItemSkeleton />;
     if (!artifact) {
         return (
-            <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <button onClick={() => navigate(`/inventory?tab=${backTab}`)} className="self-start text-sm font-medium text-blue-600 hover:text-blue-800 mt-4 flex items-center gap-1.5">
-                    <span>←</span> Back to Inventory
+            <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+                <button onClick={() => navigate(`/inventory?tab=${backTab}`)} className="text-xs text-zinc-500 hover:text-black transition-colors flex items-center gap-2 mb-4 font-bold uppercase tracking-widest">
+                    <ArrowLeft className="w-4 h-4" /> Back to Inventory
                 </button>
                 <p className="text-gray-500 text-base">Record not found.</p>
             </div>
@@ -496,24 +498,29 @@ Would you like to reload the latest record and try again?`,
     const donorName = isAnon ? 'Anonymous Donor' : (fullName || accession.submitted_by || '—');
 
     return (
-        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
             {/* ── Page Header ── */}
-            <section className="flex items-start border-b border-gray-200 pb-6 mb-2">
+            <section className="flex items-start border-b border-gray-100 pb-4 mb-4 gap-6">
+                {media.length > 0 && (
+                    <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0 shadow-sm animate-in fade-in duration-300">
+                        <img src={media[0].url} alt="Artifact cover" className="w-full h-full object-cover" />
+                    </div>
+                )}
                 <div className="flex-1">
                     <button
                         onClick={() => navigate(`/inventory?tab=${backTab}`)}
-                        className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1.5 mb-3"
+                        className="text-xs text-zinc-500 hover:text-black transition-colors flex items-center gap-2 mb-4 font-bold uppercase tracking-widest animate-in fade-in duration-300"
                     >
-                        <span>←</span> Back to Inventory
+                        <ArrowLeft className="w-4 h-4" /> Back to Inventory
                     </button>
                     <div className="flex items-center gap-4 flex-wrap">
-                        <h1 className="text-2xl font-bold text-gray-900">{intake.proposed_item_name || 'Unnamed Artifact'}</h1>
+                        <h1 className="text-3xl font-bold text-black tracking-tight">{intake.proposed_item_name || 'Unnamed Artifact'}</h1>
                         <span className={`px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wider border ${getStatusStyles(artifact.status)}`}>
                             {artifact.status === 'deaccessioned' ? 'Deaccessioned' : ((artifact.status === 'loan' || artifact.status === 'loaned') ? 'On Display' : (artifact.status === 'maintenance' ? 'Under Maintenance' : 'In Storage'))}
                         </span>
                     </div>
-                    <p className="text-base text-gray-500 mt-2">
+                    <p className="text-sm text-gray-500 mt-1">
                         Acquired on {artifact.created ? new Date(artifact.created).toLocaleDateString() : 'N/A'} &mdash; Origin: {intake.origin || 'N/A'}
                     </p>
                 </div>
@@ -575,9 +582,11 @@ Would you like to reload the latest record and try again?`,
                             <Section title="Technical Specifications">
                                 <Field label="Dimensions" value={accession.dimensions || 'N/A'} />
                                 <Field label="Materials" value={accession.materials || 'N/A'} />
+                                <TextBlock label="Physical Description" value={intake.description || 'N/A'} />
                             </Section>
 
                             <Section title="Historical Significance & Story">
+                                <TextBlock label="Provenance / History" value={intake.provenance || 'N/A'} />
                                 <TextBlock label="Story Summary" value={accession.historical_significance || 'Ongoing archival research.'} italic={true} />
                             </Section>
 
@@ -762,24 +771,28 @@ Would you like to reload the latest record and try again?`,
                             </div>
 
                             <div className="space-y-4">
-                                {auditLogs.map((a, i) => (
-                                    <div key={i} className="p-4 border border-gray-200 rounded bg-white hover:bg-gray-50/50 transition-colors flex justify-between items-start">
-                                        <div>
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <ShieldCheck className="w-4 h-4 text-green-500" />
-                                                <div className="text-xs font-bold text-gray-900 uppercase">VERIFIED LOCATION</div>
+                                <DataTable
+                                    columns={[
+                                        { key: 'created_at', label: 'Date', isBold: true, render: val => new Date(val || new Date()).toLocaleDateString() },
+                                        { key: 'audited_by_name', label: 'Auditor', render: val => val || 'MB-STAFF' },
+                                        { key: 'audited_location', label: 'Verified Location', render: (val, row) => (
+                                            <div className="flex items-center gap-2">
+                                                <ShieldCheck className="w-3.5 h-3.5 text-green-500" />
+                                                <span className="font-mono text-xs">{val || artifact.current_location}</span>
                                             </div>
-                                            <p className="text-xs text-zinc-500 italic">"{a.discrepancy_notes || a.notes || 'Object found in correct location.'}"</p>
-                                            <div className="text-[10px] text-zinc-400 mt-2">
-                                                Auditor: {a.audited_by_name || 'MB-STAFF'} • Location: {a.audited_location || artifact.current_location}
-                                            </div>
-                                        </div>
-                                        <div className="text-xs font-mono text-zinc-400">{new Date(a.created_at || a.created || a.audit_date).toLocaleDateString()}</div>
-                                    </div>
-                                ))}
-                                {auditLogs.length === 0 && (
-                                    <div className="py-12 text-center text-gray-400 italic">No spot checks recorded.</div>
-                                )}
+                                        )},
+                                        { key: 'notes', label: 'Summary', render: (val, row) => (
+                                            <span className="text-xs text-zinc-500 italic">"{row.discrepancy_notes || val || 'Object found in correct location.'}"</span>
+                                        )}
+                                    ]}
+                                    data={auditLogs}
+                                    showExtraActions={false}
+                                    isExpandable={false}
+                                    isLoading={loading}
+                                    currentPage={1}
+                                    totalPages={1}
+                                    onPageChange={() => {}}
+                                />
                             </div>
                         </div>
                     )}

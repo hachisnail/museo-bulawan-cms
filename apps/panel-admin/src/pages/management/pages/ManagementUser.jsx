@@ -271,21 +271,22 @@ export default function ManagementUser() {
     }
 
     return (
-        <div className="max-w-7xl mx-auto space-y-8 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 animate-in fade-in duration-300">
             {/* Header Action bar */}
-            <div>
-                <button 
-                    onClick={() => navigate(`/management?tab=${returnTab}`)}
-                    className="text-xs text-zinc-500 hover:text-black transition-colors flex items-center gap-2 mb-4 font-bold uppercase tracking-widest"
-                >
-                    <ArrowLeft className="w-4 h-4" /> Back to Directory
-                </button>
-                <div className="flex justify-between items-start border-b border-gray-150 pb-6">
+            <section className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-100 pb-4 mb-2 gap-4">
+                <div className="flex-1">
+                    <button 
+                        onClick={() => navigate(`/management?tab=${returnTab}`)}
+                        className="text-xs text-zinc-500 hover:text-black transition-colors flex items-center gap-2 mb-4 font-bold uppercase tracking-widest"
+                    >
+                        <ArrowLeft className="w-4 h-4" /> Back to Directory
+                    </button>
                     <div>
                         <h1 className="text-3xl font-bold text-black tracking-tight">{targetUser.fname} {targetUser.lname}</h1>
                         <p className="text-sm text-zinc-500 font-mono mt-1">{targetUser.email}</p>
                     </div>
-                    <div className="flex gap-3">
+                </div>
+                <div className="flex gap-3">
                         <span className={`px-3 py-1 rounded text-xs font-bold uppercase tracking-wider border ${ROLE_STYLES[targetUser.role] || ROLE_STYLES.visitor}`}>
                             {targetUser.role.replace(/_/g, ' ')}
                         </span>
@@ -293,8 +294,7 @@ export default function ManagementUser() {
                             {targetUser.status}
                         </span>
                     </div>
-                </div>
-            </div>
+            </section>
 
             {/* Overrides Card */}
             <div className="bg-white border border-gray-150 rounded-xl p-8 shadow-sm space-y-6">

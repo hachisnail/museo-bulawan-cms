@@ -434,8 +434,7 @@ const ExternalForm = (props) => {
                                 </button>
                             ))}
                         </div>
-// Replace the existing file widget block with this:
-) : prop['ui:widget'] === 'file' || prop.format === 'file' ? (
+                    ) : prop['ui:widget'] === 'file' || prop.format === 'file' ? (
     <div className="space-y-4">
         <label 
             className="w-full border border-dashed border-gray-400 rounded-sm p-8 flex flex-col items-center justify-center gap-4 hover:border-black hover:bg-gray-50 transition-all cursor-pointer"

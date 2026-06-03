@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { Field, Label, Input, Description, Button } from '@headlessui/react';
+import { Loader2, AlertCircle, ArrowRight, ShieldCheck, XCircle } from 'lucide-react';
 
 export default function SetupAccount() {
     const [searchParams] = useSearchParams();
@@ -9,18 +9,34 @@ export default function SetupAccount() {
     const [formData, setFormData] = useState({ username: '', password: '', confirmPassword: '' });
     const [status, setStatus] = useState({ type: '', message: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isShaking, setIsShaking] = useState(false);
     const navigate = useNavigate();
 
-    // Client-side validation
-    const isLengthValid = formData.password.length >= 8;
-    const passwordsMatch = formData.password === formData.confirmPassword;
-    const canSubmit = formData.username.trim().length > 0 && formData.password.length > 0 && isLengthValid && passwordsMatch;
+    const triggerShake = () => {
+        setIsShaking(true);
+        setTimeout(() => setIsShaking(false), 500);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus({ type: '', message: '' });
 
-        if (!canSubmit) return;
+        // Client-side Constraint Validation
+        if (!formData.username.trim()) {
+            triggerShake();
+            return setStatus({ type: 'error', message: 'Please provide a username.' });
+        }
+
+        if (formData.password.length < 8) {
+            triggerShake();
+            return setStatus({ type: 'error', message: 'Password must be at least 8 characters.' });
+        }
+
+        if (formData.password !== formData.confirmPassword) {
+            triggerShake();
+            return setStatus({ type: 'error', message: 'Passwords do not match.' });
+        }
+
         setIsSubmitting(true);
 
         try {
@@ -30,158 +46,199 @@ export default function SetupAccount() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
                     token, 
-                    username: formData.username, 
+                    username: formData.username.trim(), 
                     password: formData.password 
                 })
             });
 
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || data.error || 'Failed to setup account.');
-            setStatus({ type: 'success', message: "Account successfully created. Redirecting to login..." });
+            
+            setStatus({ type: 'success', message: "Account successfully created! Redirecting to login..." });
             setTimeout(() => navigate('/login'), 2500);
         } catch (err) {
             setStatus({ type: 'error', message: err.message });
+            triggerShake();
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    // --- Fallback View for Missing Token ---
+    // Shared Sidebar Component
+    const Sidebar = () => (
+        <div className="hidden lg:flex lg:w-1/2 relative bg-zinc-950 items-center justify-center overflow-hidden border-r border-zinc-900">
+            <div className="absolute inset-0 bg-black/40 z-10"></div>
+            <div className="absolute inset-0 opacity-40 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-zinc-600 via-zinc-950 to-black"></div>
+            <div className="z-20 flex flex-col items-start px-12 xl:px-16 max-w-xl">
+                <div className="h-[2px] w-8 bg-zinc-500 rounded-full mb-6 opacity-80"></div>
+                <div>
+                    <h2 className="text-3xl xl:text-4xl font-serif text-white tracking-tight leading-tight">Welcome to the Archive</h2>
+                    <h3 className="text-lg xl:text-xl font-light text-zinc-400 tracking-wide mt-1 mb-4">Set up your profile</h3>
+                </div>
+                <p className="text-sm text-zinc-400 leading-relaxed max-w-sm font-light">
+                    Create your internal administrative credentials to access and manage the Museo Bulawan collections repository.
+                </p>
+            </div>
+        </div>
+    );
+
+    // --- Invalid Token State ---
     if (!token) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4">
-                <div className="w-full max-w-sm rounded-sm bg-white p-8 shadow-sm border border-zinc-200 text-center">
-                    <div className="mx-auto flex h-12 w-12 items-center justify-center bg-black rounded-sm mb-4">
-                        <svg className="h-6 w-6 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
+            <div className="flex min-h-screen bg-zinc-50 font-sans">
+                <Sidebar />
+                <div className="flex w-full lg:w-1/2 flex-col justify-center px-6 py-12 sm:px-12 md:px-16 bg-white relative">
+                    <div className="mx-auto w-full max-w-sm text-center">
+                        <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                        <h2 className="text-2xl font-serif font-bold text-zinc-900 mb-2">Invalid Invitation</h2>
+                        <p className="text-sm text-zinc-500 mb-8">The security invitation token is missing or malformed. Please verify the registration link or contact your system administrator.</p>
                     </div>
-                    <h2 className="text-xl font-serif tracking-widest text-black uppercase mb-2">Invalid Invitation</h2>
-                    <p className="text-sm text-zinc-500 mb-6">Security token is missing or malformed. Please use the exact link provided in your invitation email.</p>
                 </div>
             </div>
         );
     }
 
-    // --- Main View ---
     return (
-        <div className="flex min-h-screen bg-white">
-            
-            {/* Left Column: Editorial Feature */}
-            <div className="hidden lg:flex lg:w-1/2 relative bg-zinc-950 items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-zinc-900 opacity-80 mix-blend-multiply"></div>
-                <div className="z-10 flex flex-col items-start px-16 max-w-lg">
-                    <div className="h-1 w-12 bg-[#D4AF37] mb-6"></div>
-                    <h2 className="text-4xl font-serif text-white leading-tight">
-                        Welcome to the archive.<br/>
-                        <span className="text-[#D4AF37]">Set up your profile.</span>
-                    </h2>
-                    <p className="mt-4 text-sm text-zinc-400 font-light leading-relaxed">
-                        Create your username and password to establish your access to the Museo Bulawan collection management system.
-                    </p>
-                </div>
-            </div>
+        <div className="flex min-h-screen bg-zinc-50 font-sans selection:bg-zinc-900 selection:text-white">
+            <style>{`
+                @keyframes setupShake {
+                    0%, 100% { transform: translateX(0); }
+                    20%, 60% { transform: translateX(-4px); }
+                    40%, 80% { transform: translateX(4px); }
+                }
+                .animate-shake {
+                    animation: setupShake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+                }
+            `}</style>
 
-            {/* Right Column: Setup Form */}
-            <div className="flex w-full lg:w-1/2 flex-col justify-center px-8 py-12 sm:px-16 md:px-24">
+            <Sidebar />
+
+            {/* --- Right Column: Setup Form --- */}
+            <div className="flex w-full lg:w-1/2 flex-col justify-center px-6 py-8 sm:px-12 md:px-16 bg-white relative">
                 <div className="mx-auto w-full max-w-sm">
                     
                     {/* Brand Header */}
-                    <div className="flex flex-col mb-10">
+                    <div className="flex flex-col mb-5">
                         <div className="flex items-center gap-3 mb-1">
-                            <div className="flex h-10 w-10 items-center justify-center bg-black rounded-sm shadow-sm border border-zinc-800">
-                                <svg className="h-6 w-6 text-[#D4AF37]" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                                </svg>
+                            <img src="/LOGO.png" alt="Museo Bulawan" className="w-10 h-10 object-contain flex-shrink-0" />
+                            <div className="flex flex-col">
+                                <h1 className="text-lg font-serif font-bold leading-none text-zinc-900 tracking-tight">
+                                    Museo Bulawan
+                                </h1>
+                                <h2 className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-0.5">
+                                    Account Creation
+                                </h2>
                             </div>
-                            <h1 className="text-2xl font-serif tracking-widest text-black uppercase">
-                                Account Setup
-                            </h1>
                         </div>
-                        <h2 className="text-[10px] font-semibold text-zinc-400 uppercase tracking-[0.2em] ml-[3.25rem]">
-                            Create Credentials
-                        </h2>
                     </div>
 
-                    {/* Status Message */}
-                    {status.message && (
-                        <div className={`mb-6 text-sm py-3 px-4 rounded-sm border ${status.type === 'error' ? 'bg-red-50 text-red-700 border-red-200' : 'bg-[#D4AF37]/10 text-[#A68A27] border-[#D4AF37]/30'}`}>
-                            {status.message}
+                    {/* Smooth Status Container */}
+                    <div className="transition-all duration-300 ease-in-out overflow-hidden mb-3">
+                        <div
+                            className={`transition-all duration-300 ease-in-out overflow-hidden rounded-lg border ${
+                                status.message
+                                    ? `opacity-100 max-h-24 p-2.5 ${status.type === 'error' ? 'border-red-200 bg-red-50/50 text-red-700' : 'border-green-200 bg-green-50/50 text-green-700'}`
+                                    : "opacity-0 max-h-0 border-transparent p-0"
+                            }`}
+                        >
+                            <div className="flex items-start gap-2 text-xs">
+                                {status.type === 'error' ? (
+                                    <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                                ) : (
+                                    <ShieldCheck className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                                )}
+                                <span className="font-medium leading-normal tracking-wide flex-1">{status.message}</span>
+                            </div>
                         </div>
-                    )}
+                    </div>
 
-                    {/* Setup Form */}
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="space-y-4">
-                            <Field>
-                                <Label className="block text-xs font-medium text-zinc-700 uppercase tracking-wider mb-1">
-                                    Username
-                                </Label>
-                                <Input 
-                                    type="text" 
-                                    className="block w-full rounded-sm border border-zinc-300 px-4 py-2.5 text-black placeholder:text-zinc-400 outline-none transition-all sm:text-sm bg-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]"
-                                    onChange={e => setFormData({...formData, username: e.target.value})} 
-                                    required
-                                />
-                            </Field>
-
-                            <Field>
-                                <Label className="block text-xs font-medium text-zinc-700 uppercase tracking-wider mb-1">
-                                    Password
-                                </Label>
-                                <Input 
-                                    type="password" 
-                                    className={`block w-full rounded-sm border px-4 py-2.5 text-black placeholder:text-zinc-400 outline-none transition-all sm:text-sm bg-white ${
-                                        formData.password && !isLengthValid 
-                                            ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
-                                            : 'border-zinc-300 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]'
-                                    }`}
-                                    onChange={e => setFormData({...formData, password: e.target.value})} 
-                                    required
-                                />
-                                {formData.password && !isLengthValid && (
-                                    <Description className="mt-1.5 text-xs text-red-600 font-medium">
-                                        Password must be at least 8 characters long.
-                                    </Description>
-                                )}
-                            </Field>
-
-                            <Field>
-                                <Label className="block text-xs font-medium text-zinc-700 uppercase tracking-wider mb-1">
-                                    Confirm Password
-                                </Label>
-                                <Input 
-                                    type="password" 
-                                    className={`block w-full rounded-sm border px-4 py-2.5 text-black placeholder:text-zinc-400 outline-none transition-all sm:text-sm bg-white ${
-                                        formData.confirmPassword && !passwordsMatch 
-                                            ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
-                                            : 'border-zinc-300 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]'
-                                    }`}
-                                    onChange={e => setFormData({...formData, confirmPassword: e.target.value})} 
-                                    required
-                                />
-                                {formData.confirmPassword && !passwordsMatch && (
-                                    <Description className="mt-1.5 text-xs text-red-600 font-medium">
-                                        Passwords do not match.
-                                    </Description>
-                                )}
-                            </Field>
+                    {/* Registration Setup Form */}
+                    <form onSubmit={handleSubmit} noValidate className="space-y-4">
+                        
+                        {/* Username Input */}
+                        <div className={`space-y-1 ${isShaking && !formData.username.trim() ? 'animate-shake' : ''}`}>
+                            <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                                Username
+                            </label>
+                            <input
+                                type="text"
+                                autoComplete="username"
+                                className={`block w-full rounded-lg border px-3 py-2 text-sm text-black placeholder:text-zinc-400 focus:outline-none focus:ring-1 transition-all shadow-sm bg-white disabled:bg-zinc-50 disabled:text-zinc-500 ${
+                                    status.type === 'error' && !formData.username.trim()
+                                        ? 'border-red-400 focus:border-red-500 focus:ring-red-500' 
+                                        : 'border-zinc-200 focus:border-zinc-950 focus:ring-zinc-950'
+                                }`}
+                                onChange={e => setFormData({...formData, username: e.target.value})}
+                                value={formData.username}
+                                disabled={isSubmitting || status.type === 'success'}
+                                placeholder="Choose a secure username"
+                            />
                         </div>
 
+                        {/* Password Input */}
+                        <div className={`space-y-1 ${isShaking && (formData.password.length < 8 || status.type === 'error') ? 'animate-shake' : ''}`}>
+                            <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                                Password
+                            </label>
+                            <input
+                                type="password"
+                                autoComplete="new-password"
+                                className={`block w-full rounded-lg border px-3 py-2 text-sm text-black placeholder:text-zinc-400 focus:outline-none focus:ring-1 transition-all shadow-sm bg-white disabled:bg-zinc-50 disabled:text-zinc-500 ${
+                                    status.type === 'error' && (formData.password.length < 8)
+                                        ? 'border-red-400 focus:border-red-500 focus:ring-red-500' 
+                                        : 'border-zinc-200 focus:border-zinc-950 focus:ring-zinc-950'
+                                }`}
+                                onChange={e => setFormData({...formData, password: e.target.value})}
+                                value={formData.password}
+                                disabled={isSubmitting || status.type === 'success'}
+                                placeholder="Min. 8 characters"
+                            />
+                        </div>
+
+                        {/* Confirm Password Input */}
+                        <div className={`space-y-1 ${isShaking && (formData.password !== formData.confirmPassword || status.type === 'error') ? 'animate-shake' : ''}`}>
+                            <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                                Confirm Password
+                            </label>
+                            <input
+                                type="password"
+                                autoComplete="new-password"
+                                className={`block w-full rounded-lg border px-3 py-2 text-sm text-black placeholder:text-zinc-400 focus:outline-none focus:ring-1 transition-all shadow-sm bg-white disabled:bg-zinc-50 disabled:text-zinc-500 ${
+                                    status.type === 'error' && (formData.password !== formData.confirmPassword)
+                                        ? 'border-red-400 focus:border-red-500 focus:ring-red-500' 
+                                        : 'border-zinc-200 focus:border-zinc-950 focus:ring-zinc-950'
+                                }`}
+                                onChange={e => setFormData({...formData, confirmPassword: e.target.value})}
+                                value={formData.confirmPassword}
+                                disabled={isSubmitting || status.type === 'success'}
+                                placeholder="Re-enter chosen password"
+                            />
+                        </div>
+
+                        {/* Submit Button */}
                         <div className="pt-2">
-                            <Button 
-                                type="submit" 
-                                disabled={!canSubmit || isSubmitting || status.type === 'success'}
-                                className="w-full rounded-sm bg-black px-4 py-3 text-sm font-bold tracking-widest uppercase text-white shadow-sm hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 transition-all data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed"
+                            <button
+                                type="submit"
+                                disabled={isSubmitting || status.type === 'success'}
+                                className="w-full flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-4 py-2.5 text-xs font-bold tracking-wider uppercase text-white shadow-md hover:bg-zinc-800 hover:-translate-y-[1px] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-md"
                             >
-                                {isSubmitting ? 'Setting up...' : 'Complete Setup'}
-                            </Button>
+                                {isSubmitting ? (
+                                    <>
+                                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                        Configuring Profile
+                                    </>
+                                ) : (
+                                    <>
+                                        Complete Setup
+                                        <ArrowRight className="w-3.5 h-3.5" />
+                                    </>
+                                )}
+                            </button>
                         </div>
                     </form>
-
+                    
                 </div>
             </div>
-            
         </div>
     );
 }

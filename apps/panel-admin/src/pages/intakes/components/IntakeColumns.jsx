@@ -11,7 +11,7 @@ export const offersColumns = [
         label: 'Status',
         render: (val) => (
             <span className={`px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wider border ${STATUS_STYLES[val] || STATUS_STYLES.pending}`}>
-                {val.replace(/_/g, ' ')}
+                {val === 'processed' ? 'in accessioning' : val.replace(/_/g, ' ')}
             </span>
         )
     }
@@ -28,7 +28,7 @@ export const intakesColumns = [
         label: 'Status',
         render: (val) => (
             <span className={`px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wider border ${STATUS_STYLES[val] || STATUS_STYLES.pending}`}>
-                {val.replace(/_/g, ' ')}
+                {val === 'processed' ? 'in accessioning' : val.replace(/_/g, ' ')}
             </span>
         )
     }
@@ -57,7 +57,7 @@ export const archiveColumns = [
         label: 'Status',
         render: (val) => (
             <span className={`px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wider border ${STATUS_STYLES[val] || STATUS_STYLES.pending}`}>
-                {val.replace(/_/g, ' ')}
+                {val === 'processed' ? 'in accessioning' : val.replace(/_/g, ' ')}
             </span>
         )
     }

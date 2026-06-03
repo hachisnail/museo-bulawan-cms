@@ -1578,3 +1578,49 @@ sql:
 2026-06-02 16:26:47 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780388802605@example.com","notes":12345,"attachment":"file.png"}
 2026-06-02 16:26:47 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780388802605@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
 2026-06-02 16:27:05 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-06-03 16:54:39 [error]: Error: Record not found in inventory with id 01KT3Q332AXEXM30PAA0Z44KZT
+    at Object._getRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/baseService.js:147:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/inventoryController.js:67:26) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KT3Q332AXEXM30PAA0Z44KZT?expand=accession_id.intake_id","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-03 16:54:39 [error]: Error: Record not found in inventory with id 01KT3Q332AXEXM30PAA0Z44KZT
+    at Object._getRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/baseService.js:147:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/inventoryController.js:67:26) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KT3Q332AXEXM30PAA0Z44KZT?expand=accession_id.intake_id","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-03 16:54:43 [error]: Error: Record not found in inventory with id 01KT3Q329H93HYKAAY5W6KWRK5
+    at Object._getRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/baseService.js:147:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/inventoryController.js:67:26) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KT3Q329H93HYKAAY5W6KWRK5?expand=accession_id.intake_id","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-03 16:54:43 [error]: Error: Record not found in inventory with id 01KT3Q329H93HYKAAY5W6KWRK5
+    at Object._getRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/baseService.js:147:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/inventoryController.js:67:26) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KT3Q329H93HYKAAY5W6KWRK5?expand=accession_id.intake_id","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-03 16:54:46 [error]: Error: Record not found in inventory with id 01KT3Q2HGHXJQKARA39XXCQ98D
+    at Object._getRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/baseService.js:147:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/inventoryController.js:67:26) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KT3Q2HGHXJQKARA39XXCQ98D?expand=accession_id.intake_id","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-03 16:54:46 [error]: Error: Record not found in inventory with id 01KT3Q2HGHXJQKARA39XXCQ98D
+    at Object._getRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/baseService.js:147:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/inventoryController.js:67:26) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KT3Q2HGHXJQKARA39XXCQ98D?expand=accession_id.intake_id","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-03 16:55:27 [error]: Error: Record not found in inventory with id 01KT3Q2HGHXJQKARA39XXCQ98D
+    at Object._getRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/baseService.js:147:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/inventoryController.js:67:26) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KT3Q2HGHXJQKARA39XXCQ98D?expand=accession_id.intake_id","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-03 16:55:27 [error]: Error: Record not found in inventory with id 01KT3Q2HGHXJQKARA39XXCQ98D
+    at Object._getRecord (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/acquisition/baseService.js:147:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getInventoryItem (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/acquisition/inventoryController.js:67:26) | Meta: {"method":"GET","url":"/api/v1/acquisitions/inventory/01KT3Q2HGHXJQKARA39XXCQ98D?expand=accession_id.intake_id","ip":"::1","user":"01KSZG4FMSS58C52NEFCXGSK2N"}
+2026-06-03 17:47:26 [error]: Failed to create form definition: ONLY_CUSTOM_FORMS_ALLOWED
+2026-06-03 17:47:27 [error]: Failed to update form definition 01JSEEDEDSYSTEMFORMID0001: SYSTEM_FORM_READONLY
+2026-06-03 17:47:27 [error]: Failed to update form definition 01KT6E2XXQ710QYWCXAN77M296: ONLY_CUSTOM_FORMS_ALLOWED
+2026-06-03 17:47:27 [error]: Failed to delete form definition 01JSEEDEDSYSTEMFORMID0002: SYSTEM_FORM_READONLY
+2026-06-03 17:47:28 [error]: Form submission validation failed for hardening-test. Errors: data.notes should be string. Payload: {"email":"hardening_test_1780480047277@example.com","notes":12345,"attachment":"file.png"}
+2026-06-03 17:47:28 [error]: Form submission validation failed for hardening-test. Errors: data.attachment should be string,array. Payload: {"email":"hardening_test_1780480047277@example.com","notes":"Valid string","attachment":{"name":"invalid_object"}}
+2026-06-03 17:47:29 [error]: Error processing external intake: UNAUTHORIZED_PIPELINE_ACTION: Only donation submissions can be processed into the acquisition system.
+2026-06-03 17:47:29 [error]: Error processing accession: Record not found in intakes with id undefined
+2026-06-03 17:47:30 [error]: Error finalizing to inventory: VALIDATION_FAILED: The location "Non-Existent Mystic Vault" does not exist in the system.
+2026-06-03 17:47:56 [error]: Failed to create form definition: ONLY_CUSTOM_FORMS_ALLOWED
+2026-06-03 17:47:56 [error]: Failed to update form definition 01JSEEDEDSYSTEMFORMID0001: SYSTEM_FORM_READONLY
+2026-06-03 17:47:56 [error]: Failed to update form definition 01KT6E3TS7AG8N6QVXR7ZE7WS1: ONLY_CUSTOM_FORMS_ALLOWED
+2026-06-03 17:47:56 [error]: Failed to delete form definition 01JSEEDEDSYSTEMFORMID0002: SYSTEM_FORM_READONLY
+2026-06-03 20:09:46 [error]: Form definition not found: test-form-1

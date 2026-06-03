@@ -292,7 +292,6 @@ const InternalForm = (props) => {
                                         <option value="" disabled>Select...</option>
                                         {prop.enum.map((opt, i) => <option key={`${opt}_${i}`} value={opt}>{opt}</option>)}
                                     </select>
-// Replace the existing file widget block with this:
 ) : prop['ui:widget'] === 'file' || prop.format === 'file' ? (
     <div className="space-y-4">
         <label 

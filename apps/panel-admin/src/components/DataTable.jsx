@@ -166,7 +166,7 @@ export default function DataTable({
                   {columns.map((col, idx) => (
                     <th 
                       key={idx} 
-                      onClick={() => !isLoading && onSort(col.key)}
+                      onClick={() => !isLoading && onSort && onSort(col.key)}
                       className={`py-3 font-semibold pr-4 whitespace-nowrap select-none group ${isLoading ? 'cursor-default opacity-50' : 'cursor-pointer hover:text-gray-800 transition-colors'}`}
                     >
                       <div className="flex items-center gap-1.5">

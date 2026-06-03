@@ -315,16 +315,11 @@ export default function AccessionsIndex() {
     // Row click — route correctly based on item type
     const handleRowClick = useCallback((row) => {
         if (row.type === 'inventory_archive') {
-            // Deaccessioned inventory item — route to accession detail via accession_id
-            const accessionId = row.rawItem?.accession_id || row.rawItem?.expand?.accession_id?.id;
-            if (accessionId) {
-                navigate(`/accessions/${accessionId}?tab=archive`);
-            } else {
-                navigate(`/accessions/${row.id}?tab=archive`);
-            }
+            // Deaccessioned inventory item
+            navigate(`/accessions/${row.id}?tab=archive&type=inventory`);
         } else {
             // Accession records (active or archived accessions)
-            navigate(`/accessions/${row.id}?tab=${activeTab}`);
+            navigate(`/accessions/${row.id}?tab=${activeTab}&type=accession`);
         }
     }, [navigate, activeTab]);
 

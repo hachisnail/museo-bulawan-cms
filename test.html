@@ -6,6 +6,16 @@
     <title>Document</title>
 </head>
 <body>
-    <iframe src="http://localhost:4322/forms/embed/01KT3GTV8XXG0P7XQTQFGR5DBR" width="100%" height="600" style="border:none; border-radius: 8px; overflow:hidden;" title="Event questionaire"></iframe>
+    <iframe id="museo-form-01KT6P7HPSSBRVJ9V9BDJ5746R" src="http://localhost:5173/forms/embed/01KT6P7HPSSBRVJ9V9BDJ5746R" width="100%" style="border:none; border-radius: 8px; overflow:hidden; transition: height 0.2s ease;" title="test form 1" scrolling="no"></iframe>
+<script>
+  window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'form-resize') {
+      var iframe = document.getElementById('museo-form-01KT6P7HPSSBRVJ9V9BDJ5746R');
+      if (iframe) {
+        iframe.style.height = event.data.height + 'px';
+      }
+    }
+  });
+</script>
 </body>
 </html>

@@ -119,7 +119,7 @@ export default function IntakesIndex() {
 
         if (activeTab === 'intakes') {
             return intakes
-                .filter(i => i.status !== 'rejected' && i.status !== 'accessioned' && i.status !== 'processed')
+                .filter(i => i.status !== 'rejected' && i.status !== 'accessioned')
                 .map(i => {
                     const dateVal = i.created || i.created_at;
                     return {
@@ -149,7 +149,7 @@ export default function IntakesIndex() {
             };
         });
 
-        const intakeArchived = intakes.filter(i => i.status === 'rejected' || i.status === 'accessioned' || i.status === 'processed').map(i => {
+        const intakeArchived = intakes.filter(i => i.status === 'rejected' || i.status === 'accessioned').map(i => {
             const dateVal = i.created || i.created_at;
             return {
                 id: i.id, type: 'intake',

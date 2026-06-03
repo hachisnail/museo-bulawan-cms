@@ -5,7 +5,7 @@ import { useAuth } from '../../../context/authContext';
 import { useSSE } from '../../../hooks/useSSE';
 import { 
     Plus, Eye, Trash2, FileText, CheckCircle, ClipboardList, AlertCircle, 
-    BarChart3, Edit2
+    BarChart3, Edit2, MessageSquare, Star
 } from 'lucide-react';
 import { 
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, 
@@ -130,7 +130,7 @@ export default function FormsIndex() {
     };
 
     return (
-        <div className="flex flex-col gap-y-8 bg-white min-h-fit max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="flex flex-col gap-y-8 bg-white min-h-fit max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
@@ -164,12 +164,12 @@ export default function FormsIndex() {
             {/* Tab Views */}
             <div>
                 {activeTab === 'forms' && (
-                    <div className="space-y-4 animate-in fade-in duration-500">
+                    <div className="space-y-6 animate-in fade-in duration-500">
                         <div className="flex justify-between items-center">
-                            <h2 className="text-lg font-bold text-zinc-950">My Forms</h2>
+                            <h2 className="text-xl font-bold text-zinc-950">My Forms</h2>
                             <button
                                 onClick={() => setCreateModalOpen(true)}
-                                className="px-4 py-2 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-md hover:bg-zinc-800 transition-colors flex items-center gap-1.5"
+                                className="px-4 py-2 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-md hover:bg-zinc-800 transition-colors flex items-center gap-1.5 shadow-sm"
                             >
                                 <Plus className="w-4 h-4" /> Create New Form
                             </button>
@@ -181,54 +181,59 @@ export default function FormsIndex() {
                                 <span className="text-sm">Loading forms...</span>
                             </div>
                         ) : customDefinitions.length === 0 ? (
-                            <div className="border border-dashed border-gray-300 rounded-lg p-16 text-center text-zinc-400 bg-zinc-50/50">
-                                <FileText className="w-12 h-12 mx-auto mb-4 text-zinc-300" />
-                                <p className="text-sm font-medium">No custom forms created yet. Click "Create New Form" to get started.</p>
+                            <div className="border-2 border-dashed border-gray-200 rounded-xl p-16 text-center text-zinc-400 bg-zinc-50/50 flex flex-col items-center justify-center">
+                                <FileText className="w-12 h-12 mb-4 text-zinc-300" />
+                                <h3 className="text-lg font-bold text-gray-900 mb-1">No forms found</h3>
+                                <p className="text-sm font-medium mb-6">You haven't created any custom forms yet.</p>
+                                <button
+                                    onClick={() => setCreateModalOpen(true)}
+                                    className="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-bold rounded-md hover:bg-gray-50 transition-colors flex items-center gap-1.5 shadow-sm"
+                                >
+                                    <Plus className="w-4 h-4" /> Create Your First Form
+                                </button>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                                 {customDefinitions.map(form => (
-                                    <div key={form.id} className="group border border-gray-200 rounded-xl bg-white p-5 flex flex-col hover:border-gray-300 hover:shadow-md transition-all min-h-[200px]">
+                                    <div key={form.id} className="group relative bg-white border border-gray-200 rounded-2xl p-6 flex flex-col hover:border-black hover:shadow-xl hover:shadow-black/5 transition-all duration-300 min-h-[220px]">
                                         
                                         {/* Badges Container */}
                                         <div className="flex items-center gap-2 mb-4">
-                                            <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-gray-100 text-gray-600 rounded-md">
-                                                {form.settings?.layout || 'SINGLE_COLUMN'}
+                                            <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-gray-100 text-gray-600 rounded-full">
+                                                {form.settings?.layout?.replace('_', ' ') || 'SINGLE COLUMN'}
                                             </span>
                                             {form.otp && (
-                                                <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-amber-100 text-amber-800 rounded-md">
-                                                    OTP Required
+                                                <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-amber-50 text-amber-700 border border-amber-200 rounded-full">
+                                                    OTP REQ
                                                 </span>
                                             )}
                                         </div>
 
-                                        {/* Body Content - flex-1 pushes the footer to the bottom */}
-                                        <div className="flex-1 mb-4">
-                                            <h3 className="text-xl font-bold text-gray-900 mb-1 leading-tight line-clamp-1" title={form.title}>
+                                        {/* Body Content */}
+                                        <div className="flex-1 mb-6">
+                                            <h3 className="text-lg font-extrabold text-gray-900 mb-1 leading-tight line-clamp-2 group-hover:text-black transition-colors" title={form.title}>
                                                 {form.title}
                                             </h3>
-                                            <div className="flex items-center text-sm text-gray-500 font-mono mb-3">
-                                                <span className="text-gray-400 mr-0.5">/</span>
-                                                <span className="truncate">{form.slug}</span>
+                                            <div className="flex items-center text-xs text-gray-400 font-mono mb-3">
+                                                <span className="truncate">/{form.slug}</span>
                                             </div>
-                                            <p className="text-sm text-gray-600 font-normal line-clamp-2 leading-relaxed">
-                                                {form.settings?.description || 'No description provided.'}
+                                            <p className="text-sm text-gray-500 font-normal line-clamp-2 leading-relaxed">
+                                                {form.settings?.description || 'No description provided for this form.'}
                                             </p>
                                         </div>
 
                                         {/* Action Footer */}
-                                        <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-auto">
+                                        <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
                                             <a
-                                                href={`/forms/${form.id.toLowerCase()}`}
+                                                href={`/forms/${form.slug || form.id.toLowerCase()}`}
                                                 target="_blank"
                                                 rel="noreferrer"
-                                                className="flex items-center gap-1.5 text-sm font-semibold text-amber-600 hover:text-amber-800 transition-colors"
+                                                className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-black transition-colors"
                                             >
                                                 <Eye className="w-4 h-4" /> Preview
                                             </a>
 
-                                            <div className="flex items-center gap-2">
-                                                {/* Button flex classes ensure icon and text sit perfectly inline */}
+                                            <div className="flex items-center gap-1">
                                                 <button
                                                     onClick={() => navigate(`/forms/builder/${form.id}`)}
                                                     className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-black hover:bg-gray-100 rounded-md transition-colors"
@@ -245,7 +250,6 @@ export default function FormsIndex() {
                                                 </button>
                                             </div>
                                         </div>
-
                                     </div>
                                 ))}
                             </div>
@@ -261,12 +265,12 @@ export default function FormsIndex() {
             {/* Create Form Modal */}
             {createModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden flex flex-col">
+                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden flex flex-col scale-100 animate-in zoom-in-95 duration-200">
                         <div className="px-6 py-4 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/50">
                             <h3 className="text-lg font-bold text-zinc-900">Create New Form</h3>
                         </div>
                         <form onSubmit={handleCreateForm} className="p-6 space-y-4">
-                            <div className="space-y-1">
+                            <div className="space-y-1.5">
                                 <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest">Form Title</label>
                                 <input 
                                     type="text" 
@@ -276,24 +280,24 @@ export default function FormsIndex() {
                                         setNewTitle(e.target.value);
                                         setNewSlug(e.target.value.toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-'));
                                     }}
-                                    className="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                                    className="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black transition-all"
                                     placeholder="e.g. Visitor Feedback"
                                 />
                             </div>
-                            <div className="space-y-1">
+                            <div className="space-y-1.5">
                                 <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest">URL Slug</label>
                                 <input 
                                     type="text" 
                                     required
                                     value={newSlug}
                                     onChange={e => setNewSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))}
-                                    className="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                                    className="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black transition-all"
                                     placeholder="visitor-feedback"
                                 />
                             </div>
-                            <div className="flex justify-end gap-3 pt-4">
+                            <div className="flex justify-end gap-3 pt-6">
                                 <button type="button" onClick={() => setCreateModalOpen(false)} className="px-4 py-2 text-sm font-semibold text-zinc-600 hover:text-black">Cancel</button>
-                                <button type="submit" disabled={creating} className="px-5 py-2 bg-black text-white text-sm font-bold rounded-md hover:bg-zinc-800 disabled:opacity-50">
+                                <button type="submit" disabled={creating} className="px-5 py-2 bg-black text-white text-sm font-bold rounded-md hover:bg-zinc-800 disabled:opacity-50 transition-colors">
                                     {creating ? 'Creating...' : 'Create Form'}
                                 </button>
                             </div>
@@ -358,12 +362,21 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
                 ratingSum += rating;
             }
 
-            if (data.category) {
-                categoriesCount[data.category] = (categoriesCount[data.category] || 0) + 1;
+            const feedbackType = data.feedback_type || data.category;
+            if (feedbackType) {
+                categoriesCount[feedbackType] = (categoriesCount[feedbackType] || 0) + 1;
             }
 
             if (data.comments && data.comments.trim() !== '') {
-                comments.push({ id: sub.id, date: sub.created_at || sub.created, text: data.comments });
+                comments.push({ 
+                    id: sub.id, 
+                    date: sub.created_at || sub.created, 
+                    author: data.name || 'Anonymous',
+                    email: data.email || sub.submitted_email,
+                    rating: rating,
+                    feedbackType: feedbackType,
+                    text: data.comments 
+                });
             }
         });
 
@@ -371,9 +384,17 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
         const avg = totalRatings > 0 ? (ratingSum / totalRatings).toFixed(1) : 0;
 
         const ratingDist = Object.keys(ratingsCount).map(k => ({ star: `${k} Star`, count: ratingsCount[k] })).reverse();
-        const categoryDist = Object.keys(categoriesCount).map((k, i) => ({ name: k, value: categoriesCount[k] }));
+        const categoryDist = Object.keys(categoriesCount).map((k) => ({ name: k, value: categoriesCount[k] }));
 
-        return { averageRating: avg, ratingDistribution: ratingDist, categoryDistribution: categoryDist, recentComments: comments.slice(0, 10) };
+        // Sort comments by date descending
+        comments.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        return { 
+            averageRating: avg, 
+            ratingDistribution: ratingDist, 
+            categoryDistribution: categoryDist, 
+            recentComments: comments.slice(0, 10) 
+        };
     }, [submissions]);
 
     if (!feedbackDefinition) {
@@ -387,39 +408,81 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
     }
 
     if (loading) {
+        // Render Skeleton UI that perfectly mimics the loaded layout
         return (
-            <div className="py-20 text-center text-zinc-500 animate-in fade-in">
-                <div className="w-8 h-8 border-2 border-zinc-200 border-t-black rounded-full animate-spin mx-auto mb-4"></div>
-                <span className="text-sm">Loading analytics...</span>
+            <div className="space-y-6 animate-in fade-in duration-500">
+                {/* Skeleton Top Metrics Row */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-center items-center h-[140px]">
+                            <div className="w-28 h-3 bg-gray-200 rounded-full animate-pulse mb-4"></div>
+                            <div className="w-16 h-10 bg-gray-200 rounded-lg animate-pulse"></div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Skeleton Charts Row */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-[350px]">
+                        <div className="w-40 h-4 bg-gray-200 rounded-full animate-pulse mb-8"></div>
+                        <div className="w-full h-48 bg-gray-100/50 rounded-xl animate-pulse"></div>
+                    </div>
+                    <div className="lg:col-span-1 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-[350px]">
+                        <div className="w-32 h-4 bg-gray-200 rounded-full animate-pulse mb-8"></div>
+                        <div className="w-32 h-32 bg-gray-100/50 rounded-full animate-pulse mx-auto mt-4"></div>
+                        <div className="w-48 h-3 bg-gray-200 rounded-full animate-pulse mx-auto mt-8"></div>
+                    </div>
+                </div>
+
+                {/* Skeleton Comments List */}
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                    <div className="w-40 h-4 bg-gray-200 rounded-full animate-pulse mb-8"></div>
+                    <div className="space-y-4">
+                        {[1, 2].map(i => (
+                            <div key={i} className="p-4 rounded-xl border border-gray-50 flex flex-col sm:flex-row gap-4 h-[120px]">
+                                <div className="sm:w-1/4">
+                                    <div className="w-24 h-4 bg-gray-200 rounded-full animate-pulse mb-2"></div>
+                                    <div className="w-32 h-3 bg-gray-100 rounded-full animate-pulse"></div>
+                                </div>
+                                <div className="flex-1">
+                                    <div className="w-20 h-6 bg-gray-200 rounded-md animate-pulse mb-4"></div>
+                                    <div className="w-full h-3 bg-gray-100 rounded-full animate-pulse mb-2"></div>
+                                    <div className="w-3/4 h-3 bg-gray-100 rounded-full animate-pulse"></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="space-y-8 animate-in fade-in duration-500">
-            {/* ... Global Analytics view ... */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="col-span-1 lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center">
-                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Total Feedback</p>
-                        <p className="text-4xl font-black text-gray-900">{submissions.length}</p>
-                    </div>
-                    <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center">
-                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Average Rating</p>
-                        <div className="flex items-center gap-2">
-                            <p className="text-4xl font-black text-amber-600">{analyticsData.averageRating}</p>
-                            <span className="text-lg text-amber-600">/ 5</span>
-                        </div>
-                    </div>
-                    <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center">
-                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Categories Logged</p>
-                        <p className="text-4xl font-black text-gray-900">{analyticsData.categoryDistribution.length}</p>
+        <div className="space-y-6 animate-in fade-in duration-500">
+            {/* Top Metrics Row */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center h-[140px]">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Total Feedback</p>
+                    <p className="text-5xl font-black text-gray-900">{submissions.length}</p>
+                </div>
+                <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center h-[140px]">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Average Rating</p>
+                    <div className="flex items-baseline gap-2">
+                        <p className="text-5xl font-black text-amber-500">{analyticsData.averageRating}</p>
+                        <span className="text-xl font-bold text-gray-400">/ 5</span>
                     </div>
                 </div>
+                <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center h-[140px]">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Feedback Types</p>
+                    <p className="text-5xl font-black text-gray-900">{analyticsData.categoryDistribution.length}</p>
+                </div>
+            </div>
 
-                <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            {/* Charts Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm h-[350px]">
                     <h3 className="text-sm font-bold text-gray-800 mb-6 uppercase tracking-widest">Rating Distribution</h3>
-                    <div className="h-64 w-full">
+                    <div className="h-[250px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={analyticsData.ratingDistribution} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0f0f0" />
@@ -432,13 +495,13 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
                     </div>
                 </div>
 
-                <div className="lg:col-span-1 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                    <h3 className="text-sm font-bold text-gray-800 mb-6 uppercase tracking-widest">Feedback Categories</h3>
+                <div className="lg:col-span-1 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm h-[350px]">
+                    <h3 className="text-sm font-bold text-gray-800 mb-6 uppercase tracking-widest">Feedback Types</h3>
                     {analyticsData.categoryDistribution.length === 0 ? (
-                        <div className="h-64 flex items-center justify-center text-sm text-gray-400 italic">No category data available</div>
+                        <div className="h-[250px] flex items-center justify-center text-sm text-gray-400 italic">No type data available</div>
                     ) : (
-                        <div className="h-64 w-full">
-                            <ResponsiveContainer width="100%" height="100%">
+                        <div className="h-[250px] w-full flex flex-col">
+                            <ResponsiveContainer width="100%" height="70%">
                                 <PieChart>
                                     <Pie data={analyticsData.categoryDistribution} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
                                         {analyticsData.categoryDistribution.map((entry, index) => (
@@ -448,17 +511,59 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
                                     <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
                                 </PieChart>
                             </ResponsiveContainer>
-                            <div className="mt-4 flex flex-wrap gap-2 justify-center">
+                            <div className="mt-auto flex flex-wrap gap-3 justify-center pt-4">
                                 {analyticsData.categoryDistribution.map((entry, index) => (
-                                    <div key={entry.name} className="flex items-center gap-1.5 text-xs text-gray-600 font-medium">
-                                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}></div>
-                                        {entry.name}
+                                    <div key={entry.name} className="flex items-center gap-1.5 text-xs text-gray-700 font-semibold">
+                                        <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}></div>
+                                        {entry.name} ({entry.value})
                                     </div>
                                 ))}
                             </div>
                         </div>
                     )}
                 </div>
+            </div>
+
+            {/* Recent Feedback Comments List */}
+            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                <div className="flex items-center gap-2 mb-6">
+                    <MessageSquare className="w-5 h-5 text-gray-400" />
+                    <h3 className="text-sm font-bold text-gray-800 uppercase tracking-widest">Recent Comments</h3>
+                </div>
+                
+                {analyticsData.recentComments.length === 0 ? (
+                    <div className="py-8 text-center text-sm text-gray-500 italic">
+                        No written comments have been submitted yet.
+                    </div>
+                ) : (
+                    <div className="space-y-4">
+                        {analyticsData.recentComments.map(comment => (
+                            <div key={comment.id} className="p-4 rounded-xl bg-gray-50/50 border border-gray-100 flex flex-col sm:flex-row gap-4">
+                                <div className="sm:w-1/4 flex flex-col shrink-0 border-b sm:border-b-0 sm:border-r border-gray-200 pb-3 sm:pb-0 sm:pr-4">
+                                    <span className="font-bold text-sm text-gray-900 truncate">{comment.author}</span>
+                                    {comment.email && <span className="text-xs text-gray-500 truncate mb-2">{comment.email}</span>}
+                                    <span className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mt-auto">
+                                        {new Date(comment.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                    </span>
+                                </div>
+                                <div className="flex-1 flex flex-col">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="flex items-center bg-white px-2 py-1 rounded-md border border-gray-200 shadow-sm">
+                                            <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500 mr-1" />
+                                            <span className="text-xs font-bold text-gray-700">{comment.rating} / 5</span>
+                                        </div>
+                                        {comment.feedbackType && (
+                                            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
+                                                {comment.feedbackType}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <p className="text-sm text-gray-700 leading-relaxed italic">"{comment.text}"</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );

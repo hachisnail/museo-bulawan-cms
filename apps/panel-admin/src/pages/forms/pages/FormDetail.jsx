@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/authContext';
-import { Modal } from '../../../components';
+import { Modal, DataTable } from '../../../components';
 import { 
     Settings, Eye, Save, ClipboardList, AlertCircle, ArrowLeft,
     Copy, ExternalLink, Code, Plus, Trash2, CheckCircle, Download
@@ -61,7 +61,7 @@ export default function FormDetail() {
                 </div>
                 <div className="flex gap-3">
                     <a 
-                        href={`/forms/${formDef.id.toLowerCase()}`}
+                        href={`/forms/display/${formDef.id}`}
                         target="_blank"
                         rel="noreferrer"
                         className="px-4 py-2 border border-zinc-300 rounded text-sm font-semibold text-zinc-700 hover:bg-zinc-50 flex items-center gap-2"
@@ -113,10 +113,21 @@ export default function FormDetail() {
 // SHARE & EMBED TAB
 // ─────────────────────────────────────────────────────────────────────────────
 function EmbedTab({ form }) {
-    const publicUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? (window.location.port === '5173' ? ':4321' : ':' + window.location.port) : ''}/forms/${form.id.toLowerCase()}`;
-    const embedUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? (window.location.port === '5173' ? ':4321' : ':' + window.location.port) : ''}/forms/embed/${form.id}`;
+    const publicUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? (window.location.port === '5173' ? ':4321' : ':' + window.location.port) : ''}/forms/display/${form.id}`;
+    const embedUrl = `${window.location.origin}/forms/embed/${form.id}`;
     
-    const iframeCode = `<iframe src="${embedUrl}" width="100%" height="600" style="border:none; border-radius: 8px; overflow:hidden;" title="${form.title}"></iframe>`;
+    // Generate the dynamic embed code
+    const iframeCode = `<iframe id="museo-form-${form.id}" src="${embedUrl}" width="100%" style="border:none; border-radius: 8px; overflow:hidden; transition: height 0.2s ease;" title="${form.title}" scrolling="no"></iframe>
+<script>
+  window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'form-resize') {
+      var iframe = document.getElementById('museo-form-${form.id}');
+      if (iframe) {
+        iframe.style.height = event.data.height + 'px';
+      }
+    }
+  });
+</script>`;
 
     const [copiedUrl, setCopiedUrl] = useState(false);
     const [copiedIframe, setCopiedIframe] = useState(false);
@@ -148,13 +159,13 @@ function EmbedTab({ form }) {
 
             <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Embed via iframe</h3>
-                <p className="text-sm text-gray-500 mb-4">Copy and paste this HTML code into your website builder (WordPress, Webflow, Shopify, etc.) to embed the form directly.</p>
+                <p className="text-sm text-gray-500 mb-4">Copy and paste this HTML code into your website builder (WordPress, Webflow, Shopify, etc.) to embed the form directly. It will automatically resize to fit the form content.</p>
                 <div className="flex items-start gap-3">
                     <textarea 
                         readOnly 
                         value={iframeCode}
-                        rows={3}
-                        className="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm font-mono px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-black resize-none"
+                        rows={12} // Increased rows to show the full script
+                        className="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm font-mono px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-black resize-none whitespace-pre-wrap"
                     />
                     <button 
                         onClick={() => {
@@ -178,6 +189,10 @@ function EmbedTab({ form }) {
 function SubmissionsTab({ form, apiFetch, setModal }) {
     const [submissions, setSubmissions] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
+    const [tableFilters, setTableFilters] = useState({ search: '', date: '' });
+    const itemsPerPage = 10;
 
     useEffect(() => {
         const fetchSubmissions = async () => {
@@ -195,6 +210,10 @@ function SubmissionsTab({ form, apiFetch, setModal }) {
         };
         fetchSubmissions();
     }, [form.id, apiFetch]);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [sortConfig, tableFilters]);
 
     const schemaProperties = form?.schema?.properties || {};
     const propertyKeys = Object.keys(schemaProperties);
@@ -220,6 +239,145 @@ function SubmissionsTab({ form, apiFetch, setModal }) {
         }
     };
 
+    // Client-side Filtering
+    const filteredData = useMemo(() => {
+        let result = [...submissions];
+        if (tableFilters.search) {
+            const q = tableFilters.search.toLowerCase();
+            result = result.filter(item => {
+                const emailMatch = (item.submitted_email || 'anonymous').toLowerCase().includes(q);
+                const idMatch = (item.id || '').toLowerCase().includes(q);
+                
+                let subData = {};
+                try {
+                    subData = typeof item.data === 'string' ? JSON.parse(item.data) : (item.data || {});
+                } catch (e) {
+                    subData = item.data || {};
+                }
+                const dataMatch = Object.values(subData).some(val => 
+                    String(val ?? '').toLowerCase().includes(q)
+                );
+
+                return emailMatch || idMatch || dataMatch;
+            });
+        }
+        if (tableFilters.date) {
+            const target = new Date(tableFilters.date).toDateString();
+            result = result.filter(item => {
+                const dateVal = item.created_at || item.created;
+                return dateVal && new Date(dateVal).toDateString() === target;
+            });
+        }
+        return result;
+    }, [submissions, tableFilters]);
+
+    // Client-side Sorting
+    const sortedData = useMemo(() => {
+        const items = [...filteredData];
+        if (sortConfig?.key) {
+            items.sort((a, b) => {
+                let valA, valB;
+                if (sortConfig.key === 'id' || sortConfig.key === 'submitted_email' || sortConfig.key === 'created_at') {
+                    valA = a[sortConfig.key];
+                    valB = b[sortConfig.key];
+                    if (sortConfig.key === 'created_at') {
+                        const da = a.created_at || a.created;
+                        const db = b.created_at || b.created;
+                        valA = da ? new Date(da).getTime() : 0;
+                        valB = db ? new Date(db).getTime() : 0;
+                    } else {
+                        valA = valA ? String(valA).toLowerCase() : '';
+                        valB = valB ? String(valB).toLowerCase() : '';
+                    }
+                } else {
+                    let dataA = {}, dataB = {};
+                    try { dataA = typeof a.data === 'string' ? JSON.parse(a.data) : (a.data || {}); } catch(e) {}
+                    try { dataB = typeof b.data === 'string' ? JSON.parse(b.data) : (b.data || {}); } catch(e) {}
+                    valA = dataA[sortConfig.key];
+                    valB = dataB[sortConfig.key];
+                    valA = valA !== undefined ? String(valA).toLowerCase() : '';
+                    valB = valB !== undefined ? String(valB).toLowerCase() : '';
+                }
+
+                if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
+                if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        } else {
+            items.sort((a, b) => {
+                const da = a.created_at || a.created ? new Date(a.created_at || a.created).getTime() : 0;
+                const db = b.created_at || b.created ? new Date(b.created_at || b.created).getTime() : 0;
+                return db - da;
+            });
+        }
+        return items;
+    }, [filteredData, sortConfig]);
+
+    const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+    const paginatedData = useMemo(() => {
+        const start = (currentPage - 1) * itemsPerPage;
+        return sortedData.slice(start, start + itemsPerPage);
+    }, [sortedData, currentPage]);
+
+    const handleQueryChange = useCallback((filters) => {
+        setTableFilters(prev =>
+            prev.search === filters.search && prev.date === filters.date ? prev : filters
+        );
+    }, []);
+
+    const requestSort = (key) => {
+        let direction = 'asc';
+        if (sortConfig.key === key && sortConfig.direction === 'asc') direction = 'desc';
+        else if (sortConfig.key === key && sortConfig.direction === 'desc') { direction = null; key = null; }
+        setSortConfig({ key, direction });
+    };
+
+    const columns = useMemo(() => {
+        const cols = [
+            { key: 'id', label: 'Submission ID', render: (val) => <span className="font-mono text-xs text-gray-500">{val}</span> },
+            { key: 'submitted_email', label: 'Email Address', render: (val) => val || 'anonymous', isBold: true },
+            { key: 'created_at', label: 'Date Submitted', render: (val, row) => new Date(val || row.created).toLocaleString() }
+        ];
+
+        propertyKeys.forEach(key => {
+            cols.push({
+                key,
+                label: schemaProperties[key]?.title || key,
+                render: (_, row) => {
+                    let subData = {};
+                    try {
+                        subData = typeof row.data === 'string' ? JSON.parse(row.data) : (row.data || {});
+                    } catch (e) {
+                        subData = row.data || {};
+                    }
+                    const value = subData[key];
+                    const displayVal = (typeof value === 'object' && value !== null) 
+                        ? JSON.stringify(value) 
+                        : String(value ?? '—');
+                    return <span className="truncate max-w-[200px] block" title={displayVal}>{displayVal}</span>;
+                }
+            });
+        });
+
+        cols.push({
+            key: 'action',
+            label: 'Action',
+            render: (_, row) => (
+                <div className="text-right">
+                    <a 
+                        href={`/forms/submissions/${row.id}`}
+                        className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 hover:bg-black hover:text-white rounded-lg transition-colors"
+                        title="View Full Submission"
+                    >
+                        <Eye className="w-4 h-4" />
+                    </a>
+                </div>
+            )
+        });
+
+        return cols;
+    }, [propertyKeys, schemaProperties]);
+
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
             <div className="flex justify-between items-center px-1">
@@ -244,64 +402,20 @@ function SubmissionsTab({ form, apiFetch, setModal }) {
                     <p className="text-sm font-medium text-gray-500">No submissions have been received yet for this form.</p>
                 </div>
             ) : (
-                <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm">
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm text-left whitespace-nowrap">
-                            <thead className="bg-gray-50 border-b border-gray-200">
-                                <tr>
-                                    <th className="py-4 px-5 text-xs font-bold text-gray-500 uppercase tracking-widest">Submission ID</th>
-                                    <th className="py-4 px-5 text-xs font-bold text-gray-500 uppercase tracking-widest">Email Address</th>
-                                    <th className="py-4 px-5 text-xs font-bold text-gray-500 uppercase tracking-widest">Date Submitted</th>
-                                    {propertyKeys.map(key => (
-                                        <th key={key} className="py-4 px-5 text-xs font-bold text-gray-500 uppercase tracking-widest">
-                                            {schemaProperties[key]?.title || key}
-                                        </th>
-                                    ))}
-                                    <th className="py-4 px-5 text-xs font-bold text-gray-500 uppercase tracking-widest text-right">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100">
-                                {submissions.map((sub) => {
-                                    let subData = {};
-                                    try {
-                                        subData = typeof sub.data === 'string' ? JSON.parse(sub.data) : (sub.data || {});
-                                    } catch (e) {
-                                        subData = sub.data || {};
-                                    }
-
-                                    return (
-                                        <tr key={sub.id} className="hover:bg-gray-50 transition-colors">
-                                            <td className="py-4 px-5 text-gray-500 font-mono text-xs">{sub.id}</td>
-                                            <td className="py-4 px-5 text-gray-900 font-medium">{sub.submitted_email || 'anonymous'}</td>
-                                            <td className="py-4 px-5 text-gray-500 text-xs">{new Date(sub.created_at || sub.created).toLocaleString()}</td>
-
-                                            {propertyKeys.map(key => {
-                                                const value = subData[key];
-                                                const displayVal = (typeof value === 'object' && value !== null) 
-                                                    ? JSON.stringify(value) 
-                                                    : String(value ?? '—');
-                                                return (
-                                                    <td key={key} className="py-4 px-5 text-gray-700 max-w-[200px] truncate" title={displayVal}>
-                                                        {displayVal}
-                                                    </td>
-                                                );
-                                            })}
-
-                                            <td className="py-4 px-5 text-right">
-                                                <a 
-                                                    href={`/forms/submissions/${sub.id}`}
-                                                    className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 hover:bg-black hover:text-white rounded-lg transition-colors"
-                                                    title="View Full Submission"
-                                                >
-                                                    <Eye className="w-4 h-4" />
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
+                <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm p-4">
+                    <DataTable
+                        columns={columns}
+                        data={paginatedData}
+                        onQueryChange={handleQueryChange}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                        showExtraActions={false}
+                        sortConfig={sortConfig}
+                        onSort={requestSort}
+                        isExpandable={false}
+                        isLoading={loading}
+                    />
                 </div>
             )}
         </div>

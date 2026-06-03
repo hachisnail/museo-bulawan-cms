@@ -5,6 +5,7 @@ import { useAuth } from '../../../context/authContext';
 import Modal from '../../../components/Modal';
 import FinalizeModal from '../components/FinalizeModal';
 import FormRenderer from '../../../components/FormRenderer';
+import { ArrowLeft } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Badge & Theme Styles
@@ -22,8 +23,8 @@ const STATUS_STYLES = {
 // ─────────────────────────────────────────────────────────────────────────────
 function AccessionItemSkeleton() {
     return (
-        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 animate-pulse">
-            <div className="space-y-6 pt-4">
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 animate-pulse">
+            <div className="space-y-6">
                 <div className="h-4 bg-gray-200 rounded w-28" />
                 <div className="flex items-center gap-3 mt-2">
                     <div className="h-8 bg-gray-200 rounded w-1/3" />
@@ -54,6 +55,7 @@ export default function AccessionItem() {
     const { apiFetch } = useAuth();
 
     const fromTab = searchParams.get('tab') || 'active'; // 'active' | 'archive'
+    const recordType = searchParams.get('type') || 'accession';
 
     const [selected, setSelected] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -89,7 +91,7 @@ export default function AccessionItem() {
     const fetchRecord = useCallback(async () => {
         setLoading(true);
         try {
-            if (fromTab === 'active') {
+            if (recordType === 'accession') {
                 const res = await apiFetch(`/api/v1/acquisitions/accessions/${id}?expand=intake_id`);
                 const json = await res.json();
                 if (json.status === 'success') {
@@ -128,7 +130,7 @@ export default function AccessionItem() {
                         if (rData.status === 'success') setConditionReports(rData.data.items);
                     } catch (e) {}
                 }
-            } else {
+            } else if (recordType === 'inventory') {
                 // archive deaccessioned inventory item
                 const res = await apiFetch(`/api/v1/acquisitions/inventory/${id}?expand=accession_id.intake_id`);
                 const json = await res.json();
@@ -375,9 +377,9 @@ Would you like to reload the latest record and try again?`,
 
     if (!selected) {
         return (
-            <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-                <button onClick={() => navigate(`/accessions?tab=${fromTab}`)} className="self-start text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1.5 mb-3">
-                    <span>←</span> Back to Accessions
+            <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+                <button onClick={() => navigate(`/accessions?tab=${fromTab}`)} className="text-xs text-zinc-500 hover:text-black transition-colors flex items-center gap-2 mb-4 font-bold uppercase tracking-widest">
+                    <ArrowLeft className="w-4 h-4" /> Back to Accessions
                 </button>
                 <p className="text-gray-500 text-base">Accession record not found.</p>
             </div>
@@ -391,19 +393,19 @@ Would you like to reload the latest record and try again?`,
     const hasPhotos = currentMedia.filter(m => m.context !== 'Signed MOA Document').length > 0;
 
     return (
-        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
             
             {/* Header / Breadcrumb */}
-            <section className="flex items-start border-b border-gray-200 pb-6 mb-2">
+            <section className="flex items-start border-b border-gray-100 pb-4 mb-4">
                 <div className="flex-1">
                     <button
                         onClick={() => navigate(`/accessions?tab=${fromTab}`)}
-                        className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1.5 mb-3 animate-in fade-in duration-300"
+                        className="text-xs text-zinc-500 hover:text-black transition-colors flex items-center gap-2 mb-4 font-bold uppercase tracking-widest animate-in fade-in duration-300"
                     >
-                        <span>←</span> Back to Accessions
+                        <ArrowLeft className="w-4 h-4" /> Back to Accessions
                     </button>
                     <div className="flex items-center gap-4 flex-wrap">
-                        <h1 className="text-2xl font-bold text-gray-900">
+                        <h1 className="text-3xl font-bold text-black tracking-tight">
                             {fromTab === 'active' 
                                 ? (selected.expand?.intake_id?.proposed_item_name || 'Unnamed Artifact')
                                 : (selected.expand?.accession_id?.expand?.intake_id?.proposed_item_name || 'Archived Artifact')}
@@ -412,7 +414,7 @@ Would you like to reload the latest record and try again?`,
                             {fromTab === 'active' ? selected.status.replace(/_/g, ' ') : 'Deaccessioned Archive'}
                         </span>
                     </div>
-                    <p className="text-base text-gray-500 mt-2">
+                    <p className="text-sm text-gray-500 mt-1">
                         Registry Ref: {fromTab === 'active' ? selected.accession_number : selected.catalog_number}
                     </p>
                 </div>

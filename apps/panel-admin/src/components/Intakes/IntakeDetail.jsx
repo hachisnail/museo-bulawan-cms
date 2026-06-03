@@ -67,7 +67,7 @@ export default function IntakeDetail({
                     <div className="flex items-center gap-3 mb-2">
                         <span className="text-[10px] uppercase font-bold tracking-widest text-zinc-500 font-mono">Record ID: {selected.data.id}</span>
                         <span className={`px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest border ${STATUS_STYLES[selected.data.status] || STATUS_STYLES.pending}`}>
-                            {selected.data.status.replace(/_/g, ' ')}
+                            {selected.data.status === 'processed' ? 'in accessioning' : selected.data.status.replace(/_/g, ' ')}
                         </span>
                     </div>
                     <h2 className="text-2xl font-serif text-black uppercase tracking-wider leading-tight">

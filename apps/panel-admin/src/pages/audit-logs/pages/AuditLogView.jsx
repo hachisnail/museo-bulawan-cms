@@ -56,18 +56,18 @@ export default function AuditLogView() {
     const details = parseSafe(log.details);
 
     return (
-        <div className="flex flex-col gap-y-6 bg-white pb-12  mx-auto px-4 sm:px-6 lg:px-8 animate-in fade-in duration-300">
-            <section className="flex justify-between items-center border-b border-gray-100 pb-4 mb-4">
-                <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-y-6 bg-white pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 animate-in fade-in duration-300">
+            <section className="flex items-start border-b border-gray-100 pb-4 mb-4">
+                <div className="flex-1">
                     <button 
                         onClick={() => navigate('/audit-logs')}
-                        className="p-2 hover:bg-zinc-100 rounded-full transition-colors text-zinc-500"
+                        className="text-xs text-zinc-500 hover:text-black transition-colors flex items-center gap-2 mb-4 font-bold uppercase tracking-widest"
                     >
-                        <ArrowLeft className="w-5 h-5" />
+                        <ArrowLeft className="w-4 h-4" /> Back to Audit Logs
                     </button>
                     <div>
-                        <h1 className="text-2xl font-bold text-black tracking-tight">Audit Log Details</h1>
-                        <p className="text-xs text-gray-500 font-mono mt-1">ID: {log.id}</p>
+                        <h1 className="text-3xl font-bold text-black tracking-tight">Audit Log Details</h1>
+                        <p className="text-sm text-gray-500 mt-1 font-mono">ID: {log.id}</p>
                     </div>
                 </div>
             </section>

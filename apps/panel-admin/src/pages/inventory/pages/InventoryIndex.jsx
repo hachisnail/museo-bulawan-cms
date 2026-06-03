@@ -1,9 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/authContext';
 import { useSSE } from '../../../hooks/useSSE';
 import { DataTable } from '../../../components';
-import Locations from '../../Locations';
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Status Pill Styles
@@ -27,6 +26,7 @@ const getStatusStyles = (status) => {
 export default function InventoryIndex() {
     const { apiFetch } = useAuth();
     const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
     const { events } = useSSE('inventory');
 
     const [activeItems, setActiveItems] = useState([]);
@@ -36,7 +36,7 @@ export default function InventoryIndex() {
     // Filter, Sort, Pagination States
     const [activeTab, setActiveTab] = useState(() => {
         const tab = searchParams.get('tab');
-        return ['Artifact', 'Acquired', 'Borrowing', 'Locations', 'Deaccessioned'].includes(tab) ? tab : 'Artifact';
+        return ['Artifact', 'Acquired', 'Borrowing', 'Deaccessioned'].includes(tab) ? tab : 'Artifact';
     });
     const [searchTerm, setSearchTerm] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
@@ -225,7 +225,7 @@ export default function InventoryIndex() {
 
     const tabsNode = (
         <div className="flex items-center gap-2">
-            {['Artifact', 'Acquired', 'Borrowing', 'Locations', 'Deaccessioned'].map(tab => (
+            {['Artifact', 'Acquired', 'Borrowing', 'Deaccessioned'].map(tab => (
                 <button
                     key={tab}
                     onClick={() => handleTabChange(tab)}
@@ -235,7 +235,7 @@ export default function InventoryIndex() {
                             : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
                     }`}
                 >
-                    {tab === 'Deaccessioned' ? 'Deaccessioned' : (tab === 'Artifact' ? 'All Active' : (tab === 'Locations' ? 'Locations Setup' : tab))}
+                    {tab === 'Deaccessioned' ? 'Deaccessioned' : (tab === 'Artifact' ? 'All Active' : tab)}
                 </button>
             ))}
         </div>
@@ -250,7 +250,25 @@ export default function InventoryIndex() {
                     <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Inventory</h1>
                     <p className="text-sm text-zinc-500 mt-1">Master catalog list, display statuses, and collection tracking.</p>
                 </div>
-                <div>
+                <div className="flex items-center gap-3 flex-wrap">
+                    <button
+                        onClick={() => navigate('/inventory/exhibitions')}
+                        className="px-5 py-2.5 bg-white text-gray-700 text-sm font-semibold hover:bg-gray-50 border border-gray-300 transition-colors rounded-md shadow-sm"
+                    >
+                        Exhibitions Setup
+                    </button>
+                    <button
+                        onClick={() => navigate('/inventory/constituents')}
+                        className="px-5 py-2.5 bg-white text-gray-700 text-sm font-semibold hover:bg-gray-50 border border-gray-300 transition-colors rounded-md shadow-sm"
+                    >
+                        Constituents Setup
+                    </button>
+                    <button
+                        onClick={() => navigate('/inventory/locations')}
+                        className="px-5 py-2.5 bg-white text-gray-700 text-sm font-semibold hover:bg-gray-50 border border-gray-300 transition-colors rounded-md shadow-sm"
+                    >
+                        Locations Setup
+                    </button>
                     <a 
                         href={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/v1/acquisitions/inventory/export-all`}
                         target="_blank" rel="noreferrer"
@@ -276,30 +294,21 @@ export default function InventoryIndex() {
             </div>
 
             <div className="mt-4">
-                {activeTab === 'Locations' ? (
-                    <div className="space-y-4">
-                        <div className="flex justify-between items-center bg-white p-4 border border-zinc-200 rounded-sm">
-                            {tabsNode}
-                        </div>
-                        <Locations />
-                    </div>
-                ) : (
-                    <DataTable 
-                        columns={columns}
-                        data={paginatedData}
-                        onQueryChange={handleQueryChange}
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={setCurrentPage}
-                        showExtraActions={false}
-                        sortConfig={sortConfig}
-                        onSort={requestSort}
-                        isLoading={loading}
-                        searchPlaceholder="Search catalog..."
-                        leftHeaderContent={tabsNode}
-                        totalItems={sortedData.length}
-                    />
-                )}
+                <DataTable 
+                    columns={columns}
+                    data={paginatedData}
+                    onQueryChange={handleQueryChange}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                    showExtraActions={false}
+                    sortConfig={sortConfig}
+                    onSort={requestSort}
+                    isLoading={loading}
+                    searchPlaceholder="Search catalog..."
+                    leftHeaderContent={tabsNode}
+                    totalItems={sortedData.length}
+                />
             </div>
         </div>
     );

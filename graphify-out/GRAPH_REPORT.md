@@ -1,16 +1,16 @@
 # Graph Report - museo-bulawan-cms  (2026-06-04)
 
 ## Corpus Check
-- 289 files · ~539,033 words
+- 290 files · ~539,007 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1644 nodes · 2489 edges · 126 communities (100 shown, 26 thin omitted)
+- 1646 nodes · 2490 edges · 127 communities (101 shown, 26 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `10c78687`
+- Built from commit: `0603b56d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -91,6 +91,7 @@
 - [[_COMMUNITY_Community 83|Community 83]]
 - [[_COMMUNITY_Community 84|Community 84]]
 - [[_COMMUNITY_Community 85|Community 85]]
+- [[_COMMUNITY_Community 86|Community 86]]
 - [[_COMMUNITY_Community 105|Community 105]]
 - [[_COMMUNITY_Community 106|Community 106]]
 - [[_COMMUNITY_Community 107|Community 107]]
@@ -117,12 +118,13 @@
 - [[_COMMUNITY_Community 130|Community 130]]
 - [[_COMMUNITY_Community 131|Community 131]]
 - [[_COMMUNITY_Community 133|Community 133]]
+- [[_COMMUNITY_Community 134|Community 134]]
+- [[_COMMUNITY_Community 135|Community 135]]
 - [[_COMMUNITY_Community 137|Community 137]]
 - [[_COMMUNITY_Community 146|Community 146]]
 - [[_COMMUNITY_Community 147|Community 147]]
 - [[_COMMUNITY_Community 149|Community 149]]
 - [[_COMMUNITY_Community 150|Community 150]]
-- [[_COMMUNITY_Community 151|Community 151]]
 - [[_COMMUNITY_Community 156|Community 156]]
 
 ## God Nodes (most connected - your core abstractions)
@@ -152,7 +154,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (126 total, 26 thin omitted)
+## Communities (127 total, 26 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.22
@@ -163,8 +165,8 @@ Cohesion: 0.09
 Nodes (19): ProtectedRoute(), AuthContext, AuthProvider(), useAuth(), SSEContext, SSEProvider(), Analytics(), COLORS (+11 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.15
-Nodes (16): analyticsController, buildAbility(), checkPermission(), requireAuth(), router, router, router, router (+8 more)
+Cohesion: 0.18
+Nodes (13): defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES, analyticsController, buildAbility(), requireAuth(), router (+5 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.06
@@ -231,8 +233,8 @@ Cohesion: 0.10
 Nodes (20): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+12 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.09
-Nodes (22): dependencies, astro, @astrojs/node, @astrojs/react, lucide-react, react, react-dom, tailwindcss (+14 more)
+Cohesion: 0.08
+Nodes (23): dependencies, astro, @astrojs/node, @astrojs/react, lucide-react, react, react-dom, tailwindcss (+15 more)
 
 ### Community 20 - "Community 20"
 Cohesion: 0.10
@@ -351,28 +353,36 @@ Cohesion: 0.09
 Nodes (7): getIntakeDonorEmail(), getIntakeDonorPhone(), IntakeDetail(), STATUS_STYLES, IntakeItem(), IntakeManualNew(), OfferItem()
 
 ### Community 76 - "Community 76"
-Cohesion: 0.11
-Nodes (18): __dirname, documentService, __filename, ALLOWED_TABLES, CONTRACT_TYPE_MAP, getContractType(), getLegalStatus(), LEGAL_STATUS_MAP (+10 more)
+Cohesion: 0.22
+Nodes (6): ACCESSION_TRANSITIONS, INTAKE_TRANSITIONS, INVENTORY_TRANSITIONS, SUBMISSION_TRANSITIONS, TRANSITION_REGISTRY, validateTransition()
 
 ### Community 77 - "Community 77"
-Cohesion: 0.24
-Nodes (10): accessionService, baseService, constituentService, exhibitionService, intakeService, inventoryService, loanService, locationService (+2 more)
+Cohesion: 0.16
+Nodes (19): accessionService, baseService, constituentService, exhibitionService, intakeService, inventoryService, loanService, locationService (+11 more)
 
 ### Community 78 - "Community 78"
-Cohesion: 0.21
-Nodes (7): startServer(), initMariaDB(), definitionService, queryService, verificationService, run(), otpStore
+Cohesion: 0.29
+Nodes (6): definitionService, queryService, ajv, submissionService, verificationService, otpStore
 
 ### Community 79 - "Community 79"
 Cohesion: 0.13
 Nodes (8): AppointmentDetail(), getApptStatus(), getVisitorName(), AppointmentsIndex(), columns, getApptStatus(), STATUS_STYLE, normalizeStatus()
+
+### Community 80 - "Community 80"
+Cohesion: 0.19
+Nodes (7): auditService, securityService, customFormat, logger, sendEmail(), sendEmailWithRetry(), sseManager
 
 ### Community 81 - "Community 81"
 Cohesion: 0.38
 Nodes (5): handleDonationUpload(), handleUpload(), router, upload, uploadQueue
 
 ### Community 84 - "Community 84"
-Cohesion: 0.67
-Nodes (3): getCaslResource(), getPrivateFile(), resourceMap
+Cohesion: 0.13
+Nodes (7): pool, checkMedia(), serialize(), appEvents, generateAccessionNumber(), generateCatalogNumber(), nextSequenceValue()
+
+### Community 86 - "Community 86"
+Cohesion: 0.32
+Nodes (4): ajv, formatTime(), getAppointmentById(), serializeAppointment()
 
 ### Community 105 - "Community 105"
 Cohesion: 0.15
@@ -455,12 +465,16 @@ Cohesion: 0.21
 Nodes (7): formUpload, router, authLimiter, globalLimiter, publicFormLimiter, strictActionLimiter, router
 
 ### Community 131 - "Community 131"
-Cohesion: 0.25
-Nodes (7): router, upload, acquisitionController, createAppointment(), createSchedule(), requireVisitorAuth(), validate()
+Cohesion: 0.22
+Nodes (8): router, upload, acquisitionController, createAppointment(), createSchedule(), requireVisitorAuth(), validate(), router
 
 ### Community 133 - "Community 133"
-Cohesion: 0.15
-Nodes (9): ajv, formatTime(), getAppointmentById(), serializeAppointment(), ajv, formatTime(), getScheduleById(), serializeSchedule() (+1 more)
+Cohesion: 0.32
+Nodes (4): ajv, formatTime(), getScheduleById(), serializeSchedule()
+
+### Community 134 - "Community 134"
+Cohesion: 0.18
+Nodes (5): checkPermission(), router, entityPermissionMap, mediaUpload, router
 
 ### Community 146 - "Community 146"
 Cohesion: 0.22
@@ -471,35 +485,31 @@ Cohesion: 0.40
 Nodes (5): devDependencies, cross-env, daisyui, jest, nodemon
 
 ### Community 149 - "Community 149"
-Cohesion: 0.15
-Nodes (17): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, csrfProtection(), errorHandler() (+9 more)
+Cohesion: 0.16
+Nodes (13): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), getPrivateFile() (+5 more)
 
 ### Community 150 - "Community 150"
 Cohesion: 0.50
 Nodes (4): scripts, dev, start, test
 
-### Community 151 - "Community 151"
-Cohesion: 0.50
-Nodes (4): defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES
-
 ### Community 156 - "Community 156"
-Cohesion: 0.15
-Nodes (11): db, pool, ajv, submissionService, compliancePipeline, checkMedia(), serialize(), acquisitionService (+3 more)
+Cohesion: 0.21
+Nodes (10): startServer(), db, initMariaDB(), compliancePipeline, donationPipeline, run(), acquisitionService, formPipelineService (+2 more)
 
 ## Knowledge Gaps
-- **817 isolated node(s):** `version`, `records`, `fired`, `falsePositive`, `precision` (+812 more)
+- **818 isolated node(s):** `version`, `records`, `fired`, `falsePositive`, `precision` (+813 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `db` connect `Community 156` to `Community 133`, `Community 135`, `Community 106`, `Community 76`, `Community 77`, `Community 78`, `Community 80`, `Community 84`, `Community 149`?**
+- **Why does `db` connect `Community 156` to `Community 133`, `Community 135`, `Community 106`, `Community 77`, `Community 78`, `Community 80`, `Community 84`, `Community 149`, `Community 86`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **Why does `useAuth()` connect `Community 1` to `Community 0`, `Community 32`, `Community 105`, `Community 107`, `Community 108`, `Community 79`, `Community 82`, `Community 51`, `Community 26`, `Community 61`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **What connects `version`, `records`, `fired` to the rest of the system?**
-  _817 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _818 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.09041835357624832 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**

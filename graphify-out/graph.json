@@ -1107,7 +1107,7 @@
       "source_file": "apps/api/server.js",
       "source_location": "L1",
       "id": "apps_api_server_js",
-      "community": 78,
+      "community": 156,
       "norm_label": "server.js"
     },
     {
@@ -1116,7 +1116,7 @@
       "source_file": "apps/api/server.js",
       "source_location": "L10",
       "id": "api_server_startserver",
-      "community": 78,
+      "community": 156,
       "norm_label": "startserver()"
     },
     {
@@ -1125,7 +1125,7 @@
       "source_file": "apps/api/scratch/check_media.js",
       "source_location": "L1",
       "id": "apps_api_scratch_check_media_js",
-      "community": 156,
+      "community": 84,
       "norm_label": "check_media.js"
     },
     {
@@ -1134,7 +1134,7 @@
       "source_file": "apps/api/scratch/check_media.js",
       "source_location": "L3",
       "id": "scratch_check_media_serialize",
-      "community": 156,
+      "community": 84,
       "norm_label": "serialize()"
     },
     {
@@ -1143,7 +1143,7 @@
       "source_file": "apps/api/scratch/check_media.js",
       "source_location": "L9",
       "id": "scratch_check_media_checkmedia",
-      "community": 156,
+      "community": 84,
       "norm_label": "checkmedia()"
     },
     {
@@ -1152,7 +1152,7 @@
       "source_file": "apps/api/scratch/fix_migration.js",
       "source_location": "L1",
       "id": "apps_api_scratch_fix_migration_js",
-      "community": 156,
+      "community": 84,
       "norm_label": "fix_migration.js"
     },
     {
@@ -1161,7 +1161,7 @@
       "source_file": "apps/api/scratch/fix_migration.js",
       "source_location": "L3",
       "id": "scratch_fix_migration_fix",
-      "community": 156,
+      "community": 84,
       "norm_label": "fix()"
     },
     {
@@ -1170,7 +1170,7 @@
       "source_file": "apps/api/scratch/init_db.js",
       "source_location": "L1",
       "id": "apps_api_scratch_init_db_js",
-      "community": 78,
+      "community": 156,
       "norm_label": "init_db.js"
     },
     {
@@ -1179,7 +1179,7 @@
       "source_file": "apps/api/scratch/init_db.js",
       "source_location": "L4",
       "id": "scratch_init_db_run",
-      "community": 78,
+      "community": 156,
       "norm_label": "run()"
     },
     {
@@ -1188,7 +1188,7 @@
       "source_file": "apps/api/scratch/list_forms.js",
       "source_location": "L1",
       "id": "apps_api_scratch_list_forms_js",
-      "community": 156,
+      "community": 84,
       "norm_label": "list_forms.js"
     },
     {
@@ -1197,7 +1197,7 @@
       "source_file": "apps/api/scratch/list_forms.js",
       "source_location": "L3",
       "id": "scratch_list_forms_run",
-      "community": 156,
+      "community": 84,
       "norm_label": "run()"
     },
     {
@@ -1224,7 +1224,7 @@
       "source_file": "apps/api/scratch/seed_forms.js",
       "source_location": "L1",
       "id": "apps_api_scratch_seed_forms_js",
-      "community": 156,
+      "community": 84,
       "norm_label": "seed_forms.js"
     },
     {
@@ -1233,7 +1233,7 @@
       "source_file": "apps/api/scratch/seed_forms.js",
       "source_location": "L4",
       "id": "scratch_seed_forms_seedforms",
-      "community": 156,
+      "community": 84,
       "norm_label": "seedforms()"
     },
     {
@@ -1242,7 +1242,7 @@
       "source_file": "apps/api/scratch/update_feedback_form.js",
       "source_location": "L1",
       "id": "apps_api_scratch_update_feedback_form_js",
-      "community": 156,
+      "community": 84,
       "norm_label": "update_feedback_form.js"
     },
     {
@@ -1251,7 +1251,7 @@
       "source_file": "apps/api/scratch/update_feedback_form.js",
       "source_location": "L3",
       "id": "scratch_update_feedback_form_run",
-      "community": 156,
+      "community": 84,
       "norm_label": "run()"
     },
     {
@@ -1287,7 +1287,7 @@
       "source_file": "apps/api/src/config/ability.js",
       "source_location": "L1",
       "id": "apps_api_src_config_ability_js",
-      "community": 151,
+      "community": 2,
       "norm_label": "ability.js"
     },
     {
@@ -1296,7 +1296,7 @@
       "source_file": "apps/api/src/config/ability.js",
       "source_location": "L4",
       "id": "config_ability_hierarchy",
-      "community": 151,
+      "community": 2,
       "norm_label": "hierarchy"
     },
     {
@@ -1305,7 +1305,7 @@
       "source_file": "apps/api/src/config/ability.js",
       "source_location": "L21",
       "id": "config_ability_role_rules",
-      "community": 151,
+      "community": 2,
       "norm_label": "role_rules"
     },
     {
@@ -1314,7 +1314,7 @@
       "source_file": "apps/api/src/config/ability.js",
       "source_location": "L91",
       "id": "config_ability_geteffectiveroles",
-      "community": 151,
+      "community": 2,
       "norm_label": "geteffectiveroles()"
     },
     {
@@ -1323,7 +1323,7 @@
       "source_file": "apps/api/src/config/ability.js",
       "source_location": "L100",
       "id": "config_ability_defineabilityfor",
-      "community": 151,
+      "community": 2,
       "norm_label": "defineabilityfor()"
     },
     {
@@ -1350,7 +1350,7 @@
       "source_file": "apps/api/src/config/db.js",
       "source_location": "L1",
       "id": "apps_api_src_config_db_js",
-      "community": 156,
+      "community": 84,
       "norm_label": "db.js"
     },
     {
@@ -1359,7 +1359,7 @@
       "source_file": "apps/api/src/config/db.js",
       "source_location": "L5",
       "id": "config_db_pool",
-      "community": 156,
+      "community": 84,
       "norm_label": "pool"
     },
     {
@@ -1377,7 +1377,7 @@
       "source_file": "apps/api/src/config/dbInit.js",
       "source_location": "L1",
       "id": "apps_api_src_config_dbinit_js",
-      "community": 78,
+      "community": 156,
       "norm_label": "dbinit.js"
     },
     {
@@ -1386,7 +1386,7 @@
       "source_file": "apps/api/src/config/dbInit.js",
       "source_location": "L10",
       "id": "config_dbinit_initmariadb",
-      "community": 78,
+      "community": 156,
       "norm_label": "initmariadb()"
     },
     {
@@ -1485,7 +1485,7 @@
       "source_file": "apps/api/src/controllers/appointmentController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_appointmentcontroller_js",
-      "community": 133,
+      "community": 86,
       "norm_label": "appointmentcontroller.js"
     },
     {
@@ -1494,7 +1494,7 @@
       "source_file": "apps/api/src/controllers/appointmentController.js",
       "source_location": "L8",
       "id": "controllers_appointmentcontroller_ajv",
-      "community": 133,
+      "community": 86,
       "norm_label": "ajv"
     },
     {
@@ -1503,7 +1503,7 @@
       "source_file": "apps/api/src/controllers/appointmentController.js",
       "source_location": "L13",
       "id": "controllers_appointmentcontroller_formattime",
-      "community": 133,
+      "community": 86,
       "norm_label": "formattime()"
     },
     {
@@ -1512,7 +1512,7 @@
       "source_file": "apps/api/src/controllers/appointmentController.js",
       "source_location": "L29",
       "id": "controllers_appointmentcontroller_serializeappointment",
-      "community": 133,
+      "community": 86,
       "norm_label": "serializeappointment()"
     },
     {
@@ -1521,7 +1521,7 @@
       "source_file": "apps/api/src/controllers/appointmentController.js",
       "source_location": "L66",
       "id": "controllers_appointmentcontroller_getappointments",
-      "community": 133,
+      "community": 86,
       "norm_label": "getappointments()"
     },
     {
@@ -1530,7 +1530,7 @@
       "source_file": "apps/api/src/controllers/appointmentController.js",
       "source_location": "L78",
       "id": "controllers_appointmentcontroller_getappointmentbyid",
-      "community": 133,
+      "community": 86,
       "norm_label": "getappointmentbyid()"
     },
     {
@@ -1548,7 +1548,7 @@
       "source_file": "apps/api/src/controllers/appointmentController.js",
       "source_location": "L175",
       "id": "controllers_appointmentcontroller_updateappointmentstatus",
-      "community": 133,
+      "community": 86,
       "norm_label": "updateappointmentstatus()"
     },
     {
@@ -1557,7 +1557,7 @@
       "source_file": "apps/api/src/controllers/appointmentController.js",
       "source_location": "L214",
       "id": "controllers_appointmentcontroller_deleteappointment",
-      "community": 133,
+      "community": 86,
       "norm_label": "deleteappointment()"
     },
     {
@@ -1647,7 +1647,7 @@
       "source_file": "apps/api/src/controllers/fileController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_filecontroller_js",
-      "community": 84,
+      "community": 149,
       "norm_label": "filecontroller.js"
     },
     {
@@ -1656,7 +1656,7 @@
       "source_file": "apps/api/src/controllers/fileController.js",
       "source_location": "L7",
       "id": "controllers_filecontroller_resourcemap",
-      "community": 84,
+      "community": 149,
       "norm_label": "resourcemap"
     },
     {
@@ -1665,7 +1665,7 @@
       "source_file": "apps/api/src/controllers/fileController.js",
       "source_location": "L22",
       "id": "controllers_filecontroller_getcaslresource",
-      "community": 84,
+      "community": 149,
       "norm_label": "getcaslresource()"
     },
     {
@@ -1674,7 +1674,7 @@
       "source_file": "apps/api/src/controllers/fileController.js",
       "source_location": "L27",
       "id": "controllers_filecontroller_getprivatefile",
-      "community": 84,
+      "community": 149,
       "norm_label": "getprivatefile()"
     },
     {
@@ -1701,7 +1701,7 @@
       "source_file": "apps/api/src/controllers/loansController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_loanscontroller_js",
-      "community": 149,
+      "community": 80,
       "norm_label": "loanscontroller.js"
     },
     {
@@ -2160,7 +2160,7 @@
       "source_file": "apps/api/src/middlewares/authorizationHandler.js",
       "source_location": "L30",
       "id": "middlewares_authorizationhandler_checkpermission",
-      "community": 2,
+      "community": 134,
       "norm_label": "checkpermission()"
     },
     {
@@ -2349,7 +2349,7 @@
       "source_file": "apps/api/src/routes/auditRoutes.js",
       "source_location": "L1",
       "id": "apps_api_src_routes_auditroutes_js",
-      "community": 2,
+      "community": 134,
       "norm_label": "auditroutes.js"
     },
     {
@@ -2358,7 +2358,7 @@
       "source_file": "apps/api/src/routes/auditRoutes.js",
       "source_location": "L5",
       "id": "routes_auditroutes_router",
-      "community": 2,
+      "community": 134,
       "norm_label": "router"
     },
     {
@@ -2421,7 +2421,7 @@
       "source_file": "apps/api/src/routes/mediaRoutes.js",
       "source_location": "L1",
       "id": "apps_api_src_routes_mediaroutes_js",
-      "community": 2,
+      "community": 134,
       "norm_label": "mediaroutes.js"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_file": "apps/api/src/routes/mediaRoutes.js",
       "source_location": "L6",
       "id": "routes_mediaroutes_router",
-      "community": 2,
+      "community": 134,
       "norm_label": "router"
     },
     {
@@ -2439,7 +2439,7 @@
       "source_file": "apps/api/src/routes/mediaRoutes.js",
       "source_location": "L8",
       "id": "routes_mediaroutes_mediaupload",
-      "community": 2,
+      "community": 134,
       "norm_label": "mediaupload"
     },
     {
@@ -2448,7 +2448,7 @@
       "source_file": "apps/api/src/routes/mediaRoutes.js",
       "source_location": "L17",
       "id": "routes_mediaroutes_entitypermissionmap",
-      "community": 2,
+      "community": 134,
       "norm_label": "entitypermissionmap"
     },
     {
@@ -2457,7 +2457,7 @@
       "source_file": "apps/api/src/routes/notificationRoutes.js",
       "source_location": "L1",
       "id": "apps_api_src_routes_notificationroutes_js",
-      "community": 2,
+      "community": 135,
       "norm_label": "notificationroutes.js"
     },
     {
@@ -2466,7 +2466,7 @@
       "source_file": "apps/api/src/routes/notificationRoutes.js",
       "source_location": "L5",
       "id": "routes_notificationroutes_router",
-      "community": 2,
+      "community": 135,
       "norm_label": "router"
     },
     {
@@ -2592,7 +2592,7 @@
       "source_file": "apps/api/src/routes/user/index.js",
       "source_location": "L1",
       "id": "apps_api_src_routes_user_index_js",
-      "community": 2,
+      "community": 131,
       "norm_label": "index.js"
     },
     {
@@ -2601,7 +2601,7 @@
       "source_file": "apps/api/src/routes/user/index.js",
       "source_location": "L6",
       "id": "user_index_router",
-      "community": 2,
+      "community": 131,
       "norm_label": "router"
     },
     {
@@ -2700,7 +2700,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_documentservice_js",
-      "community": 76,
+      "community": 77,
       "norm_label": "documentservice.js"
     },
     {
@@ -2709,7 +2709,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L9",
       "id": "services_documentservice_filename",
-      "community": 76,
+      "community": 77,
       "norm_label": "__filename"
     },
     {
@@ -2718,7 +2718,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L10",
       "id": "services_documentservice_dirname",
-      "community": 76,
+      "community": 77,
       "norm_label": "__dirname"
     },
     {
@@ -2727,7 +2727,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L18",
       "id": "services_documentservice_documentservice",
-      "community": 76,
+      "community": 77,
       "norm_label": "documentservice"
     },
     {
@@ -2790,7 +2790,7 @@
       "source_file": "apps/api/src/services/mediaService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_mediaservice_js",
-      "community": 156,
+      "community": 80,
       "norm_label": "mediaservice.js"
     },
     {
@@ -2808,7 +2808,7 @@
       "source_file": "apps/api/src/services/notificationService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_notificationservice_js",
-      "community": 149,
+      "community": 80,
       "norm_label": "notificationservice.js"
     },
     {
@@ -2943,7 +2943,7 @@
       "source_file": "apps/api/src/services/acquisition/accessionService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_accessionservice_js",
-      "community": 76,
+      "community": 77,
       "norm_label": "accessionservice.js"
     },
     {
@@ -3033,7 +3033,7 @@
       "source_file": "apps/api/src/services/acquisition/intakeService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_intakeservice_js",
-      "community": 149,
+      "community": 77,
       "norm_label": "intakeservice.js"
     },
     {
@@ -3177,7 +3177,7 @@
       "source_file": "apps/api/src/services/form/submissionService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_submissionservice_js",
-      "community": 156,
+      "community": 78,
       "norm_label": "submissionservice.js"
     },
     {
@@ -3186,7 +3186,7 @@
       "source_file": "apps/api/src/services/form/submissionService.js",
       "source_location": "L12",
       "id": "form_submissionservice_ajv",
-      "community": 156,
+      "community": 78,
       "norm_label": "ajv"
     },
     {
@@ -3195,7 +3195,7 @@
       "source_file": "apps/api/src/services/form/submissionService.js",
       "source_location": "L19",
       "id": "form_submissionservice_submissionservice",
-      "community": 156,
+      "community": 78,
       "norm_label": "submissionservice"
     },
     {
@@ -3240,7 +3240,7 @@
       "source_file": "apps/api/src/services/form/pipeline/donationPipeline.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_pipeline_donationpipeline_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "donationpipeline.js"
     },
     {
@@ -3249,7 +3249,7 @@
       "source_file": "apps/api/src/services/form/pipeline/donationPipeline.js",
       "source_location": "L17",
       "id": "pipeline_donationpipeline_donationpipeline",
-      "community": 149,
+      "community": 156,
       "norm_label": "donationpipeline"
     },
     {
@@ -3276,7 +3276,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_lifecycleservice_js",
-      "community": 149,
+      "community": 80,
       "norm_label": "lifecycleservice.js"
     },
     {
@@ -3285,7 +3285,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L12",
       "id": "user_lifecycleservice_generatetoken",
-      "community": 149,
+      "community": 80,
       "norm_label": "generatetoken()"
     },
     {
@@ -3303,7 +3303,7 @@
       "source_file": "apps/api/src/services/user/managementService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_managementservice_js",
-      "community": 149,
+      "community": 80,
       "norm_label": "managementservice.js"
     },
     {
@@ -3321,7 +3321,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_securityservice_js",
-      "community": 149,
+      "community": 80,
       "norm_label": "securityservice.js"
     },
     {
@@ -3330,7 +3330,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L9",
       "id": "user_securityservice_generatetoken",
-      "community": 149,
+      "community": 80,
       "norm_label": "generatetoken()"
     },
     {
@@ -3339,7 +3339,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L17",
       "id": "user_securityservice_securityservice",
-      "community": 149,
+      "community": 80,
       "norm_label": "securityservice"
     },
     {
@@ -3348,7 +3348,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_constants_js",
-      "community": 76,
+      "community": 77,
       "norm_label": "constants.js"
     },
     {
@@ -3357,7 +3357,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L13",
       "id": "utils_constants_contract_type_map",
-      "community": 76,
+      "community": 77,
       "norm_label": "contract_type_map"
     },
     {
@@ -3366,7 +3366,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L25",
       "id": "utils_constants_legal_status_map",
-      "community": 76,
+      "community": 77,
       "norm_label": "legal_status_map"
     },
     {
@@ -3375,7 +3375,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L30",
       "id": "utils_constants_getlegalstatus",
-      "community": 76,
+      "community": 77,
       "norm_label": "getlegalstatus()"
     },
     {
@@ -3384,7 +3384,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L34",
       "id": "utils_constants_getcontracttype",
-      "community": 76,
+      "community": 77,
       "norm_label": "getcontracttype()"
     },
     {
@@ -3393,7 +3393,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L45",
       "id": "utils_constants_allowed_tables",
-      "community": 76,
+      "community": 77,
       "norm_label": "allowed_tables"
     },
     {
@@ -3447,7 +3447,7 @@
       "source_file": "apps/api/src/utils/eventBus.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_eventbus_js",
-      "community": 133,
+      "community": 84,
       "norm_label": "eventbus.js"
     },
     {
@@ -3456,7 +3456,7 @@
       "source_file": "apps/api/src/utils/eventBus.js",
       "source_location": "L2",
       "id": "utils_eventbus_appevents",
-      "community": 133,
+      "community": 84,
       "norm_label": "appevents"
     },
     {
@@ -3465,7 +3465,7 @@
       "source_file": "apps/api/src/utils/logger.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_logger_js",
-      "community": 149,
+      "community": 80,
       "norm_label": "logger.js"
     },
     {
@@ -3474,7 +3474,7 @@
       "source_file": "apps/api/src/utils/logger.js",
       "source_location": "L6",
       "id": "utils_logger_customformat",
-      "community": 149,
+      "community": 80,
       "norm_label": "customformat"
     },
     {
@@ -3483,7 +3483,7 @@
       "source_file": "apps/api/src/utils/logger.js",
       "source_location": "L18",
       "id": "utils_logger_logger",
-      "community": 149,
+      "community": 80,
       "norm_label": "logger"
     },
     {
@@ -3492,7 +3492,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_mailer_js",
-      "community": 149,
+      "community": 80,
       "norm_label": "mailer.js"
     },
     {
@@ -3501,7 +3501,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L18",
       "id": "utils_mailer_sendemail",
-      "community": 149,
+      "community": 80,
       "norm_label": "sendemail()"
     },
     {
@@ -3510,7 +3510,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L54",
       "id": "utils_mailer_sendemailwithretry",
-      "community": 149,
+      "community": 80,
       "norm_label": "sendemailwithretry()"
     },
     {
@@ -3798,7 +3798,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_sequencegenerator_js",
-      "community": 76,
+      "community": 84,
       "norm_label": "sequencegenerator.js"
     },
     {
@@ -3807,7 +3807,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L28",
       "id": "utils_sequencegenerator_nextsequencevalue",
-      "community": 76,
+      "community": 84,
       "norm_label": "nextsequencevalue()"
     },
     {
@@ -3816,7 +3816,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L59",
       "id": "utils_sequencegenerator_generateaccessionnumber",
-      "community": 76,
+      "community": 84,
       "norm_label": "generateaccessionnumber()"
     },
     {
@@ -3825,7 +3825,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L72",
       "id": "utils_sequencegenerator_generatecatalognumber",
-      "community": 76,
+      "community": 84,
       "norm_label": "generatecatalognumber()"
     },
     {
@@ -3834,7 +3834,7 @@
       "source_file": "apps/api/src/utils/sseFactory.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_ssefactory_js",
-      "community": 149,
+      "community": 80,
       "norm_label": "ssefactory.js"
     },
     {
@@ -3888,7 +3888,7 @@
       "source_file": "apps/api/src/utils/sseFactory.js",
       "source_location": "L90",
       "id": "utils_ssefactory_ssemanager",
-      "community": 149,
+      "community": 80,
       "norm_label": "ssemanager"
     },
     {
@@ -3960,7 +3960,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L97",
       "id": "utils_statemachine_asserttransition",
-      "community": 76,
+      "community": 77,
       "norm_label": "asserttransition()"
     },
     {
@@ -3996,7 +3996,7 @@
       "source_file": "apps/api/src/utils/uploadQueue.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_uploadqueue_js",
-      "community": 149,
+      "community": 80,
       "norm_label": "uploadqueue.js"
     },
     {
@@ -4221,7 +4221,7 @@
       "source_file": "apps/api/tests/form_constraints.test.js",
       "source_location": "L1",
       "id": "apps_api_tests_form_constraints_test_js",
-      "community": 78,
+      "community": 156,
       "norm_label": "form_constraints.test.js"
     },
     {
@@ -5647,10 +5647,19 @@
       "norm_label": "@astrojs/react"
     },
     {
-      "label": "@tailwindcss/vite",
+      "label": "@tailwindcss/postcss",
       "file_type": "code",
       "source_file": "apps/landing/package.json",
       "source_location": "L18",
+      "id": "landing_package_dependencies_tailwindcss_postcss",
+      "community": 19,
+      "norm_label": "@tailwindcss/postcss"
+    },
+    {
+      "label": "@tailwindcss/vite",
+      "file_type": "code",
+      "source_file": "apps/landing/package.json",
+      "source_location": "L19",
       "id": "landing_package_dependencies_tailwindcss_vite",
       "community": 19,
       "norm_label": "@tailwindcss/vite"
@@ -5659,7 +5668,7 @@
       "label": "@types/react",
       "file_type": "code",
       "source_file": "apps/landing/package.json",
-      "source_location": "L19",
+      "source_location": "L20",
       "id": "landing_package_dependencies_types_react",
       "community": 19,
       "norm_label": "@types/react"
@@ -5668,7 +5677,7 @@
       "label": "@types/react-dom",
       "file_type": "code",
       "source_file": "apps/landing/package.json",
-      "source_location": "L20",
+      "source_location": "L21",
       "id": "landing_package_dependencies_types_react_dom",
       "community": 19,
       "norm_label": "@types/react-dom"
@@ -5677,7 +5686,7 @@
       "label": "astro",
       "file_type": "code",
       "source_file": "apps/landing/package.json",
-      "source_location": "L21",
+      "source_location": "L22",
       "id": "landing_package_dependencies_astro",
       "community": 19,
       "norm_label": "astro"
@@ -5686,7 +5695,7 @@
       "label": "lucide-react",
       "file_type": "code",
       "source_file": "apps/landing/package.json",
-      "source_location": "L22",
+      "source_location": "L23",
       "id": "landing_package_dependencies_lucide_react",
       "community": 19,
       "norm_label": "lucide-react"
@@ -5695,7 +5704,7 @@
       "label": "react",
       "file_type": "code",
       "source_file": "apps/landing/package.json",
-      "source_location": "L23",
+      "source_location": "L24",
       "id": "landing_package_dependencies_react",
       "community": 19,
       "norm_label": "react"
@@ -5704,7 +5713,7 @@
       "label": "react-dom",
       "file_type": "code",
       "source_file": "apps/landing/package.json",
-      "source_location": "L24",
+      "source_location": "L25",
       "id": "landing_package_dependencies_react_dom",
       "community": 19,
       "norm_label": "react-dom"
@@ -5713,10 +5722,19 @@
       "label": "tailwindcss",
       "file_type": "code",
       "source_file": "apps/landing/package.json",
-      "source_location": "L25",
+      "source_location": "L26",
       "id": "landing_package_dependencies_tailwindcss",
       "community": 19,
       "norm_label": "tailwindcss"
+    },
+    {
+      "label": "postcss.config.mjs",
+      "file_type": "code",
+      "source_file": "apps/landing/postcss.config.mjs",
+      "source_location": "L1",
+      "id": "apps_landing_postcss_config_mjs",
+      "community": 87,
+      "norm_label": "postcss.config.mjs"
     },
     {
       "label": "tsconfig.json",
@@ -28022,6 +28040,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/landing/package.json",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "landing_package_dependencies",
+      "target": "landing_package_dependencies_tailwindcss_postcss",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/package.json",
       "source_location": "L17",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -40796,5 +40824,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "10c786875d3718f3c2446feb21518047da0ba790"
+  "built_at_commit": "0603b56da02f0a4aa939e6b9b961958d2be0535d"
 }

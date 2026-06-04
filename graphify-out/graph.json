@@ -6419,7 +6419,7 @@
       "label": "backgrounds",
       "file_type": "code",
       "source_file": "apps/landing/src/pages/forms/display/[id].astro",
-      "source_location": "L15",
+      "source_location": "L16",
       "id": "display_id_backgrounds",
       "community": 21,
       "norm_label": "backgrounds"
@@ -6844,7 +6844,7 @@
       "source_file": "apps/panel-admin/src/App.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_app_jsx",
-      "community": 1,
+      "community": 82,
       "norm_label": "app.jsx"
     },
     {
@@ -6853,7 +6853,7 @@
       "source_file": "apps/panel-admin/src/App.jsx",
       "source_location": "L39",
       "id": "apps_panel_admin_src_app_jsx_src_app_app",
-      "community": 1,
+      "community": 82,
       "norm_label": "app()"
     },
     {
@@ -6871,7 +6871,7 @@
       "source_file": "apps/panel-admin/src/components/DataTable.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_datatable_jsx",
-      "community": 26,
+      "community": 32,
       "norm_label": "datatable.jsx"
     },
     {
@@ -6880,7 +6880,7 @@
       "source_file": "apps/panel-admin/src/components/DataTable.jsx",
       "source_location": "L6",
       "id": "components_datatable_datatable",
-      "community": 26,
+      "community": 32,
       "norm_label": "datatable()"
     },
     {
@@ -6961,7 +6961,7 @@
       "source_file": "apps/panel-admin/src/components/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_index_js",
-      "community": 26,
+      "community": 32,
       "norm_label": "index.js"
     },
     {
@@ -7015,7 +7015,7 @@
       "source_file": "apps/panel-admin/src/components/Modal.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_modal_jsx",
-      "community": 0,
+      "community": 32,
       "norm_label": "modal.jsx"
     },
     {
@@ -7024,7 +7024,7 @@
       "source_file": "apps/panel-admin/src/components/Modal.jsx",
       "source_location": "L12",
       "id": "components_modal_modal",
-      "community": 0,
+      "community": 32,
       "norm_label": "modal()"
     },
     {
@@ -7051,7 +7051,7 @@
       "source_file": "apps/panel-admin/src/components/SidebarDashboard.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_sidebardashboard_jsx",
-      "community": 26,
+      "community": 32,
       "norm_label": "sidebardashboard.jsx"
     },
     {
@@ -7060,7 +7060,7 @@
       "source_file": "apps/panel-admin/src/components/SidebarDashboard.jsx",
       "source_location": "L3",
       "id": "components_sidebardashboard_sidebardashboard",
-      "community": 26,
+      "community": 32,
       "norm_label": "sidebardashboard()"
     },
     {
@@ -7330,7 +7330,7 @@
       "source_file": "apps/panel-admin/src/hooks/useUmami.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_hooks_useumami_js",
-      "community": 1,
+      "community": 82,
       "norm_label": "useumami.js"
     },
     {
@@ -7339,7 +7339,7 @@
       "source_file": "apps/panel-admin/src/hooks/useUmami.js",
       "source_location": "L13",
       "id": "hooks_useumami_useumami",
-      "community": 1,
+      "community": 82,
       "norm_label": "useumami()"
     },
     {
@@ -7366,7 +7366,7 @@
       "source_file": "apps/panel-admin/src/pages/ArticlesCMS.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_articlescms_jsx",
-      "community": 1,
+      "community": 82,
       "norm_label": "articlescms.jsx"
     },
     {
@@ -7375,7 +7375,7 @@
       "source_file": "apps/panel-admin/src/pages/ArticlesCMS.jsx",
       "source_location": "L2",
       "id": "pages_articlescms_articlescms",
-      "community": 1,
+      "community": 82,
       "norm_label": "articlescms()"
     },
     {
@@ -7456,7 +7456,7 @@
       "source_file": "apps/panel-admin/src/pages/NotFound.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_notfound_jsx",
-      "community": 1,
+      "community": 82,
       "norm_label": "notfound.jsx"
     },
     {
@@ -7465,7 +7465,7 @@
       "source_file": "apps/panel-admin/src/pages/NotFound.jsx",
       "source_location": "L5",
       "id": "pages_notfound_notfound",
-      "community": 1,
+      "community": 82,
       "norm_label": "notfound()"
     },
     {
@@ -7474,7 +7474,7 @@
       "source_file": "apps/panel-admin/src/pages/Onboard.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_onboard_jsx",
-      "community": 1,
+      "community": 82,
       "norm_label": "onboard.jsx"
     },
     {
@@ -7483,7 +7483,7 @@
       "source_file": "apps/panel-admin/src/pages/Onboard.jsx",
       "source_location": "L5",
       "id": "pages_onboard_onboard",
-      "community": 1,
+      "community": 82,
       "norm_label": "onboard()"
     },
     {
@@ -7528,7 +7528,7 @@
       "source_file": "apps/panel-admin/src/pages/ResetPassword.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_resetpassword_jsx",
-      "community": 1,
+      "community": 82,
       "norm_label": "resetpassword.jsx"
     },
     {
@@ -7537,7 +7537,7 @@
       "source_file": "apps/panel-admin/src/pages/ResetPassword.jsx",
       "source_location": "L5",
       "id": "pages_resetpassword_resetpassword",
-      "community": 1,
+      "community": 82,
       "norm_label": "resetpassword()"
     },
     {
@@ -7546,7 +7546,7 @@
       "source_file": "apps/panel-admin/src/pages/SetupAccount.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_setupaccount_jsx",
-      "community": 1,
+      "community": 82,
       "norm_label": "setupaccount.jsx"
     },
     {
@@ -7555,7 +7555,7 @@
       "source_file": "apps/panel-admin/src/pages/SetupAccount.jsx",
       "source_location": "L5",
       "id": "pages_setupaccount_setupaccount",
-      "community": 1,
+      "community": 82,
       "norm_label": "setupaccount()"
     },
     {
@@ -8347,7 +8347,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_index_js",
-      "community": 0,
+      "community": 1,
       "norm_label": "index.js"
     },
     {
@@ -8374,7 +8374,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_pages_inventoryconstituents_jsx",
-      "community": 26,
+      "community": 1,
       "norm_label": "inventoryconstituents.jsx"
     },
     {
@@ -8383,7 +8383,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L7",
       "id": "pages_inventoryconstituents_type_styles",
-      "community": 26,
+      "community": 1,
       "norm_label": "type_styles"
     },
     {
@@ -8392,7 +8392,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L15",
       "id": "pages_inventoryconstituents_inventoryconstituents",
-      "community": 26,
+      "community": 1,
       "norm_label": "inventoryconstituents()"
     },
     {
@@ -8401,7 +8401,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryExhibitions.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_pages_inventoryexhibitions_jsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "inventoryexhibitions.jsx"
     },
     {
@@ -8410,7 +8410,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryExhibitions.jsx",
       "source_location": "L7",
       "id": "pages_inventoryexhibitions_status_styles",
-      "community": 0,
+      "community": 1,
       "norm_label": "status_styles"
     },
     {
@@ -8419,7 +8419,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryExhibitions.jsx",
       "source_location": "L15",
       "id": "pages_inventoryexhibitions_inventoryexhibitions",
-      "community": 0,
+      "community": 1,
       "norm_label": "inventoryexhibitions()"
     },
     {
@@ -8518,7 +8518,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryLocations.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_pages_inventorylocations_jsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "inventorylocations.jsx"
     },
     {
@@ -8527,7 +8527,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryLocations.jsx",
       "source_location": "L10",
       "id": "pages_inventorylocations_type_styles",
-      "community": 0,
+      "community": 1,
       "norm_label": "type_styles"
     },
     {
@@ -8536,7 +8536,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryLocations.jsx",
       "source_location": "L17",
       "id": "pages_inventorylocations_inventorylocations",
-      "community": 0,
+      "community": 1,
       "norm_label": "inventorylocations()"
     },
     {
@@ -8545,7 +8545,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryLocations.jsx",
       "source_location": "L355",
       "id": "pages_inventorylocations_arrowright",
-      "community": 0,
+      "community": 1,
       "norm_label": "arrowright()"
     },
     {
@@ -8797,7 +8797,7 @@
       "source_file": "apps/panel-admin/src/pages/settings/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_settings_index_js",
-      "community": 1,
+      "community": 32,
       "norm_label": "index.js"
     },
     {
@@ -8806,7 +8806,7 @@
       "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_settings_pages_settingsindex_jsx",
-      "community": 1,
+      "community": 32,
       "norm_label": "settingsindex.jsx"
     },
     {
@@ -8815,7 +8815,7 @@
       "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
       "source_location": "L6",
       "id": "pages_settingsindex_settingsindex",
-      "community": 1,
+      "community": 32,
       "norm_label": "settingsindex()"
     },
     {
@@ -28757,8 +28757,11 @@
     },
     {
       "relation": "imports_from",
+      "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/landing/src/pages/forms/display/[id].astro",
+      "source_location": "L3",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_landing_src_pages_forms_display_id_astro",
       "target": "apps_landing_src_layouts_baselayout_astro"
@@ -28781,8 +28784,11 @@
     },
     {
       "relation": "imports_from",
+      "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "apps/landing/src/pages/forms/embed/[id].astro",
+      "source_location": "L3",
+      "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_landing_src_pages_forms_embed_id_astro",
       "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_styles_global_css"
@@ -40790,5 +40796,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b42d2e8cd4d49e8d7a073b4dc8cf3629bd78c223"
+  "built_at_commit": "10c786875d3718f3c2446feb21518047da0ba790"
 }

@@ -1,16 +1,16 @@
 # Graph Report - museo-bulawan-cms  (2026-06-04)
 
 ## Corpus Check
-- 289 files · ~538,938 words
+- 289 files · ~539,033 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1644 nodes · 2489 edges · 125 communities (101 shown, 24 thin omitted)
+- 1644 nodes · 2489 edges · 126 communities (100 shown, 26 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b42d2e8c`
+- Built from commit: `10c78687`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -87,6 +87,7 @@
 - [[_COMMUNITY_Community 79|Community 79]]
 - [[_COMMUNITY_Community 80|Community 80]]
 - [[_COMMUNITY_Community 81|Community 81]]
+- [[_COMMUNITY_Community 82|Community 82]]
 - [[_COMMUNITY_Community 83|Community 83]]
 - [[_COMMUNITY_Community 84|Community 84]]
 - [[_COMMUNITY_Community 85|Community 85]]
@@ -151,15 +152,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (125 total, 24 thin omitted)
+## Communities (126 total, 26 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.12
-Nodes (7): InventoryExhibitions(), STATUS_STYLES, getStatusStyles(), getStatusStyles(), InventoryItem(), InventoryLocations(), TYPE_STYLES
+Cohesion: 0.22
+Nodes (3): getStatusStyles(), getStatusStyles(), InventoryItem()
 
 ### Community 1 - "Community 1"
-Cohesion: 0.08
-Nodes (16): App(), ProtectedRoute(), AuthContext, AuthProvider(), useAuth(), SSEContext, SSEProvider(), useUmami() (+8 more)
+Cohesion: 0.09
+Nodes (19): ProtectedRoute(), AuthContext, AuthProvider(), useAuth(), SSEContext, SSEProvider(), Analytics(), COLORS (+11 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.15
@@ -257,10 +258,6 @@ Nodes (16): dependencies, astro, @astrojs/node, tailwindcss, @tailwindcss/vite, 
 Cohesion: 0.15
 Nodes (12): 1. Directory Structure and Architectural Roles, 2. API Routing Reference, 3. Step-by-Step Donation Submission Guide, 4. Processing Submissions into Intakes, 5. Under-the-Hood: The Donation Pipeline Workflow, A. Public Forms Endpoints, API Routing Guide: Forms Service & Donation Form Lifecycle, B. Staff Administration Endpoints (+4 more)
 
-### Community 26 - "Community 26"
-Cohesion: 0.14
-Nodes (3): FormDetail(), InventoryConstituents(), TYPE_STYLES
-
 ### Community 28 - "Community 28"
 Cohesion: 0.18
 Nodes (10): 1. Acquisition Lifecycle (Intake → Accession → Inventory), 2. Dynamic Forms & Submissions, 3. Media & Attachments, 4. Compliance & Museum Standards, 5. Authority Control & Management, 6. Authentication, Accessions (The Registry), Intakes (The Pipeline) (+2 more)
@@ -274,8 +271,8 @@ Cohesion: 0.18
 Nodes (4): MemoryQueueAdapter, NativeRedisQueueAdapter, processTask(), RedisQueueAdapter
 
 ### Community 32 - "Community 32"
-Cohesion: 0.16
-Nodes (9): getManagementSidebarCount(), getManagementSidebarStats(), getManagementSidebarTitle(), ManagementIndex(), ROLE_STYLES, STATUS_STYLES, ManagementUser(), ROLE_STYLES (+1 more)
+Cohesion: 0.10
+Nodes (10): getManagementSidebarCount(), getManagementSidebarStats(), getManagementSidebarTitle(), ManagementIndex(), ROLE_STYLES, STATUS_STYLES, ManagementUser(), ROLE_STYLES (+2 more)
 
 ### Community 33 - "Community 33"
 Cohesion: 0.22
@@ -492,22 +489,22 @@ Nodes (11): db, pool, ajv, submissionService, compliancePipeline, checkMedia(), 
 ## Knowledge Gaps
 - **817 isolated node(s):** `version`, `records`, `fired`, `falsePositive`, `precision` (+812 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **24 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `db` connect `Community 156` to `Community 133`, `Community 135`, `Community 106`, `Community 76`, `Community 77`, `Community 78`, `Community 80`, `Community 84`, `Community 149`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
-- **Why does `useAuth()` connect `Community 1` to `Community 0`, `Community 32`, `Community 105`, `Community 107`, `Community 108`, `Community 79`, `Community 51`, `Community 26`, `Community 61`?**
+- **Why does `useAuth()` connect `Community 1` to `Community 0`, `Community 32`, `Community 105`, `Community 107`, `Community 108`, `Community 79`, `Community 82`, `Community 51`, `Community 26`, `Community 61`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **What connects `version`, `records`, `fired` to the rest of the system?**
   _817 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.11578947368421053 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.08080808080808081 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09041835357624832 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
   _Cohesion score 0.0625 - nodes in this community are weakly interconnected._
 - **Should `Community 4` be split into smaller, more focused modules?**
   _Cohesion score 0.05410628019323672 - nodes in this community are weakly interconnected._
+- **Should `Community 5` be split into smaller, more focused modules?**
+  _Cohesion score 0.04878048780487805 - nodes in this community are weakly interconnected._

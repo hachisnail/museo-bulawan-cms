@@ -22,11 +22,36 @@ router.get('/stream', (req, res) => {
     ];
     
     // MariaDB Resource channels
-    if (req.ability.can('read', 'Inventory')) allowedChannels.push('inventory', 'media_attachments');
-    if (req.ability.can('read', 'Accession') || req.user.role === 'donor') allowedChannels.push('accessions');
-    if (req.ability.can('read', 'Intake') || req.user.role === 'donor') allowedChannels.push('intakes', 'form_submissions');
-    
-    // 3. User-specific private channel
+    if (req.ability.can('read', 'Inventory')) {
+        allowedChannels.push('inventory', 'media_attachments');
+    }
+    if (req.ability.can('read', 'Accession') || req.user.role === 'donor') {
+        allowedChannels.push('accessions');
+    }
+    if (req.ability.can('read', 'Intake') || req.user.role === 'donor') {
+        allowedChannels.push('intakes', 'form_submissions');
+    }
+
+    // Appointments & Schedules — available to appointment coordinators and above
+    if (req.ability.can('manage', 'Appointment') || req.ability.can('create', 'Appointment')) {
+        allowedChannels.push('appointments', 'appointment', 'appointmentstatus');
+    }
+    // Schedules are managed by appointment coordinators (who can manage Appointment)
+    if (req.ability.can('manage', 'Appointment')) {
+        allowedChannels.push('schedules', 'schedule');
+    }
+
+    // Forms — available to users who can manage submissions or all
+    if (req.ability.can('manage', 'Submission') || req.ability.can('manage', 'all')) {
+        allowedChannels.push('form_definitions', 'submission');
+    }
+
+    // User management (admins only)
+    if (req.ability.can('manage', 'User')) {
+        allowedChannels.push('users');
+    }
+
+    // User-specific private channel
     allowedChannels.push(`user_${req.user.id}`);
 
     const connectionId = crypto.randomUUID();

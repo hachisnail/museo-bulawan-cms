@@ -233,6 +233,46 @@ const ExternalForm = (props) => {
                 const value = formData[key];
                 if (isRequired && (value === undefined || value === null || (typeof value === 'string' && value.trim() === ''))) {
                     newErrors[key] = `This field is required`;
+                    continue;
+                }
+                
+                if (value === undefined || value === null || value === '') continue;
+
+                if (prop.format === 'email') {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(value)) newErrors[key] = `Please enter a valid email address`;
+                } else if (prop.format === 'phone' || prop.format === 'tel') {
+                    const phoneRegex = /^[0-9+\-\s()]+$/;
+                    if (!phoneRegex.test(value)) newErrors[key] = `Please enter a valid phone number`;
+                    else if (value.replace(/[^0-9]/g, '').length < 10) newErrors[key] = `Phone number must have at least 10 digits`;
+                } else if (prop.format === 'url' || prop.format === 'uri') {
+                    try { new URL(value); } catch (_) { newErrors[key] = `Please enter a valid URL`; }
+                }
+                
+                if (typeof value === 'string') {
+                    if (prop.minLength !== undefined && value.length < prop.minLength) {
+                        newErrors[key] = `Must be at least ${prop.minLength} characters`;
+                    }
+                    if (prop.maxLength !== undefined && value.length > prop.maxLength) {
+                        newErrors[key] = `Must be at most ${prop.maxLength} characters`;
+                    }
+                    if (prop.pattern) {
+                        try {
+                            if (!new RegExp(prop.pattern).test(value)) {
+                                newErrors[key] = prop['ui:error'] || `Invalid format`;
+                            }
+                        } catch (e) {}
+                    }
+                }
+                
+                if (prop.type === 'number' || prop.type === 'integer') {
+                    const num = Number(value);
+                    if (isNaN(num)) {
+                        newErrors[key] = `Must be a valid number`;
+                    } else {
+                        if (prop.minimum !== undefined && num < prop.minimum) newErrors[key] = `Must be at least ${prop.minimum}`;
+                        if (prop.maximum !== undefined && num > prop.maximum) newErrors[key] = `Must be at most ${prop.maximum}`;
+                    }
                 }
             }
             if (Object.keys(newErrors).length > 0) {
@@ -272,6 +312,15 @@ const ExternalForm = (props) => {
         if (fieldErrors[e.target.name]) {
             setFieldErrors(prev => ({ ...prev, [e.target.name]: null }));
         }
+
+        const prop = properties[e.target.name];
+        if (prop && (prop.format === 'phone' || prop.format === 'tel')) {
+            const val = e.target.value;
+            if (val && !/^[0-9+\-\s()]*$/.test(val)) {
+                return;
+            }
+        }
+
         handleInputChange(e);
     };
 
@@ -485,7 +534,7 @@ const ExternalForm = (props) => {
                         />
                     ) : (
                         <input
-                            type={prop.format === 'email' ? 'email' : prop.format === 'date' ? 'date' : prop.format === 'time' ? 'time' : prop.type === 'number' ? 'number' : 'text'}
+                            type={prop.format === 'email' ? 'email' : prop.format === 'date' ? 'date' : prop.format === 'time' ? 'time' : prop.type === 'number' ? 'number' : (prop.format === 'phone' || prop.format === 'tel') ? 'tel' : 'text'}
                             name={key}
                             required={showRequired}
                             value={formData[key] || ''}
@@ -671,14 +720,14 @@ const ExternalForm = (props) => {
                 <button
                     type="button"
                     onClick={prevStep}
-                    className={`bg-black text-white px-8 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-sm transition-opacity ${currentVisibleIdx === 0 ? 'opacity-0 pointer-events-none' : 'hover:bg-gray-800'}`}
+                    className={`bg-black/90 backdrop-blur-sm text-white border border-white/50 px-8 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-sm shadow-xl transition-all hover:bg-white hover:text-black ${currentVisibleIdx === 0 ? 'opacity-0 pointer-events-none' : ''}`}
                 >
                     PREV
                 </button>
 
                 <div className="flex items-center gap-4">
                     {currentVisibleIdx === 0 && !hideHeader && (
-                        <span className="text-xs font-sans text-gray-500 hidden md:inline">
+                        <span className="text-xs font-sans text-white/80 hidden md:inline">
                             Proceed to the {definition.type ? definition.type.charAt(0).toUpperCase() + definition.type.slice(1).replace('_', ' ') : 'Appointment'} form.
                         </span>
                     )}
@@ -687,7 +736,7 @@ const ExternalForm = (props) => {
                         <button
                             type="button"
                             onClick={nextStep}
-                            className="bg-black text-white px-8 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-sm hover:bg-gray-800 transition-colors flex items-center gap-2"
+                            className="bg-black/90 backdrop-blur-sm text-white border border-white/50 px-8 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-sm hover:bg-white hover:text-black transition-all flex items-center gap-2 shadow-xl"
                         >
                             NEXT <ChevronRight className="w-4 h-4" />
                         </button>
@@ -696,7 +745,7 @@ const ExternalForm = (props) => {
                             type="button"
                             onClick={handleFinalSubmit}
                             disabled={submitting || (definition.otp && otpSent && !otp)}
-                            className="bg-black text-white px-8 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-sm hover:bg-gray-800 transition-colors disabled:opacity-50"
+                            className="bg-black/90 backdrop-blur-sm text-white border border-white/50 px-8 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-sm hover:bg-white hover:text-black transition-all flex items-center gap-2 shadow-xl disabled:opacity-50"
                         >
                             {submitting ? 'Submitting...' : 'Submit'}
                         </button>
@@ -720,7 +769,7 @@ const ExternalForm = (props) => {
                         <button 
                             type="button"
                             onClick={() => setAlertConfig(null)}
-                            className="px-8 py-3 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-gray-800 transition-colors"
+                            className="px-8 py-3 bg-black  text-white text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-gray-800 transition-colors"
                         >
                             Okay
                         </button>

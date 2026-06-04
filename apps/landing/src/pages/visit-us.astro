@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FormRenderer from '../components/FormRenderer'
+
+// Grab the backend URL from your environment variables, or hardcode your local dev backend
+const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
+---
+
+<BaseLayout title="Visit Us | Museo Bulawan"  >
+  <div class="w-screen min-h-[75vh] py-10 mt-28  bg-white">
+      
+      <FormRenderer 
+        client:only="react" 
+        id="01KQEAAX7RAE9CEYNBV2VF512Q" 
+        apiBaseUrl={API_URL} 
+      />
+
+  </div>
+</BaseLayout>

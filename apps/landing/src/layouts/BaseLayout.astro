@@ -65,5 +65,87 @@ import Nav from '../components/ui/Nav.astro';
     </footer>
   )}
 
+  <script>
+    // Dynamically calculate the offset based on the fixed header height
+    function getScrollOffset() {
+      const header = document.querySelector('header');
+      return header ? header.offsetHeight : 32;
+    }
+
+    // Function to handle smooth scrolling to an element with header offset
+    function scrollToElement(targetId: string, smooth = true) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      const offset = getScrollOffset();
+      const elementPosition = target.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: smooth ? 'smooth' : 'auto'
+      });
+    }
+
+    // Intercept dropdown and scroll links to navigate or smooth scroll
+    function setupSectionNavigation() {
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const navLink = target.closest<HTMLAnchorElement>('.nav-dropdown-link, .scroll-link');
+        if (!navLink) return;
+
+        const href = navLink.getAttribute('href');
+        if (!href) return;
+
+        const hashIndex = href.indexOf('#');
+        if (hashIndex === -1) return;
+        const sectionId = href.substring(hashIndex + 1);
+        if (!sectionId) return;
+
+        const isHomepage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+
+        if (isHomepage) {
+          const targetElement = document.getElementById(sectionId);
+          if (targetElement) {
+            e.preventDefault();
+            scrollToElement(sectionId, true);
+            history.pushState(null, '', `/#${sectionId}`);
+          }
+        }
+      });
+    }
+
+    // Handle scrolling on initial load if hash is present
+    function handleInitialScroll() {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#')) {
+        const sectionId = hash.substring(1);
+        if (document.getElementById(sectionId)) {
+          scrollToElement(sectionId, true);
+        }
+      }
+    }
+
+    // Run on startup
+    setupSectionNavigation();
+
+    // Handle hash changes (e.g. browser history back/forward)
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#')) {
+        scrollToElement(hash.substring(1), true);
+      }
+    });
+
+    // Run layout scroll after load to let layout settle
+    if (document.readyState === 'complete') {
+      setTimeout(handleInitialScroll, 100);
+    } else {
+      window.addEventListener('load', () => {
+        setTimeout(handleInitialScroll, 100);
+      });
+    }
+  </script>
+
 </body>
 </html>

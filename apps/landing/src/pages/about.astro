@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-
+import aboutHero from '../assets/440832115_947772303495782_6010038099693171993_n.svg';
 // Placeholders replacing local assets
 const bgImage1 = "https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=2560&auto=format&fit=crop";
 const bgImage5 = "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=1000&auto=format&fit=crop";
@@ -10,82 +10,101 @@ const bgImage6 = "https://images.unsplash.com/photo-1572953109213-3be62398eb95?q
 
 <BaseLayout title="About Us | Museo Bulawan" theme="light" navTheme="light">
   
-  <!-- Hero -->
-  <div class="w-screen h-[40rem] bg-cover bg-center bg-no-repeat absolute top-0 left-0 -z-10" style={`background-image: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(255,255,255,1)), url('${bgImage1}')`}></div>
+  <!-- Hero / Top Banner Image -->
+  <div class="w-full h-[20rem] md:h-[30rem] bg-cover bg-center bg-no-repeat" style={`background-image: url('${aboutHero.src}')`}></div>
 
-  <div class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 pt-64 pb-24 flex flex-col gap-32 text-black">
+  <!-- Main Content Container -->
+  <div class="w-full max-w-[68rem] mx-auto px-6 md:px-10 lg:px-12 pt-12 pb-24 flex flex-col gap-16 text-black font-serif">
     
     <!-- Part 1 -->
-    <div class="flex flex-col md:flex-row gap-16">
-      <div class="md:w-2/5">
-        <p class="text-xl md:text-2xl text-justify leading-relaxed text-gray-700">
-          The Museo Bulawan, also known as the Community Museum of Camarines Norte, embodies the rich cultural and historical essence of the province. Its origins trace back to 1995, when the construction of a new neo-classical provincial capitol building provided a fitting backdrop for the establishment of a museum.
+    <div class="flex flex-col md:flex-row gap-10 lg:gap-14">
+      <!-- Left Column -->
+      <div class="md:w-5/12 flex flex-col gap-6">
+        <p class="text-sm lg:text-base text-justify leading-relaxed text-gray-800">
+          The Museo Bulawan, also known as the Community Museum of Camarines Norte, embodies the rich cultural and historical essence of the province. Its origins trace back to 1995, when the construction of a new neo-classical provincial capitol building provided a fitting backdrop for the establishment of a museum. The Greco-Roman architecture of the building inspired a vision of timeless grandeur, making it an ideal setting to house artifacts and exhibits that celebrate the province's heritage.
         </p>
-        <div class="mt-8 w-full h-[400px] bg-cover bg-center rounded-lg shadow-xl" style={`background-image: url('${bgImage5}')`}></div>
+        <div class="w-full h-56 lg:h-64 bg-cover bg-center rounded-sm shadow-sm mt-auto" style={`background-image: url('${bgImage5}')`}></div>
       </div>
-      <div class="md:w-3/5">
-        <h1 class="text-5xl md:text-6xl font-serif mb-10 text-[#DAB765] font-bold leading-tight">
+      
+      <!-- Right Column -->
+      <div class="md:w-7/12 flex flex-col">
+        <h1 class="text-2xl md:text-3xl lg:text-4xl font-serif mb-8 text-black leading-snug italic">
           "A museum is a bridge that connects the past to the present, inspiring the future."
         </h1>
-        <h2 class="font-serif font-semibold text-4xl mb-6">Humble Beginnings</h2>
-        <div class="space-y-6 text-xl text-gray-700 text-justify leading-relaxed">
-          <p>Initially, the museum was situated in a modest space at the center of the capitol building's frontage, directly facing the main entrance. Despite its limited size, this initial venue served as a hub for various periodic exhibits.</p>
-          <p>Through collaborations with national organizations such as the National Commission for Culture and the Arts (NCCA), the National Museum, and the National Historical Institute, the museum hosted numerous events that sparked a growing interest in local history.</p>
-          <p>These early efforts laid the groundwork for a vibrant cultural hub that would eventually grow into a larger and more comprehensive institution.</p>
+        <h2 class="font-serif text-lg md:text-xl mb-3 text-black font-semibold">Humble Beginnings</h2>
+        <div class="space-y-4 text-sm lg:text-base text-gray-800 text-justify leading-relaxed">
+          <p>Initially, the museum was situated in a modest space at the center of the capitol building's frontage, directly facing the main entrance. Despite its limited size, this initial venue served as a hub for various periodic exhibits and activities. It became an effective platform for the provincial government to foster cultural awareness and education among the youth and the community at large.</p>
+          <p>Through collaborations with national organizations such as the National Commission for Culture and the Arts (NCCA), the National Museum, and the National Historical Institute, the museum hosted numerous events that sparked a growing interest in local history and cultural preservation. These partnerships deepened the community's sense of identity and strengthened their connection to the national narrative.</p>
+          <p>This initial phase of the museum also served as a testament to the community's commitment to preserving their heritage despite spatial limitations. The intimate setting encouraged meaningful interactions between visitors and exhibits, fostering a deeper appreciation for the artifacts on display. Local artists, historians, and cultural advocates found a welcoming space to share their work and knowledge, further enriching the museum's offerings. These early efforts laid the groundwork for a vibrant cultural hub that would eventually grow into a larger and more comprehensive institution, embodying the community's dedication to celebrating and safeguarding their shared history.</p>
         </div>
       </div>
     </div>
-
-    <div class="w-full h-px bg-gray-300"></div>
 
     <!-- Part 2 -->
-    <div class="flex flex-col md:flex-row gap-16 items-center">
-      <div class="md:w-1/2">
-        <div class="w-full h-[500px] bg-cover bg-center rounded-lg shadow-xl" style={`background-image: url('${bgImage3}')`}></div>
-      </div>
-      <div class="md:w-1/2">
-        <h2 class="font-serif font-bold mb-8 text-5xl">Expansion and Transformation</h2>
-        <p class="text-2xl text-gray-700 text-justify leading-relaxed">
-          The new location facilitated significant advancements in museum management, including systematic techniques in documentation, research, preservation, and exhibition. Enhanced marketing and promotional efforts further broadened the museum's reach.
-        </p>
-        <div class="flex mt-8 gap-6 items-start">
-          <div class="text-[12rem] font-serif font-bold text-[#DAB765] leading-[0.75]">O</div>
-          <p class="flex-1 text-xl text-gray-700 text-justify mt-4 leading-relaxed">
-            ver time, the museum's popularity and collections grew, outstripping the capacity of its original location. The year 2000 marked a pivotal moment in its history when the museum was relocated to a larger building adjacent to the provincial capitol.
+    <div class="flex flex-col gap-8">
+      <h2 class="text-xl md:text-2xl lg:text-3xl font-serif text-black leading-snug md:w-4/5 italic text-center mx-auto mb-2">
+        "Heritage is not what we inherit from the past; it is what we preserve for the future."
+      </h2>
+      
+      <div class="flex flex-col md:flex-row gap-8 lg:gap-12 items-center">
+        <!-- Left Image -->
+        <div class="md:w-1/2 w-full">
+          <div class="w-full h-64 lg:h-72 bg-cover bg-center rounded-sm shadow-sm" style={`background-image: url('${bgImage3}')`}></div>
+        </div>
+        
+        <!-- Right Text -->
+        <div class="md:w-1/2 flex flex-col gap-4">
+          <h2 class="font-serif text-lg md:text-xl text-black font-semibold">Expansion and Transformation</h2>
+          <p class="text-sm lg:text-base text-gray-800 text-justify leading-relaxed">
+            The new location facilitated significant advancements in museum management, including systematic techniques in documentation, research, preservation, and exhibition. Enhanced marketing and promotional efforts further broadened the museum's reach, attracting a diverse audience of local residents and travelers.
           </p>
+          <div class="mt-2 text-sm lg:text-base text-gray-800 text-justify leading-relaxed">
+            <span class="float-left text-6xl font-serif leading-[0.8] pr-1.5 pt-1 text-black">O</span>
+            <span>ver time, the museum's popularity and collections grew, outstripping the capacity of its original location. The year 2000 marked a pivotal moment in its history when the museum was relocated to a larger building adjacent to the provincial capitol. This move addressed the need for a more spacious venue, enabling improved collection displays and a more comfortable experience for visitors.</span>
+          </div>
         </div>
       </div>
     </div>
 
+    <div class="w-full h-px bg-gray-200 my-2"></div>
+
     <!-- Part 3 -->
-    <div class="flex flex-col md:flex-row gap-16 bg-[#1C1B19] text-white p-12 lg:p-24 rounded-3xl shadow-2xl items-center">
-      <div class="md:w-3/5">
-        <h1 class="text-5xl font-serif font-bold mb-8 text-[#DAB765]">A Beacon of Cultural Wealth</h1>
-        <p class="text-2xl leading-relaxed text-white/90">
-          The museum's name, Museo Bulawan translated as "Golden Museum"—reflects Camarines Norte's distinction as a province historically linked to gold mining. This golden legacy resonates in the collections:
+    <div class="flex flex-col md:flex-row gap-8 lg:gap-12 items-center">
+      <!-- Left Text -->
+      <div class="md:w-1/2 flex flex-col gap-3">
+        <h2 class="text-lg md:text-xl font-serif text-black font-semibold">Museo Bulawan: A Beacon of Cultural Wealth</h2>
+        <p class="text-sm lg:text-base text-gray-800 text-justify leading-relaxed">
+          The museum's name, Museo Bulawan—translated as "Golden Museum"—reflects Camarines Norte's distinction as a province historically linked to gold mining. This golden legacy resonates in the museum's exhibits and collections, which include:
         </p>
-        <ul class="list-disc list-inside mt-8 space-y-4 text-xl text-white/80">
-          <li><strong>Numismatics:</strong> An extensive collection of coins and currencies.</li>
-          <li><strong>Portraits of Governors:</strong> A gallery honoring the province's leaders.</li>
-          <li><strong>Historical Panels:</strong> Displays illustrating local and national history.</li>
-          <li><strong>Local Heroes:</strong> Tributes to individuals who shaped the province.</li>
+        <ul class="list-disc list-outside ml-5 mt-1 space-y-2 text-sm lg:text-base text-gray-800 text-justify leading-relaxed">
+          <li><strong class="text-black">Numismatics:</strong> An extensive collection of coins and currencies.</li>
+          <li><strong class="text-black">Portraits of Governors:</strong> A gallery honoring the province's leaders.</li>
+          <li><strong class="text-black">Historical Panels:</strong> Computer-generated displays illustrating significant moments in local and national history.</li>
+          <li><strong class="text-black">Local Heroes Exhibit:</strong> Tributes to the individuals who shaped the province's story.</li>
+          <li><strong class="text-black">Tourism Showcases:</strong> Presentations highlighting the scenic beauty and cultural richness of Camarines Norte.</li>
         </ul>
       </div>
-      <div class="md:w-2/5 w-full h-[400px] bg-cover bg-center rounded-xl" style={`background-image: url('${bgImage6}')`}></div>
+      
+      <!-- Right Image -->
+      <div class="md:w-1/2 w-full">
+        <div class="w-full h-64 lg:h-80 bg-cover bg-center rounded-sm shadow-sm" style={`background-image: url('${bgImage6}')`}></div>
+      </div>
     </div>
 
-    <!-- Vision & Mission -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-      <div class="bg-gray-100 p-16 rounded-3xl text-center flex flex-col items-center justify-center border border-gray-200 shadow-lg">
-        <h1 class="text-5xl font-serif font-bold mb-8 text-black">Our Vision</h1>
-        <p class="text-xl text-gray-700 leading-relaxed">
-          Museo Bulawan is the leading and the most viewer-friendly community museum that serves as the prime center for education and communication of the rich cultural, artistic, and natural heritage and history of Camarines Norte.
+    <!-- Part 4 -->
+    <div class="flex flex-col md:flex-row gap-8 lg:gap-12 items-start mt-4 bg-gray-50 p-6 md:p-8 rounded-lg border border-gray-100">
+      <!-- Left Large Text -->
+      <div class="md:w-1/2">
+        <p class="text-base md:text-lg lg:text-xl text-black leading-relaxed text-justify font-medium">
+          In addition to these exhibits, the museum hosts periodic events and activities designed to engage children and adults alike, further solidifying its role as a cornerstone of cultural education and community engagement.
         </p>
       </div>
-      <div class="bg-gray-100 p-16 rounded-3xl text-center flex flex-col items-center justify-center border border-gray-200 shadow-lg">
-        <h1 class="text-5xl font-serif font-bold mb-8 text-black">Our Mission</h1>
-        <p class="text-xl text-gray-700 leading-relaxed">
-          Collect, research, conserve, exhibit and disseminate knowledge of significant past to enhance social life. We educate, entertain, and excite through systematic preservation and publication of material culture.
+      
+      <!-- Right Small Text -->
+      <div class="md:w-1/2 flex flex-col gap-3">
+        <h2 class="text-lg md:text-xl font-serif text-black font-semibold">A Living Heritage</h2>
+        <p class="text-sm lg:text-base text-gray-800 text-justify leading-relaxed">
+          Today, Museo Bulawan stands not just as a repository of artifacts but as a dynamic institution that bridges the past and present. It continues to inspire pride and curiosity among its visitors while contributing to the province's tourism appeal. As it moves forward, the museum remains committed to its mission of preserving and showcasing the golden heritage of Camarines Norte, ensuring that future generations can connect with their roots and celebrate their identity.
         </p>
       </div>
     </div>

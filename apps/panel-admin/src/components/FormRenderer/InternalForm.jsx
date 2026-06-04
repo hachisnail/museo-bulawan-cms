@@ -33,6 +33,15 @@ const InternalForm = (props) => {
         if (e && e.target && e.target.name && fieldErrors[e.target.name]) {
             setFieldErrors(prev => ({ ...prev, [e.target.name]: null }));
         }
+
+        if (definition && definition.schema && definition.schema.properties) {
+            const prop = definition.schema.properties[e.target?.name];
+            if (prop && (prop.format === 'phone' || prop.format === 'tel')) {
+                const val = e.target.value;
+                if (val && !/^[0-9+\-\s()]*$/.test(val)) return;
+            }
+        }
+
         handleInputChange(e);
     };
 
@@ -59,9 +68,42 @@ const InternalForm = (props) => {
             if (prop['ui:widget'] === 'hidden') return;
             
             const isRequired = required.includes(key);
-            const val = formData[key];
-            if (isRequired && (val === undefined || val === null || (typeof val === 'string' && val.trim() === ''))) {
+            const value = formData[key];
+            if (isRequired && (value === undefined || value === null || (typeof value === 'string' && value.trim() === ''))) {
                 newErrors[key] = 'This field is required';
+                return;
+            }
+
+            if (value === undefined || value === null || value === '') return;
+
+            if (prop.format === 'email') {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value)) newErrors[key] = `Please enter a valid email address`;
+            } else if (prop.format === 'phone' || prop.format === 'tel') {
+                const phoneRegex = /^[0-9+\-\s()]+$/;
+                if (!phoneRegex.test(value)) newErrors[key] = `Please enter a valid phone number`;
+                else if (value.replace(/[^0-9]/g, '').length < 10) newErrors[key] = `Phone number must have at least 10 digits`;
+            } else if (prop.format === 'url' || prop.format === 'uri') {
+                try { new URL(value); } catch (_) { newErrors[key] = `Please enter a valid URL`; }
+            }
+            
+            if (typeof value === 'string') {
+                if (prop.minLength !== undefined && value.length < prop.minLength) newErrors[key] = `Must be at least ${prop.minLength} characters`;
+                if (prop.maxLength !== undefined && value.length > prop.maxLength) newErrors[key] = `Must be at most ${prop.maxLength} characters`;
+                if (prop.pattern) {
+                    try {
+                        if (!new RegExp(prop.pattern).test(value)) newErrors[key] = prop['ui:error'] || `Invalid format`;
+                    } catch (e) {}
+                }
+            }
+            
+            if (prop.type === 'number' || prop.type === 'integer') {
+                const num = Number(value);
+                if (isNaN(num)) newErrors[key] = `Must be a valid number`;
+                else {
+                    if (prop.minimum !== undefined && num < prop.minimum) newErrors[key] = `Must be at least ${prop.minimum}`;
+                    if (prop.maximum !== undefined && num > prop.maximum) newErrors[key] = `Must be at most ${prop.maximum}`;
+                }
             }
         });
 

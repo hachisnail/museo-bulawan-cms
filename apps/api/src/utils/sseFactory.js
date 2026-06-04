@@ -5,16 +5,19 @@ class SSEFactory {
     constructor() {
         this.clients = new Map();
 
+        // Keep-alive pings every 15s to prevent proxy timeouts
         setInterval(() => {
             for (const client of this.clients.values()) {
                 client.res.write(': ping\n\n');
             }
-        }, 20000);
+        }, 15000);
 
         // Listen to global DB events and broadcast them to subscribed clients
         appEvents.on('db_change', (eventData) => {
-            // The resource name usually maps nicely to a channel name
-            const channel = eventData.resource; 
+            // The resource name usually maps to a channel name.
+            // Normalize to lowercase so PascalCase emissions (e.g. "Appointment")
+            // match lowercase channel subscriptions (e.g. "appointments").
+            const channel = (eventData.resource || '').toLowerCase();
             this.broadcast(channel, 'db_change', eventData);
         });
     }
@@ -22,10 +25,16 @@ class SSEFactory {
     addClient(req, res, clientId, channels = ['global']) {
         res.writeHead(200, {
             'Content-Type': 'text/event-stream',
-            'Cache-Control': 'no-cache',
+            'Cache-Control': 'no-cache, no-transform',
             'Connection': 'keep-alive',
-            'X-Accel-Buffering': 'no' 
+            'X-Accel-Buffering': 'no' // Nginx
         });
+
+        // Immediately flush headers so reverse proxies (Traefik, Caddy, Nginx)
+        // know this is a streaming response and don't buffer it.
+        if (typeof res.flushHeaders === 'function') {
+            res.flushHeaders();
+        }
 
         res.write('retry: 5000\n\n');
         res.write('event: connected\n');
@@ -72,7 +81,9 @@ class SSEFactory {
             }
         }
 
-        logger.debug(`Broadcasted SSE Event`, { channel, eventName, clientsReached: sentCount });
+        if (sentCount > 0) {
+            logger.debug(`Broadcasted SSE Event`, { channel, eventName, clientsReached: sentCount });
+        }
     }
 }
 

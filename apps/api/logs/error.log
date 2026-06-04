@@ -1658,3 +1658,403 @@ sql:
 2026-06-03 23:34:17 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
 2026-06-03 23:34:42 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
 2026-06-03 23:35:02 [error]: Failed to initialize MariaDB tables | Meta: {"error":"(conn:-1, no: 45028, SQLState: HY000) pool failed to retrieve a connection from pool\n    (pool connections: active=0 idle=0 limit=5)"}
+2026-06-04 12:41:20 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:41:20 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:42:00 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:42:00 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:42:18 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:42:18 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:43:31 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:43:31 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:43:32 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:43:32 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:44:07 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:44:07 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:44:08 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:44:08 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:44:09 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:44:09 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:44:09 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:44:09 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:44:11 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:44:11 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:44:11 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:44:11 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:44:14 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:44:14 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:44:15 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:44:15 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:44:40 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:44:40 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:46:31 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:46:31 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:50:37 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:50:37 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:51:54 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:51:54 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:52:04 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:52:04 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:52:20 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:52:20 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:52:28 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:52:28 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:52:33 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:52:33 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:53:54 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:53:54 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:57:01 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:57:01 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:57:07 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:57:07 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:57:13 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:57:13 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 12:59:34 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 12:59:34 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:02:29 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:02:29 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:18:05 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:18:05 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:18:35 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:18:35 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:18:39 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:18:39 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:19:43 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:19:43 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:21:01 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:21:01 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:23:28 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:23:28 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:24:17 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:24:17 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:24:27 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:24:27 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:27:50 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:27:50 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:27:58 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:27:58 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:28:07 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:28:07 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:29:02 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:29:02 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:29:27 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:29:27 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:29:30 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:29:30 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:30:35 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:30:35 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:35:21 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:35:21 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:38:02 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:38:02 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:38:06 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:38:06 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:38:36 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:38:36 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:39:34 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:39:34 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:39:40 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:39:40 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:39:52 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:39:52 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:40:19 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:40:19 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:40:33 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:40:33 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:40:36 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:40:36 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:40:55 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:40:55 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:40:59 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:40:59 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:41:17 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:41:17 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:41:29 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:41:29 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:41:43 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:41:43 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:41:54 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:41:54 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:42:02 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:42:02 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:42:05 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:42:05 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:42:15 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:42:15 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:42:22 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:42:22 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:43:03 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:43:03 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:43:06 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:43:06 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:43:08 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:43:08 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:43:19 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:43:19 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:43:39 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:43:39 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:46:31 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:46:31 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:46:59 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:46:59 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:52:55 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:52:55 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:55:27 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:55:27 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:55:48 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:55:48 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:55:55 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:55:55 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 13:59:37 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 13:59:37 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 14:01:14 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 14:01:14 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 14:01:53 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 14:01:53 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 14:03:14 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 14:03:14 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 14:03:18 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 14:03:18 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 14:03:23 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 14:03:23 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 15:19:05 [error]: Form definition not found: 01KT0Z0XB3CE28BHFZQETVPC7K
+2026-06-04 15:19:05 [error]: Error: FORM_NOT_FOUND
+    at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}

@@ -117,6 +117,26 @@ class UmamiService {
     }
 
     /**
+     * Normalize Umami v2 stats response into the { value, change } format
+     * that the frontend Analytics.jsx expects.
+     *
+     * Umami v2 returns:  { pageviews: 25, visitors: 6, ..., comparison: { pageviews: 0, ... } }
+     * Frontend expects:  { pageviews: { value: 25, change: 0 }, visitors: { value: 6, change: 0 }, ... }
+     */
+    normalizeStats(raw) {
+        const comparison = raw.comparison || {};
+        const keys = ['pageviews', 'visitors', 'visits', 'bounces', 'totaltime'];
+        const normalized = {};
+        for (const key of keys) {
+            normalized[key] = {
+                value: raw[key] ?? 0,
+                change: comparison[key] ?? 0
+            };
+        }
+        return normalized;
+    }
+
+    /**
      * Get aggregated stats, pageviews, and metrics for dashboard
      */
     async getWebsiteAnalytics(period = '7d') {
@@ -143,17 +163,18 @@ class UmamiService {
         };
 
         // Fetch metrics in parallel
-        const [stats, pageviews, urls, referrers, devices] = await Promise.all([
+        // NOTE: Umami v2 deprecated type=url → type=path
+        const [rawStats, pageviews, urls, referrers, devices] = await Promise.all([
             this.fetchFromUmami(`/websites/${websiteId}/stats`, queryParams),
             this.fetchFromUmami(`/websites/${websiteId}/pageviews`, { ...queryParams, unit, timezone: 'UTC' }),
-            this.fetchFromUmami(`/websites/${websiteId}/metrics`, { ...queryParams, type: 'url', limit: '10' }),
+            this.fetchFromUmami(`/websites/${websiteId}/metrics`, { ...queryParams, type: 'path', limit: '10' }),
             this.fetchFromUmami(`/websites/${websiteId}/metrics`, { ...queryParams, type: 'referrer', limit: '10' }),
             this.fetchFromUmami(`/websites/${websiteId}/metrics`, { ...queryParams, type: 'device', limit: '10' })
         ]);
 
         return {
             period,
-            stats,
+            stats: this.normalizeStats(rawStats),
             pageviews,
             urls,
             referrers,

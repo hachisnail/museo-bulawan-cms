@@ -57,7 +57,7 @@ const navItems = [
 
 <nav
   id="main-navbar-top" 
-  class={`w-full max-w-7xl mx-auto flex items-center justify-between  py-2 border-b-2 ${bgClass}`}
+  class={`w-full max-w-7xl mx-auto flex items-center h-20 justify-between py-2 px-6 md:px-8 border-b-2 ${bgClass}`}
 >
   <div class="flex items-center gap-x-3">
     <a href="/" title="Home">
@@ -72,7 +72,7 @@ const navItems = [
     </div>
   </div>
 
-  <div class="flex items-center gap-x-4">
+  <div class="hidden md:flex items-center gap-x-4">
     {navItems.filter(item => item.show).map((item) => (
       <div class="relative w-fit flex items-center gap-x-1 dropdown-container">
         
@@ -113,8 +113,9 @@ const navItems = [
             >
               {item.anchorpoints.map((anchor) => (
                 <a
-                  href={`${item.to === '/' ? '' : item.to}#${anchor.value}`}
-                  class={`block cursor-pointer px-4 py-2 text-center ${textClass} hover:bg-white/20 hover:text-yellow-400 rounded text-sm w-full transition-colors`}
+                  href={`/#${anchor.value}`}
+                  data-section={anchor.value}
+                  class={`block cursor-pointer px-4 py-2 text-center ${textClass} hover:bg-white/20 hover:text-yellow-400 rounded text-sm w-full transition-colors nav-dropdown-link`}
                 >
                   {anchor.label}
                 </a>
@@ -125,10 +126,111 @@ const navItems = [
       </div>
     ))}
   </div>
+
+  <!-- Hamburger Button (Mobile Only) -->
+  <button
+    id="mobile-menu-toggle"
+    class={`flex md:hidden p-2 rounded-md hover:bg-white/10 transition-colors z-40 ${textClass}`}
+    aria-label="Toggle mobile menu"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="4" x2="20" y1="12" y2="12"></line>
+      <line x1="4" x2="20" y1="6" y2="6"></line>
+      <line x1="4" x2="20" y1="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <!-- Mobile Navigation Drawer -->
+  <div
+    id="mobile-drawer-overlay"
+    class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity duration-300 opacity-0 pointer-events-none"
+  >
+    <div
+      id="mobile-drawer"
+      class={`fixed top-0 right-0 h-full w-[18rem] max-w-[85vw] ${theme === 'dark' ? 'bg-[#1C1B19]' : 'bg-white'} shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col p-6`}
+    >
+      <!-- Top Bar in Drawer -->
+      <div class="flex items-center justify-between border-b pb-4 mb-6 border-gray-200 dark:border-gray-800">
+        <span class={`font-serif text-lg font-bold ${textClass}`}>Navigation</span>
+        <button
+          id="mobile-drawer-close"
+          class={`p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 transition-colors ${textClass}`}
+          aria-label="Close mobile menu"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" x2="6" y1="6" y2="18"></line>
+            <line x1="6" x2="18" y1="6" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Links Container -->
+      <div class="flex-grow overflow-y-auto flex flex-col gap-y-4">
+        {navItems.filter(item => item.show).map((item) => (
+          <div class="flex flex-col gap-y-1">
+            {item.anchorpoints.length > 0 ? (
+              <div class="flex items-center justify-between w-full">
+                <a
+                  href={item.to}
+                  class={`text-base font-medium py-1.5 hover:text-yellow-500 transition-colors ${textClass} mobile-nav-link`}
+                >
+                  {item.label}
+                </a>
+                <button
+                  class="p-2 text-gray-500 hover:text-yellow-500 transition-colors mobile-accordion-toggle"
+                  data-accordion-target={`mobile-acc-${item.dropdownKey}`}
+                  title="Toggle sub-navigation"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 accordion-arrow">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+              </div>
+
+              <div id={`mobile-acc-${item.dropdownKey}`} class="hidden flex-col pl-4 gap-y-1 mt-1 border-l border-gray-200 dark:border-gray-800">
+                {item.anchorpoints.map((anchor) => (
+                  <a
+                    href={`/#${anchor.value}`}
+                    data-section={anchor.value}
+                    class={`block py-1.5 text-sm ${theme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'} transition-colors nav-dropdown-link mobile-nav-link`}
+                  >
+                    {anchor.label}
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <a
+                href={item.to}
+                class={`text-base font-medium py-1.5 hover:text-yellow-500 transition-colors ${textClass} mobile-nav-link`}
+              >
+                {item.label}
+              </a>
+            )}
+          </div>
+        ))}
+        
+        <div class="h-px bg-gray-200 dark:bg-gray-800 my-2"></div>
+        
+        <a
+          href="/visit-us"
+          class={`text-base font-medium py-1.5 hover:text-yellow-500 transition-colors ${textClass} mobile-nav-link`}
+        >
+          Book a Visit
+        </a>
+        <a
+          href={import.meta.env.PUBLIC_LOGIN_URL}
+          class={`text-base font-medium py-1.5 hover:text-yellow-500 transition-colors ${textClass} mobile-nav-link`}
+        >
+          Login
+        </a>
+      </div>
+    </div>
+  </div>
 </nav>
 
 <script>
-  const dropdownToggles = document.querySelectorAll<HTMLElement>('.dropdown-toggle');
+  // Desktop dropdown menu logic
+  const dropdownToggles = document.querySelectorAll<HTMLElement>( '.dropdown-toggle');
   const allDropdowns = document.querySelectorAll<HTMLElement>('div[id^="dropdown-"]');
   const allCarrets = document.querySelectorAll<HTMLElement>('.carret-icon');
 
@@ -159,6 +261,70 @@ const navItems = [
 
   document.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;
-    if (!target.closest('.dropdown-container')) { closeAllDropdowns(); }
+    if (!target.closest('.dropdown-container') || target.closest('.nav-dropdown-link')) { 
+      closeAllDropdowns(); 
+    }
+  });
+
+  // Mobile navigation drawer logic
+  const mobileToggle = document.getElementById('mobile-menu-toggle');
+  const mobileDrawerClose = document.getElementById('mobile-drawer-close');
+  const mobileOverlay = document.getElementById('mobile-drawer-overlay');
+  const mobileDrawer = document.getElementById('mobile-drawer');
+
+  const openDrawer = () => {
+    if (mobileOverlay && mobileDrawer) {
+      mobileOverlay.classList.remove('opacity-0', 'pointer-events-none');
+      mobileOverlay.classList.add('opacity-100');
+      mobileDrawer.classList.remove('translate-x-full');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  const closeDrawer = () => {
+    if (mobileOverlay && mobileDrawer) {
+      mobileOverlay.classList.remove('opacity-100');
+      mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
+      mobileDrawer.classList.add('translate-x-full');
+      document.body.style.overflow = '';
+    }
+  };
+
+  mobileToggle?.addEventListener('click', openDrawer);
+  mobileDrawerClose?.addEventListener('click', closeDrawer);
+  mobileOverlay?.addEventListener('click', (e) => {
+    if (e.target === mobileOverlay) closeDrawer();
+  });
+
+  // Mobile links click closes the menu
+  const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', closeDrawer);
+  });
+
+  // Accordions toggle in mobile drawer
+  const accordionToggles = document.querySelectorAll('.mobile-accordion-toggle');
+  accordionToggles.forEach(toggle => {
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetId = toggle.getAttribute('data-accordion-target');
+      if (!targetId) return;
+
+      const panel = document.getElementById(targetId);
+      const arrow = toggle.querySelector('.accordion-arrow');
+
+      if (panel) {
+        const isHidden = panel.classList.contains('hidden');
+        if (isHidden) {
+          panel.classList.remove('hidden');
+          panel.classList.add('flex');
+          arrow?.style.setProperty('transform', 'rotate(180deg)');
+        } else {
+          panel.classList.remove('flex');
+          panel.classList.add('hidden');
+          arrow?.style.setProperty('transform', 'rotate(0deg)');
+        }
+      }
+    });
   });
 </script>

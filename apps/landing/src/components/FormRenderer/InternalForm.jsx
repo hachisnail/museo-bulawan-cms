@@ -158,12 +158,20 @@ const InternalForm = (props) => {
                         const isRequired = required.includes(key);
                         const isFullWidth = prop.type === 'string' && prop.format === 'textarea';
 
+                        const titleText = prop.title !== undefined ? prop.title : key;
+                        const hasTitleText = titleText !== '';
+
                         return (
                             <div key={key} className={`${isFullWidth ? 'md:col-span-2' : ''} space-y-2`}>
-                                <label className="text-[9px] font-black uppercase text-zinc-500 tracking-widest flex items-center gap-2">
-                                    {prop.title || key}
-                                    {isRequired && <span className="text-[#D4AF37]">•</span>}
-                                </label>
+                                {(hasTitleText || isRequired) && (
+                                    <label className="text-[9px] font-black uppercase text-zinc-500 tracking-widest flex items-center gap-2">
+                                        {titleText}
+                                        {isRequired && <span className="text-[#D4AF37]">•</span>}
+                                    </label>
+                                )}
+                                {prop.description && (
+                                    <p className="text-[10px] text-zinc-400 font-normal leading-relaxed mt-0.5">{prop.description}</p>
+                                )}
 
                                 <div className={fieldErrors[key] ? 'animate-form-shake' : ''}>
                                 {prop.type === 'boolean' ? (

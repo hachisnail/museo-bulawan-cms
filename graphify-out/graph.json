@@ -1107,7 +1107,7 @@
       "source_file": "apps/api/server.js",
       "source_location": "L1",
       "id": "apps_api_server_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "server.js"
     },
     {
@@ -1116,7 +1116,7 @@
       "source_file": "apps/api/server.js",
       "source_location": "L10",
       "id": "api_server_startserver",
-      "community": 149,
+      "community": 78,
       "norm_label": "startserver()"
     },
     {
@@ -1152,7 +1152,7 @@
       "source_file": "apps/api/scratch/fix_migration.js",
       "source_location": "L1",
       "id": "apps_api_scratch_fix_migration_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "fix_migration.js"
     },
     {
@@ -1161,7 +1161,7 @@
       "source_file": "apps/api/scratch/fix_migration.js",
       "source_location": "L3",
       "id": "scratch_fix_migration_fix",
-      "community": 149,
+      "community": 156,
       "norm_label": "fix()"
     },
     {
@@ -1170,7 +1170,7 @@
       "source_file": "apps/api/scratch/init_db.js",
       "source_location": "L1",
       "id": "apps_api_scratch_init_db_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "init_db.js"
     },
     {
@@ -1179,7 +1179,7 @@
       "source_file": "apps/api/scratch/init_db.js",
       "source_location": "L4",
       "id": "scratch_init_db_run",
-      "community": 149,
+      "community": 78,
       "norm_label": "run()"
     },
     {
@@ -1188,7 +1188,7 @@
       "source_file": "apps/api/scratch/list_forms.js",
       "source_location": "L1",
       "id": "apps_api_scratch_list_forms_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "list_forms.js"
     },
     {
@@ -1197,7 +1197,7 @@
       "source_file": "apps/api/scratch/list_forms.js",
       "source_location": "L3",
       "id": "scratch_list_forms_run",
-      "community": 149,
+      "community": 156,
       "norm_label": "run()"
     },
     {
@@ -1206,7 +1206,7 @@
       "source_file": "apps/api/scratch/manual_cleanup.js",
       "source_location": "L1",
       "id": "apps_api_scratch_manual_cleanup_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "manual_cleanup.js"
     },
     {
@@ -1215,7 +1215,7 @@
       "source_file": "apps/api/scratch/manual_cleanup.js",
       "source_location": "L4",
       "id": "scratch_manual_cleanup_fullmaintenance",
-      "community": 149,
+      "community": 156,
       "norm_label": "fullmaintenance()"
     },
     {
@@ -1224,7 +1224,7 @@
       "source_file": "apps/api/scratch/seed_forms.js",
       "source_location": "L1",
       "id": "apps_api_scratch_seed_forms_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "seed_forms.js"
     },
     {
@@ -1233,7 +1233,7 @@
       "source_file": "apps/api/scratch/seed_forms.js",
       "source_location": "L4",
       "id": "scratch_seed_forms_seedforms",
-      "community": 149,
+      "community": 156,
       "norm_label": "seedforms()"
     },
     {
@@ -1242,7 +1242,7 @@
       "source_file": "apps/api/scratch/update_feedback_form.js",
       "source_location": "L1",
       "id": "apps_api_scratch_update_feedback_form_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "update_feedback_form.js"
     },
     {
@@ -1251,7 +1251,7 @@
       "source_file": "apps/api/scratch/update_feedback_form.js",
       "source_location": "L3",
       "id": "scratch_update_feedback_form_run",
-      "community": 149,
+      "community": 156,
       "norm_label": "run()"
     },
     {
@@ -1350,7 +1350,7 @@
       "source_file": "apps/api/src/config/db.js",
       "source_location": "L1",
       "id": "apps_api_src_config_db_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "db.js"
     },
     {
@@ -1359,7 +1359,7 @@
       "source_file": "apps/api/src/config/db.js",
       "source_location": "L5",
       "id": "config_db_pool",
-      "community": 149,
+      "community": 156,
       "norm_label": "pool"
     },
     {
@@ -1368,7 +1368,7 @@
       "source_file": "apps/api/src/config/db.js",
       "source_location": "L13",
       "id": "config_db_db",
-      "community": 149,
+      "community": 156,
       "norm_label": "db"
     },
     {
@@ -1377,7 +1377,7 @@
       "source_file": "apps/api/src/config/dbInit.js",
       "source_location": "L1",
       "id": "apps_api_src_config_dbinit_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "dbinit.js"
     },
     {
@@ -1386,7 +1386,7 @@
       "source_file": "apps/api/src/config/dbInit.js",
       "source_location": "L10",
       "id": "config_dbinit_initmariadb",
-      "community": 149,
+      "community": 78,
       "norm_label": "initmariadb()"
     },
     {
@@ -1431,7 +1431,7 @@
       "source_file": "apps/api/src/config/passport.js",
       "source_location": "L1",
       "id": "apps_api_src_config_passport_js",
-      "community": 149,
+      "community": 115,
       "norm_label": "passport.js"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_file": "apps/api/src/config/passport.js",
       "source_location": "L8",
       "id": "config_passport_loginschema",
-      "community": 149,
+      "community": 115,
       "norm_label": "loginschema"
     },
     {
@@ -1539,7 +1539,7 @@
       "source_file": "apps/api/src/controllers/appointmentController.js",
       "source_location": "L89",
       "id": "controllers_appointmentcontroller_createappointment",
-      "community": 131,
+      "community": 132,
       "norm_label": "createappointment()"
     },
     {
@@ -1602,7 +1602,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_authcontroller_js",
-      "community": 149,
+      "community": 80,
       "norm_label": "authcontroller.js"
     },
     {
@@ -1611,7 +1611,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L7",
       "id": "controllers_authcontroller_login",
-      "community": 149,
+      "community": 80,
       "norm_label": "login()"
     },
     {
@@ -1620,7 +1620,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L57",
       "id": "controllers_authcontroller_logout",
-      "community": 149,
+      "community": 80,
       "norm_label": "logout()"
     },
     {
@@ -1629,7 +1629,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L88",
       "id": "controllers_authcontroller_check",
-      "community": 149,
+      "community": 80,
       "norm_label": "check()"
     },
     {
@@ -1638,7 +1638,7 @@
       "source_file": "apps/api/src/controllers/authController.js",
       "source_location": "L97",
       "id": "controllers_authcontroller_loginvisitor",
-      "community": 149,
+      "community": 80,
       "norm_label": "loginvisitor()"
     },
     {
@@ -1647,7 +1647,7 @@
       "source_file": "apps/api/src/controllers/fileController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_filecontroller_js",
-      "community": 149,
+      "community": 84,
       "norm_label": "filecontroller.js"
     },
     {
@@ -1656,7 +1656,7 @@
       "source_file": "apps/api/src/controllers/fileController.js",
       "source_location": "L7",
       "id": "controllers_filecontroller_resourcemap",
-      "community": 149,
+      "community": 84,
       "norm_label": "resourcemap"
     },
     {
@@ -1665,7 +1665,7 @@
       "source_file": "apps/api/src/controllers/fileController.js",
       "source_location": "L22",
       "id": "controllers_filecontroller_getcaslresource",
-      "community": 149,
+      "community": 84,
       "norm_label": "getcaslresource()"
     },
     {
@@ -1674,7 +1674,7 @@
       "source_file": "apps/api/src/controllers/fileController.js",
       "source_location": "L27",
       "id": "controllers_filecontroller_getprivatefile",
-      "community": 149,
+      "community": 84,
       "norm_label": "getprivatefile()"
     },
     {
@@ -1836,7 +1836,7 @@
       "source_file": "apps/api/src/controllers/uploadController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_uploadcontroller_js",
-      "community": 130,
+      "community": 81,
       "norm_label": "uploadcontroller.js"
     },
     {
@@ -1845,7 +1845,7 @@
       "source_file": "apps/api/src/controllers/uploadController.js",
       "source_location": "L4",
       "id": "controllers_uploadcontroller_handleupload",
-      "community": 130,
+      "community": 81,
       "norm_label": "handleupload()"
     },
     {
@@ -1854,7 +1854,7 @@
       "source_file": "apps/api/src/controllers/uploadController.js",
       "source_location": "L35",
       "id": "controllers_uploadcontroller_handledonationupload",
-      "community": 130,
+      "community": 81,
       "norm_label": "handledonationupload()"
     },
     {
@@ -1872,7 +1872,7 @@
       "source_file": "apps/api/src/controllers/userController.js",
       "source_location": "L19",
       "id": "controllers_usercontroller_usercontroller",
-      "community": 131,
+      "community": 115,
       "norm_label": "usercontroller"
     },
     {
@@ -1926,7 +1926,7 @@
       "source_file": "apps/api/src/controllers/acquisition/intakeController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_acquisition_intakecontroller_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "intakecontroller.js"
     },
     {
@@ -2160,7 +2160,7 @@
       "source_file": "apps/api/src/middlewares/authorizationHandler.js",
       "source_location": "L30",
       "id": "middlewares_authorizationhandler_checkpermission",
-      "community": 2,
+      "community": 82,
       "norm_label": "checkpermission()"
     },
     {
@@ -2421,7 +2421,7 @@
       "source_file": "apps/api/src/routes/mediaRoutes.js",
       "source_location": "L1",
       "id": "apps_api_src_routes_mediaroutes_js",
-      "community": 2,
+      "community": 82,
       "norm_label": "mediaroutes.js"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_file": "apps/api/src/routes/mediaRoutes.js",
       "source_location": "L6",
       "id": "routes_mediaroutes_router",
-      "community": 2,
+      "community": 82,
       "norm_label": "router"
     },
     {
@@ -2439,7 +2439,7 @@
       "source_file": "apps/api/src/routes/mediaRoutes.js",
       "source_location": "L8",
       "id": "routes_mediaroutes_mediaupload",
-      "community": 2,
+      "community": 82,
       "norm_label": "mediaupload"
     },
     {
@@ -2448,7 +2448,7 @@
       "source_file": "apps/api/src/routes/mediaRoutes.js",
       "source_location": "L17",
       "id": "routes_mediaroutes_entitypermissionmap",
-      "community": 2,
+      "community": 82,
       "norm_label": "entitypermissionmap"
     },
     {
@@ -2511,7 +2511,7 @@
       "source_file": "apps/api/src/routes/uploadRoutes.js",
       "source_location": "L1",
       "id": "apps_api_src_routes_uploadroutes_js",
-      "community": 130,
+      "community": 81,
       "norm_label": "uploadroutes.js"
     },
     {
@@ -2520,7 +2520,7 @@
       "source_file": "apps/api/src/routes/uploadRoutes.js",
       "source_location": "L7",
       "id": "routes_uploadroutes_router",
-      "community": 130,
+      "community": 81,
       "norm_label": "router"
     },
     {
@@ -2529,7 +2529,7 @@
       "source_file": "apps/api/src/routes/uploadRoutes.js",
       "source_location": "L9",
       "id": "routes_uploadroutes_upload",
-      "community": 130,
+      "community": 81,
       "norm_label": "upload"
     },
     {
@@ -2664,7 +2664,7 @@
       "source_file": "apps/api/src/services/acquisitionService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisitionservice_js",
-      "community": 149,
+      "community": 77,
       "norm_label": "acquisitionservice.js"
     },
     {
@@ -2673,7 +2673,7 @@
       "source_file": "apps/api/src/services/acquisitionService.js",
       "source_location": "L18",
       "id": "services_acquisitionservice_acquisitionservice",
-      "community": 149,
+      "community": 156,
       "norm_label": "acquisitionservice"
     },
     {
@@ -2682,7 +2682,7 @@
       "source_file": "apps/api/src/services/auditService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_auditservice_js",
-      "community": 149,
+      "community": 80,
       "norm_label": "auditservice.js"
     },
     {
@@ -2691,7 +2691,7 @@
       "source_file": "apps/api/src/services/auditService.js",
       "source_location": "L5",
       "id": "services_auditservice_auditservice",
-      "community": 149,
+      "community": 80,
       "norm_label": "auditservice"
     },
     {
@@ -2700,7 +2700,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_documentservice_js",
-      "community": 149,
+      "community": 76,
       "norm_label": "documentservice.js"
     },
     {
@@ -2709,7 +2709,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L9",
       "id": "services_documentservice_filename",
-      "community": 149,
+      "community": 76,
       "norm_label": "__filename"
     },
     {
@@ -2718,7 +2718,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L10",
       "id": "services_documentservice_dirname",
-      "community": 149,
+      "community": 76,
       "norm_label": "__dirname"
     },
     {
@@ -2727,7 +2727,7 @@
       "source_file": "apps/api/src/services/documentService.js",
       "source_location": "L18",
       "id": "services_documentservice_documentservice",
-      "community": 149,
+      "community": 76,
       "norm_label": "documentservice"
     },
     {
@@ -2736,7 +2736,7 @@
       "source_file": "apps/api/src/services/formPipelineService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_formpipelineservice_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "formpipelineservice.js"
     },
     {
@@ -2745,7 +2745,7 @@
       "source_file": "apps/api/src/services/formPipelineService.js",
       "source_location": "L15",
       "id": "services_formpipelineservice_formpipelineservice",
-      "community": 149,
+      "community": 156,
       "norm_label": "formpipelineservice"
     },
     {
@@ -2754,7 +2754,7 @@
       "source_file": "apps/api/src/services/formService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_formservice_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "formservice.js"
     },
     {
@@ -2772,7 +2772,7 @@
       "source_file": "apps/api/src/services/maintenanceService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_maintenanceservice_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "maintenanceservice.js"
     },
     {
@@ -2781,7 +2781,7 @@
       "source_file": "apps/api/src/services/maintenanceService.js",
       "source_location": "L13",
       "id": "services_maintenanceservice_maintenanceservice",
-      "community": 149,
+      "community": 156,
       "norm_label": "maintenanceservice"
     },
     {
@@ -2790,7 +2790,7 @@
       "source_file": "apps/api/src/services/mediaService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_mediaservice_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "mediaservice.js"
     },
     {
@@ -2799,7 +2799,7 @@
       "source_file": "apps/api/src/services/mediaService.js",
       "source_location": "L9",
       "id": "services_mediaservice_mediaservice",
-      "community": 149,
+      "community": 156,
       "norm_label": "mediaservice"
     },
     {
@@ -2817,7 +2817,7 @@
       "source_file": "apps/api/src/services/notificationService.js",
       "source_location": "L6",
       "id": "services_notificationservice_notificationservice",
-      "community": 149,
+      "community": 83,
       "norm_label": "notificationservice"
     },
     {
@@ -2826,7 +2826,7 @@
       "source_file": "apps/api/src/services/notificationService.js",
       "source_location": "L8",
       "id": "services_notificationservice_notificationservice_saveandbroadcast",
-      "community": 149,
+      "community": 83,
       "norm_label": "._saveandbroadcast()"
     },
     {
@@ -2835,7 +2835,7 @@
       "source_file": "apps/api/src/services/notificationService.js",
       "source_location": "L46",
       "id": "services_notificationservice_notificationservice_sendglobal",
-      "community": 149,
+      "community": 83,
       "norm_label": ".sendglobal()"
     },
     {
@@ -2844,7 +2844,7 @@
       "source_file": "apps/api/src/services/notificationService.js",
       "source_location": "L50",
       "id": "services_notificationservice_notificationservice_sendtorole",
-      "community": 149,
+      "community": 83,
       "norm_label": ".sendtorole()"
     },
     {
@@ -2853,7 +2853,7 @@
       "source_file": "apps/api/src/services/notificationService.js",
       "source_location": "L54",
       "id": "services_notificationservice_notificationservice_sendtouser",
-      "community": 149,
+      "community": 83,
       "norm_label": ".sendtouser()"
     },
     {
@@ -2902,10 +2902,19 @@
       "norm_label": ".fetchfromumami()"
     },
     {
+      "label": ".normalizeStats()",
+      "file_type": "code",
+      "source_file": "apps/api/src/services/umamiService.js",
+      "source_location": "L126",
+      "id": "services_umamiservice_umamiservice_normalizestats",
+      "community": 54,
+      "norm_label": ".normalizestats()"
+    },
+    {
       "label": ".getWebsiteAnalytics()",
       "file_type": "code",
       "source_file": "apps/api/src/services/umamiService.js",
-      "source_location": "L122",
+      "source_location": "L142",
       "id": "services_umamiservice_umamiservice_getwebsiteanalytics",
       "community": 54,
       "norm_label": ".getwebsiteanalytics()"
@@ -2916,7 +2925,7 @@
       "source_file": "apps/api/src/services/userService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_userservice_js",
-      "community": 149,
+      "community": 115,
       "norm_label": "userservice.js"
     },
     {
@@ -2925,7 +2934,7 @@
       "source_file": "apps/api/src/services/userService.js",
       "source_location": "L18",
       "id": "services_userservice_userservice",
-      "community": 149,
+      "community": 115,
       "norm_label": "userservice"
     },
     {
@@ -2934,7 +2943,7 @@
       "source_file": "apps/api/src/services/acquisition/accessionService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_accessionservice_js",
-      "community": 149,
+      "community": 76,
       "norm_label": "accessionservice.js"
     },
     {
@@ -2943,7 +2952,7 @@
       "source_file": "apps/api/src/services/acquisition/accessionService.js",
       "source_location": "L18",
       "id": "acquisition_accessionservice_accessionservice",
-      "community": 149,
+      "community": 77,
       "norm_label": "accessionservice"
     },
     {
@@ -2952,7 +2961,7 @@
       "source_file": "apps/api/src/services/acquisition/baseService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_baseservice_js",
-      "community": 149,
+      "community": 77,
       "norm_label": "baseservice.js"
     },
     {
@@ -2961,7 +2970,7 @@
       "source_file": "apps/api/src/services/acquisition/baseService.js",
       "source_location": "L9",
       "id": "acquisition_baseservice_baseservice",
-      "community": 149,
+      "community": 77,
       "norm_label": "baseservice"
     },
     {
@@ -2970,7 +2979,7 @@
       "source_file": "apps/api/src/services/acquisition/constituentService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_constituentservice_js",
-      "community": 149,
+      "community": 77,
       "norm_label": "constituentservice.js"
     },
     {
@@ -2979,7 +2988,7 @@
       "source_file": "apps/api/src/services/acquisition/constituentService.js",
       "source_location": "L12",
       "id": "acquisition_constituentservice_constituentservice",
-      "community": 149,
+      "community": 77,
       "norm_label": "constituentservice"
     },
     {
@@ -2988,7 +2997,7 @@
       "source_file": "apps/api/src/services/acquisition/exhibitionService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_exhibitionservice_js",
-      "community": 149,
+      "community": 77,
       "norm_label": "exhibitionservice.js"
     },
     {
@@ -2997,7 +3006,7 @@
       "source_file": "apps/api/src/services/acquisition/exhibitionService.js",
       "source_location": "L6",
       "id": "acquisition_exhibitionservice_todatestring",
-      "community": 149,
+      "community": 77,
       "norm_label": "todatestring()"
     },
     {
@@ -3006,7 +3015,7 @@
       "source_file": "apps/api/src/services/acquisition/exhibitionService.js",
       "source_location": "L17",
       "id": "acquisition_exhibitionservice_validatedateformat",
-      "community": 149,
+      "community": 77,
       "norm_label": "validatedateformat()"
     },
     {
@@ -3015,7 +3024,7 @@
       "source_file": "apps/api/src/services/acquisition/exhibitionService.js",
       "source_location": "L41",
       "id": "acquisition_exhibitionservice_exhibitionservice",
-      "community": 149,
+      "community": 77,
       "norm_label": "exhibitionservice"
     },
     {
@@ -3033,7 +3042,7 @@
       "source_file": "apps/api/src/services/acquisition/intakeService.js",
       "source_location": "L15",
       "id": "acquisition_intakeservice_intakeservice",
-      "community": 149,
+      "community": 77,
       "norm_label": "intakeservice"
     },
     {
@@ -3042,7 +3051,7 @@
       "source_file": "apps/api/src/services/acquisition/inventoryService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_inventoryservice_js",
-      "community": 149,
+      "community": 77,
       "norm_label": "inventoryservice.js"
     },
     {
@@ -3051,7 +3060,7 @@
       "source_file": "apps/api/src/services/acquisition/inventoryService.js",
       "source_location": "L12",
       "id": "acquisition_inventoryservice_inventoryservice",
-      "community": 149,
+      "community": 77,
       "norm_label": "inventoryservice"
     },
     {
@@ -3060,7 +3069,7 @@
       "source_file": "apps/api/src/services/acquisition/loanService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_loanservice_js",
-      "community": 149,
+      "community": 77,
       "norm_label": "loanservice.js"
     },
     {
@@ -3069,7 +3078,7 @@
       "source_file": "apps/api/src/services/acquisition/loanService.js",
       "source_location": "L14",
       "id": "acquisition_loanservice_loanservice",
-      "community": 149,
+      "community": 77,
       "norm_label": "loanservice"
     },
     {
@@ -3078,7 +3087,7 @@
       "source_file": "apps/api/src/services/acquisition/locationService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_locationservice_js",
-      "community": 149,
+      "community": 77,
       "norm_label": "locationservice.js"
     },
     {
@@ -3087,7 +3096,7 @@
       "source_file": "apps/api/src/services/acquisition/locationService.js",
       "source_location": "L10",
       "id": "acquisition_locationservice_locationservice",
-      "community": 149,
+      "community": 77,
       "norm_label": "locationservice"
     },
     {
@@ -3096,7 +3105,7 @@
       "source_file": "apps/api/src/services/acquisition/valuationService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_acquisition_valuationservice_js",
-      "community": 149,
+      "community": 77,
       "norm_label": "valuationservice.js"
     },
     {
@@ -3105,7 +3114,7 @@
       "source_file": "apps/api/src/services/acquisition/valuationService.js",
       "source_location": "L11",
       "id": "acquisition_valuationservice_valuationservice",
-      "community": 149,
+      "community": 77,
       "norm_label": "valuationservice"
     },
     {
@@ -3114,7 +3123,7 @@
       "source_file": "apps/api/src/services/form/definitionService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_definitionservice_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "definitionservice.js"
     },
     {
@@ -3123,7 +3132,7 @@
       "source_file": "apps/api/src/services/form/definitionService.js",
       "source_location": "L5",
       "id": "form_definitionservice_parsejsonfields",
-      "community": 149,
+      "community": 78,
       "norm_label": "parsejsonfields()"
     },
     {
@@ -3132,7 +3141,7 @@
       "source_file": "apps/api/src/services/form/definitionService.js",
       "source_location": "L13",
       "id": "form_definitionservice_definitionservice",
-      "community": 149,
+      "community": 78,
       "norm_label": "definitionservice"
     },
     {
@@ -3141,7 +3150,7 @@
       "source_file": "apps/api/src/services/form/queryService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_queryservice_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "queryservice.js"
     },
     {
@@ -3150,7 +3159,7 @@
       "source_file": "apps/api/src/services/form/queryService.js",
       "source_location": "L6",
       "id": "form_queryservice_escapelikepattern",
-      "community": 149,
+      "community": 78,
       "norm_label": "escapelikepattern()"
     },
     {
@@ -3159,7 +3168,7 @@
       "source_file": "apps/api/src/services/form/queryService.js",
       "source_location": "L10",
       "id": "form_queryservice_queryservice",
-      "community": 149,
+      "community": 78,
       "norm_label": "queryservice"
     },
     {
@@ -3168,7 +3177,7 @@
       "source_file": "apps/api/src/services/form/submissionService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_submissionservice_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "submissionservice.js"
     },
     {
@@ -3177,7 +3186,7 @@
       "source_file": "apps/api/src/services/form/submissionService.js",
       "source_location": "L12",
       "id": "form_submissionservice_ajv",
-      "community": 149,
+      "community": 156,
       "norm_label": "ajv"
     },
     {
@@ -3186,7 +3195,7 @@
       "source_file": "apps/api/src/services/form/submissionService.js",
       "source_location": "L19",
       "id": "form_submissionservice_submissionservice",
-      "community": 149,
+      "community": 156,
       "norm_label": "submissionservice"
     },
     {
@@ -3195,7 +3204,7 @@
       "source_file": "apps/api/src/services/form/verificationService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_verificationservice_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "verificationservice.js"
     },
     {
@@ -3204,7 +3213,7 @@
       "source_file": "apps/api/src/services/form/verificationService.js",
       "source_location": "L11",
       "id": "form_verificationservice_verificationservice",
-      "community": 149,
+      "community": 78,
       "norm_label": "verificationservice"
     },
     {
@@ -3213,7 +3222,7 @@
       "source_file": "apps/api/src/services/form/pipeline/compliancePipeline.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_pipeline_compliancepipeline_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "compliancepipeline.js"
     },
     {
@@ -3222,7 +3231,7 @@
       "source_file": "apps/api/src/services/form/pipeline/compliancePipeline.js",
       "source_location": "L11",
       "id": "pipeline_compliancepipeline_compliancepipeline",
-      "community": 149,
+      "community": 156,
       "norm_label": "compliancepipeline"
     },
     {
@@ -3249,7 +3258,7 @@
       "source_file": "apps/api/src/services/user/identityService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_identityservice_js",
-      "community": 149,
+      "community": 80,
       "norm_label": "identityservice.js"
     },
     {
@@ -3258,7 +3267,7 @@
       "source_file": "apps/api/src/services/user/identityService.js",
       "source_location": "L11",
       "id": "user_identityservice_identityservice",
-      "community": 149,
+      "community": 115,
       "norm_label": "identityservice"
     },
     {
@@ -3285,7 +3294,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L19",
       "id": "user_lifecycleservice_lifecycleservice",
-      "community": 149,
+      "community": 115,
       "norm_label": "lifecycleservice"
     },
     {
@@ -3303,7 +3312,7 @@
       "source_file": "apps/api/src/services/user/managementService.js",
       "source_location": "L12",
       "id": "user_managementservice_managementservice",
-      "community": 149,
+      "community": 115,
       "norm_label": "managementservice"
     },
     {
@@ -3339,7 +3348,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_constants_js",
-      "community": 149,
+      "community": 76,
       "norm_label": "constants.js"
     },
     {
@@ -3348,7 +3357,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L13",
       "id": "utils_constants_contract_type_map",
-      "community": 149,
+      "community": 76,
       "norm_label": "contract_type_map"
     },
     {
@@ -3357,7 +3366,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L25",
       "id": "utils_constants_legal_status_map",
-      "community": 149,
+      "community": 76,
       "norm_label": "legal_status_map"
     },
     {
@@ -3366,7 +3375,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L30",
       "id": "utils_constants_getlegalstatus",
-      "community": 149,
+      "community": 76,
       "norm_label": "getlegalstatus()"
     },
     {
@@ -3375,7 +3384,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L34",
       "id": "utils_constants_getcontracttype",
-      "community": 149,
+      "community": 76,
       "norm_label": "getcontracttype()"
     },
     {
@@ -3384,7 +3393,7 @@
       "source_file": "apps/api/src/utils/constants.js",
       "source_location": "L45",
       "id": "utils_constants_allowed_tables",
-      "community": 149,
+      "community": 76,
       "norm_label": "allowed_tables"
     },
     {
@@ -3438,7 +3447,7 @@
       "source_file": "apps/api/src/utils/eventBus.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_eventbus_js",
-      "community": 149,
+      "community": 133,
       "norm_label": "eventbus.js"
     },
     {
@@ -3447,7 +3456,7 @@
       "source_file": "apps/api/src/utils/eventBus.js",
       "source_location": "L2",
       "id": "utils_eventbus_appevents",
-      "community": 149,
+      "community": 133,
       "norm_label": "appevents"
     },
     {
@@ -3510,7 +3519,7 @@
       "source_file": "apps/api/src/utils/mutex.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_mutex_js",
-      "community": 149,
+      "community": 77,
       "norm_label": "mutex.js"
     },
     {
@@ -3555,7 +3564,7 @@
       "source_file": "apps/api/src/utils/mutex.js",
       "source_location": "L37",
       "id": "utils_mutex_globalmutex",
-      "community": 149,
+      "community": 77,
       "norm_label": "globalmutex"
     },
     {
@@ -3564,7 +3573,7 @@
       "source_file": "apps/api/src/utils/otpStore.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_otpstore_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "otpstore.js"
     },
     {
@@ -3627,7 +3636,7 @@
       "source_file": "apps/api/src/utils/otpStore.js",
       "source_location": "L46",
       "id": "utils_otpstore_otpstore",
-      "community": 149,
+      "community": 78,
       "norm_label": "otpstore"
     },
     {
@@ -3789,7 +3798,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_sequencegenerator_js",
-      "community": 149,
+      "community": 76,
       "norm_label": "sequencegenerator.js"
     },
     {
@@ -3798,7 +3807,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L28",
       "id": "utils_sequencegenerator_nextsequencevalue",
-      "community": 149,
+      "community": 76,
       "norm_label": "nextsequencevalue()"
     },
     {
@@ -3807,7 +3816,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L59",
       "id": "utils_sequencegenerator_generateaccessionnumber",
-      "community": 149,
+      "community": 76,
       "norm_label": "generateaccessionnumber()"
     },
     {
@@ -3816,7 +3825,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L72",
       "id": "utils_sequencegenerator_generatecatalognumber",
-      "community": 149,
+      "community": 76,
       "norm_label": "generatecatalognumber()"
     },
     {
@@ -3850,7 +3859,7 @@
       "label": ".addClient()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/sseFactory.js",
-      "source_location": "L22",
+      "source_location": "L25",
       "id": "utils_ssefactory_ssefactory_addclient",
       "community": 45,
       "norm_label": ".addclient()"
@@ -3859,7 +3868,7 @@
       "label": ".removeClient()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/sseFactory.js",
-      "source_location": "L47",
+      "source_location": "L56",
       "id": "utils_ssefactory_ssefactory_removeclient",
       "community": 45,
       "norm_label": ".removeclient()"
@@ -3868,7 +3877,7 @@
       "label": ".broadcast()",
       "file_type": "code",
       "source_file": "apps/api/src/utils/sseFactory.js",
-      "source_location": "L52",
+      "source_location": "L61",
       "id": "utils_ssefactory_ssefactory_broadcast",
       "community": 45,
       "norm_label": ".broadcast()"
@@ -3877,7 +3886,7 @@
       "label": "sseManager",
       "file_type": "code",
       "source_file": "apps/api/src/utils/sseFactory.js",
-      "source_location": "L79",
+      "source_location": "L90",
       "id": "utils_ssefactory_ssemanager",
       "community": 149,
       "norm_label": "ssemanager"
@@ -3888,7 +3897,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_statemachine_js",
-      "community": 10,
+      "community": 76,
       "norm_label": "statemachine.js"
     },
     {
@@ -3897,7 +3906,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L11",
       "id": "utils_statemachine_intake_transitions",
-      "community": 10,
+      "community": 76,
       "norm_label": "intake_transitions"
     },
     {
@@ -3906,7 +3915,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L24",
       "id": "utils_statemachine_accession_transitions",
-      "community": 10,
+      "community": 76,
       "norm_label": "accession_transitions"
     },
     {
@@ -3915,7 +3924,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L34",
       "id": "utils_statemachine_inventory_transitions",
-      "community": 10,
+      "community": 76,
       "norm_label": "inventory_transitions"
     },
     {
@@ -3924,7 +3933,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L46",
       "id": "utils_statemachine_submission_transitions",
-      "community": 10,
+      "community": 76,
       "norm_label": "submission_transitions"
     },
     {
@@ -3933,7 +3942,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L55",
       "id": "utils_statemachine_transition_registry",
-      "community": 10,
+      "community": 76,
       "norm_label": "transition_registry"
     },
     {
@@ -3942,7 +3951,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L70",
       "id": "utils_statemachine_validatetransition",
-      "community": 10,
+      "community": 76,
       "norm_label": "validatetransition()"
     },
     {
@@ -3951,7 +3960,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L97",
       "id": "utils_statemachine_asserttransition",
-      "community": 149,
+      "community": 76,
       "norm_label": "asserttransition()"
     },
     {
@@ -3969,7 +3978,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L118",
       "id": "utils_statemachine_gettransitionmap",
-      "community": 10,
+      "community": 76,
       "norm_label": "gettransitionmap()"
     },
     {
@@ -3978,7 +3987,7 @@
       "source_file": "apps/api/src/utils/stateMachine.js",
       "source_location": "L125",
       "id": "utils_statemachine_getstatuses",
-      "community": 10,
+      "community": 76,
       "norm_label": "getstatuses()"
     },
     {
@@ -4050,7 +4059,7 @@
       "source_file": "apps/api/src/utils/uploadQueue.js",
       "source_location": "L136",
       "id": "utils_uploadqueue_uploadqueue",
-      "community": 130,
+      "community": 81,
       "norm_label": "uploadqueue"
     },
     {
@@ -4059,7 +4068,7 @@
       "source_file": "apps/api/tests/acquisition_flow.test.js",
       "source_location": "L1",
       "id": "apps_api_tests_acquisition_flow_test_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "acquisition_flow.test.js"
     },
     {
@@ -4068,7 +4077,7 @@
       "source_file": "apps/api/tests/api_review_hardening.test.js",
       "source_location": "L1",
       "id": "apps_api_tests_api_review_hardening_test_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "api_review_hardening.test.js"
     },
     {
@@ -4212,7 +4221,7 @@
       "source_file": "apps/api/tests/form_constraints.test.js",
       "source_location": "L1",
       "id": "apps_api_tests_form_constraints_test_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "form_constraints.test.js"
     },
     {
@@ -4266,7 +4275,7 @@
       "source_file": "apps/api/tests/inventory_hardening.test.js",
       "source_location": "L1",
       "id": "apps_api_tests_inventory_hardening_test_js",
-      "community": 149,
+      "community": 77,
       "norm_label": "inventory_hardening.test.js"
     },
     {
@@ -4275,7 +4284,7 @@
       "source_file": "apps/api/tests/inventory_hardening.test.js",
       "source_location": "L156",
       "id": "tests_inventory_hardening_test_createtestaccession",
-      "community": 149,
+      "community": 77,
       "norm_label": "createtestaccession()"
     },
     {
@@ -4284,7 +4293,7 @@
       "source_file": "apps/api/tests/system.test.js",
       "source_location": "L1",
       "id": "apps_api_tests_system_test_js",
-      "community": 149,
+      "community": 156,
       "norm_label": "system.test.js"
     },
     {
@@ -5971,6 +5980,33 @@
       "norm_label": "livecontentconfig"
     },
     {
+      "label": "settings.json",
+      "file_type": "code",
+      "source_file": "apps/landing/.astro/settings.json",
+      "source_location": "L1",
+      "id": "apps_landing_astro_settings_json",
+      "community": 85,
+      "norm_label": "settings.json"
+    },
+    {
+      "label": "_variables",
+      "file_type": "code",
+      "source_file": "apps/landing/.astro/settings.json",
+      "source_location": "L2",
+      "id": "apps_landing_astro_settings_json_astro_settings_variables",
+      "community": 85,
+      "norm_label": "_variables"
+    },
+    {
+      "label": "lastUpdateCheck",
+      "file_type": "code",
+      "source_file": "apps/landing/.astro/settings.json",
+      "source_location": "L3",
+      "id": "apps_landing_astro_settings_json_astro_settings_variables_lastupdatecheck",
+      "community": 85,
+      "norm_label": "lastupdatecheck"
+    },
+    {
       "label": "types.d.ts",
       "file_type": "code",
       "source_file": "apps/landing/.astro/types.d.ts",
@@ -6048,7 +6084,7 @@
       "source_file": "apps/landing/src/components/FormRenderer/ExternalForm.jsx",
       "source_location": "L1",
       "id": "apps_landing_src_components_formrenderer_externalform_jsx",
-      "community": 21,
+      "community": 0,
       "norm_label": "externalform.jsx"
     },
     {
@@ -6057,7 +6093,7 @@
       "source_file": "apps/landing/src/components/FormRenderer/ExternalForm.jsx",
       "source_location": "L14",
       "id": "apps_landing_src_components_formrenderer_externalform_jsx_formrenderer_externalform_externalform",
-      "community": 21,
+      "community": 0,
       "norm_label": "externalform()"
     },
     {
@@ -6084,7 +6120,7 @@
       "source_file": "apps/landing/src/components/FormRenderer/InternalForm.jsx",
       "source_location": "L1",
       "id": "apps_landing_src_components_formrenderer_internalform_jsx",
-      "community": 21,
+      "community": 0,
       "norm_label": "internalform.jsx"
     },
     {
@@ -6093,7 +6129,7 @@
       "source_file": "apps/landing/src/components/FormRenderer/InternalForm.jsx",
       "source_location": "L5",
       "id": "apps_landing_src_components_formrenderer_internalform_jsx_formrenderer_internalform_internalform",
-      "community": 21,
+      "community": 0,
       "norm_label": "internalform()"
     },
     {
@@ -6102,7 +6138,7 @@
       "source_file": "apps/landing/src/components/FormRenderer/useFormLogic.js",
       "source_location": "L1",
       "id": "apps_landing_src_components_formrenderer_useformlogic_js",
-      "community": 21,
+      "community": 0,
       "norm_label": "useformlogic.js"
     },
     {
@@ -6111,7 +6147,7 @@
       "source_file": "apps/landing/src/components/FormRenderer/useFormLogic.js",
       "source_location": "L6",
       "id": "apps_landing_src_components_formrenderer_useformlogic_js_formrenderer_useformlogic_useformlogic",
-      "community": 21,
+      "community": 0,
       "norm_label": "useformlogic()"
     },
     {
@@ -6134,13 +6170,13 @@
       "norm_label": "flags"
     },
     {
-      "label": "../../assets/LOGO.png",
+      "label": "../../../assets/LOGO.png",
       "file_type": "code",
       "source_file": "apps/landing/src/assets/LOGO.png",
       "confidence": "EXTRACTED",
       "id": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_logo_png",
       "community": 21,
-      "norm_label": "../../assets/logo.png"
+      "norm_label": "../../../assets/logo.png"
     },
     {
       "label": "../components/ui/Header.astro",
@@ -6227,6 +6263,15 @@
       "norm_label": "about.astro"
     },
     {
+      "label": "../assets/440832115_947772303495782_6010038099693171993_n.svg",
+      "file_type": "code",
+      "source_file": "apps/landing/src/assets/440832115_947772303495782_6010038099693171993_n.svg",
+      "confidence": "EXTRACTED",
+      "id": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_440832115_947772303495782_6010038099693171993_n_svg",
+      "community": 21,
+      "norm_label": "../assets/440832115_947772303495782_6010038099693171993_n.svg"
+    },
+    {
       "label": "articles.astro",
       "file_type": "code",
       "source_file": "apps/landing/src/pages/articles.astro",
@@ -6243,6 +6288,24 @@
       "id": "pages_articles_getcoverurl",
       "community": 21,
       "norm_label": "getcoverurl()"
+    },
+    {
+      "label": "filterArticles()",
+      "file_type": "code",
+      "source_file": "apps/landing/src/pages/articles.astro",
+      "source_location": "L183",
+      "id": "pages_articles_filterarticles",
+      "community": 21,
+      "norm_label": "filterarticles()"
+    },
+    {
+      "label": "../../../assets/amorsolo-lavenderas-1923_orig.jpeg",
+      "file_type": "code",
+      "source_file": "apps/landing/src/assets/amorsolo-lavenderas-1923_orig.jpeg",
+      "confidence": "EXTRACTED",
+      "id": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_amorsolo_lavenderas_1923_orig_jpeg",
+      "community": 21,
+      "norm_label": "../../../assets/amorsolo-lavenderas-1923_orig.jpeg"
     },
     {
       "label": "index.astro",
@@ -6263,13 +6326,40 @@
       "norm_label": "../../../components/formrenderer"
     },
     {
-      "label": "../assets/06-AfternoonMealOfTheWorker 1.svg",
+      "label": "../../../assets/06-AfternoonMealOfTheWorker 1.svg",
       "file_type": "code",
       "source_file": "apps/landing/src/assets/06-AfternoonMealOfTheWorker 1.svg",
       "confidence": "EXTRACTED",
       "id": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_06_afternoonmealoftheworker_1_svg",
       "community": 21,
-      "norm_label": "../assets/06-afternoonmealoftheworker 1.svg"
+      "norm_label": "../../../assets/06-afternoonmealoftheworker 1.svg"
+    },
+    {
+      "label": "../../assets/support_us.svg",
+      "file_type": "code",
+      "source_file": "apps/landing/src/assets/support_us.svg",
+      "confidence": "EXTRACTED",
+      "id": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_support_us_svg",
+      "community": 21,
+      "norm_label": "../../assets/support_us.svg"
+    },
+    {
+      "label": "../../../assets/visit_us.svg",
+      "file_type": "code",
+      "source_file": "apps/landing/src/assets/visit_us.svg",
+      "confidence": "EXTRACTED",
+      "id": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_visit_us_svg",
+      "community": 21,
+      "norm_label": "../../../assets/visit_us.svg"
+    },
+    {
+      "label": "visit-us.astro",
+      "file_type": "code",
+      "source_file": "apps/landing/src/pages/visit-us.astro",
+      "source_location": "L1",
+      "id": "apps_landing_src_pages_visit_us_astro",
+      "community": 21,
+      "norm_label": "visit-us.astro"
     },
     {
       "label": "support.astro",
@@ -6324,6 +6414,51 @@
       "id": "apps_landing_src_pages_forms_display_id_astro",
       "community": 21,
       "norm_label": "[id].astro"
+    },
+    {
+      "label": "backgrounds",
+      "file_type": "code",
+      "source_file": "apps/landing/src/pages/forms/display/[id].astro",
+      "source_location": "L15",
+      "id": "display_id_backgrounds",
+      "community": 21,
+      "norm_label": "backgrounds"
+    },
+    {
+      "label": "../../../assets/FERNANDO CUETO AMORSOLO, Girl with Jar.svg",
+      "file_type": "code",
+      "source_file": "apps/landing/src/assets/FERNANDO CUETO AMORSOLO, Girl with Jar.svg",
+      "confidence": "EXTRACTED",
+      "id": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_fernando_cueto_amorsolo_girl_with_jar_svg",
+      "community": 21,
+      "norm_label": "../../../assets/fernando cueto amorsolo, girl with jar.svg"
+    },
+    {
+      "label": "../../../assets/Fernando-Amorsolo-Women-Bathing-and-Washing Clothes-7463.svg",
+      "file_type": "code",
+      "source_file": "apps/landing/src/assets/Fernando-Amorsolo-Women-Bathing-and-Washing Clothes-7463.svg",
+      "confidence": "EXTRACTED",
+      "id": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_fernando_amorsolo_women_bathing_and_washing_clothes_7463_svg",
+      "community": 21,
+      "norm_label": "../../../assets/fernando-amorsolo-women-bathing-and-washing clothes-7463.svg"
+    },
+    {
+      "label": "../../../assets/amorsolo-igorot-hills-baguio-1928_orig.jpeg",
+      "file_type": "code",
+      "source_file": "apps/landing/src/assets/amorsolo-igorot-hills-baguio-1928_orig.jpeg",
+      "confidence": "EXTRACTED",
+      "id": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_amorsolo_igorot_hills_baguio_1928_orig_jpeg",
+      "community": 21,
+      "norm_label": "../../../assets/amorsolo-igorot-hills-baguio-1928_orig.jpeg"
+    },
+    {
+      "label": "../../../assets/tropical-lagoon-1923-1923_orig.jpeg",
+      "file_type": "code",
+      "source_file": "apps/landing/src/assets/tropical-lagoon-1923-1923_orig.jpeg",
+      "confidence": "EXTRACTED",
+      "id": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_tropical_lagoon_1923_1923_orig_jpeg",
+      "community": 21,
+      "norm_label": "../../../assets/tropical-lagoon-1923-1923_orig.jpeg"
     },
     {
       "label": "[id].astro",
@@ -6826,7 +6961,7 @@
       "source_file": "apps/panel-admin/src/components/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_index_js",
-      "community": 26,
+      "community": 32,
       "norm_label": "index.js"
     },
     {
@@ -6880,7 +7015,7 @@
       "source_file": "apps/panel-admin/src/components/Modal.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_modal_jsx",
-      "community": 61,
+      "community": 32,
       "norm_label": "modal.jsx"
     },
     {
@@ -6889,7 +7024,7 @@
       "source_file": "apps/panel-admin/src/components/Modal.jsx",
       "source_location": "L12",
       "id": "components_modal_modal",
-      "community": 61,
+      "community": 32,
       "norm_label": "modal()"
     },
     {
@@ -6916,7 +7051,7 @@
       "source_file": "apps/panel-admin/src/components/SidebarDashboard.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_sidebardashboard_jsx",
-      "community": 26,
+      "community": 32,
       "norm_label": "sidebardashboard.jsx"
     },
     {
@@ -6925,7 +7060,7 @@
       "source_file": "apps/panel-admin/src/components/SidebarDashboard.jsx",
       "source_location": "L3",
       "id": "components_sidebardashboard_sidebardashboard",
-      "community": 26,
+      "community": 32,
       "norm_label": "sidebardashboard()"
     },
     {
@@ -6934,7 +7069,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_formrenderer_externalform_jsx",
-      "community": 21,
+      "community": 0,
       "norm_label": "externalform.jsx"
     },
     {
@@ -6943,7 +7078,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
       "source_location": "L15",
       "id": "apps_panel_admin_src_components_formrenderer_externalform_jsx_formrenderer_externalform_externalform",
-      "community": 21,
+      "community": 0,
       "norm_label": "externalform()"
     },
     {
@@ -6952,7 +7087,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/index.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_formrenderer_index_jsx",
-      "community": 107,
+      "community": 0,
       "norm_label": "index.jsx"
     },
     {
@@ -6961,7 +7096,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/index.jsx",
       "source_location": "L16",
       "id": "apps_panel_admin_src_components_formrenderer_index_jsx_formrenderer_index_formrenderer",
-      "community": 107,
+      "community": 0,
       "norm_label": "formrenderer()"
     },
     {
@@ -6970,7 +7105,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/InternalForm.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_formrenderer_internalform_jsx",
-      "community": 21,
+      "community": 0,
       "norm_label": "internalform.jsx"
     },
     {
@@ -6979,7 +7114,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/InternalForm.jsx",
       "source_location": "L6",
       "id": "apps_panel_admin_src_components_formrenderer_internalform_jsx_formrenderer_internalform_internalform",
-      "community": 21,
+      "community": 0,
       "norm_label": "internalform()"
     },
     {
@@ -6988,7 +7123,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/useFormLogic.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_formrenderer_useformlogic_js",
-      "community": 21,
+      "community": 0,
       "norm_label": "useformlogic.js"
     },
     {
@@ -6997,7 +7132,7 @@
       "source_file": "apps/panel-admin/src/components/FormRenderer/useFormLogic.js",
       "source_location": "L6",
       "id": "apps_panel_admin_src_components_formrenderer_useformlogic_js_formrenderer_useformlogic_useformlogic",
-      "community": 21,
+      "community": 0,
       "norm_label": "useformlogic()"
     },
     {
@@ -7069,7 +7204,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/ManualIntakeForm.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_components_intakes_manualintakeform_jsx",
-      "community": 61,
+      "community": 1,
       "norm_label": "manualintakeform.jsx"
     },
     {
@@ -7078,7 +7213,7 @@
       "source_file": "apps/panel-admin/src/components/Intakes/ManualIntakeForm.jsx",
       "source_location": "L3",
       "id": "intakes_manualintakeform_manualintakeform",
-      "community": 61,
+      "community": 1,
       "norm_label": "manualintakeform()"
     },
     {
@@ -7166,7 +7301,7 @@
       "label": "useSSEGlobal()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/context/sseContext.jsx",
-      "source_location": "L104",
+      "source_location": "L160",
       "id": "context_ssecontext_usesseglobal",
       "community": 105,
       "norm_label": "usesseglobal()"
@@ -7285,7 +7420,7 @@
       "source_file": "apps/panel-admin/src/pages/Home.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_home_jsx",
-      "community": 107,
+      "community": 0,
       "norm_label": "home.jsx"
     },
     {
@@ -7294,7 +7429,7 @@
       "source_file": "apps/panel-admin/src/pages/Home.jsx",
       "source_location": "L3",
       "id": "pages_home_home",
-      "community": 107,
+      "community": 0,
       "norm_label": "home()"
     },
     {
@@ -7375,7 +7510,7 @@
       "source_file": "apps/panel-admin/src/pages/PublicFormViewer.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_publicformviewer_jsx",
-      "community": 107,
+      "community": 0,
       "norm_label": "publicformviewer.jsx"
     },
     {
@@ -7384,7 +7519,7 @@
       "source_file": "apps/panel-admin/src/pages/PublicFormViewer.jsx",
       "source_location": "L5",
       "id": "pages_publicformviewer_publicformviewer",
-      "community": 107,
+      "community": 0,
       "norm_label": "publicformviewer()"
     },
     {
@@ -7672,7 +7807,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_appointments_index_js",
-      "community": 107,
+      "community": 79,
       "norm_label": "index.js"
     },
     {
@@ -7681,7 +7816,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_appointments_pages_appointmentdetail_jsx",
-      "community": 107,
+      "community": 79,
       "norm_label": "appointmentdetail.jsx"
     },
     {
@@ -7690,7 +7825,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L13",
       "id": "pages_appointmentdetail_getvisitorname",
-      "community": 107,
+      "community": 79,
       "norm_label": "getvisitorname()"
     },
     {
@@ -7699,7 +7834,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L20",
       "id": "pages_appointmentdetail_getapptstatus",
-      "community": 107,
+      "community": 79,
       "norm_label": "getapptstatus()"
     },
     {
@@ -7708,7 +7843,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L26",
       "id": "pages_appointmentdetail_inforow",
-      "community": 107,
+      "community": 79,
       "norm_label": "inforow()"
     },
     {
@@ -7717,7 +7852,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L40",
       "id": "pages_appointmentdetail_actionbtn",
-      "community": 107,
+      "community": 79,
       "norm_label": "actionbtn()"
     },
     {
@@ -7726,7 +7861,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L55",
       "id": "pages_appointmentdetail_statusbadge",
-      "community": 107,
+      "community": 79,
       "norm_label": "statusbadge()"
     },
     {
@@ -7735,7 +7870,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentDetail.jsx",
       "source_location": "L74",
       "id": "pages_appointmentdetail_appointmentdetail",
-      "community": 107,
+      "community": 79,
       "norm_label": "appointmentdetail()"
     },
     {
@@ -7744,7 +7879,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_appointments_pages_appointmentsindex_jsx",
-      "community": 107,
+      "community": 79,
       "norm_label": "appointmentsindex.jsx"
     },
     {
@@ -7753,7 +7888,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L10",
       "id": "pages_appointmentsindex_getvisitorname",
-      "community": 107,
+      "community": 79,
       "norm_label": "getvisitorname()"
     },
     {
@@ -7762,7 +7897,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L17",
       "id": "pages_appointmentsindex_getapptstatus",
-      "community": 107,
+      "community": 79,
       "norm_label": "getapptstatus()"
     },
     {
@@ -7771,7 +7906,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L21",
       "id": "pages_appointmentsindex_getpreferredtime",
-      "community": 107,
+      "community": 79,
       "norm_label": "getpreferredtime()"
     },
     {
@@ -7780,7 +7915,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L34",
       "id": "pages_appointmentsindex_status_style",
-      "community": 107,
+      "community": 79,
       "norm_label": "status_style"
     },
     {
@@ -7789,7 +7924,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L43",
       "id": "pages_appointmentsindex_statusbadge",
-      "community": 107,
+      "community": 79,
       "norm_label": "statusbadge()"
     },
     {
@@ -7798,7 +7933,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L54",
       "id": "pages_appointmentsindex_columns",
-      "community": 107,
+      "community": 79,
       "norm_label": "columns"
     },
     {
@@ -7807,7 +7942,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L97",
       "id": "pages_appointmentsindex_appointmentsindex",
-      "community": 105,
+      "community": 79,
       "norm_label": "appointmentsindex()"
     },
     {
@@ -7816,7 +7951,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/WalkInAdd.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_appointments_pages_walkinadd_jsx",
-      "community": 107,
+      "community": 79,
       "norm_label": "walkinadd.jsx"
     },
     {
@@ -7825,7 +7960,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/WalkInAdd.jsx",
       "source_location": "L5",
       "id": "pages_walkinadd_walkinadd",
-      "community": 107,
+      "community": 79,
       "norm_label": "walkinadd()"
     },
     {
@@ -7904,7 +8039,7 @@
       "label": "FormDetail()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormDetail.jsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "id": "pages_formdetail_formdetail",
       "community": 26,
       "norm_label": "formdetail()"
@@ -7913,7 +8048,7 @@
       "label": "EmbedTab()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormDetail.jsx",
-      "source_location": "L115",
+      "source_location": "L116",
       "id": "pages_formdetail_embedtab",
       "community": 26,
       "norm_label": "embedtab()"
@@ -7922,7 +8057,7 @@
       "label": "SubmissionsTab()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormDetail.jsx",
-      "source_location": "L190",
+      "source_location": "L191",
       "id": "pages_formdetail_submissionstab",
       "community": 26,
       "norm_label": "submissionstab()"
@@ -7931,7 +8066,7 @@
       "label": "FormBuilderTab()",
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormDetail.jsx",
-      "source_location": "L429",
+      "source_location": "L427",
       "id": "pages_formdetail_formbuildertab",
       "community": 26,
       "norm_label": "formbuildertab()"
@@ -7942,7 +8077,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_forms_pages_formsindex_jsx",
-      "community": 26,
+      "community": 105,
       "norm_label": "formsindex.jsx"
     },
     {
@@ -7951,7 +8086,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
       "source_location": "L15",
       "id": "pages_formsindex_chart_colors",
-      "community": 26,
+      "community": 105,
       "norm_label": "chart_colors"
     },
     {
@@ -7960,7 +8095,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
       "source_location": "L17",
       "id": "pages_formsindex_formsindex",
-      "community": 26,
+      "community": 105,
       "norm_label": "formsindex()"
     },
     {
@@ -7969,7 +8104,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
       "source_location": "L317",
       "id": "pages_formsindex_feedbackanalyticstab",
-      "community": 26,
+      "community": 105,
       "norm_label": "feedbackanalyticstab()"
     },
     {
@@ -7978,7 +8113,7 @@
       "source_file": "apps/panel-admin/src/pages/intakes/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_intakes_index_js",
-      "community": 61,
+      "community": 1,
       "norm_label": "index.js"
     },
     {
@@ -8122,7 +8257,7 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_intakes_pages_intakemanualnew_jsx",
-      "community": 61,
+      "community": 1,
       "norm_label": "intakemanualnew.jsx"
     },
     {
@@ -8131,7 +8266,7 @@
       "source_file": "apps/panel-admin/src/pages/intakes/pages/IntakeManualNew.jsx",
       "source_location": "L9",
       "id": "pages_intakemanualnew_intakemanualnew",
-      "community": 61,
+      "community": 1,
       "norm_label": "intakemanualnew()"
     },
     {
@@ -8212,7 +8347,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_index_js",
-      "community": 0,
+      "community": 1,
       "norm_label": "index.js"
     },
     {
@@ -8239,7 +8374,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_pages_inventoryconstituents_jsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "inventoryconstituents.jsx"
     },
     {
@@ -8248,7 +8383,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L7",
       "id": "pages_inventoryconstituents_type_styles",
-      "community": 0,
+      "community": 1,
       "norm_label": "type_styles"
     },
     {
@@ -8257,7 +8392,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L15",
       "id": "pages_inventoryconstituents_inventoryconstituents",
-      "community": 0,
+      "community": 1,
       "norm_label": "inventoryconstituents()"
     },
     {
@@ -8383,7 +8518,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryLocations.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_pages_inventorylocations_jsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "inventorylocations.jsx"
     },
     {
@@ -8392,7 +8527,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryLocations.jsx",
       "source_location": "L10",
       "id": "pages_inventorylocations_type_styles",
-      "community": 0,
+      "community": 1,
       "norm_label": "type_styles"
     },
     {
@@ -8401,7 +8536,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryLocations.jsx",
       "source_location": "L17",
       "id": "pages_inventorylocations_inventorylocations",
-      "community": 0,
+      "community": 1,
       "norm_label": "inventorylocations()"
     },
     {
@@ -8410,7 +8545,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryLocations.jsx",
       "source_location": "L355",
       "id": "pages_inventorylocations_arrowright",
-      "community": 0,
+      "community": 1,
       "norm_label": "arrowright()"
     },
     {
@@ -8653,7 +8788,7 @@
       "source_file": "apps/panel-admin/src/pages/schedule/pages/ScheduleIndex.jsx",
       "source_location": "L214",
       "id": "pages_scheduleindex_schedule",
-      "community": 105,
+      "community": 107,
       "norm_label": "schedule()"
     },
     {
@@ -8662,7 +8797,7 @@
       "source_file": "apps/panel-admin/src/pages/settings/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_settings_index_js",
-      "community": 1,
+      "community": 32,
       "norm_label": "index.js"
     },
     {
@@ -8671,7 +8806,7 @@
       "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_settings_pages_settingsindex_jsx",
-      "community": 1,
+      "community": 32,
       "norm_label": "settingsindex.jsx"
     },
     {
@@ -8680,7 +8815,7 @@
       "source_file": "apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx",
       "source_location": "L7",
       "id": "pages_settingsindex_settingsindex",
-      "community": 1,
+      "community": 32,
       "norm_label": "settingsindex()"
     },
     {
@@ -8707,7 +8842,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleUtils.js",
       "source_location": "L11",
       "id": "utils_scheduleutils_timestringtominutes",
-      "community": 107,
+      "community": 0,
       "norm_label": "timestringtominutes()"
     },
     {
@@ -8734,7 +8869,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleUtils.js",
       "source_location": "L42",
       "id": "utils_scheduleutils_countoverlappingevents",
-      "community": 107,
+      "community": 0,
       "norm_label": "countoverlappingevents()"
     },
     {
@@ -8752,7 +8887,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleUtils.js",
       "source_location": "L62",
       "id": "utils_scheduleutils_normalizestatus",
-      "community": 107,
+      "community": 79,
       "norm_label": "normalizestatus()"
     },
     {
@@ -8797,7 +8932,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleValidation.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_utils_schedulevalidation_js",
-      "community": 107,
+      "community": 0,
       "norm_label": "schedulevalidation.js"
     },
     {
@@ -8806,7 +8941,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleValidation.js",
       "source_location": "L3",
       "id": "utils_schedulevalidation_six_am",
-      "community": 107,
+      "community": 0,
       "norm_label": "six_am"
     },
     {
@@ -8815,7 +8950,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleValidation.js",
       "source_location": "L4",
       "id": "utils_schedulevalidation_six_pm",
-      "community": 107,
+      "community": 0,
       "norm_label": "six_pm"
     },
     {
@@ -8824,7 +8959,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleValidation.js",
       "source_location": "L7",
       "id": "utils_schedulevalidation_basetimevalidation",
-      "community": 107,
+      "community": 0,
       "norm_label": "basetimevalidation()"
     },
     {
@@ -8833,7 +8968,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleValidation.js",
       "source_location": "L19",
       "id": "utils_schedulevalidation_isfulldaydisabled",
-      "community": 107,
+      "community": 0,
       "norm_label": "isfulldaydisabled()"
     },
     {
@@ -8842,7 +8977,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleValidation.js",
       "source_location": "L25",
       "id": "utils_schedulevalidation_overlapsrange",
-      "community": 107,
+      "community": 0,
       "norm_label": "overlapsrange()"
     },
     {
@@ -8851,7 +8986,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleValidation.js",
       "source_location": "L36",
       "id": "utils_schedulevalidation_validateschedulecreation",
-      "community": 107,
+      "community": 0,
       "norm_label": "validateschedulecreation()"
     },
     {
@@ -8860,7 +8995,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleValidation.js",
       "source_location": "L50",
       "id": "utils_schedulevalidation_validatedatedisabling",
-      "community": 107,
+      "community": 0,
       "norm_label": "validatedatedisabling()"
     },
     {
@@ -8869,7 +9004,7 @@
       "source_file": "apps/panel-admin/src/utils/scheduleValidation.js",
       "source_location": "L89",
       "id": "utils_schedulevalidation_validateappointmentbooking",
-      "community": 107,
+      "community": 0,
       "norm_label": "validateappointmentbooking()"
     },
     {
@@ -9309,7 +9444,7 @@
       "file_type": "code",
       "source_file": "apps/panel-visitor/.astro/settings.json",
       "source_location": "L2",
-      "id": "astro_settings_variables",
+      "id": "apps_panel_visitor_astro_settings_json_astro_settings_variables",
       "community": 57,
       "norm_label": "_variables"
     },
@@ -9318,7 +9453,7 @@
       "file_type": "code",
       "source_file": "apps/panel-visitor/.astro/settings.json",
       "source_location": "L3",
-      "id": "astro_settings_variables_lastupdatecheck",
+      "id": "apps_panel_visitor_astro_settings_json_astro_settings_variables_lastupdatecheck",
       "community": 57,
       "norm_label": "lastupdatecheck"
     },
@@ -9673,267 +9808,6 @@
       "id": "apps_panel_visitor_src_pages_setup_astro",
       "community": 9,
       "norm_label": "setup.astro"
-    },
-    {
-      "label": "1777260121_created_inventory.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777260121_created_inventory.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777260121_created_inventory_js",
-      "community": 76,
-      "norm_label": "1777260121_created_inventory.js"
-    },
-    {
-      "label": "1777260126_created_accessions.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777260126_created_accessions.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777260126_created_accessions_js",
-      "community": 77,
-      "norm_label": "1777260126_created_accessions.js"
-    },
-    {
-      "label": "1777260132_created_intakes.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777260132_created_intakes.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777260132_created_intakes_js",
-      "community": 78,
-      "norm_label": "1777260132_created_intakes.js"
-    },
-    {
-      "label": "1777260137_created_appointments.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777260137_created_appointments.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777260137_created_appointments_js",
-      "community": 79,
-      "norm_label": "1777260137_created_appointments.js"
-    },
-    {
-      "label": "1777354165_created_form_definitions.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777354165_created_form_definitions.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777354165_created_form_definitions_js",
-      "community": 80,
-      "norm_label": "1777354165_created_form_definitions.js"
-    },
-    {
-      "label": "1777354262_created_form_submissions.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777354262_created_form_submissions.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777354262_created_form_submissions_js",
-      "community": 81,
-      "norm_label": "1777354262_created_form_submissions.js"
-    },
-    {
-      "label": "1777368060_updated_intakes.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777368060_updated_intakes.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777368060_updated_intakes_js",
-      "community": 82,
-      "norm_label": "1777368060_updated_intakes.js"
-    },
-    {
-      "label": "1777391814_updated_form_submissions.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777391814_updated_form_submissions.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777391814_updated_form_submissions_js",
-      "community": 83,
-      "norm_label": "1777391814_updated_form_submissions.js"
-    },
-    {
-      "label": "1777391881_updated_form_definitions.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777391881_updated_form_definitions.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777391881_updated_form_definitions_js",
-      "community": 84,
-      "norm_label": "1777391881_updated_form_definitions.js"
-    },
-    {
-      "label": "1777391976_updated_intakes.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777391976_updated_intakes.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777391976_updated_intakes_js",
-      "community": 85,
-      "norm_label": "1777391976_updated_intakes.js"
-    },
-    {
-      "label": "1777441020_updated_app_users.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777441020_updated_app_users.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777441020_updated_app_users_js",
-      "community": 86,
-      "norm_label": "1777441020_updated_app_users.js"
-    },
-    {
-      "label": "1777443265_updated_accessions.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777443265_updated_accessions.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777443265_updated_accessions_js",
-      "community": 87,
-      "norm_label": "1777443265_updated_accessions.js"
-    },
-    {
-      "label": "1777446737_updated_form_definitions.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777446737_updated_form_definitions.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777446737_updated_form_definitions_js",
-      "community": 88,
-      "norm_label": "1777446737_updated_form_definitions.js"
-    },
-    {
-      "label": "1777447208_updated_form_definitions.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777447208_updated_form_definitions.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777447208_updated_form_definitions_js",
-      "community": 89,
-      "norm_label": "1777447208_updated_form_definitions.js"
-    },
-    {
-      "label": "1777447393_updated_form_definitions.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777447393_updated_form_definitions.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777447393_updated_form_definitions_js",
-      "community": 90,
-      "norm_label": "1777447393_updated_form_definitions.js"
-    },
-    {
-      "label": "1777448606_updated_form_definitions.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777448606_updated_form_definitions.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777448606_updated_form_definitions_js",
-      "community": 91,
-      "norm_label": "1777448606_updated_form_definitions.js"
-    },
-    {
-      "label": "1777448615_updated_form_definitions.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777448615_updated_form_definitions.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777448615_updated_form_definitions_js",
-      "community": 92,
-      "norm_label": "1777448615_updated_form_definitions.js"
-    },
-    {
-      "label": "1777460000_link_form_submissions.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777460000_link_form_submissions.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777460000_link_form_submissions_js",
-      "community": 93,
-      "norm_label": "1777460000_link_form_submissions.js"
-    },
-    {
-      "label": "1777460002_add_attachments_to_health.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777460002_add_attachments_to_health.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777460002_add_attachments_to_health_js",
-      "community": 94,
-      "norm_label": "1777460002_add_attachments_to_health.js"
-    },
-    {
-      "label": "1777460003_inspect_health_fields.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777460003_inspect_health_fields.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777460003_inspect_health_fields_js",
-      "community": 95,
-      "norm_label": "1777460003_inspect_health_fields.js"
-    },
-    {
-      "label": "1777460004_inspect_location_fields.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777460004_inspect_location_fields.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777460004_inspect_location_fields_js",
-      "community": 96,
-      "norm_label": "1777460004_inspect_location_fields.js"
-    },
-    {
-      "label": "1777460005_add_reporter_name.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777460005_add_reporter_name.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777460005_add_reporter_name_js",
-      "community": 97,
-      "norm_label": "1777460005_add_reporter_name.js"
-    },
-    {
-      "label": "1777460006_remove_manual_reporter.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777460006_remove_manual_reporter.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777460006_remove_manual_reporter_js",
-      "community": 98,
-      "norm_label": "1777460006_remove_manual_reporter.js"
-    },
-    {
-      "label": "1777460007_debug_health_report.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777460007_debug_health_report.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777460007_debug_health_report_js",
-      "community": 99,
-      "norm_label": "1777460007_debug_health_report.js"
-    },
-    {
-      "label": "1777460008_inspect_app_users.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777460008_inspect_app_users.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777460008_inspect_app_users_js",
-      "community": 100,
-      "norm_label": "1777460008_inspect_app_users.js"
-    },
-    {
-      "label": "1777460009_debug_user_name.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777460009_debug_user_name.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777460009_debug_user_name_js",
-      "community": 101,
-      "norm_label": "1777460009_debug_user_name.js"
-    },
-    {
-      "label": "1777460010_inspect_media_attachments.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777460010_inspect_media_attachments.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777460010_inspect_media_attachments_js",
-      "community": 102,
-      "norm_label": "1777460010_inspect_media_attachments.js"
-    },
-    {
-      "label": "1777460011_check_entity_id_type.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777460011_check_entity_id_type.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777460011_check_entity_id_type_js",
-      "community": 103,
-      "norm_label": "1777460011_check_entity_id_type.js"
-    },
-    {
-      "label": "1777460012_check_entity_id_details.js",
-      "file_type": "code",
-      "source_file": "apps/service-collections/pb_migrations/1777460012_check_entity_id_details.js",
-      "source_location": "L1",
-      "id": "apps_service_collections_pb_migrations_1777460012_check_entity_id_details_js",
-      "community": 104,
-      "norm_label": "1777460012_check_entity_id_details.js"
     },
     {
       "label": "debug_placeholders.js",
@@ -12372,7 +12246,7 @@
       "source_location": "L2",
       "community": 57,
       "norm_label": "_variables",
-      "id": "apps_panel_visitor_astro_settings_json_astro_settings_variables"
+      "id": "astro_settings_variables"
     },
     {
       "label": "lastUpdateCheck",
@@ -12381,7 +12255,7 @@
       "source_location": "L3",
       "community": 57,
       "norm_label": "lastupdatecheck",
-      "id": "apps_panel_visitor_astro_settings_json_astro_settings_variables_lastupdatecheck"
+      "id": "astro_settings_variables_lastupdatecheck"
     },
     {
       "label": "MemoryOtpStore",
@@ -12433,7 +12307,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/utils/otpStore.js",
       "source_location": "L111",
-      "community": 149,
+      "community": 78,
       "norm_label": "createotpstore()",
       "id": "utils_otpstore_createotpstore"
     },
@@ -12550,7 +12424,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
       "source_location": "L149",
-      "community": 26,
+      "community": 105,
       "norm_label": "submissionstab()",
       "id": "pages_formsindex_submissionstab"
     },
@@ -12559,7 +12433,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormsIndex.jsx",
       "source_location": "L367",
-      "community": 26,
+      "community": 105,
       "norm_label": "formbuildertab()",
       "id": "pages_formsindex_formbuildertab"
     },
@@ -14890,7 +14764,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
       "source_location": "L19",
-      "community": 21,
+      "community": 0,
       "norm_label": "step_icons",
       "id": "formrenderer_externalform_step_icons"
     },
@@ -14899,7 +14773,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/components/FormRenderer/ExternalForm.jsx",
       "source_location": "L27",
-      "community": 21,
+      "community": 0,
       "norm_label": "externalform()",
       "id": "formrenderer_externalform_externalform"
     },
@@ -14908,7 +14782,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/components/FormRenderer/index.jsx",
       "source_location": "L11",
-      "community": 107,
+      "community": 0,
       "norm_label": "formrenderer()",
       "id": "formrenderer_index_formrenderer"
     },
@@ -14917,7 +14791,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/components/FormRenderer/InternalForm.jsx",
       "source_location": "L5",
-      "community": 21,
+      "community": 0,
       "norm_label": "internalform()",
       "id": "formrenderer_internalform_internalform"
     },
@@ -14926,7 +14800,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/components/FormRenderer/useFormLogic.js",
       "source_location": "L6",
-      "community": 21,
+      "community": 0,
       "norm_label": "useformlogic()",
       "id": "formrenderer_useformlogic_useformlogic"
     }
@@ -18009,9 +17883,9 @@
       "source_file": "apps/api/src/controllers/analyticsController.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_controllers_analyticscontroller_js",
-      "target": "apps_api_src_config_env_js",
-      "confidence_score": 1.0
+      "target": "apps_api_src_config_env_js"
     },
     {
       "relation": "imports_from",
@@ -18097,9 +17971,9 @@
       "source_file": "apps/api/src/services/umamiService.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_services_umamiservice_js",
-      "target": "apps_api_src_config_env_js",
-      "confidence_score": 1.0
+      "target": "apps_api_src_config_env_js"
     },
     {
       "relation": "imports_from",
@@ -18185,9 +18059,9 @@
       "source_file": "apps/api/src/controllers/analyticsController.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_controllers_analyticscontroller_js",
-      "target": "config_env_env",
-      "confidence_score": 1.0
+      "target": "config_env_env"
     },
     {
       "relation": "imports",
@@ -18273,9 +18147,9 @@
       "source_file": "apps/api/src/services/umamiService.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_services_umamiservice_js",
-      "target": "config_env_env",
-      "confidence_score": 1.0
+      "target": "config_env_env"
     },
     {
       "relation": "imports",
@@ -18579,9 +18453,9 @@
       "source_file": "apps/api/src/controllers/analyticsController.js",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_controllers_analyticscontroller_js",
-      "target": "apps_api_src_services_umamiservice_js",
-      "confidence_score": 1.0
+      "target": "apps_api_src_services_umamiservice_js"
     },
     {
       "relation": "imports_from",
@@ -18601,9 +18475,9 @@
       "source_file": "apps/api/src/controllers/analyticsController.js",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_controllers_analyticscontroller_js",
-      "target": "apps_api_src_utils_logger_js",
-      "confidence_score": 1.0
+      "target": "apps_api_src_utils_logger_js"
     },
     {
       "relation": "contains",
@@ -18622,9 +18496,9 @@
       "source_file": "apps/api/src/controllers/analyticsController.js",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_controllers_analyticscontroller_js",
-      "target": "services_umamiservice_umamiservice",
-      "confidence_score": 1.0
+      "target": "services_umamiservice_umamiservice"
     },
     {
       "relation": "imports",
@@ -18644,9 +18518,9 @@
       "source_file": "apps/api/src/controllers/analyticsController.js",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_controllers_analyticscontroller_js",
-      "target": "utils_logger_logger",
-      "confidence_score": 1.0
+      "target": "utils_logger_logger"
     },
     {
       "relation": "imports_from",
@@ -22944,9 +22818,9 @@
       "source_file": "apps/api/src/services/umamiService.js",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_services_umamiservice_js",
-      "target": "apps_api_src_utils_logger_js",
-      "confidence_score": 1.0
+      "target": "apps_api_src_utils_logger_js"
     },
     {
       "relation": "contains",
@@ -22954,9 +22828,9 @@
       "source_file": "apps/api/src/services/umamiService.js",
       "source_location": "L165",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_services_umamiservice_js",
-      "target": "services_umamiservice_umamiservice",
-      "confidence_score": 1.0
+      "target": "services_umamiservice_umamiservice"
     },
     {
       "relation": "imports",
@@ -22965,9 +22839,9 @@
       "source_file": "apps/api/src/services/umamiService.js",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_services_umamiservice_js",
-      "target": "utils_logger_logger",
-      "confidence_score": 1.0
+      "target": "utils_logger_logger"
     },
     {
       "relation": "method",
@@ -22975,9 +22849,9 @@
       "source_file": "apps/api/src/services/umamiService.js",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "services_umamiservice_umamiservice",
-      "target": "services_umamiservice_umamiservice_constructor",
-      "confidence_score": 1.0
+      "target": "services_umamiservice_umamiservice_constructor"
     },
     {
       "relation": "method",
@@ -22985,9 +22859,9 @@
       "source_file": "apps/api/src/services/umamiService.js",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "services_umamiservice_umamiservice",
-      "target": "services_umamiservice_umamiservice_fetchfromumami",
-      "confidence_score": 1.0
+      "target": "services_umamiservice_umamiservice_fetchfromumami"
     },
     {
       "relation": "method",
@@ -22995,9 +22869,9 @@
       "source_file": "apps/api/src/services/umamiService.js",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "services_umamiservice_umamiservice",
-      "target": "services_umamiservice_umamiservice_getauthtoken",
-      "confidence_score": 1.0
+      "target": "services_umamiservice_umamiservice_getauthtoken"
     },
     {
       "relation": "method",
@@ -23005,9 +22879,19 @@
       "source_file": "apps/api/src/services/umamiService.js",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "services_umamiservice_umamiservice",
-      "target": "services_umamiservice_umamiservice_getwebsiteanalytics",
-      "confidence_score": 1.0
+      "target": "services_umamiservice_umamiservice_getwebsiteanalytics"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/umamiService.js",
+      "source_location": "L126",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_umamiservice_umamiservice",
+      "target": "services_umamiservice_umamiservice_normalizestats"
     },
     {
       "relation": "calls",
@@ -23016,9 +22900,20 @@
       "source_file": "apps/api/src/services/umamiService.js",
       "source_location": "L147",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "services_umamiservice_umamiservice_getwebsiteanalytics",
-      "target": "services_umamiservice_umamiservice_fetchfromumami",
-      "confidence_score": 1.0
+      "target": "services_umamiservice_umamiservice_fetchfromumami"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/umamiService.js",
+      "source_location": "L177",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_umamiservice_umamiservice_getwebsiteanalytics",
+      "target": "services_umamiservice_umamiservice_normalizestats"
     },
     {
       "relation": "imports_from",
@@ -28404,6 +28299,26 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "apps/landing/.astro/settings.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_astro_settings_json",
+      "target": "apps_landing_astro_settings_json_astro_settings_variables"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/.astro/settings.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_astro_settings_json_astro_settings_variables",
+      "target": "apps_landing_astro_settings_json_astro_settings_variables_lastupdatecheck"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "apps/landing/.vscode/extensions.json",
       "source_location": "L2",
       "weight": 1.0,
@@ -28561,6 +28476,17 @@
       "target": "apps_landing_src_components_formrenderer_index_jsx"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/visit-us.astro",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_visit_us_astro",
+      "target": "apps_landing_src_components_formrenderer_index_jsx"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/landing/src/components/FormRenderer/InternalForm.jsx",
@@ -28659,6 +28585,17 @@
       "source_file": "apps/landing/src/components/ui/Nav.astro",
       "confidence_score": 1.0,
       "source": "apps_landing_src_components_ui_nav_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_logo_png"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/forms/display/[id].astro",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_forms_display_id_astro",
       "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_logo_png"
     },
     {
@@ -28815,10 +28752,50 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/visit-us.astro",
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_visit_us_astro",
+      "target": "apps_landing_src_layouts_baselayout_astro"
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
       "source_file": "apps/landing/src/pages/forms/embed/[id].astro",
       "confidence_score": 1.0,
       "source": "apps_landing_src_pages_forms_embed_id_astro",
       "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_styles_global_css"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/about.astro",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_about_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_440832115_947772303495782_6010038099693171993_n_svg"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/articles.astro",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_articles_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_amorsolo_lavenderas_1923_orig_jpeg"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/articles.astro",
+      "source_location": "L183",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_articles_astro",
+      "target": "pages_articles_filterarticles"
     },
     {
       "relation": "contains",
@@ -28834,12 +28811,45 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/forms/display/[id].astro",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_forms_display_id_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_amorsolo_lavenderas_1923_orig_jpeg"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/landing/src/pages/index.astro",
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_landing_src_pages_index_astro",
       "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_06_afternoonmealoftheworker_1_svg"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/index.astro",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_index_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_support_us_svg"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/index.astro",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_index_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_visit_us_svg"
     },
     {
       "relation": "imports_from",
@@ -28874,6 +28884,47 @@
       "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_components_formrenderer"
     },
     {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/visit-us.astro",
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_visit_us_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_components_formrenderer"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/forms/display/[id].astro",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_forms_display_id_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_06_afternoonmealoftheworker_1_svg"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/about/support.astro",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_about_support_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_support_us_svg"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/forms/display/[id].astro",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_forms_display_id_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_visit_us_svg"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/landing/src/pages/articles/[slug].astro",
@@ -28903,6 +28954,60 @@
       "confidence_score": 1.0,
       "source": "articles_slug_renderlexicalnode",
       "target": "articles_slug_escapehtml"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/forms/display/[id].astro",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_forms_display_id_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_amorsolo_igorot_hills_baguio_1928_orig_jpeg"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/forms/display/[id].astro",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_forms_display_id_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_fernando_amorsolo_women_bathing_and_washing_clothes_7463_svg"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/forms/display/[id].astro",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_forms_display_id_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_fernando_cueto_amorsolo_girl_with_jar_svg"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/forms/display/[id].astro",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_forms_display_id_astro",
+      "target": "c_users_jeffe_development_prod_dev_museo_bulawan_cms_apps_landing_src_assets_tropical_lagoon_1923_1923_orig_jpeg"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/landing/src/pages/forms/display/[id].astro",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_landing_src_pages_forms_display_id_astro",
+      "target": "display_id_backgrounds"
     },
     {
       "relation": "contains",
@@ -29030,9 +29135,9 @@
       "source_file": "apps/panel-admin/package.json",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "panel_admin_package_dependencies",
-      "target": "panel_admin_package_dependencies_fullcalendar_core",
-      "confidence_score": 1.0
+      "target": "panel_admin_package_dependencies_fullcalendar_core"
     },
     {
       "relation": "contains",
@@ -35174,8 +35279,8 @@
       "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "astro_settings_variables",
-      "target": "astro_settings_variables_lastupdatecheck"
+      "source": "apps_panel_visitor_astro_settings_json_astro_settings_variables",
+      "target": "apps_panel_visitor_astro_settings_json_astro_settings_variables_lastupdatecheck"
     },
     {
       "relation": "contains",
@@ -38101,8 +38206,8 @@
       "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "apps_panel_visitor_astro_settings_json_astro_settings_variables",
-      "target": "apps_panel_visitor_astro_settings_json_astro_settings_variables_lastupdatecheck"
+      "source": "astro_settings_variables",
+      "target": "astro_settings_variables_lastupdatecheck"
     },
     {
       "relation": "method",
@@ -40663,5 +40768,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5dd5507bf5313e4363cc73151d1854bafae9d197"
+  "built_at_commit": "f0f7163d1e42a063834e13b019bf9d2a5e559121"
 }

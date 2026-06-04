@@ -225,7 +225,7 @@ export default function FormsIndex() {
                                         {/* Action Footer */}
                                         <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
                                             <a
-                                                href={`/forms/${form.slug || form.id.toLowerCase()}`}
+                                                href={`/forms/display/${form.slug || form.id.toLowerCase()}`}
                                                 target="_blank"
                                                 rel="noreferrer"
                                                 className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-black transition-colors"

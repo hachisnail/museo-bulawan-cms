@@ -11,9 +11,10 @@ import {
 } from 'recharts';
 
 export default function Analytics() {
-    const { apiFetch } = useAuth();
+    const { user, apiFetch } = useAuth();
+    const isAdmin = user?.role === 'admin';
     
-    // Tab states: 'traffic' (Visitor Traffic) or 'collection' (Collection Stats)
+    // Tab states: 'traffic' (Visitor Traffic), 'collection' (Collection Stats), or 'feedback' (Visitor Feedback)
     const [activeTab, setActiveTab] = useState('traffic');
     const [period, setPeriod] = useState('7d'); // '24h', '7d', '30d'
 
@@ -23,6 +24,7 @@ export default function Analytics() {
     const [acquisitionsData, setAcquisitionsData] = useState(null);
     const [healthData, setHealthData] = useState(null);
     const [valuationData, setValuationData] = useState(null);
+    const [feedbackData, setFeedbackData] = useState(null);
 
     // Status States
     const [isLoading, setIsLoading] = useState(true);
@@ -36,24 +38,26 @@ export default function Analytics() {
 
         try {
             // Fetch everything in parallel
-            const [overviewRes, umamiRes, acquisitionsRes, healthRes, valuationRes] = await Promise.all([
+            const [overviewRes, umamiRes, acquisitionsRes, healthRes, valuationRes, feedbackRes] = await Promise.all([
                 apiFetch('/api/v1/analytics/overview'),
                 apiFetch(`/api/v1/analytics/umami?period=${period}`),
                 apiFetch('/api/v1/analytics/acquisitions'),
                 apiFetch('/api/v1/analytics/collection-health'),
-                apiFetch('/api/v1/analytics/valuations')
+                apiFetch('/api/v1/analytics/valuations'),
+                apiFetch('/api/v1/analytics/feedback')
             ]);
 
-            if (!overviewRes.ok || !umamiRes.ok || !acquisitionsRes.ok || !healthRes.ok || !valuationRes.ok) {
+            if (!overviewRes.ok || !umamiRes.ok || !acquisitionsRes.ok || !healthRes.ok || !valuationRes.ok || !feedbackRes.ok) {
                 throw new Error('Some analytics modules failed to load.');
             }
 
-            const [overview, umami, acquisitions, health, valuation] = await Promise.all([
+            const [overview, umami, acquisitions, health, valuation, feedback] = await Promise.all([
                 overviewRes.json(),
                 umamiRes.json(),
                 acquisitionsRes.json(),
                 healthRes.json(),
-                valuationRes.json()
+                valuationRes.json(),
+                feedbackRes.json()
             ]);
 
             setOverviewData(overview.data);
@@ -61,6 +65,7 @@ export default function Analytics() {
             setAcquisitionsData(acquisitions.data);
             setHealthData(health.data);
             setValuationData(valuation.data);
+            setFeedbackData(feedback.data);
         } catch (err) {
             console.error('Analytics load error:', err);
             setError(err.message || 'Failed to fetch dashboard intelligence.');
@@ -80,6 +85,25 @@ export default function Analytics() {
             currency: 'PHP',
             maximumFractionDigits: 0
         }).format(value);
+    };
+
+    const renderStars = (rating) => {
+        const fullStars = Math.floor(rating);
+        const hasHalf = rating % 1 >= 0.5;
+        return (
+            <div className="flex items-center gap-0.5 text-amber-500">
+                {Array(5).fill(0).map((_, i) => (
+                    <svg 
+                        key={i} 
+                        className={`w-4 h-4 ${i < fullStars ? 'fill-current' : (i === fullStars && hasHalf ? 'opacity-70 fill-current' : 'text-zinc-200')}`} 
+                        fill="currentColor" 
+                        viewBox="0 0 20 20"
+                    >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                ))}
+            </div>
+        );
     };
 
     // Color Palette for Pie/Bar charts (Zinc gray / Gold Theme)
@@ -160,6 +184,18 @@ export default function Analytics() {
                             ))}
                         </div>
                     )}
+                    {isAdmin && umamiData?.dashboardUrl && (
+                        <a
+                            href={umamiData.dashboardUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 py-2 border border-[#D4AF37] bg-[#D4AF37]/5 hover:bg-[#D4AF37]/15 text-[#D4AF37] rounded-lg text-xs font-bold tracking-wider flex items-center gap-2 transition-all shadow-sm"
+                            title="View complete telemetry in Umami"
+                        >
+                            <Globe className="w-3.5 h-3.5" />
+                            View Umami Dashboard
+                        </a>
+                    )}
                     <button
                         onClick={() => fetchAllData(true)}
                         disabled={isRefreshing}
@@ -196,6 +232,19 @@ export default function Analytics() {
                 >
                     Collection Analytics
                     {activeTab === 'collection' && (
+                        <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#D4AF37]"></span>
+                    )}
+                </button>
+                <button
+                    onClick={() => setActiveTab('feedback')}
+                    className={`pb-4 px-4 transition-all relative ${
+                        activeTab === 'feedback' 
+                            ? 'text-zinc-950' 
+                            : 'text-zinc-400 hover:text-zinc-700'
+                    }`}
+                >
+                    Visitor Feedback
+                    {activeTab === 'feedback' && (
                         <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#D4AF37]"></span>
                     )}
                 </button>
@@ -277,7 +326,7 @@ export default function Analytics() {
                                 </p>
                             </div>
                         </>
-                    ) : (
+                    ) : activeTab === 'collection' ? (
                         <>
                             {/* Inventory count */}
                             <div className="bg-white p-6 rounded-2xl border border-zinc-200/80 shadow-sm relative overflow-hidden group hover:border-[#D4AF37]/50 transition-all duration-300">
@@ -340,6 +389,78 @@ export default function Analytics() {
                                 </div>
                                 <p className="text-xs text-zinc-400 mt-2">
                                     Scheduled visits & museum entries
+                                </p>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            {/* Total Feedbacks */}
+                            <div className="bg-white p-6 rounded-2xl border border-zinc-200/80 shadow-sm relative overflow-hidden group hover:border-[#D4AF37]/50 transition-all duration-300">
+                                <div className="flex items-center justify-between mb-4">
+                                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Total Feedbacks</span>
+                                    <div className="w-10 h-10 bg-zinc-50 border border-zinc-100 rounded-full flex items-center justify-center text-zinc-500 group-hover:text-[#D4AF37] group-hover:bg-[#D4AF37]/5 transition-colors">
+                                        <FileText className="w-4 h-4" />
+                                    </div>
+                                </div>
+                                <div className="text-3xl font-extrabold text-zinc-950 tracking-tight">
+                                    {feedbackData?.totals?.feedbackSubmissions ?? 0}
+                                </div>
+                                <p className="text-xs text-zinc-400 mt-2">
+                                    Total submissions of the feedback form
+                                </p>
+                            </div>
+
+                            {/* Average Rating */}
+                            <div className="bg-white p-6 rounded-2xl border border-zinc-200/80 shadow-sm relative overflow-hidden group hover:border-[#D4AF37]/50 transition-all duration-300">
+                                <div className="flex items-center justify-between mb-4">
+                                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Average Rating</span>
+                                    <div className="w-10 h-10 bg-zinc-50 border border-zinc-100 rounded-full flex items-center justify-center text-zinc-500 group-hover:text-[#D4AF37] group-hover:bg-[#D4AF37]/5 transition-colors">
+                                        <Award className="w-4 h-4" />
+                                    </div>
+                                </div>
+                                <div className="text-3xl font-extrabold text-zinc-950 tracking-tight flex items-baseline gap-2">
+                                    {feedbackData?.totals?.averageRating ?? 0}
+                                    <span className="text-sm font-medium text-zinc-400">/ 5.0</span>
+                                </div>
+                                <div className="mt-2 flex items-center gap-1.5">
+                                    {renderStars(feedbackData?.totals?.averageRating || 0)}
+                                </div>
+                            </div>
+
+                            {/* Excellent Rating Rate */}
+                            <div className="bg-white p-6 rounded-2xl border border-zinc-200/80 shadow-sm relative overflow-hidden group hover:border-[#D4AF37]/50 transition-all duration-300">
+                                <div className="flex items-center justify-between mb-4">
+                                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Excellent Reviews</span>
+                                    <div className="w-10 h-10 bg-zinc-50 border border-zinc-100 rounded-full flex items-center justify-center text-zinc-500 group-hover:text-[#D4AF37] group-hover:bg-[#D4AF37]/5 transition-colors">
+                                        <TrendingUp className="w-4 h-4" />
+                                    </div>
+                                </div>
+                                <div className="text-3xl font-extrabold text-zinc-950 tracking-tight">
+                                    {(() => {
+                                        const total = feedbackData?.totals?.feedbackSubmissions || 0;
+                                        const ratings = feedbackData?.distributions?.ratings || [];
+                                        const high = ratings.reduce((acc, r) => r.rating >= 4 ? acc + r.count : acc, 0);
+                                        return total > 0 ? `${Math.round((high / total) * 100)}%` : '0%';
+                                    })()}
+                                </div>
+                                <p className="text-xs text-zinc-400 mt-2">
+                                    Percentage of 4-star and 5-star ratings
+                                </p>
+                            </div>
+
+                            {/* Categories Count */}
+                            <div className="bg-white p-6 rounded-2xl border border-zinc-200/80 shadow-sm relative overflow-hidden group hover:border-[#D4AF37]/50 transition-all duration-300">
+                                <div className="flex items-center justify-between mb-4">
+                                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Active Channels</span>
+                                    <div className="w-10 h-10 bg-zinc-50 border border-zinc-100 rounded-full flex items-center justify-center text-zinc-500 group-hover:text-[#D4AF37] group-hover:bg-[#D4AF37]/5 transition-colors">
+                                        <Globe className="w-4 h-4" />
+                                    </div>
+                                </div>
+                                <div className="text-3xl font-extrabold text-zinc-950 tracking-tight">
+                                    {feedbackData?.distributions?.categories?.filter(c => c.count > 0).length || 0}
+                                </div>
+                                <p className="text-xs text-zinc-400 mt-2">
+                                    Feedback topics with visitor submissions
                                 </p>
                             </div>
                         </>
@@ -528,7 +649,7 @@ export default function Analytics() {
                             </div>
                         </div>
                     </div>
-                ) : (
+                ) : activeTab === 'collection' ? (
                     <div className="space-y-8 animate-in fade-in duration-300">
                         {/* Collection growth Trend */}
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -665,6 +786,133 @@ export default function Analytics() {
                                         </ResponsiveContainer>
                                     </div>
                                 )}
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="space-y-8 animate-in fade-in duration-300">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            {/* Ratings Distribution Bar Chart */}
+                            <div className="bg-white p-6 rounded-3xl border border-zinc-200/80 shadow-sm lg:col-span-2">
+                                <h3 className="text-base font-bold text-zinc-950 mb-6 flex items-center gap-2">
+                                    <TrendingUp className="w-4 h-4 text-[#D4AF37]" />
+                                    Ratings Distribution
+                                </h3>
+                                {feedbackData?.distributions?.ratings?.reduce((acc, r) => acc + r.count, 0) === 0 ? (
+                                    <div className="h-72 flex items-center justify-center text-zinc-400 text-xs">No feedback ratings available.</div>
+                                ) : (
+                                    <div className="h-72 w-full font-mono text-xs">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <BarChart
+                                                data={feedbackData?.distributions?.ratings || []}
+                                                margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                                            >
+                                                <CartesianGrid strokeDasharray="3 3" stroke="#F1F1F1" vertical={false} />
+                                                <XAxis dataKey="rating" stroke="#A1A1AA" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `${val} ★`} />
+                                                <YAxis stroke="#A1A1AA" fontSize={10} tickLine={false} axisLine={false} />
+                                                <Tooltip contentStyle={{ backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E4E4E7' }} />
+                                                <Bar name="Submissions" dataKey="count" fill="#D4AF37" radius={[4, 4, 0, 0]} />
+                                            </BarChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Category Distribution Pie Chart */}
+                            <div className="bg-white p-6 rounded-3xl border border-zinc-200/80 shadow-sm flex flex-col justify-between">
+                                <div>
+                                    <h3 className="text-base font-bold text-zinc-950 mb-4 flex items-center gap-2">
+                                        <Award className="w-4 h-4 text-purple-500" />
+                                        Feedback Category Breakdown
+                                    </h3>
+                                    {feedbackData?.distributions?.categories?.reduce((acc, c) => acc + c.count, 0) === 0 ? (
+                                        <div className="h-44 flex items-center justify-center text-zinc-400 text-xs">No categorised feedback reports.</div>
+                                    ) : (
+                                        <div className="h-44 w-full relative">
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <PieChart>
+                                                    <Pie
+                                                        data={feedbackData?.distributions?.categories || []}
+                                                        cx="50%"
+                                                        cy="50%"
+                                                        innerRadius={45}
+                                                        outerRadius={65}
+                                                        paddingAngle={4}
+                                                        dataKey="count"
+                                                        nameKey="name"
+                                                    >
+                                                        {feedbackData?.distributions?.categories?.map((entry, index) => (
+                                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                        ))}
+                                                    </Pie>
+                                                    <Tooltip />
+                                                </PieChart>
+                                            </ResponsiveContainer>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="mt-4 flex flex-col gap-1.5 text-xs">
+                                    {feedbackData?.distributions?.categories?.map((entry, index) => (
+                                        <div key={index} className="flex items-center justify-between font-semibold text-zinc-600">
+                                            <div className="flex items-center gap-1.5">
+                                                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }}></span>
+                                                <span>{entry.name}</span>
+                                            </div>
+                                            <span>{entry.count}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Recent Comments Ledger */}
+                        <div className="bg-white p-6 rounded-3xl border border-zinc-200/80 shadow-sm">
+                            <h3 className="text-base font-bold text-zinc-950 mb-4 flex items-center gap-2">
+                                <FileText className="w-4 h-4 text-zinc-400" />
+                                Recent Curator Feedback Ledger
+                            </h3>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left text-xs">
+                                    <thead>
+                                        <tr className="border-b border-zinc-100 text-zinc-400 font-bold uppercase tracking-wider">
+                                            <th className="pb-3 pl-2">Visitor Info</th>
+                                            <th className="pb-3">Category</th>
+                                            <th className="pb-3">Rating</th>
+                                            <th className="pb-3">Comments</th>
+                                            <th className="pb-3 text-right pr-2">Submitted</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-zinc-50 font-medium text-zinc-700">
+                                        {feedbackData?.recentComments?.length === 0 ? (
+                                            <tr>
+                                                <td colSpan="5" className="py-8 text-center text-zinc-400">No feedback submissions found.</td>
+                                            </tr>
+                                        ) : (
+                                            feedbackData?.recentComments?.map((comment) => (
+                                                <tr key={comment.id} className="hover:bg-zinc-50/50 transition-colors">
+                                                    <td className="py-3.5 pl-2 font-semibold">
+                                                        <div className="text-zinc-950 font-bold">{comment.name}</div>
+                                                        <div className="text-[10px] text-zinc-450 font-mono mt-0.5">{comment.email}</div>
+                                                    </td>
+                                                    <td className="py-3.5">
+                                                        <span className="px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded text-[10px] font-bold uppercase tracking-wide">
+                                                            {comment.category}
+                                                        </span>
+                                                    </td>
+                                                    <td className="py-3.5">
+                                                        {renderStars(comment.rating)}
+                                                    </td>
+                                                    <td className="py-3.5 text-zinc-650 font-normal max-w-xs md:max-w-md break-words pr-4">
+                                                        {comment.comments}
+                                                    </td>
+                                                    <td className="py-3.5 text-right pr-2 text-zinc-450 font-mono">
+                                                        {new Date(comment.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

@@ -4,7 +4,8 @@ import { useAuth } from '../../../context/authContext';
 import { Modal, DataTable } from '../../../components';
 import { 
     Settings, Eye, Save, ClipboardList, AlertCircle, ArrowLeft,
-    Copy, ExternalLink, Code, Plus, Trash2, CheckCircle, Download
+    Copy, ExternalLink, Code, Plus, Trash2, CheckCircle, Download,
+    ArrowUp, ArrowDown
 } from 'lucide-react';
 
 export default function FormDetail() {
@@ -423,9 +424,6 @@ function SubmissionsTab({ form, apiFetch, setModal }) {
     );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// BUILDER TAB
-// ─────────────────────────────────────────────────────────────────────────────
 function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
     const isReadOnly = form.type !== 'custom';
     const [title, setTitle] = useState(form.title);
@@ -453,6 +451,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
     const [stepGroups, setStepGroups] = useState(form.settings?.step_groups || []);
     const [fields, setFields] = useState([]);
     const [saving, setSaving] = useState(false);
+    const [activeFieldIndex, setActiveFieldIndex] = useState(0);
 
     useEffect(() => {
         const schema = form.schema_data || {};
@@ -461,11 +460,11 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
 
         const loadedFields = Object.entries(props).map(([key, value]) => {
             const format = value['ui:widget'] || value.format || (value.type === 'boolean' ? 'toggle' : 'text');
-            // Parse dependsOn
             const dep = value['ui:dependsOn'] || value['dependsOn'];
             return {
                 key,
                 title: value.title || key,
+                description: value.description || '',
                 type: value.type || 'string',
                 format: format,
                 options: Array.isArray(value.enum) ? value.enum.join(', ') : '',
@@ -476,10 +475,8 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                 required: requiredFields.includes(key),
                 stepGroup: value['ui:group'] || '',
                 hidden: value['ui:widget'] === 'hidden',
-                // File-specific
                 fileAccept: value['ui:accept'] || '',
                 fileMaxCount: value['ui:maxFiles'] || '',
-                // Conditional visibility
                 hasDependsOn: !!dep,
                 dependsOnField: dep?.field || '',
                 dependsOnValue: dep?.value || '',
@@ -488,17 +485,66 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
         });
 
         setFields(loadedFields.length ? loadedFields : [
-            { key: 'email', title: 'Email Address', type: 'string', format: 'email', options: '', rows: '', columns: '', minLabel: '', maxLabel: '', required: true, stepGroup: '', hidden: false, fileAccept: '', fileMaxCount: '', hasDependsOn: false, dependsOnField: '', dependsOnValue: '', dependsOnOperator: 'eq' }
+            { key: 'email', title: 'Email Address', description: '', type: 'string', format: 'email', options: '', rows: '', columns: '', minLabel: '', maxLabel: '', required: true, stepGroup: '', hidden: false, fileAccept: '', fileMaxCount: '', hasDependsOn: false, dependsOnField: '', dependsOnValue: '', dependsOnOperator: 'eq' }
         ]);
     }, [form]);
 
-    const addField = () => setFields([...fields, { key: '', title: '', type: 'string', format: 'text', options: '', rows: '', columns: '', minLabel: '', maxLabel: '', required: false, stepGroup: '', hidden: false, fileAccept: '', fileMaxCount: '', hasDependsOn: false, dependsOnField: '', dependsOnValue: '', dependsOnOperator: 'eq' }]);
-    const removeField = (idx) => setFields(fields.filter((_, i) => i !== idx));
+    const addField = () => {
+        const newField = { key: '', title: '', description: '', type: 'string', format: 'text', options: '', rows: '', columns: '', minLabel: '', maxLabel: '', required: false, stepGroup: '', hidden: false, fileAccept: '', fileMaxCount: '', hasDependsOn: false, dependsOnField: '', dependsOnValue: '', dependsOnOperator: 'eq' };
+        setFields([...fields, newField]);
+        setActiveFieldIndex(fields.length);
+    };
+
+    const removeField = (idx) => {
+        const newFields = fields.filter((_, i) => i !== idx);
+        setFields(newFields);
+        if (activeFieldIndex >= newFields.length) {
+            setActiveFieldIndex(Math.max(0, newFields.length - 1));
+        }
+    };
+
     const updateField = (idx, patch) => setFields(fields.map((f, i) => i === idx ? { ...f, ...patch } : f));
 
     const addStepGroup = () => setStepGroups([...stepGroups, { id: `step_${stepGroups.length + 1}`, label: `Step ${stepGroups.length + 1}`, icon: 'arrow-right' }]);
     const removeStepGroup = (idx) => setStepGroups(stepGroups.filter((_, i) => i !== idx));
     const updateStepGroup = (idx, patch) => setStepGroups(stepGroups.map((g, i) => i === idx ? { ...g, ...patch } : g));
+
+    const moveField = (index, direction) => {
+        if (direction === 'up' && index > 0) {
+            const newFields = [...fields];
+            const temp = newFields[index];
+            newFields[index] = newFields[index - 1];
+            newFields[index - 1] = temp;
+            setFields(newFields);
+            setActiveFieldIndex(index - 1);
+        } else if (direction === 'down' && index < fields.length - 1) {
+            const newFields = [...fields];
+            const temp = newFields[index];
+            newFields[index] = newFields[index + 1];
+            newFields[index + 1] = temp;
+            setFields(newFields);
+            setActiveFieldIndex(index + 1);
+        }
+    };
+
+    const duplicateField = (index) => {
+        const fieldToDuplicate = fields[index];
+        const newFields = [...fields];
+        let counter = 1;
+        let newKey = `${fieldToDuplicate.key || 'field'}_copy`;
+        while (newFields.some(f => f.key === newKey)) {
+            newKey = `${fieldToDuplicate.key || 'field'}_copy_${counter}`;
+            counter++;
+        }
+        const copied = {
+            ...fieldToDuplicate,
+            key: newKey,
+            title: fieldToDuplicate.title ? `${fieldToDuplicate.title} (Copy)` : ''
+        };
+        newFields.splice(index + 1, 0, copied);
+        setFields(newFields);
+        setActiveFieldIndex(index + 1);
+    };
 
     const handleSaveForm = async (e) => {
         e.preventDefault();
@@ -511,7 +557,6 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
         let currentFields = [...fields];
         let currentEmailKey = emailFieldKey.trim() || 'email';
 
-        // Auto-inject and map an email field if OTP is required
         if (otp) {
             let emailField = currentFields.find(f => f.key === currentEmailKey);
             
@@ -532,6 +577,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                     emailField = {
                         key: currentEmailKey,
                         title: 'Email Address',
+                        description: '',
                         type: 'string',
                         format: 'email',
                         options: '', rows: '', columns: '', minLabel: '', maxLabel: '',
@@ -543,7 +589,6 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                 }
             }
             
-            // Ensure the designated email field is marked as required
             const emailFieldIndex = currentFields.findIndex(f => f.key === currentEmailKey);
             if (emailFieldIndex !== -1 && !currentFields[emailFieldIndex].required) {
                 currentFields[emailFieldIndex] = { ...currentFields[emailFieldIndex], required: true };
@@ -564,9 +609,12 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
 
             currentFields.forEach(f => {
                 const key = f.key.trim();
-                const prop = { title: f.title.trim() || key, type: f.type };
+                const prop = { 
+                    title: f.title.trim(), 
+                    type: f.type,
+                    description: f.description?.trim() || ''
+                };
 
-                // Hidden field
                 if (f.hidden) {
                     prop['ui:widget'] = 'hidden';
                 } else if (['rating', 'range', 'linear_scale'].includes(f.format)) {
@@ -606,7 +654,6 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                     prop.enum = [...new Set(f.options.split(',').map(o => o.trim()).filter(Boolean))];
                 }
 
-                // Conditional visibility
                 if (f.hasDependsOn && f.dependsOnField?.trim()) {
                     prop['ui:dependsOn'] = {
                         field: f.dependsOnField.trim(),
@@ -671,7 +718,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
     };
 
     return (
-        <form onSubmit={handleSaveForm} className="space-y-8 animate-in fade-in duration-500">
+        <form onSubmit={handleSaveForm} className="max-w-3xl mx-auto space-y-6 pb-20 animate-in fade-in duration-500">
             {isReadOnly && (
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3 shadow-sm">
                     <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
@@ -685,90 +732,96 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                 </div>
             )}
 
-            {/* ── SECTION: General Settings ── */}
-            <div className="border border-zinc-200 rounded-xl bg-white p-6 shadow-sm space-y-6">
-                <h3 className="text-sm font-bold text-zinc-800 uppercase tracking-widest border-b border-zinc-100 pb-3">General Settings</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div className="space-y-1">
-                        <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Form Title</label>
-                        <input type="text" required value={title} onChange={e => setTitle(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-black" />
-                    </div>
-                    <div className="space-y-1">
-                        <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">URL Slug</label>
-                        <input type="text" disabled value={slug} className="w-full bg-zinc-50 border border-gray-300 text-zinc-400 rounded-md py-2 px-3 text-sm" />
-                    </div>
-                    <div className="col-span-1 md:col-span-2 space-y-1">
-                        <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Form Description</label>
-                        <textarea value={description} onChange={e => setDescription(e.target.value)} disabled={isReadOnly} rows={2} className="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-black resize-none" placeholder="Short subtitle shown to users below the title." />
-                    </div>
+            {/* ── GOOGLE FORMS STYLE HEADER CARD ── */}
+            <div className="bg-white border border-zinc-200/85 border-t-8 border-t-black rounded-xl p-8 shadow-sm space-y-4">
+                <input 
+                    type="text" 
+                    required 
+                    value={title} 
+                    onChange={e => setTitle(e.target.value)} 
+                    disabled={isReadOnly} 
+                    className="w-full bg-white border-b border-zinc-200 hover:border-zinc-300 focus:border-black text-2xl font-serif font-bold py-2 focus:outline-none transition-colors" 
+                    placeholder="Untitled Form"
+                />
+                <textarea 
+                    value={description} 
+                    onChange={e => setDescription(e.target.value)} 
+                    disabled={isReadOnly} 
+                    rows={2} 
+                    className="w-full bg-white border-b border-zinc-100 hover:border-zinc-200 focus:border-black text-sm text-zinc-600 py-2 focus:outline-none resize-none transition-colors" 
+                    placeholder="Form description" 
+                />
+                <div className="flex flex-wrap gap-x-6 gap-y-2 pt-2 text-[10px] text-zinc-400 font-mono">
+                    <div>Slug: <span className="text-zinc-600">{slug}</span></div>
+                </div>
+            </div>
+
+            {/* ── SETTINGS CARD ── */}
+            <div className="bg-white border border-zinc-200/85 rounded-xl p-6 shadow-sm space-y-5">
+                <h3 className="text-xs font-bold text-zinc-800 uppercase tracking-widest border-b border-zinc-100 pb-2 flex items-center gap-2">
+                    <Settings className="w-3.5 h-3.5 text-zinc-500" /> Form Settings
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Layout Style</label>
-                        <select value={layout} onChange={e => setLayout(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-black">
+                        <select value={layout} onChange={e => setLayout(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
                             <option value="single_column">Single Column Layout</option>
                             <option value="wizard">Multi-step Wizard Layout</option>
                         </select>
                     </div>
                     <div className="space-y-1">
                         <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Email Field Key</label>
-                        <input type="text" value={emailFieldKey} onChange={e => setEmailFieldKey(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-black" placeholder="email" />
-                        <p className="text-[9px] text-zinc-400 mt-0.5">Which field key contains the user's email (for OTP and notifications).</p>
+                        <input type="text" value={emailFieldKey} onChange={e => setEmailFieldKey(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" placeholder="email" />
                     </div>
                 </div>
-            </div>
 
-            {/* ── SECTION: Toggleable Features ── */}
-            <div className="border border-zinc-200 rounded-xl bg-white p-6 shadow-sm space-y-5">
-                <h3 className="text-sm font-bold text-zinc-800 uppercase tracking-widest border-b border-zinc-100 pb-3">Features & Toggles</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <label className="flex items-start gap-3 p-4 border border-zinc-200 rounded-lg hover:border-zinc-400 transition-colors cursor-pointer">
-                        <input type="checkbox" checked={otp} onChange={e => setOtp(e.target.checked)} disabled={isReadOnly} className="w-4 h-4 mt-0.5 border-gray-300 text-black rounded focus:ring-black" />
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                    <label className="flex items-start gap-2.5 p-3 border border-zinc-150 rounded-lg hover:border-zinc-300 transition-colors cursor-pointer bg-zinc-50/50">
+                        <input type="checkbox" checked={otp} onChange={e => setOtp(e.target.checked)} disabled={isReadOnly} className="w-3.5 h-3.5 mt-0.5 border-gray-300 text-black rounded focus:ring-black" />
                         <div>
-                            <span className="text-xs font-bold text-zinc-800 block">Require Email OTP</span>
-                            <span className="text-[10px] text-zinc-400 leading-tight">Users must verify their email with a one-time code before submitting.</span>
+                            <span className="text-[11px] font-bold text-zinc-700 block">Require OTP</span>
+                            <span className="text-[9px] text-zinc-400 leading-tight block">Verify user emails.</span>
                         </div>
                     </label>
-                    <label className="flex items-start gap-3 p-4 border border-zinc-200 rounded-lg hover:border-zinc-400 transition-colors cursor-pointer">
-                        <input type="checkbox" checked={allowAttachments} onChange={e => setAllowAttachments(e.target.checked)} disabled={isReadOnly} className="w-4 h-4 mt-0.5 border-gray-300 text-black rounded focus:ring-black" />
+                    <label className="flex items-start gap-2.5 p-3 border border-zinc-150 rounded-lg hover:border-zinc-300 transition-colors cursor-pointer bg-zinc-50/50">
+                        <input type="checkbox" checked={allowAttachments} onChange={e => setAllowAttachments(e.target.checked)} disabled={isReadOnly} className="w-3.5 h-3.5 mt-0.5 border-gray-300 text-black rounded focus:ring-black" />
                         <div>
-                            <span className="text-xs font-bold text-zinc-800 block">Allow File Attachments</span>
-                            <span className="text-[10px] text-zinc-400 leading-tight">Adds a dedicated media upload step to the form (separate from per-field file inputs).</span>
+                            <span className="text-[11px] font-bold text-zinc-700 block">Global Attachments</span>
+                            <span className="text-[9px] text-zinc-400 leading-tight block">Media upload section.</span>
                         </div>
                     </label>
-                    <label className="flex items-start gap-3 p-4 border border-zinc-200 rounded-lg hover:border-zinc-400 transition-colors cursor-pointer">
-                        <input type="checkbox" checked={showInfoBlock} onChange={e => setShowInfoBlock(e.target.checked)} disabled={isReadOnly} className="w-4 h-4 mt-0.5 border-gray-300 text-black rounded focus:ring-black" />
+                    <label className="flex items-start gap-2.5 p-3 border border-zinc-150 rounded-lg hover:border-zinc-300 transition-colors cursor-pointer bg-zinc-50/50">
+                        <input type="checkbox" checked={showInfoBlock} onChange={e => setShowInfoBlock(e.target.checked)} disabled={isReadOnly} className="w-3.5 h-3.5 mt-0.5 border-gray-300 text-black rounded focus:ring-black" />
                         <div>
-                            <span className="text-xs font-bold text-zinc-800 block">Show Intro Notice</span>
-                            <span className="text-[10px] text-zinc-400 leading-tight">Displays a header and description block before the form fields.</span>
+                            <span className="text-[11px] font-bold text-zinc-700 block">Intro Notice</span>
+                            <span className="text-[9px] text-zinc-400 leading-tight block">Notice block at start.</span>
                         </div>
                     </label>
                 </div>
 
-                {/* Info Block Configuration */}
                 {showInfoBlock && (
-                    <div className="border border-dashed border-zinc-300 rounded-lg p-5 bg-zinc-50/50 space-y-3 mt-2">
-                        <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Intro Notice Content</p>
+                    <div className="border border-dashed border-zinc-200 rounded-lg p-4 bg-zinc-50/30 space-y-3">
+                        <p className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">Intro Notice Content</p>
                         <input type="text" value={infoHeader} onChange={e => setInfoHeader(e.target.value)} disabled={isReadOnly} placeholder="Notice header (e.g. Important Information)" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
-                        <textarea value={infoDescription} onChange={e => setInfoDescription(e.target.value)} disabled={isReadOnly} placeholder="Notice description body text..." rows={3} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none resize-none" />
+                        <textarea value={infoDescription} onChange={e => setInfoDescription(e.target.value)} disabled={isReadOnly} placeholder="Notice description body text..." rows={2} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none resize-none" />
                     </div>
                 )}
 
-                {/* File Attachment Settings */}
                 {allowAttachments && (
-                    <div className="border border-dashed border-zinc-300 rounded-lg p-5 bg-zinc-50/50 space-y-3 mt-2">
-                        <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">File Upload Settings (Global)</p>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="border border-dashed border-zinc-200 rounded-lg p-4 bg-zinc-50/30 space-y-3">
+                        <p className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">File Upload Settings (Global)</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div className="space-y-1">
-                                <label className="text-[10px] font-bold text-zinc-500 uppercase">Max Files</label>
-                                <input type="number" min="1" max="20" value={maxFiles} onChange={e => setMaxFiles(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                <label className="text-[9px] font-bold text-zinc-500 uppercase">Max Files</label>
+                                <input type="number" min="1" max="20" value={maxFiles} onChange={e => setMaxFiles(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-bold text-zinc-500 uppercase">Max Size per File (MB)</label>
-                                <input type="number" min="1" max="100" value={maxFileSizeMB} onChange={e => setMaxFileSizeMB(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                <label className="text-[9px] font-bold text-zinc-500 uppercase">Max Size (MB)</label>
+                                <input type="number" min="1" max="100" value={maxFileSizeMB} onChange={e => setMaxFileSizeMB(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-bold text-zinc-500 uppercase">Accepted Types</label>
-                                <input type="text" value={acceptedFileTypes} onChange={e => setAcceptedFileTypes(e.target.value)} disabled={isReadOnly} placeholder=".pdf, .jpg, .png, .docx" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
-                                <p className="text-[9px] text-zinc-400">Comma-separated extensions. Leave empty to allow all.</p>
+                                <label className="text-[9px] font-bold text-zinc-500 uppercase">Accepted Types</label>
+                                <input type="text" value={acceptedFileTypes} onChange={e => setAcceptedFileTypes(e.target.value)} disabled={isReadOnly} placeholder=".pdf, .jpg, .png" className="w-full bg-white border border-gray-300 rounded py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                             </div>
                         </div>
                     </div>
@@ -777,19 +830,19 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
 
             {/* ── SECTION: Wizard Step Groups ── */}
             {layout === 'wizard' && (
-                <div className="border border-zinc-200 rounded-xl bg-white p-6 shadow-sm space-y-4">
-                    <div className="flex justify-between items-center border-b border-zinc-100 pb-3">
-                        <h3 className="text-sm font-bold text-zinc-800 uppercase tracking-widest">Wizard Step Groups</h3>
+                <div className="border border-zinc-200/80 rounded-xl bg-white p-6 shadow-sm space-y-4">
+                    <div className="flex justify-between items-center border-b border-zinc-100 pb-2">
+                        <h3 className="text-xs font-bold text-zinc-800 uppercase tracking-widest">Wizard Steps</h3>
                         {!isReadOnly && (
-                            <button type="button" onClick={addStepGroup} className="text-xs font-semibold text-amber-600 hover:text-amber-800 flex items-center gap-1"><Plus className="w-3.5 h-3.5" /> Add Step</button>
+                            <button type="button" onClick={addStepGroup} className="text-xs font-semibold text-zinc-800 hover:text-black flex items-center gap-1"><Plus className="w-3.5 h-3.5" /> Add Step</button>
                         )}
                     </div>
                     {stepGroups.length === 0 ? (
-                        <p className="text-xs text-zinc-400 italic">No steps added yet. Add at least one step group.</p>
+                        <p className="text-xs text-zinc-400 italic">No steps added yet.</p>
                     ) : (
-                        <div className="space-y-3">
+                        <div className="space-y-2">
                             {stepGroups.map((group, gIdx) => (
-                                <div key={gIdx} className="flex gap-4 items-center bg-zinc-50 p-3 border border-zinc-200 rounded-md">
+                                <div key={gIdx} className="flex gap-4 items-center bg-zinc-50/50 p-2.5 border border-zinc-200 rounded-md">
                                     <div className="flex-1 grid grid-cols-3 gap-3">
                                         <input type="text" required value={group.id} onChange={e => updateStepGroup(gIdx, { id: e.target.value.replace(/[^a-zA-Z0-9_]/g, '') })} disabled={isReadOnly} placeholder="step_id" className="border border-gray-300 rounded px-2.5 py-1 text-xs" />
                                         <input type="text" required value={group.label} onChange={e => updateStepGroup(gIdx, { label: e.target.value })} disabled={isReadOnly} placeholder="Step Label" className="border border-gray-300 rounded px-2.5 py-1 text-xs col-span-2" />
@@ -804,169 +857,339 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                 </div>
             )}
 
-            {/* ── SECTION: Schema Fields ── */}
-            <div className="border border-zinc-200 rounded-xl bg-white p-6 shadow-sm space-y-4">
-                <div className="flex justify-between items-center border-b border-zinc-100 pb-3">
-                    <h3 className="text-sm font-bold text-zinc-800 uppercase tracking-widest">Form Schema Fields</h3>
+            {/* ── SCHEMA FIELDS LIST ── */}
+            <div className="space-y-4">
+                <div className="flex justify-between items-center px-1">
+                    <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Questions ({fields.length})</h3>
                     {!isReadOnly && (
                         <button type="button" onClick={addField} className="px-3 py-1.5 border border-black text-black text-xs font-bold uppercase tracking-wider rounded hover:bg-zinc-50 transition-colors flex items-center gap-1">
-                            <Plus className="w-3.5 h-3.5" /> Add Field
+                            <Plus className="w-3.5 h-3.5" /> Add Question
                         </button>
                     )}
                 </div>
 
                 <div className="space-y-4">
-                    {fields.map((f, idx) => (
-                        <div key={idx} className={`flex flex-col gap-3 border rounded-lg p-5 relative group transition-colors ${f.hidden ? 'bg-zinc-100/80 border-zinc-300 border-dashed' : 'bg-zinc-50/50 border-zinc-200'}`}>
-                            {!isReadOnly && (
-                                <button type="button" onClick={() => removeField(idx)} className="absolute top-4 right-4 text-zinc-400 hover:text-red-500 transition-colors">✕</button>
-                            )}
+                    {fields.map((f, idx) => {
+                        const isActive = activeFieldIndex === idx;
+                        
+                        if (!isActive) {
+                            return (
+                                <div 
+                                    key={idx} 
+                                    onClick={() => setActiveFieldIndex(idx)}
+                                    className={`bg-white border border-zinc-200 rounded-xl p-5 hover:border-zinc-300 transition-all shadow-sm flex flex-col gap-2 ${
+                                        f.hidden ? 'opacity-60 bg-zinc-50/30' : ''
+                                    }`}
+                                >
+                                    <div className="flex justify-between items-start gap-4">
+                                        <div className="space-y-1">
+                                            <div className="text-sm font-semibold text-zinc-800 flex items-center gap-1.5">
+                                                {f.title || <span className="text-zinc-400 italic font-normal text-xs">(Empty Question Label)</span>}
+                                                {f.required && <span className="text-red-500">*</span>}
+                                                {f.hidden && <span className="text-[9px] bg-zinc-100 text-zinc-500 px-1.5 py-0.5 rounded font-mono">Hidden</span>}
+                                            </div>
+                                            {f.description && (
+                                                <p className="text-xs text-zinc-400 leading-relaxed font-normal">{f.description}</p>
+                                            )}
+                                        </div>
+                                        <span className="text-[9px] font-bold text-zinc-400 bg-zinc-100 px-2 py-0.5 rounded uppercase tracking-wider">
+                                            {f.format.replace('_', ' ')}
+                                        </span>
+                                    </div>
+                                    
+                                    <div className="pt-2 text-xs text-zinc-400">
+                                        {['text', 'email', 'phone', 'date', 'time'].includes(f.format) && (
+                                            <div className="border-b border-dashed border-zinc-200 pb-1 max-w-xs text-zinc-300 italic">Short answer text</div>
+                                        )}
+                                        {f.format === 'textarea' && (
+                                            <div className="border-b border-dashed border-zinc-200 pb-4 max-w-md text-zinc-300 italic">Long answer text</div>
+                                        )}
+                                        {f.format === 'file' && (
+                                            <div className="border border-dashed border-zinc-200 rounded p-4 flex items-center justify-center gap-2 max-w-xs bg-zinc-50/30">
+                                                <span className="text-[10px] font-semibold text-zinc-400">DRAG & DROP OR UPLOAD FILE</span>
+                                            </div>
+                                        )}
+                                        {['select', 'radio', 'checkbox'].includes(f.format) && (
+                                            <div className="flex flex-col gap-1.5 pl-1">
+                                                {(f.options ? f.options.split(',') : ['Option 1']).map((opt, oIdx) => (
+                                                    <div key={oIdx} className="flex items-center gap-2">
+                                                        <div className={`w-3.5 h-3.5 border border-zinc-300 ${f.format === 'radio' ? 'rounded-full' : f.format === 'select' ? 'hidden' : 'rounded-sm'}`} />
+                                                        <span className="text-zinc-500">{opt.trim() || `Option ${oIdx + 1}`}</span>
+                                                    </div>
+                                                ))}
+                                                {f.format === 'select' && (
+                                                    <div className="border border-zinc-200 rounded px-2.5 py-1.5 max-w-xs flex justify-between items-center text-zinc-500 bg-white">
+                                                        <span>Select option...</span>
+                                                        <span>▼</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                        {f.format === 'toggle' && (
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-8 h-4 bg-zinc-200 rounded-full relative"><div className="w-3.5 h-3.5 bg-white rounded-full absolute left-0.5 top-0.5 border border-zinc-300" /></div>
+                                                <span className="text-zinc-500">Toggle input preview</span>
+                                            </div>
+                                        )}
+                                        {['rating', 'range', 'linear_scale'].includes(f.format) && (
+                                            <div className="flex items-center gap-1.5 text-zinc-300">
+                                                {f.format === 'rating' && Array.from({ length: 5 }).map((_, i) => <span key={i} className="text-lg">★</span>)}
+                                                {f.format === 'range' && <div className="w-full max-w-xs h-1 bg-zinc-200 rounded relative"><div className="w-3.5 h-3.5 bg-zinc-400 rounded-full absolute top-1/2 -translate-y-1/2 left-1/4" /></div>}
+                                                {f.format === 'linear_scale' && (
+                                                    <div className="flex items-center gap-3">
+                                                        <span className="text-[10px] text-zinc-400 font-bold">{f.minLabel || 'Min'}</span>
+                                                        <div className="flex gap-1.5">{Array.from({ length: 5 }).map((_, i) => <div key={i} className="w-3.5 h-3.5 rounded-full border border-zinc-300" />)}</div>
+                                                        <span className="text-[10px] text-zinc-400 font-bold">{f.maxLabel || 'Max'}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                        {['multiple_choice_grid', 'checkbox_grid'].includes(f.format) && (
+                                            <div className="border border-zinc-200 rounded p-2 max-w-md bg-zinc-50/20">
+                                                <table className="w-full text-left text-[10px] border-collapse">
+                                                    <thead>
+                                                        <tr>
+                                                            <th className="border-b border-zinc-200 p-1"></th>
+                                                            {(f.columns ? f.columns.split(',') : ['Col 1', 'Col 2']).map((c, i) => <th key={i} className="border-b border-zinc-200 p-1 text-center text-zinc-400">{c.trim()}</th>)}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {(f.rows ? f.rows.split(',') : ['Row 1']).map((r, i) => (
+                                                            <tr key={i}>
+                                                                <td className="p-1 text-zinc-500 font-medium">{r.trim()}</td>
+                                                                {(f.columns ? f.columns.split(',') : ['Col 1', 'Col 2']).map((_, ci) => (
+                                                                    <td key={ci} className="p-1 text-center"><div className={`w-3.5 h-3.5 border border-zinc-300 mx-auto ${f.format === 'multiple_choice_grid' ? 'rounded-full' : 'rounded-sm'}`} /></td>
+                                                                ))}
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        }
 
-                            {/* Row 1: Core field config */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-bold text-zinc-500 uppercase">Field ID Key</label>
-                                    <input type="text" required value={f.key} onChange={e => updateField(idx, { key: e.target.value.replace(/[^a-zA-Z0-9_]/g, '') })} disabled={isReadOnly} placeholder="phone_number" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                        return (
+                            <div 
+                                key={idx} 
+                                className="bg-white border border-zinc-300 border-l-4 border-l-black rounded-xl p-6 shadow-md flex flex-col gap-4 relative"
+                            >
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div className="space-y-1 md:col-span-2">
+                                        <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block">Question Title</label>
+                                        <input 
+                                            type="text" 
+                                            value={f.title} 
+                                            onChange={e => updateField(idx, { title: e.target.value })} 
+                                            disabled={isReadOnly} 
+                                            placeholder="Question/Label" 
+                                            className="w-full bg-white border-b border-zinc-200 hover:border-zinc-300 focus:border-black py-1.5 text-sm font-semibold focus:outline-none transition-colors" 
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block">Input Type</label>
+                                        <select 
+                                            value={f.format} 
+                                            onChange={e => {
+                                                const format = e.target.value;
+                                                let type = 'string';
+                                                if (format === 'rating') type = 'integer';
+                                                updateField(idx, { format, type });
+                                            }} 
+                                            disabled={isReadOnly} 
+                                            className="w-full bg-white border border-zinc-200 rounded px-2 py-1.5 text-xs focus:ring-1 focus:ring-black focus:outline-none"
+                                        >
+                                            <option value="text">Single Line Text</option>
+                                            <option value="textarea">Multi-line Text</option>
+                                            <option value="email">Email Input</option>
+                                            <option value="phone">Phone Number</option>
+                                            <option value="date">Date Input</option>
+                                            <option value="time">Time Input</option>
+                                            <option value="file">File Upload</option>
+                                            <option value="select">Dropdown Select</option>
+                                            <option value="radio">Multiple Choice (Radio)</option>
+                                            <option value="checkbox">Checkboxes</option>
+                                            <option value="toggle">Toggle / Switch</option>
+                                            <option value="rating">Rating (1-5 Stars)</option>
+                                            <option value="range">Slider Range (1-10)</option>
+                                            <option value="linear_scale">Linear Scale</option>
+                                            <option value="multiple_choice_grid">Multiple Choice Grid</option>
+                                            <option value="checkbox_grid">Checkbox Grid</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-bold text-zinc-500 uppercase">Field Label</label>
-                                    <input type="text" required value={f.title} onChange={e => updateField(idx, { title: e.target.value })} disabled={isReadOnly} placeholder="Phone Number" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+
+                                <div className="space-y-1 w-full">
+                                    <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block">Question Description (Optional)</label>
+                                    <input 
+                                        type="text" 
+                                        value={f.description || ''} 
+                                        onChange={e => updateField(idx, { description: e.target.value })} 
+                                        disabled={isReadOnly} 
+                                        placeholder="Description / subtitle help text" 
+                                        className="w-full bg-white border-b border-zinc-150 hover:border-zinc-200 focus:border-black py-1.5 text-xs focus:outline-none transition-colors text-zinc-500 font-light" 
+                                    />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-bold text-zinc-500 uppercase">Input Format</label>
-                                    <select value={f.format} onChange={e => {
-                                        const format = e.target.value;
-                                        let type = 'string';
-                                        if (format === 'rating') type = 'integer';
-                                        updateField(idx, { format, type });
-                                    }} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
-                                        <option value="text">Single Line Text</option>
-                                        <option value="textarea">Multi-line Text</option>
-                                        <option value="email">Email Input</option>
-                                        <option value="date">Date Input</option>
-                                        <option value="time">Time Input</option>
-                                        <option value="file">File Upload</option>
-                                        <option value="select">Dropdown Select</option>
-                                        <option value="radio">Multiple Choice (Radio)</option>
-                                        <option value="checkbox">Checkboxes</option>
-                                        <option value="toggle">Toggle / Switch</option>
-                                        <option value="rating">Rating (1-5 Stars)</option>
-                                        <option value="range">Slider Range (1-10)</option>
-                                        <option value="linear_scale">Linear Scale</option>
-                                        <option value="multiple_choice_grid">Multiple Choice Grid</option>
-                                        <option value="checkbox_grid">Checkbox Grid</option>
-                                    </select>
+
+                                {f.format === 'file' && (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-xl border-t border-zinc-100 pt-3">
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold text-zinc-500 uppercase">Accepted File Types</label>
+                                            <input type="text" value={f.fileAccept} onChange={e => updateField(idx, { fileAccept: e.target.value })} disabled={isReadOnly} placeholder=".pdf, .jpg, .png" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                            <p className="text-[9px] text-zinc-400">Comma-separated. Leave empty for all.</p>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold text-zinc-500 uppercase">Max File Count</label>
+                                            <input type="number" min="1" max="20" value={f.fileMaxCount} onChange={e => updateField(idx, { fileMaxCount: e.target.value })} disabled={isReadOnly} placeholder="5" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {['select', 'radio', 'checkbox'].includes(f.format) && (
+                                    <div className="space-y-1 w-full max-w-xl border-t border-zinc-100 pt-3">
+                                        <label className="text-[10px] font-bold text-zinc-500 uppercase">Options (comma-separated)</label>
+                                        <input type="text" required value={f.options} onChange={e => updateField(idx, { options: e.target.value })} disabled={isReadOnly} placeholder="Website, Museum, Staff" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                    </div>
+                                )}
+
+                                {['multiple_choice_grid', 'checkbox_grid'].includes(f.format) && (
+                                    <div className="grid grid-cols-2 gap-4 w-full max-w-xl border-t border-zinc-100 pt-3">
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold text-zinc-500 uppercase">Rows (comma-separated)</label>
+                                            <input type="text" required value={f.rows} onChange={e => updateField(idx, { rows: e.target.value })} disabled={isReadOnly} placeholder="Quality, Speed" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold text-zinc-500 uppercase">Columns (comma-separated)</label>
+                                            <input type="text" required value={f.columns} onChange={e => updateField(idx, { columns: e.target.value })} disabled={isReadOnly} placeholder="Poor, Fair, Good" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {f.format === 'linear_scale' && (
+                                    <div className="grid grid-cols-2 gap-4 w-full max-w-xl border-t border-zinc-100 pt-3">
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold text-zinc-500 uppercase">Min Label</label>
+                                            <input type="text" value={f.minLabel} onChange={e => updateField(idx, { minLabel: e.target.value })} disabled={isReadOnly} placeholder="Not Satisfied" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold text-zinc-500 uppercase">Max Label</label>
+                                            <input type="text" value={f.maxLabel} onChange={e => updateField(idx, { maxLabel: e.target.value })} disabled={isReadOnly} placeholder="Very Satisfied" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {f.hasDependsOn && (
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl border-t border-zinc-100 pt-3">
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold text-zinc-500 uppercase">Depends on Field</label>
+                                            <select value={f.dependsOnField} onChange={e => updateField(idx, { dependsOnField: e.target.value })} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
+                                                <option value="">-- Select field --</option>
+                                                {fields.filter((_, i) => i !== idx).map(other => (
+                                                    <option key={other.key} value={other.key}>{other.title || other.key}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold text-zinc-500 uppercase">Operator</label>
+                                            <select value={f.dependsOnOperator} onChange={e => updateField(idx, { dependsOnOperator: e.target.value })} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
+                                                <option value="eq">Equals</option>
+                                                <option value="neq">Not Equals</option>
+                                                <option value="not_empty">Not Empty</option>
+                                            </select>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold text-zinc-500 uppercase">Value</label>
+                                            <input type="text" value={f.dependsOnValue} onChange={e => updateField(idx, { dependsOnValue: e.target.value })} disabled={isReadOnly} placeholder="Expected value" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="flex flex-wrap gap-4 items-center border-t border-zinc-100 pt-3">
+                                    <div className="space-y-1 max-w-[180px]">
+                                        <label className="text-[10px] font-bold text-zinc-500 uppercase">Field ID Key</label>
+                                        <input 
+                                            type="text" 
+                                            required 
+                                            value={f.key} 
+                                            onChange={e => updateField(idx, { key: e.target.value.replace(/[^a-zA-Z0-9_]/g, '') })} 
+                                            disabled={isReadOnly} 
+                                            placeholder="field_key" 
+                                            className="w-full bg-white border border-gray-300 rounded py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none" 
+                                        />
+                                    </div>
+
+                                    {layout === 'wizard' && stepGroups.length > 0 && (
+                                        <div className="space-y-1 max-w-xs">
+                                            <label className="text-[10px] font-bold text-zinc-500 uppercase">Assign to Wizard Step</label>
+                                            <select value={f.stepGroup} onChange={e => updateField(idx, { stepGroup: e.target.value })} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none">
+                                                <option value="">-- No step assigned --</option>
+                                                {stepGroups.map(g => <option key={g.id} value={g.id}>{g.label} ({g.id})</option>)}
+                                            </select>
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="flex items-center gap-4 py-4">
-                                    <label className="flex items-center cursor-pointer">
-                                        <input type="checkbox" checked={f.required} onChange={e => updateField(idx, { required: e.target.checked })} disabled={isReadOnly} className="w-3.5 h-3.5 border-gray-300 text-black rounded focus:ring-black" />
-                                        <span className="ml-2 text-[10px] font-semibold text-zinc-600">Required</span>
-                                    </label>
-                                    <label className="flex items-center cursor-pointer" title="Hide this field from users (useful for internal programmatic state)">
-                                        <input type="checkbox" checked={f.hidden} onChange={e => updateField(idx, { hidden: e.target.checked })} disabled={isReadOnly} className="w-3.5 h-3.5 border-gray-300 text-black rounded focus:ring-black" />
-                                        <span className="ml-2 text-[10px] font-semibold text-zinc-600">Hidden (Internal)</span>
-                                    </label>
-                                </div>
-                                {/* Conditional visibility toggle */}
-                                <div className="flex items-center py-4">
-                                    <label className="flex items-center cursor-pointer">
-                                        <input type="checkbox" checked={f.hasDependsOn} onChange={e => updateField(idx, { hasDependsOn: e.target.checked })} disabled={isReadOnly} className="w-3.5 h-3.5 border-gray-300 text-black rounded focus:ring-black" />
-                                        <span className="ml-2 text-[10px] font-semibold text-zinc-600">Conditional</span>
-                                    </label>
+
+                                <div className="border-t border-zinc-100 pt-4 flex flex-wrap justify-between items-center gap-4">
+                                    <div className="flex gap-4 items-center">
+                                        <label className="flex items-center cursor-pointer">
+                                            <input type="checkbox" checked={f.required} onChange={e => updateField(idx, { required: e.target.checked })} disabled={isReadOnly} className="w-3.5 h-3.5 border-gray-300 text-black rounded focus:ring-black" />
+                                            <span className="ml-2 text-[10px] font-semibold text-zinc-600">Required</span>
+                                        </label>
+                                        <label className="flex items-center cursor-pointer">
+                                            <input type="checkbox" checked={f.hidden} onChange={e => updateField(idx, { hidden: e.target.checked })} disabled={isReadOnly} className="w-3.5 h-3.5 border-gray-300 text-black rounded focus:ring-black" />
+                                            <span className="ml-2 text-[10px] font-semibold text-zinc-600">Hidden (Internal)</span>
+                                        </label>
+                                        <label className="flex items-center cursor-pointer">
+                                            <input type="checkbox" checked={f.hasDependsOn} onChange={e => updateField(idx, { hasDependsOn: e.target.checked })} disabled={isReadOnly} className="w-3.5 h-3.5 border-gray-300 text-black rounded focus:ring-black" />
+                                            <span className="ml-2 text-[10px] font-semibold text-zinc-600">Conditional</span>
+                                        </label>
+                                    </div>
+                                    
+                                    {!isReadOnly && (
+                                        <div className="flex items-center gap-3 text-zinc-400">
+                                            <button 
+                                                type="button" 
+                                                onClick={(e) => { e.stopPropagation(); moveField(idx, 'up'); }} 
+                                                disabled={idx === 0} 
+                                                className="p-1 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
+                                                title="Move Up"
+                                            >
+                                                <ArrowUp className="w-4 h-4" />
+                                            </button>
+                                            <button 
+                                                type="button" 
+                                                onClick={(e) => { e.stopPropagation(); moveField(idx, 'down'); }} 
+                                                disabled={idx === fields.length - 1} 
+                                                className="p-1 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
+                                                title="Move Down"
+                                            >
+                                                <ArrowDown className="w-4 h-4" />
+                                            </button>
+                                            <div className="w-px h-4 bg-zinc-200" />
+                                            <button 
+                                                type="button" 
+                                                onClick={(e) => { e.stopPropagation(); duplicateField(idx); }} 
+                                                className="p-1 hover:text-black"
+                                                title="Duplicate Field"
+                                            >
+                                                <Copy className="w-4 h-4" />
+                                            </button>
+                                            <button 
+                                                type="button" 
+                                                onClick={(e) => { e.stopPropagation(); removeField(idx); }} 
+                                                className="p-1 hover:text-red-500"
+                                                title="Delete Field"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
-
-                            {/* File Upload Config */}
-                            {f.format === 'file' && (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-xl border-t border-zinc-200 pt-3">
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-bold text-zinc-500 uppercase">Accepted File Types</label>
-                                        <input type="text" value={f.fileAccept} onChange={e => updateField(idx, { fileAccept: e.target.value })} disabled={isReadOnly} placeholder=".pdf, .jpg, .png" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
-                                        <p className="text-[9px] text-zinc-400">Comma-separated. Leave empty for all types.</p>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-bold text-zinc-500 uppercase">Max File Count</label>
-                                        <input type="number" min="1" max="20" value={f.fileMaxCount} onChange={e => updateField(idx, { fileMaxCount: e.target.value })} disabled={isReadOnly} placeholder="5" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Conditional Visibility Config */}
-                            {f.hasDependsOn && (
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl border-t border-zinc-200 pt-3">
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-bold text-zinc-500 uppercase">Depends on Field</label>
-                                        <select value={f.dependsOnField} onChange={e => updateField(idx, { dependsOnField: e.target.value })} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
-                                            <option value="">-- Select field --</option>
-                                            {fields.filter((_, i) => i !== idx).map(other => (
-                                                <option key={other.key} value={other.key}>{other.title || other.key}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-bold text-zinc-500 uppercase">Operator</label>
-                                        <select value={f.dependsOnOperator} onChange={e => updateField(idx, { dependsOnOperator: e.target.value })} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
-                                            <option value="eq">Equals</option>
-                                            <option value="neq">Not Equals</option>
-                                            <option value="not_empty">Not Empty</option>
-                                        </select>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-bold text-zinc-500 uppercase">Value</label>
-                                        <input type="text" value={f.dependsOnValue} onChange={e => updateField(idx, { dependsOnValue: e.target.value })} disabled={isReadOnly} placeholder="Expected value" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
-                                        <p className="text-[9px] text-zinc-400">Not needed for "Not Empty" operator.</p>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Select/Radio/Checkbox Options */}
-                            {['select', 'radio', 'checkbox'].includes(f.format) && (
-                                <div className="space-y-1 w-full max-w-xl">
-                                    <label className="text-[10px] font-bold text-zinc-500 uppercase">Options (comma-separated)</label>
-                                    <input type="text" required value={f.options} onChange={e => updateField(idx, { options: e.target.value })} disabled={isReadOnly} placeholder="Website, Museum, Staff" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
-                                </div>
-                            )}
-
-                            {/* Grid Options */}
-                            {['multiple_choice_grid', 'checkbox_grid'].includes(f.format) && (
-                                <div className="grid grid-cols-2 gap-4 w-full max-w-xl">
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-bold text-zinc-500 uppercase">Rows (comma-separated)</label>
-                                        <input type="text" required value={f.rows} onChange={e => updateField(idx, { rows: e.target.value })} disabled={isReadOnly} placeholder="Quality, Speed" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-bold text-zinc-500 uppercase">Columns (comma-separated)</label>
-                                        <input type="text" required value={f.columns} onChange={e => updateField(idx, { columns: e.target.value })} disabled={isReadOnly} placeholder="Poor, Fair, Good" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Linear Scale Labels */}
-                            {f.format === 'linear_scale' && (
-                                <div className="grid grid-cols-2 gap-4 w-full max-w-xl">
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-bold text-zinc-500 uppercase">Min Label</label>
-                                        <input type="text" value={f.minLabel} onChange={e => updateField(idx, { minLabel: e.target.value })} disabled={isReadOnly} placeholder="Not Satisfied" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-bold text-zinc-500 uppercase">Max Label</label>
-                                        <input type="text" value={f.maxLabel} onChange={e => updateField(idx, { maxLabel: e.target.value })} disabled={isReadOnly} placeholder="Very Satisfied" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Wizard Step Assignment */}
-                            {layout === 'wizard' && stepGroups.length > 0 && (
-                                <div className="space-y-1 w-full max-w-xs border-t border-zinc-200 pt-3">
-                                    <label className="text-[10px] font-bold text-zinc-500 uppercase">Assign to Wizard Step</label>
-                                    <select value={f.stepGroup} onChange={e => updateField(idx, { stepGroup: e.target.value })} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
-                                        <option value="">-- No step assigned --</option>
-                                        {stepGroups.map(g => <option key={g.id} value={g.id}>{g.label} ({g.id})</option>)}
-                                    </select>
-                                </div>
-                            )}
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
 

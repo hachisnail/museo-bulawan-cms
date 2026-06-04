@@ -286,12 +286,20 @@ const ExternalForm = (props) => {
         const showRequired = isRequired && !(formData.is_anonymous === true && ['donor_first_name', 'donor_last_name'].includes(key));
         const isFullWidth = prop['ui:width'] === 'full';
 
+        const titleText = prop.title !== undefined ? prop.title : key;
+        const hasTitleText = titleText !== '';
+
         return (
             <div key={key} className={`${isFullWidth ? 'md:col-span-2' : ''} space-y-3`}>
-                <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500 flex items-center gap-2">
-                    {prop.title || key}
-                    {showRequired && <span className="text-red-500">*</span>}
-                </label>
+                {(hasTitleText || showRequired) && (
+                    <label className="text-[11px] font-bold uppercase tracking-widest text-gray-500 flex items-center gap-2">
+                        {titleText}
+                        {showRequired && <span className="text-red-500">*</span>}
+                    </label>
+                )}
+                {prop.description && (
+                    <p className="text-xs text-zinc-500 leading-relaxed font-normal">{prop.description}</p>
+                )}
 
                 <div className={fieldErrors[key] ? 'animate-form-shake' : ''}>
                    {prop.type === 'boolean' ? (

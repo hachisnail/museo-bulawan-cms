@@ -224,7 +224,10 @@ export const analyticsController = {
             const data = await umamiService.getWebsiteAnalytics(period);
             res.status(200).json({
                 status: 'success',
-                data
+                data: {
+                    ...data,
+                    dashboardUrl: env.umami.url ? `${env.umami.url.replace(/\/$/, '')}/websites/${env.umami.websiteId}` : ''
+                }
             });
         } catch (error) {
             logger.error(`[Analytics] Failed to fetch Umami stats: ${error.message}`);
@@ -243,9 +246,194 @@ export const analyticsController = {
                     pageviews: { pageviews: [], sessions: [] },
                     urls: [],
                     referrers: [],
-                    devices: []
+                    devices: [],
+                    dashboardUrl: env.umami.url ? `${env.umami.url.replace(/\/$/, '')}/websites/${env.umami.websiteId}` : ''
                 }
             });
+        }
+    },
+
+    async getFeedbackStats(req, res, next) {
+        try {
+            const submissions = await db.query(`
+                SELECT fs.id, fs.data, fs.created_at, fs.submitted_email
+                FROM form_submissions fs
+                JOIN form_definitions fd ON fs.form_id = fd.id
+                WHERE fd.type = 'feedback' OR fd.slug = 'user-feedback'
+                ORDER BY fs.created_at DESC
+            `);
+
+            let total = 0;
+            let sumRating = 0;
+            const ratingsDistribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+            const categoryDistribution = {
+                'Website Experience': 0,
+                'Museum Visit': 0,
+                'Visitor Services': 0,
+                'Other': 0
+            };
+            const recentComments = [];
+
+            for (const sub of submissions) {
+                let data = {};
+                try {
+                    data = typeof sub.data === 'string' ? JSON.parse(sub.data) : (sub.data || {});
+                } catch (e) {
+                    data = sub.data || {};
+                }
+
+                const rating = parseInt(data.rating, 10);
+                if (!isNaN(rating) && rating >= 1 && rating <= 5) {
+                    ratingsDistribution[rating]++;
+                    sumRating += rating;
+                }
+                total++;
+
+                const category = data.feedback_type || 'Other';
+                categoryDistribution[category] = (categoryDistribution[category] || 0) + 1;
+
+                if (recentComments.length < 10 && data.comments) {
+                    recentComments.push({
+                        id: sub.id,
+                        name: data.name || 'Anonymous',
+                        email: sub.submitted_email || data.email || 'Anonymous',
+                        rating: rating || 0,
+                        category: category,
+                        comments: data.comments,
+                        created_at: sub.created_at
+                    });
+                }
+            }
+
+            const averageRating = total > 0 && sumRating > 0 ? parseFloat((sumRating / total).toFixed(2)) : 0;
+
+            res.status(200).json({
+                status: 'success',
+                data: {
+                    totals: {
+                        feedbackSubmissions: total,
+                        averageRating
+                    },
+                    distributions: {
+                        ratings: Object.entries(ratingsDistribution).map(([rating, count]) => ({
+                            rating: parseInt(rating),
+                            count
+                        })),
+                        categories: Object.entries(categoryDistribution).map(([name, count]) => ({
+                            name,
+                            count
+                        }))
+                    },
+                    recentComments
+                }
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    async getDashboardStats(req, res, next) {
+        try {
+            // 1. Total Artifacts
+            const [totalResult] = await db.query('SELECT COUNT(*) as count FROM inventory');
+
+            // 2. Acquired Artifacts (method != 'Loan')
+            const [acquiredResult] = await db.query(`
+                SELECT COUNT(*) as count 
+                FROM inventory i 
+                JOIN accessions a ON i.accession_id = a.id 
+                JOIN intakes jt ON a.intake_id = jt.id 
+                WHERE jt.acquisition_method != 'Loan'
+            `);
+
+            // 3. Borrowed Artifacts (method = 'Loan')
+            const [borrowedResult] = await db.query(`
+                SELECT COUNT(*) as count 
+                FROM inventory i 
+                JOIN accessions a ON i.accession_id = a.id 
+                JOIN intakes jt ON a.intake_id = jt.id 
+                WHERE jt.acquisition_method = 'Loan'
+            `);
+
+            // 4. Displayed Artifacts (in active exhibitions)
+            const [displayedResult] = await db.query(`
+                SELECT COUNT(DISTINCT ea.inventory_id) as count 
+                FROM exhibition_artifacts ea
+                JOIN exhibitions e ON ea.exhibition_id = e.id
+                WHERE e.status = 'active'
+            `);
+            let displayedCount = displayedResult?.count || 0;
+            if (displayedCount === 0) {
+                // Fallback: active status in inventory
+                const [activeResult] = await db.query(`SELECT COUNT(*) as count FROM inventory WHERE status = 'active'`);
+                displayedCount = activeResult?.count || 0;
+            }
+
+            // 5. Visitor Quota (Today's visitor stats)
+            const [quotaResult] = await db.query(`
+                SELECT SUM(population_count) as total 
+                FROM appointments 
+                WHERE status IN ('APPROVED', 'COMPLETED') 
+                  AND (preferred_date = CURDATE() OR preferred_date = DATE_FORMAT(NOW(), '%Y-%m-%d'))
+            `);
+            const todayCount = parseInt(quotaResult?.total || 0, 10);
+            const quotaLimit = 1000;
+
+            // 6. Unread Queries (Recent pending submissions)
+            const unreadQueries = await db.query(`
+                SELECT fs.id, fs.created_at, fd.title, fd.type, fd.slug, fs.data
+                FROM form_submissions fs
+                JOIN form_definitions fd ON fs.form_id = fd.id
+                WHERE fs.status = 'pending'
+                ORDER BY fs.created_at DESC
+                LIMIT 10
+            `);
+
+            // 7. Active Exhibition (For middle layout card)
+            const activeExhibitions = await db.query(`
+                SELECT id, title, venue, start_date, end_date, description
+                FROM exhibitions
+                WHERE status = 'active'
+                ORDER BY start_date DESC
+                LIMIT 1
+            `);
+
+            res.status(200).json({
+                status: 'success',
+                data: {
+                    totals: {
+                        artifacts: totalResult?.count || 0,
+                        acquired: acquiredResult?.count || 0,
+                        borrowed: borrowedResult?.count || 0,
+                        displayed: displayedCount
+                    },
+                    visitorQuota: {
+                        todayCount,
+                        limit: quotaLimit,
+                        percentage: Math.min(100, Math.round((todayCount / quotaLimit) * 100))
+                    },
+                    unreadQueries: unreadQueries.map(q => {
+                        let parsedData = {};
+                        try {
+                            parsedData = typeof q.data === 'string' ? JSON.parse(q.data) : (q.data || {});
+                        } catch (e) {
+                            parsedData = q.data || {};
+                        }
+                        return {
+                            id: q.id,
+                            title: q.title,
+                            type: q.type,
+                            slug: q.slug,
+                            created_at: q.created_at,
+                            name: parsedData.name || parsedData.firstName ? `${parsedData.firstName || parsedData.name || ''} ${parsedData.lastName || ''}`.trim() : null,
+                            email: parsedData.email || null
+                        };
+                    }),
+                    activeExhibition: activeExhibitions[0] || null
+                }
+            });
+        } catch (error) {
+            next(error);
         }
     },
 

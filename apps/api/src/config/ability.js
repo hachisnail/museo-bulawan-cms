@@ -29,6 +29,8 @@ const ROLE_RULES = {
         can('manage', 'Submission');
         can('update', 'Artifact');
         can('manage', 'Inventory');
+        can('read', 'Telemetry');
+        can('read', 'Feedback');
     },
 
     registrar: (can) => {
@@ -36,6 +38,7 @@ const ROLE_RULES = {
         can('manage', 'Accession');
         can('manage', 'Submission');
         can('update', 'Artifact'); 
+        can('read', 'Telemetry');
     },
     
     conservator: (can, user) => {
@@ -51,10 +54,12 @@ const ROLE_RULES = {
         can('read', 'Accession');
         can('read', 'Artifact');
         can('read', 'Submission');
+        can('read', 'Telemetry');
     },
 
     content_editor: (can) => {
         can('manage', 'Article'); 
+        can('read', 'Telemetry');
     },
     
     content_writer: (can, user) => {
@@ -65,6 +70,8 @@ const ROLE_RULES = {
 
     appointment_coordinator: (can) => {
         can('manage', 'Appointment'); 
+        can('read', 'Telemetry');
+        can('read', 'Feedback');
     },
 
     donor: (can, user) => {

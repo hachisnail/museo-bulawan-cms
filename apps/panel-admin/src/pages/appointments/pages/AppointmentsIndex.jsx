@@ -100,7 +100,6 @@ export default function AppointmentsIndex() {
   const { events: sseEvents } = useSSE('*');
 
   const myTabs = ['Active Requests', 'History', 'All'];
-  const myFilters = ['All Statuses', 'PENDING', 'APPROVED', 'COMPLETED', 'REJECTED', 'FAILED'];
 
   const [allData, setAllData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -111,7 +110,6 @@ export default function AppointmentsIndex() {
   const itemsPerPage = 10;
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
   const [tableFilters, setTableFilters] = useState({ search: '', date: '' });
-  const [statusFilter, setStatusFilter] = useState('All Statuses');
 
   // ── Fetch ────────────────────────────────────────────────────────────────────
   const fetchAppointments = useCallback(async () => {
@@ -150,7 +148,7 @@ export default function AppointmentsIndex() {
   // Reset page to 1 on tab, sort, or filter change
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeTab, sortConfig, tableFilters, statusFilter]);
+  }, [activeTab, sortConfig, tableFilters]);
 
   // ── Computed Stats ───────────────────────────────────────────────────────────
   const stats = useMemo(() => {
@@ -187,12 +185,7 @@ export default function AppointmentsIndex() {
       result = result.filter(item => HISTORY_STATUSES.includes(item.status_label));
     }
 
-    // 2. Status Dropdown Filter (from DataTable actionOptions mock)
-    if (statusFilter !== 'All Statuses') {
-       result = result.filter(item => item.status_label === statusFilter);
-    }
-
-    // 3. Search Filter
+    // 2. Search Filter
     if (tableFilters.search) {
       const lowerSearch = tableFilters.search.toLowerCase();
       result = result.filter(item => 
@@ -201,14 +194,14 @@ export default function AppointmentsIndex() {
       );
     }
 
-    // 4. Date Filter
+    // 3. Date Filter
     if (tableFilters.date) {
       const dateStr = tableFilters.date; // YYYY-MM-DD
       result = result.filter(item => item.preferred_date === dateStr);
     }
 
     return result;
-  }, [allData, activeTab, tableFilters, statusFilter]);
+  }, [allData, activeTab, tableFilters]);
 
   // ── Sorting ──────────────────────────────────────────────────────────────────
   const sortedData = useMemo(() => {
@@ -267,17 +260,17 @@ export default function AppointmentsIndex() {
   }
 
   return (
-    <div className="flex flex-col gap-y-6 bg-white pb-12 px-4 sm:px-6 lg:px-8 pt-8">
+    <div className="h-full flex flex-col gap-y-6 bg-white pb-12 px-4 sm:px-6 lg:px-8 pt-8">
       <section className="flex">
         <h1 className="text-3xl font-bold text-black tracking-tight">Appointments</h1>
       </section>      
 
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-2 items-start">
-        <SidebarDashboard 
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-2 flex-1 min-h-0">
+        <SidebarDashboard
           tabs={myTabs}
-          activeTab={activeTab} 
-          onTabChange={setActiveTab} 
-          showAddButton={true} 
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          showAddButton={true}
           addButtonText="Register Walk-in"
           onAddClick={() => navigate('/appointments/walk-in')}
           statsTitle="Total Appointments"
@@ -285,12 +278,12 @@ export default function AppointmentsIndex() {
           stats={stats}
           isLoading={isLoading}
         />
-        
-        <div className="flex-1 w-full min-w-0">
-          <DataTable 
-            columns={columns} 
-            data={paginatedData} 
-            onQueryChange={handleQueryChange} 
+
+        <div className="flex-1 w-full min-w-0 min-h-0">
+          <DataTable
+            columns={columns}
+            data={paginatedData}
+            onQueryChange={handleQueryChange}
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={setCurrentPage}

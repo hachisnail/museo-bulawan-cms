@@ -100,6 +100,7 @@ export const createAppointment = async (req, res, next) => {
             population_count,
             additional_notes,
             request_letter_files,
+            visitor_address,
             status,
         } = req.body;
 
@@ -144,8 +145,8 @@ export const createAppointment = async (req, res, next) => {
             `INSERT INTO appointments
                 (id, visitor_name, visitor_email, visitor_phone, organization,
                  purpose_of_visit, preferred_date, start_time, end_time,
-                 population_count, additional_notes, request_letter_files, status)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                 population_count, additional_notes, request_letter_files, visitor_address, status)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 id,
                 visitor_name.trim(),
@@ -159,6 +160,7 @@ export const createAppointment = async (req, res, next) => {
                 parseInt(population_count, 10) || 1,
                 additional_notes?.trim() || null,
                 JSON.stringify(request_letter_files || []),
+                visitor_address ? JSON.stringify(visitor_address) : null,
                 initialStatus,
             ]
         );

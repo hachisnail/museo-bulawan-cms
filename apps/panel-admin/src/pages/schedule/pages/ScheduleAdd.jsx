@@ -290,7 +290,7 @@ export default function ScheduleAdd() {
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
-    <div className="h-full flex flex-col" style={{ height: 'calc(100vh - 3.5rem)' }}>
+    <div className="h-full flex flex-col px-4 sm:px-6 lg:px-8 pt-8" style={{ height: 'calc(100vh - 4rem)' }}>
       <Toast msg={toast.msg} type={toast.type} />
 
       {/* Page Header */}
@@ -322,6 +322,8 @@ export default function ScheduleAdd() {
               value={selectedDate}
               onChange={setSelectedDate}
               allSchedules={allSchedules}
+              className="p-4"
+              showLegend
             />
           </div>
 

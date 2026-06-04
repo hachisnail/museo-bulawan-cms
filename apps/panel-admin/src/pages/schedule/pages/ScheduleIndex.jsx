@@ -402,7 +402,7 @@ export default function Schedule() {
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
-    <div className="flex flex-col gap-y-6 px-4 sm:px-6 lg:px-8 pt-8 bg-white h-full" style={{ height: 'calc(100vh - 3.5rem)' }}>
+    <div className="flex flex-col gap-y-6 px-4 sm:px-6 lg:px-8 pt-8 bg-white h-full" style={{ height: 'calc(100vh - 4rem)' }}>
       <style>{FC_STYLES}</style>
 
       {/* Toast */}
@@ -413,9 +413,7 @@ export default function Schedule() {
         </div>
       )}
 
-      <section className="flex">
-        <h1 className="text-3xl font-bold text-black tracking-tight">Schedule</h1>
-      </section>
+      <h1 className="text-3xl font-bold text-black tracking-tight">Schedule</h1>
 
       {/* ── Header ─────────────────────────────────────────────────────────────── */}
       <div className="flex-shrink-0 flex items-center gap-3">

@@ -5,7 +5,7 @@ import { useSSE } from '../../../hooks/useSSE';
 import { normalizeStatus, formatTimeTo12H } from '../../../utils/scheduleUtils';
 import {
   ArrowLeft, Mail, Phone, Building2, Calendar, Clock,
-  Users, FileText, CheckCircle2, Loader2, AlertCircle,
+  Users, FileText, CheckCircle2, Loader2, AlertCircle, XCircle,
 } from 'lucide-react';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -85,17 +85,22 @@ export default function AppointmentDetail() {
   const [action, setAction] = useState(null); // 'approve' | 'decline' | 'arrive' | 'cancel'
   const [message, setMessage] = useState('');
   const [presentCount, setPresentCount] = useState('');
+  const [actionError, setActionError] = useState(null);
 
   // ── Data Fetch ──────────────────────────────────────────────────────────────
 
   const fetchDetail = useCallback(async () => {
+    setIsLoading(true);
     try {
       const res = await apiFetch(`/api/v1/appointments/${id}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.message || body.error || `HTTP ${res.status}`);
+      }
       setRawData(await res.json());
       setError(null);
-    } catch {
-      setError('Failed to load appointment details.');
+    } catch (err) {
+      setError(err.message || 'Failed to load appointment details.');
     } finally {
       setIsLoading(false);
     }
@@ -132,19 +137,24 @@ export default function AppointmentDetail() {
     if (action === 'arrive') body.present_count = parseInt(presentCount, 10);
 
     setIsSubmitting(true);
+    setActionError(null);
     try {
       const res = await apiFetch(`/api/v1/appointments/${id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.message || errData.error || `Request failed (${res.status})`);
+      }
       setAction(null);
       setMessage('');
       setPresentCount('');
+      setActionError(null);
       await fetchDetail();
-    } catch {
-      // Keep action open so the admin can retry
+    } catch (err) {
+      setActionError(err.message || 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -165,9 +175,21 @@ export default function AppointmentDetail() {
       <div className="h-full flex flex-col items-center justify-center gap-3">
         <AlertCircle className="w-8 h-8 text-red-400" />
         <p className="text-sm text-zinc-600">{error || 'Appointment not found.'}</p>
-        <button onClick={() => navigate('/appointments')} className="text-xs text-zinc-600 hover:text-zinc-950 hover:underline">
-          Go back to list
-        </button>
+        <div className="flex items-center gap-4 mt-1">
+          <button
+            onClick={fetchDetail}
+            className="text-xs text-zinc-500 hover:text-zinc-800 hover:underline transition-colors"
+          >
+            Try again
+          </button>
+          <span className="text-zinc-300 text-xs">·</span>
+          <button
+            onClick={() => navigate('/appointments')}
+            className="text-xs text-[#D4AF37] hover:underline"
+          >
+            Go back to list
+          </button>
+        </div>
       </div>
     );
   }
@@ -205,13 +227,38 @@ export default function AppointmentDetail() {
     }
   } catch { /* ignore parse errors */ }
 
+  // Submission ID — used to construct the file serving URL for media linked to the form submission
+  const submissionId = rawData.submission_id || null;
+
+  // Returns a user-friendly display name for a stored filename.
+  // Old appointments may have UUID/hash strings instead of real filenames.
+  const isLikelyId = (name) =>
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(name) ||
+    /^[0-9a-f]{24,32}$/i.test(name);
+
+  const getDisplayName = (file, idx) => {
+    const raw = typeof file === 'string' ? file.split('/').pop() : '';
+    if (!raw || isLikelyId(raw)) return `Document ${idx + 1}`;
+    return raw;
+  };
+
+  // Constructs a proper API URL for viewing an attached file.
+  // Uses the form_submissions file endpoint when submission_id is available.
+  const getFileUrl = (file) => {
+    const raw = typeof file === 'string' ? file.split('/').pop() : null;
+    if (!raw) return null;
+    if (submissionId) return `/api/v1/files/form_submissions/${submissionId}/${raw}`;
+    // Fallback: old appointments may not have submission_id; file may not be accessible
+    return null;
+  };
+
   const needsDocSection = requestFiles.length > 0 ||
     ['School Field Trip', 'Research Paper', 'Photography or Media Projects'].includes(purposeOfVisit);
 
   // ── Render ───────────────────────────────────────────────────────────────────
 
   return (
-    <div className="h-full flex flex-col" style={{ height: 'calc(100vh - 3.5rem)' }}>
+    <div className="h-full flex flex-col px-4 sm:px-6 lg:px-8 pt-8 bg-white">
 
       {/* Page Header */}
       <div className="flex-shrink-0 flex items-center justify-between pb-5 border-b border-zinc-200">
@@ -230,7 +277,8 @@ export default function AppointmentDetail() {
         <StatusBadge status={status} />
       </div>
 
-      <div className="flex-1 overflow-auto pt-6 flex gap-6 min-h-0">
+      <div className="flex-1 overflow-auto min-h-0">
+      <div className="max-w-5xl mx-auto pt-6 pb-12 flex gap-6">
 
         {/* ── Left Column — Details ─────────────────────────────────────────── */}
         <div className="flex-1 space-y-6 min-w-0">
@@ -326,85 +374,87 @@ export default function AppointmentDetail() {
 
           {/* Admin Action Panel */}
           {(isPending || isApproved) && (
-            <div className="bg-white border border-zinc-200 rounded-sm shadow-sm overflow-hidden flex flex-col">
+            <div className="bg-white border border-zinc-200 rounded-sm shadow-sm overflow-hidden">
               <div className="px-5 py-4 bg-zinc-950 text-white border-b border-zinc-900 relative">
                 <div className="absolute left-0 top-0 w-1 h-full bg-zinc-800" />
                 <h3 className="text-xs font-bold uppercase tracking-widest">Administrator Actions</h3>
               </div>
 
-              <div className="p-5 flex-1 flex flex-col bg-zinc-50/50">
+              <div className="p-5 space-y-4 bg-zinc-50/50">
                 {/* Action buttons */}
-                <div className="grid grid-cols-2 gap-3 mb-5">
+                <div className="grid grid-cols-2 gap-3">
                   {isPending && (
                     <>
-                      <ActionBtn active={action === 'approve'} onClick={() => setAction(a => a === 'approve' ? null : 'approve')}>
+                      <ActionBtn active={action === 'approve'} onClick={() => { setAction(a => a === 'approve' ? null : 'approve'); setActionError(null); }}>
                         Approve
                       </ActionBtn>
-                      <ActionBtn active={action === 'decline'} danger onClick={() => setAction(a => a === 'decline' ? null : 'decline')}>
+                      <ActionBtn active={action === 'decline'} danger onClick={() => { setAction(a => a === 'decline' ? null : 'decline'); setActionError(null); }}>
                         Decline
                       </ActionBtn>
                     </>
                   )}
                   {isApproved && (
                     <>
-                      <ActionBtn active={action === 'arrive'} onClick={() => setAction(a => a === 'arrive' ? null : 'arrive')}>
+                      <ActionBtn active={action === 'arrive'} onClick={() => { setAction(a => a === 'arrive' ? null : 'arrive'); setActionError(null); }}>
                         Visitor Arrived
                       </ActionBtn>
-                      <ActionBtn active={action === 'cancel'} danger onClick={() => setAction(a => a === 'cancel' ? null : 'cancel')}>
+                      <ActionBtn active={action === 'cancel'} danger onClick={() => { setAction(a => a === 'cancel' ? null : 'cancel'); setActionError(null); }}>
                         Cancel Visit
                       </ActionBtn>
                     </>
                   )}
                 </div>
 
-                {/* Action form */}
+                {/* Action form — consistent height regardless of which action is selected */}
                 {action ? (
-                  <div className="space-y-4 flex-1 flex flex-col">
+                  <div className="space-y-3">
+                    {/* Attendance count (arrive only) */}
                     {action === 'arrive' && (
-                      <div className="p-4 bg-white border border-zinc-200 rounded-sm shadow-sm">
-                        <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-4">
-                          Attendance Verification
+                      <div className="p-3 bg-white border border-zinc-200 rounded-sm space-y-1.5">
+                        <label className="text-[9px] uppercase tracking-widest text-[#D4AF37] font-bold block">
+                          Visitors Actually Present *
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            min="0"
+                            value={presentCount}
+                            onChange={e => setPresentCount(e.target.value)}
+                            className="flex-1 bg-zinc-50 border border-zinc-200 rounded-sm px-3 py-2 text-sm font-medium focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/50"
+                            placeholder="0"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setPresentCount(String(populationCount))}
+                            className="px-3 py-2 text-[9px] font-bold uppercase tracking-widest text-zinc-500 border border-zinc-200 rounded-sm bg-zinc-50 hover:bg-zinc-100 transition-colors whitespace-nowrap"
+                          >
+                            All ({populationCount})
+                          </button>
                         </div>
-                        <div className="grid grid-cols-2 gap-4 mb-3">
-                          <div>
-                            <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Expected</div>
-                            <div className="text-xl font-bold text-zinc-900">{populationCount}</div>
-                          </div>
-                          <div>
-                            <label className="text-[10px] uppercase tracking-widest text-zinc-700 font-bold mb-1 block">
-                              Actually Present *
-                            </label>
-                            <input
-                              type="number"
-                              min="0"
-                              value={presentCount}
-                              onChange={e => setPresentCount(e.target.value)}
-                              className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-3 py-2 text-sm font-medium focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20"
-                              placeholder="Count"
-                            />
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => setPresentCount(String(populationCount))}
-                          className="w-full py-1.5 text-[10px] font-bold uppercase tracking-widest text-zinc-500 border border-zinc-200 rounded-sm hover:bg-zinc-100 transition-colors"
-                        >
-                          Mark All Present
-                        </button>
+                        <p className="text-[9px] text-zinc-400">Expected: {populationCount} visitor{populationCount !== 1 ? 's' : ''}</p>
                       </div>
                     )}
 
-                    <div className="flex-1 flex flex-col">
+                    {/* Message textarea */}
+                    <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-500 mb-1.5 block">
-                        Message to Visitor (Optional)
+                        Message to Visitor <span className="normal-case font-normal text-zinc-400">(Optional)</span>
                       </label>
                       <textarea
                         value={message}
                         onChange={e => setMessage(e.target.value)}
                         rows={4}
-                        className="w-full flex-1 min-h-[100px] bg-white border border-zinc-200 rounded-sm p-3 text-sm resize-none focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20"
+                        className="w-full bg-white border border-zinc-200 rounded-sm p-3 text-sm resize-none focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/50"
                         placeholder="Add a message to be sent via email..."
                       />
                     </div>
+
+                    {actionError && (
+                      <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-sm text-xs text-red-700">
+                        <XCircle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                        <span>{actionError}</span>
+                      </div>
+                    )}
 
                     <button
                       onClick={handleAction}
@@ -415,14 +465,20 @@ export default function AppointmentDetail() {
                           : 'bg-zinc-900 hover:bg-zinc-800 text-white'
                       }`}
                     >
-                      {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-                      Confirm Action
+                      {isSubmitting
+                        ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        : action === 'approve' ? 'Confirm Approval'
+                        : action === 'decline' ? 'Confirm Decline'
+                        : action === 'arrive' ? 'Mark as Arrived'
+                        : action === 'cancel' ? 'Confirm Cancellation'
+                        : 'Confirm'
+                      }
                     </button>
                   </div>
                 ) : (
-                  <div className="flex-1 flex flex-col items-center justify-center text-center text-zinc-400 p-6 border-2 border-dashed border-zinc-200 rounded-sm">
-                    <CheckCircle2 className="w-8 h-8 mb-2 opacity-50" />
-                    <p className="text-xs uppercase tracking-widest">Select an action above to proceed</p>
+                  <div className="flex flex-col items-center justify-center text-center text-zinc-400 py-8 border-2 border-dashed border-zinc-200 rounded-sm">
+                    <CheckCircle2 className="w-7 h-7 mb-2 opacity-40" />
+                    <p className="text-[10px] uppercase tracking-widest">Select an action above to proceed</p>
                   </div>
                 )}
               </div>
@@ -463,15 +519,15 @@ export default function AppointmentDetail() {
               <div className="p-4 space-y-2">
                 {requestFiles.length > 0 ? (
                   requestFiles.map((file, i) => {
-                    const fileName = typeof file === 'string' ? file.split('/').pop() : `Document ${i + 1}`;
-                    const fileUrl  = typeof file === 'string' ? file : null;
+                    const displayName = getDisplayName(file, i);
+                    const fileUrl = getFileUrl(file);
                     return (
                       <div key={i} className="flex items-center justify-between p-3 border border-zinc-100 rounded-sm bg-zinc-50 hover:bg-zinc-100 transition-colors">
                         <div className="flex items-center gap-2 min-w-0">
                           <FileText className="w-4 h-4 text-zinc-400 flex-shrink-0" />
-                          <span className="text-sm text-zinc-700 truncate font-medium">{fileName}</span>
+                          <span className="text-sm text-zinc-700 truncate font-medium">{displayName}</span>
                         </div>
-                        {fileUrl && (
+                        {fileUrl ? (
                           <a
                             href={fileUrl}
                             target="_blank"
@@ -480,6 +536,10 @@ export default function AppointmentDetail() {
                           >
                             View
                           </a>
+                        ) : (
+                          <span className="ml-3 text-[10px] font-bold uppercase tracking-widest text-zinc-300 flex-shrink-0">
+                            Unavailable
+                          </span>
                         )}
                       </div>
                     );
@@ -494,6 +554,7 @@ export default function AppointmentDetail() {
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

@@ -734,13 +734,19 @@ export async function initMariaDB() {
             )
         `);
 
-        // Safely alter existing appointments table to add submission_id if it was created before we added the new fields
+        // Safely alter existing appointments table to add columns added after initial creation
         try {
             await conn.query(`ALTER TABLE appointments ADD COLUMN submission_id VARCHAR(26) NULL`);
         } catch(e) { /* Ignore if column already exists */ }
         try {
             await conn.query(`ALTER TABLE appointments ADD CONSTRAINT fk_appt_submission FOREIGN KEY (submission_id) REFERENCES form_submissions(id) ON DELETE SET NULL`);
         } catch(e) { /* Ignore if constraint already exists */ }
+        try {
+            await conn.query(`ALTER TABLE appointments ADD COLUMN request_letter_files JSON NULL`);
+        } catch(e) { /* Ignore if column already exists */ }
+        try {
+            await conn.query(`ALTER TABLE appointments ADD COLUMN visitor_address JSON NULL`);
+        } catch(e) { /* Ignore if column already exists */ }
 
         // 16. Default Form Seedings
         const defaultForms = [
@@ -996,7 +1002,7 @@ export async function initMariaDB() {
                         barangay: { title: "Barangay", type: "string", "ui:group": "location_info" },
                         purpose: { enum: ["Walk-in Visit", "School Field Trip", "Heritage Research", "Tourism"], title: "Purpose of Visit", type: "string", "ui:group": "appointment_details" },
                         populationCount: { type: "integer", title: "Number of Visitors", minimum: 1, maximum: 30, "ui:group": "appointment_details" },
-                        visitDate: { format: "date", title: "Date of Visit", type: "string", "ui:group": "appointment_details" },
+                        visitDate: { format: "date", title: "Date of Visit", type: "string", "ui:group": "appointment_details", "ui:fullWidth": true },
                         startTime: { format: "time", title: "Start Time", type: "string", "ui:group": "appointment_details" },
                         endTime: { format: "time", title: "End Time", type: "string", "ui:group": "appointment_details" }
                     },

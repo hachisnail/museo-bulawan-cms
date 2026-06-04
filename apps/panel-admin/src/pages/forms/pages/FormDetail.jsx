@@ -65,7 +65,7 @@ export default function FormDetail() {
                         href={`/forms/display/${formDef.id}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="px-4 py-2 border border-zinc-300 rounded text-sm font-semibold text-zinc-700 hover:bg-zinc-50 flex items-center gap-2"
+                        className="px-4 py-2 border border-zinc-300 rounded-md text-sm font-semibold text-zinc-700 hover:bg-zinc-50 flex items-center gap-2"
                     >
                         <ExternalLink className="w-4 h-4" /> Preview
                     </a>
@@ -119,7 +119,7 @@ function EmbedTab({ form }) {
     const embedUrl = `${window.location.origin}/forms/embed/${form.id}`;
     
     // Generate the dynamic embed code
-    const iframeCode = `<iframe id="museo-form-${form.id}" src="${embedUrl}" width="100%" style="border:none; border-radius: 8px; overflow:hidden; transition: height 0.2s ease;" title="${form.title}" scrolling="no"></iframe>
+    const iframeCode = `<iframe id="museo-form-${form.id}" src="${embedUrl}" width="100%" style="border:none; border-radius: 6px; overflow:hidden; transition: height 0.2s ease;" title="${form.title}" scrolling="no"></iframe>
 <script>
   window.addEventListener('message', function(event) {
     if (event.data && event.data.type === 'form-resize') {
@@ -136,7 +136,7 @@ function EmbedTab({ form }) {
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500 ">
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div className="bg-white p-6 rounded-md border border-gray-200 shadow-sm">
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Public Form URL</h3>
                 <p className="text-sm text-gray-500 mb-4">Share this direct link with your audience to collect responses.</p>
                 <div className="flex items-center gap-3">
@@ -144,7 +144,7 @@ function EmbedTab({ form }) {
                         type="text" 
                         readOnly 
                         value={publicUrl}
-                        className="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                        className="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
                     />
                     <button 
                         onClick={() => {
@@ -152,14 +152,14 @@ function EmbedTab({ form }) {
                             setCopiedUrl(true);
                             setTimeout(() => setCopiedUrl(false), 2000);
                         }}
-                        className="px-6 py-3 bg-black text-white rounded-lg text-sm font-bold hover:bg-zinc-800 transition-colors flex items-center gap-2"
+                        className="px-6 py-3 bg-black text-white rounded-md text-sm font-bold hover:bg-zinc-800 transition-colors flex items-center gap-2"
                     >
                         {copiedUrl ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />} {copiedUrl ? 'Copied' : 'Copy'}
                     </button>
                 </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div className="bg-white p-6 rounded-md border border-gray-200 shadow-sm">
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Embed via iframe</h3>
                 <p className="text-sm text-gray-500 mb-4">Copy and paste this HTML code into your website builder (WordPress, Webflow, Shopify, etc.) to embed the form directly. It will automatically resize to fit the form content.</p>
                 <div className="flex items-start gap-3">
@@ -167,7 +167,7 @@ function EmbedTab({ form }) {
                         readOnly 
                         value={iframeCode}
                         rows={12} // Increased rows to show the full script
-                        className="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm font-mono px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-black resize-none whitespace-pre-wrap"
+                        className="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm font-mono px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-black resize-none whitespace-pre-wrap"
                     />
                     <button 
                         onClick={() => {
@@ -175,7 +175,7 @@ function EmbedTab({ form }) {
                             setCopiedIframe(true);
                             setTimeout(() => setCopiedIframe(false), 2000);
                         }}
-                        className="px-6 py-3 bg-black text-white rounded-lg text-sm font-bold hover:bg-zinc-800 transition-colors flex items-center gap-2"
+                        className="px-6 py-3 bg-black text-white rounded-md text-sm font-bold hover:bg-zinc-800 transition-colors flex items-center gap-2"
                     >
                         {copiedIframe ? <CheckCircle className="w-4 h-4" /> : <Code className="w-4 h-4" />} {copiedIframe ? 'Copied' : 'Copy Code'}
                     </button>
@@ -368,7 +368,7 @@ function SubmissionsTab({ form, apiFetch, setModal }) {
                 <div className="text-right">
                     <a 
                         href={`/forms/submissions/${row.id}`}
-                        className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 hover:bg-black hover:text-white rounded-lg transition-colors"
+                        className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 hover:bg-black hover:text-white rounded-md transition-colors"
                         title="View Full Submission"
                     >
                         <Eye className="w-4 h-4" />
@@ -387,7 +387,7 @@ function SubmissionsTab({ form, apiFetch, setModal }) {
                 <button 
                     onClick={handleExport}
                     disabled={submissions.length === 0}
-                    className="px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition-colors flex items-center gap-1.5 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 bg-emerald-600 text-white rounded-md text-xs font-bold hover:bg-emerald-700 transition-colors flex items-center gap-1.5 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <Download className="w-4 h-4" /> Export to Excel
                 </button>
@@ -399,12 +399,12 @@ function SubmissionsTab({ form, apiFetch, setModal }) {
                     <span className="text-sm">Loading submission entries...</span>
                 </div>
             ) : submissions.length === 0 ? (
-                <div className="border border-gray-200 rounded-xl bg-white p-16 text-center text-zinc-400 shadow-sm">
+                <div className="border border-gray-200 rounded-md bg-white p-16 text-center text-zinc-400 shadow-sm">
                     <ClipboardList className="w-12 h-12 mx-auto mb-4 text-zinc-300" />
                     <p className="text-sm font-medium text-gray-500">No submissions have been received yet for this form.</p>
                 </div>
             ) : (
-                <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm p-4">
+                <div className="border border-gray-200 rounded-md overflow-hidden bg-white shadow-sm p-4">
                     <DataTable
                         columns={columns}
                         data={paginatedData}
@@ -720,11 +720,11 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
     return (
         <form onSubmit={handleSaveForm} className="max-w-3xl mx-auto space-y-6 pb-20 animate-in fade-in duration-500">
             {isReadOnly && (
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3 shadow-sm">
-                    <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                <div className="bg-zinc-50 border border-zinc-200 rounded-md p-4 flex items-start gap-3 shadow-sm">
+                    <AlertCircle className="w-5 h-5 text-zinc-500 mt-0.5 flex-shrink-0" />
                     <div>
-                        <h4 className="text-sm font-bold text-amber-900">System Form (Read-Only)</h4>
-                        <p className="text-xs text-amber-700 mt-0.5 leading-relaxed font-normal">
+                        <h4 className="text-sm font-bold text-zinc-900">System Form (Read-Only)</h4>
+                        <p className="text-xs text-zinc-650 mt-0.5 leading-relaxed font-normal">
                             This form is a system-defined type ({form.type}) and is read-only.
                             Any modifications can only be made by database administrators directly in the database.
                         </p>
@@ -733,7 +733,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
             )}
 
             {/* ── GOOGLE FORMS STYLE HEADER CARD ── */}
-            <div className="bg-white border border-zinc-200/85 border-t-8 border-t-black rounded-xl p-8 shadow-sm space-y-4">
+            <div className="bg-white border border-zinc-200/85 border-t-8 border-t-black rounded-md p-8 shadow-sm space-y-4">
                 <input 
                     type="text" 
                     required 
@@ -757,41 +757,41 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
             </div>
 
             {/* ── SETTINGS CARD ── */}
-            <div className="bg-white border border-zinc-200/85 rounded-xl p-6 shadow-sm space-y-5">
+            <div className="bg-white border border-zinc-200/85 rounded-md p-6 shadow-sm space-y-5">
                 <h3 className="text-xs font-bold text-zinc-800 uppercase tracking-widest border-b border-zinc-100 pb-2 flex items-center gap-2">
                     <Settings className="w-3.5 h-3.5 text-zinc-500" /> Form Settings
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Layout Style</label>
-                        <select value={layout} onChange={e => setLayout(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
+                        <select value={layout} onChange={e => setLayout(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded-md py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
                             <option value="single_column">Single Column Layout</option>
                             <option value="wizard">Multi-step Wizard Layout</option>
                         </select>
                     </div>
                     <div className="space-y-1">
                         <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Email Field Key</label>
-                        <input type="text" value={emailFieldKey} onChange={e => setEmailFieldKey(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" placeholder="email" />
+                        <input type="text" value={emailFieldKey} onChange={e => setEmailFieldKey(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded-md py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" placeholder="email" />
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                    <label className="flex items-start gap-2.5 p-3 border border-zinc-150 rounded-lg hover:border-zinc-300 transition-colors cursor-pointer bg-zinc-50/50">
-                        <input type="checkbox" checked={otp} onChange={e => setOtp(e.target.checked)} disabled={isReadOnly} className="w-3.5 h-3.5 mt-0.5 border-gray-300 text-black rounded focus:ring-black" />
+                    <label className="flex items-start gap-2.5 p-3 border border-zinc-150 rounded-md hover:border-zinc-300 transition-colors cursor-pointer bg-zinc-50/50">
+                        <input type="checkbox" checked={otp} onChange={e => setOtp(e.target.checked)} disabled={isReadOnly} className="w-3.5 h-3.5 mt-0.5 border-gray-300 text-black rounded-md focus:ring-black" />
                         <div>
                             <span className="text-[11px] font-bold text-zinc-700 block">Require OTP</span>
                             <span className="text-[9px] text-zinc-400 leading-tight block">Verify user emails.</span>
                         </div>
                     </label>
-                    <label className="flex items-start gap-2.5 p-3 border border-zinc-150 rounded-lg hover:border-zinc-300 transition-colors cursor-pointer bg-zinc-50/50">
-                        <input type="checkbox" checked={allowAttachments} onChange={e => setAllowAttachments(e.target.checked)} disabled={isReadOnly} className="w-3.5 h-3.5 mt-0.5 border-gray-300 text-black rounded focus:ring-black" />
+                    <label className="flex items-start gap-2.5 p-3 border border-zinc-150 rounded-md hover:border-zinc-300 transition-colors cursor-pointer bg-zinc-50/50">
+                        <input type="checkbox" checked={allowAttachments} onChange={e => setAllowAttachments(e.target.checked)} disabled={isReadOnly} className="w-3.5 h-3.5 mt-0.5 border-gray-300 text-black rounded-md focus:ring-black" />
                         <div>
                             <span className="text-[11px] font-bold text-zinc-700 block">Global Attachments</span>
                             <span className="text-[9px] text-zinc-400 leading-tight block">Media upload section.</span>
                         </div>
                     </label>
-                    <label className="flex items-start gap-2.5 p-3 border border-zinc-150 rounded-lg hover:border-zinc-300 transition-colors cursor-pointer bg-zinc-50/50">
-                        <input type="checkbox" checked={showInfoBlock} onChange={e => setShowInfoBlock(e.target.checked)} disabled={isReadOnly} className="w-3.5 h-3.5 mt-0.5 border-gray-300 text-black rounded focus:ring-black" />
+                    <label className="flex items-start gap-2.5 p-3 border border-zinc-150 rounded-md hover:border-zinc-300 transition-colors cursor-pointer bg-zinc-50/50">
+                        <input type="checkbox" checked={showInfoBlock} onChange={e => setShowInfoBlock(e.target.checked)} disabled={isReadOnly} className="w-3.5 h-3.5 mt-0.5 border-gray-300 text-black rounded-md focus:ring-black" />
                         <div>
                             <span className="text-[11px] font-bold text-zinc-700 block">Intro Notice</span>
                             <span className="text-[9px] text-zinc-400 leading-tight block">Notice block at start.</span>
@@ -800,28 +800,28 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                 </div>
 
                 {showInfoBlock && (
-                    <div className="border border-dashed border-zinc-200 rounded-lg p-4 bg-zinc-50/30 space-y-3">
+                    <div className="border border-dashed border-zinc-200 rounded-md p-4 bg-zinc-50/30 space-y-3">
                         <p className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">Intro Notice Content</p>
-                        <input type="text" value={infoHeader} onChange={e => setInfoHeader(e.target.value)} disabled={isReadOnly} placeholder="Notice header (e.g. Important Information)" className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
-                        <textarea value={infoDescription} onChange={e => setInfoDescription(e.target.value)} disabled={isReadOnly} placeholder="Notice description body text..." rows={2} className="w-full bg-white border border-gray-300 rounded py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none resize-none" />
+                        <input type="text" value={infoHeader} onChange={e => setInfoHeader(e.target.value)} disabled={isReadOnly} placeholder="Notice header (e.g. Important Information)" className="w-full bg-white border border-gray-300 rounded-md py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                        <textarea value={infoDescription} onChange={e => setInfoDescription(e.target.value)} disabled={isReadOnly} placeholder="Notice description body text..." rows={2} className="w-full bg-white border border-gray-300 rounded-md py-1.5 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none resize-none" />
                     </div>
                 )}
 
                 {allowAttachments && (
-                    <div className="border border-dashed border-zinc-200 rounded-lg p-4 bg-zinc-50/30 space-y-3">
+                    <div className="border border-dashed border-zinc-200 rounded-md p-4 bg-zinc-50/30 space-y-3">
                         <p className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">File Upload Settings (Global)</p>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div className="space-y-1">
                                 <label className="text-[9px] font-bold text-zinc-500 uppercase">Max Files</label>
-                                <input type="number" min="1" max="20" value={maxFiles} onChange={e => setMaxFiles(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                <input type="number" min="1" max="20" value={maxFiles} onChange={e => setMaxFiles(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded-md py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                             </div>
                             <div className="space-y-1">
                                 <label className="text-[9px] font-bold text-zinc-500 uppercase">Max Size (MB)</label>
-                                <input type="number" min="1" max="100" value={maxFileSizeMB} onChange={e => setMaxFileSizeMB(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                <input type="number" min="1" max="100" value={maxFileSizeMB} onChange={e => setMaxFileSizeMB(e.target.value)} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded-md py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                             </div>
                             <div className="space-y-1">
                                 <label className="text-[9px] font-bold text-zinc-500 uppercase">Accepted Types</label>
-                                <input type="text" value={acceptedFileTypes} onChange={e => setAcceptedFileTypes(e.target.value)} disabled={isReadOnly} placeholder=".pdf, .jpg, .png" className="w-full bg-white border border-gray-300 rounded py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                <input type="text" value={acceptedFileTypes} onChange={e => setAcceptedFileTypes(e.target.value)} disabled={isReadOnly} placeholder=".pdf, .jpg, .png" className="w-full bg-white border border-gray-300 rounded-md py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                             </div>
                         </div>
                     </div>
@@ -830,7 +830,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
 
             {/* ── SECTION: Wizard Step Groups ── */}
             {layout === 'wizard' && (
-                <div className="border border-zinc-200/80 rounded-xl bg-white p-6 shadow-sm space-y-4">
+                <div className="border border-zinc-200/80 rounded-md bg-white p-6 shadow-sm space-y-4">
                     <div className="flex justify-between items-center border-b border-zinc-100 pb-2">
                         <h3 className="text-xs font-bold text-zinc-800 uppercase tracking-widest">Wizard Steps</h3>
                         {!isReadOnly && (
@@ -844,8 +844,8 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                             {stepGroups.map((group, gIdx) => (
                                 <div key={gIdx} className="flex gap-4 items-center bg-zinc-50/50 p-2.5 border border-zinc-200 rounded-md">
                                     <div className="flex-1 grid grid-cols-3 gap-3">
-                                        <input type="text" required value={group.id} onChange={e => updateStepGroup(gIdx, { id: e.target.value.replace(/[^a-zA-Z0-9_]/g, '') })} disabled={isReadOnly} placeholder="step_id" className="border border-gray-300 rounded px-2.5 py-1 text-xs" />
-                                        <input type="text" required value={group.label} onChange={e => updateStepGroup(gIdx, { label: e.target.value })} disabled={isReadOnly} placeholder="Step Label" className="border border-gray-300 rounded px-2.5 py-1 text-xs col-span-2" />
+                                        <input type="text" required value={group.id} onChange={e => updateStepGroup(gIdx, { id: e.target.value.replace(/[^a-zA-Z0-9_]/g, '') })} disabled={isReadOnly} placeholder="step_id" className="border border-gray-300 rounded-md px-2.5 py-1 text-xs" />
+                                        <input type="text" required value={group.label} onChange={e => updateStepGroup(gIdx, { label: e.target.value })} disabled={isReadOnly} placeholder="Step Label" className="border border-gray-300 rounded-md px-2.5 py-1 text-xs col-span-2" />
                                     </div>
                                     {!isReadOnly && (
                                         <button type="button" onClick={() => removeStepGroup(gIdx)} className="text-zinc-400 hover:text-red-500">✕</button>
@@ -862,7 +862,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                 <div className="flex justify-between items-center px-1">
                     <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Questions ({fields.length})</h3>
                     {!isReadOnly && (
-                        <button type="button" onClick={addField} className="px-3 py-1.5 border border-black text-black text-xs font-bold uppercase tracking-wider rounded hover:bg-zinc-50 transition-colors flex items-center gap-1">
+                        <button type="button" onClick={addField} className="px-3 py-1.5 border border-black text-black text-xs font-bold uppercase tracking-wider rounded-md hover:bg-zinc-50 transition-colors flex items-center gap-1">
                             <Plus className="w-3.5 h-3.5" /> Add Question
                         </button>
                     )}
@@ -877,7 +877,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                 <div 
                                     key={idx} 
                                     onClick={() => setActiveFieldIndex(idx)}
-                                    className={`bg-white border border-zinc-200 rounded-xl p-5 hover:border-zinc-300 transition-all shadow-sm flex flex-col gap-2 ${
+                                    className={`bg-white border border-zinc-200 rounded-md p-5 hover:border-zinc-300 transition-all shadow-sm flex flex-col gap-2 ${
                                         f.hidden ? 'opacity-60 bg-zinc-50/30' : ''
                                     }`}
                                 >
@@ -886,13 +886,13 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                             <div className="text-sm font-semibold text-zinc-800 flex items-center gap-1.5">
                                                 {f.title || <span className="text-zinc-400 italic font-normal text-xs">(Empty Question Label)</span>}
                                                 {f.required && <span className="text-red-500">*</span>}
-                                                {f.hidden && <span className="text-[9px] bg-zinc-100 text-zinc-500 px-1.5 py-0.5 rounded font-mono">Hidden</span>}
+                                                {f.hidden && <span className="text-[9px] bg-zinc-100 text-zinc-500 px-1.5 py-0.5 rounded-md font-mono">Hidden</span>}
                                             </div>
                                             {f.description && (
                                                 <p className="text-xs text-zinc-400 leading-relaxed font-normal">{f.description}</p>
                                             )}
                                         </div>
-                                        <span className="text-[9px] font-bold text-zinc-400 bg-zinc-100 px-2 py-0.5 rounded uppercase tracking-wider">
+                                        <span className="text-[9px] font-bold text-zinc-400 bg-zinc-100 px-2 py-0.5 rounded-md uppercase tracking-wider">
                                             {f.format.replace('_', ' ')}
                                         </span>
                                     </div>
@@ -905,7 +905,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                             <div className="border-b border-dashed border-zinc-200 pb-4 max-w-md text-zinc-300 italic">Long answer text</div>
                                         )}
                                         {f.format === 'file' && (
-                                            <div className="border border-dashed border-zinc-200 rounded p-4 flex items-center justify-center gap-2 max-w-xs bg-zinc-50/30">
+                                            <div className="border border-dashed border-zinc-200 rounded-md p-4 flex items-center justify-center gap-2 max-w-xs bg-zinc-50/30">
                                                 <span className="text-[10px] font-semibold text-zinc-400">DRAG & DROP OR UPLOAD FILE</span>
                                             </div>
                                         )}
@@ -918,7 +918,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                                     </div>
                                                 ))}
                                                 {f.format === 'select' && (
-                                                    <div className="border border-zinc-200 rounded px-2.5 py-1.5 max-w-xs flex justify-between items-center text-zinc-500 bg-white">
+                                                    <div className="border border-zinc-200 rounded-md px-2.5 py-1.5 max-w-xs flex justify-between items-center text-zinc-500 bg-white">
                                                         <span>Select option...</span>
                                                         <span>▼</span>
                                                     </div>
@@ -945,7 +945,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                             </div>
                                         )}
                                         {['multiple_choice_grid', 'checkbox_grid'].includes(f.format) && (
-                                            <div className="border border-zinc-200 rounded p-2 max-w-md bg-zinc-50/20">
+                                            <div className="border border-zinc-200 rounded-md p-2 max-w-md bg-zinc-50/20">
                                                 <table className="w-full text-left text-[10px] border-collapse">
                                                     <thead>
                                                         <tr>
@@ -974,7 +974,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                         return (
                             <div 
                                 key={idx} 
-                                className="bg-white border border-zinc-300 border-l-4 border-l-black rounded-xl p-6 shadow-md flex flex-col gap-4 relative"
+                                className="bg-white border border-zinc-300 border-l-4 border-l-black rounded-md p-6 shadow-md flex flex-col gap-4 relative"
                             >
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div className="space-y-1 md:col-span-2">
@@ -999,7 +999,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                                 updateField(idx, { format, type });
                                             }} 
                                             disabled={isReadOnly} 
-                                            className="w-full bg-white border border-zinc-200 rounded px-2 py-1.5 text-xs focus:ring-1 focus:ring-black focus:outline-none"
+                                            className="w-full bg-white border border-zinc-200 rounded-md px-2 py-1.5 text-xs focus:ring-1 focus:ring-black focus:outline-none"
                                         >
                                             <option value="text">Single Line Text</option>
                                             <option value="textarea">Multi-line Text</option>
@@ -1037,12 +1037,12 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-xl border-t border-zinc-100 pt-3">
                                         <div className="space-y-1">
                                             <label className="text-[10px] font-bold text-zinc-500 uppercase">Accepted File Types</label>
-                                            <input type="text" value={f.fileAccept} onChange={e => updateField(idx, { fileAccept: e.target.value })} disabled={isReadOnly} placeholder=".pdf, .jpg, .png" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                            <input type="text" value={f.fileAccept} onChange={e => updateField(idx, { fileAccept: e.target.value })} disabled={isReadOnly} placeholder=".pdf, .jpg, .png" className="w-full bg-white border border-gray-300 rounded-md py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                                             <p className="text-[9px] text-zinc-400">Comma-separated. Leave empty for all.</p>
                                         </div>
                                         <div className="space-y-1">
                                             <label className="text-[10px] font-bold text-zinc-500 uppercase">Max File Count</label>
-                                            <input type="number" min="1" max="20" value={f.fileMaxCount} onChange={e => updateField(idx, { fileMaxCount: e.target.value })} disabled={isReadOnly} placeholder="5" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                            <input type="number" min="1" max="20" value={f.fileMaxCount} onChange={e => updateField(idx, { fileMaxCount: e.target.value })} disabled={isReadOnly} placeholder="5" className="w-full bg-white border border-gray-300 rounded-md py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                                         </div>
                                     </div>
                                 )}
@@ -1050,7 +1050,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                 {['select', 'radio', 'checkbox'].includes(f.format) && (
                                     <div className="space-y-1 w-full max-w-xl border-t border-zinc-100 pt-3">
                                         <label className="text-[10px] font-bold text-zinc-500 uppercase">Options (comma-separated)</label>
-                                        <input type="text" required value={f.options} onChange={e => updateField(idx, { options: e.target.value })} disabled={isReadOnly} placeholder="Website, Museum, Staff" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                        <input type="text" required value={f.options} onChange={e => updateField(idx, { options: e.target.value })} disabled={isReadOnly} placeholder="Website, Museum, Staff" className="w-full bg-white border border-gray-300 rounded-md py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                                     </div>
                                 )}
 
@@ -1058,11 +1058,11 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                     <div className="grid grid-cols-2 gap-4 w-full max-w-xl border-t border-zinc-100 pt-3">
                                         <div className="space-y-1">
                                             <label className="text-[10px] font-bold text-zinc-500 uppercase">Rows (comma-separated)</label>
-                                            <input type="text" required value={f.rows} onChange={e => updateField(idx, { rows: e.target.value })} disabled={isReadOnly} placeholder="Quality, Speed" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                            <input type="text" required value={f.rows} onChange={e => updateField(idx, { rows: e.target.value })} disabled={isReadOnly} placeholder="Quality, Speed" className="w-full bg-white border border-gray-300 rounded-md py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                                         </div>
                                         <div className="space-y-1">
                                             <label className="text-[10px] font-bold text-zinc-500 uppercase">Columns (comma-separated)</label>
-                                            <input type="text" required value={f.columns} onChange={e => updateField(idx, { columns: e.target.value })} disabled={isReadOnly} placeholder="Poor, Fair, Good" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                            <input type="text" required value={f.columns} onChange={e => updateField(idx, { columns: e.target.value })} disabled={isReadOnly} placeholder="Poor, Fair, Good" className="w-full bg-white border border-gray-300 rounded-md py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                                         </div>
                                     </div>
                                 )}
@@ -1071,11 +1071,11 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                     <div className="grid grid-cols-2 gap-4 w-full max-w-xl border-t border-zinc-100 pt-3">
                                         <div className="space-y-1">
                                             <label className="text-[10px] font-bold text-zinc-500 uppercase">Min Label</label>
-                                            <input type="text" value={f.minLabel} onChange={e => updateField(idx, { minLabel: e.target.value })} disabled={isReadOnly} placeholder="Not Satisfied" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                            <input type="text" value={f.minLabel} onChange={e => updateField(idx, { minLabel: e.target.value })} disabled={isReadOnly} placeholder="Not Satisfied" className="w-full bg-white border border-gray-300 rounded-md py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                                         </div>
                                         <div className="space-y-1">
                                             <label className="text-[10px] font-bold text-zinc-500 uppercase">Max Label</label>
-                                            <input type="text" value={f.maxLabel} onChange={e => updateField(idx, { maxLabel: e.target.value })} disabled={isReadOnly} placeholder="Very Satisfied" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                            <input type="text" value={f.maxLabel} onChange={e => updateField(idx, { maxLabel: e.target.value })} disabled={isReadOnly} placeholder="Very Satisfied" className="w-full bg-white border border-gray-300 rounded-md py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                                         </div>
                                     </div>
                                 )}
@@ -1084,7 +1084,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl border-t border-zinc-100 pt-3">
                                         <div className="space-y-1">
                                             <label className="text-[10px] font-bold text-zinc-500 uppercase">Depends on Field</label>
-                                            <select value={f.dependsOnField} onChange={e => updateField(idx, { dependsOnField: e.target.value })} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
+                                            <select value={f.dependsOnField} onChange={e => updateField(idx, { dependsOnField: e.target.value })} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded-md py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
                                                 <option value="">-- Select field --</option>
                                                 {fields.filter((_, i) => i !== idx).map(other => (
                                                     <option key={other.key} value={other.key}>{other.title || other.key}</option>
@@ -1093,7 +1093,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                         </div>
                                         <div className="space-y-1">
                                             <label className="text-[10px] font-bold text-zinc-500 uppercase">Operator</label>
-                                            <select value={f.dependsOnOperator} onChange={e => updateField(idx, { dependsOnOperator: e.target.value })} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
+                                            <select value={f.dependsOnOperator} onChange={e => updateField(idx, { dependsOnOperator: e.target.value })} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded-md py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none">
                                                 <option value="eq">Equals</option>
                                                 <option value="neq">Not Equals</option>
                                                 <option value="not_empty">Not Empty</option>
@@ -1101,7 +1101,7 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                         </div>
                                         <div className="space-y-1">
                                             <label className="text-[10px] font-bold text-zinc-500 uppercase">Value</label>
-                                            <input type="text" value={f.dependsOnValue} onChange={e => updateField(idx, { dependsOnValue: e.target.value })} disabled={isReadOnly} placeholder="Expected value" className="w-full bg-white border border-gray-300 rounded py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
+                                            <input type="text" value={f.dependsOnValue} onChange={e => updateField(idx, { dependsOnValue: e.target.value })} disabled={isReadOnly} placeholder="Expected value" className="w-full bg-white border border-gray-300 rounded-md py-1 px-2.5 text-xs focus:ring-1 focus:ring-black focus:outline-none" />
                                         </div>
                                     </div>
                                 )}
@@ -1116,14 +1116,14 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                             onChange={e => updateField(idx, { key: e.target.value.replace(/[^a-zA-Z0-9_]/g, '') })} 
                                             disabled={isReadOnly} 
                                             placeholder="field_key" 
-                                            className="w-full bg-white border border-gray-300 rounded py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none" 
+                                            className="w-full bg-white border border-gray-300 rounded-md py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none" 
                                         />
                                     </div>
 
                                     {layout === 'wizard' && stepGroups.length > 0 && (
                                         <div className="space-y-1 max-w-xs">
                                             <label className="text-[10px] font-bold text-zinc-500 uppercase">Assign to Wizard Step</label>
-                                            <select value={f.stepGroup} onChange={e => updateField(idx, { stepGroup: e.target.value })} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none">
+                                            <select value={f.stepGroup} onChange={e => updateField(idx, { stepGroup: e.target.value })} disabled={isReadOnly} className="w-full bg-white border border-gray-300 rounded-md py-1 px-2 text-xs focus:ring-1 focus:ring-black focus:outline-none">
                                                 <option value="">-- No step assigned --</option>
                                                 {stepGroups.map(g => <option key={g.id} value={g.id}>{g.label} ({g.id})</option>)}
                                             </select>
@@ -1134,15 +1134,15 @@ function FormBuilderTab({ form, fetchDefinition, apiFetch, setModal }) {
                                 <div className="border-t border-zinc-100 pt-4 flex flex-wrap justify-between items-center gap-4">
                                     <div className="flex gap-4 items-center">
                                         <label className="flex items-center cursor-pointer">
-                                            <input type="checkbox" checked={f.required} onChange={e => updateField(idx, { required: e.target.checked })} disabled={isReadOnly} className="w-3.5 h-3.5 border-gray-300 text-black rounded focus:ring-black" />
+                                            <input type="checkbox" checked={f.required} onChange={e => updateField(idx, { required: e.target.checked })} disabled={isReadOnly} className="w-3.5 h-3.5 border-gray-300 text-black rounded-md focus:ring-black" />
                                             <span className="ml-2 text-[10px] font-semibold text-zinc-600">Required</span>
                                         </label>
                                         <label className="flex items-center cursor-pointer">
-                                            <input type="checkbox" checked={f.hidden} onChange={e => updateField(idx, { hidden: e.target.checked })} disabled={isReadOnly} className="w-3.5 h-3.5 border-gray-300 text-black rounded focus:ring-black" />
+                                            <input type="checkbox" checked={f.hidden} onChange={e => updateField(idx, { hidden: e.target.checked })} disabled={isReadOnly} className="w-3.5 h-3.5 border-gray-300 text-black rounded-md focus:ring-black" />
                                             <span className="ml-2 text-[10px] font-semibold text-zinc-600">Hidden (Internal)</span>
                                         </label>
                                         <label className="flex items-center cursor-pointer">
-                                            <input type="checkbox" checked={f.hasDependsOn} onChange={e => updateField(idx, { hasDependsOn: e.target.checked })} disabled={isReadOnly} className="w-3.5 h-3.5 border-gray-300 text-black rounded focus:ring-black" />
+                                            <input type="checkbox" checked={f.hasDependsOn} onChange={e => updateField(idx, { hasDependsOn: e.target.checked })} disabled={isReadOnly} className="w-3.5 h-3.5 border-gray-300 text-black rounded-md focus:ring-black" />
                                             <span className="ml-2 text-[10px] font-semibold text-zinc-600">Conditional</span>
                                         </label>
                                     </div>

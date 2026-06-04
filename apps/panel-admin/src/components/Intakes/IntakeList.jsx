@@ -28,19 +28,19 @@ export default function IntakeList({
             <div className="flex border-b border-zinc-200">
                 <button 
                     onClick={() => { setActiveTab('submissions'); setSelected(null); setSearchParams({ tab: 'submissions' }); }}
-                    className={`flex-1 pb-3 text-xs font-bold uppercase tracking-widest transition-colors border-b-2 ${activeTab === 'submissions' ? 'border-[#D4AF37] text-black' : 'border-transparent text-zinc-400 hover:text-black'}`}
+                    className={`flex-1 pb-3 text-xs font-bold uppercase tracking-widest transition-colors border-b-2 ${activeTab === 'submissions' ? 'border-black text-black' : 'border-transparent text-zinc-400 hover:text-black'}`}
                 >
                     Offers ({submissions.filter(s => s.status !== 'archived').length})
                 </button>
                 <button 
                     onClick={() => { setActiveTab('intakes'); setSelected(null); setSearchParams({ tab: 'intakes' }); }}
-                    className={`flex-1 pb-3 text-xs font-bold uppercase tracking-widest transition-colors border-b-2 ${activeTab === 'intakes' ? 'border-[#D4AF37] text-black' : 'border-transparent text-zinc-400 hover:text-black'}`}
+                    className={`flex-1 pb-3 text-xs font-bold uppercase tracking-widest transition-colors border-b-2 ${activeTab === 'intakes' ? 'border-black text-black' : 'border-transparent text-zinc-400 hover:text-black'}`}
                 >
                     Intakes ({intakes.filter(i => i.status !== 'rejected').length})
                 </button>
                 <button 
                     onClick={() => { setActiveTab('archive'); setSelected(null); setSearchParams({ tab: 'archive' }); }}
-                    className={`flex-1 pb-3 text-xs font-bold uppercase tracking-widest transition-colors border-b-2 ${activeTab === 'archive' ? 'border-[#D4AF37] text-black' : 'border-transparent text-zinc-400 hover:text-black'}`}
+                    className={`flex-1 pb-3 text-xs font-bold uppercase tracking-widest transition-colors border-b-2 ${activeTab === 'archive' ? 'border-black text-black' : 'border-transparent text-zinc-400 hover:text-black'}`}
                 >
                     Archive
                 </button>
@@ -68,7 +68,7 @@ export default function IntakeList({
                             <button 
                                 key={item.id} 
                                 onClick={() => handleSelectRecord(type, item, true)}
-                                className={`w-full p-5 text-left transition-colors flex flex-col gap-2 border-l-4 ${isSelected ? 'bg-zinc-50 border-[#D4AF37]' : 'bg-white border-transparent hover:bg-zinc-50'}`}
+                                className={`w-full p-5 text-left transition-colors flex flex-col gap-2 border-l-4 ${isSelected ? 'bg-zinc-50 border-black' : 'bg-white border-transparent hover:bg-zinc-50'}`}
                             >
                                 <div className="flex justify-between items-start w-full">
                                     <div className="font-bold text-[13px] text-black line-clamp-1 pr-4">

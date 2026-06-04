@@ -105,7 +105,7 @@ export default function InventoryConstituents() {
                             setFormData({ name: '', type: 'Individual', nationality: '', biography: '', external_id: '' });
                             setIsEditing(true);
                         }}
-                        className="bg-black hover:bg-gray-800 text-white px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap"
+                        className="bg-black hover:bg-gray-800 text-white px-5 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap"
                     >
                         <Plus className="w-4 h-4" /> Add Constituent
                     </button>
@@ -125,12 +125,12 @@ export default function InventoryConstituents() {
                             placeholder="Filter directory records..."
                             value={search}
                             onChange={e => setSearch(e.target.value)}
-                            className="w-full bg-white border border-zinc-300 rounded-lg pl-9 pr-4 py-2 text-sm text-black placeholder:text-zinc-400 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors shadow-sm"
+                            className="w-full bg-white border border-zinc-300 rounded-md pl-9 pr-4 py-2 text-sm text-black placeholder:text-zinc-400 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors shadow-sm"
                         />
                     </div>
 
                     {/* Directory Feed */}
-                    <div className="bg-white border border-zinc-200 rounded-xl overflow-hidden shadow-sm max-h-[65vh] overflow-y-auto divide-y divide-zinc-100">
+                    <div className="bg-white border border-zinc-200 rounded-md overflow-hidden shadow-sm max-h-[65vh] overflow-y-auto divide-y divide-zinc-100">
                         {loading ? (
                             <div className="p-8 text-center flex flex-col items-center justify-center gap-2 text-zinc-400 text-xs font-bold uppercase tracking-widest animate-pulse">
                                 <Loader2 className="w-4 h-4 animate-spin text-zinc-600" /> Scanning Directory
@@ -175,7 +175,7 @@ export default function InventoryConstituents() {
                 {/* ── Right Column: Detail / Form Terminal ── */}
                 <div className="col-span-12 lg:col-span-8">
                     {isEditing || selected ? (
-                        <div className="bg-white border border-zinc-200 rounded-xl p-6 shadow-sm flex flex-col gap-6 animate-in fade-in duration-300">
+                        <div className="bg-white border border-zinc-200 rounded-md p-6 shadow-sm flex flex-col gap-6 animate-in fade-in duration-300">
                             
                             {/* Action Header */}
                             <header className="flex justify-between items-start border-b border-zinc-100 pb-3">
@@ -192,7 +192,7 @@ export default function InventoryConstituents() {
                                 {!isEditing && (
                                     <button 
                                         onClick={() => setIsEditing(true)}
-                                        className="px-4 py-2 bg-white hover:bg-zinc-50 border border-zinc-300 rounded-lg text-zinc-800 text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
+                                        className="px-4 py-2 bg-white hover:bg-zinc-50 border border-zinc-300 rounded-md text-zinc-800 text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
                                     >
                                         Edit Details
                                     </button>
@@ -210,7 +210,7 @@ export default function InventoryConstituents() {
                                                 type="text" 
                                                 value={formData.name} 
                                                 onChange={e => setFormData({...formData, name: e.target.value})}
-                                                className="block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
+                                                className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
                                                 placeholder="Full legal or commercial designation"
                                             />
                                         </div>
@@ -219,7 +219,7 @@ export default function InventoryConstituents() {
                                             <select 
                                                 value={formData.type} 
                                                 onChange={e => setFormData({...formData, type: e.target.value})}
-                                                className="block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
+                                                className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
                                             >
                                                 <option value="Individual">Individual</option>
                                                 <option value="Organization">Organization</option>
@@ -236,7 +236,7 @@ export default function InventoryConstituents() {
                                                 type="text" 
                                                 value={formData.nationality} 
                                                 onChange={e => setFormData({...formData, nationality: e.target.value})}
-                                                className="block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
+                                                className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
                                                 placeholder="e.g. Filipino, Spanish"
                                             />
                                         </div>
@@ -246,7 +246,7 @@ export default function InventoryConstituents() {
                                                 type="text" 
                                                 value={formData.external_id} 
                                                 onChange={e => setFormData({...formData, external_id: e.target.value})}
-                                                className="block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm font-mono text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
+                                                className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm font-mono text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
                                                 placeholder="e.g. 500025114"
                                             />
                                         </div>
@@ -258,7 +258,7 @@ export default function InventoryConstituents() {
                                             rows="4" 
                                             value={formData.biography} 
                                             onChange={e => setFormData({...formData, biography: e.target.value})}
-                                            className="block w-full rounded-lg border border-zinc-300 p-3 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all resize-none shadow-sm bg-white"
+                                            className="block w-full rounded-md border border-zinc-300 p-3 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all resize-none shadow-sm bg-white"
                                             placeholder="Authority scope notes, timeline dates, and significance..."
                                         />
                                     </div>
@@ -267,7 +267,7 @@ export default function InventoryConstituents() {
                                         <button 
                                             type="submit" 
                                             disabled={isSubmitting}
-                                            className="flex-1 py-2.5 bg-black hover:bg-zinc-800 text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors shadow-md disabled:opacity-50"
+                                            className="flex-1 py-2.5 bg-black hover:bg-zinc-800 text-white font-bold text-xs uppercase tracking-wider rounded-md transition-colors shadow-md disabled:opacity-50"
                                         >
                                             {isSubmitting ? 'Saving Record...' : 'Save Constituent Record'}
                                         </button>
@@ -277,7 +277,7 @@ export default function InventoryConstituents() {
                                                 setIsEditing(false);
                                                 if (!selected) setSelected(null);
                                             }} 
-                                            className="px-5 py-2.5 bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-700 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors"
+                                            className="px-5 py-2.5 bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-700 text-xs font-bold uppercase tracking-wider rounded-md transition-colors"
                                         >
                                             Cancel
                                         </button>
@@ -285,7 +285,7 @@ export default function InventoryConstituents() {
                                 </form>
                             ) : (
                                 <div className="space-y-8">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-zinc-50 p-4 rounded-xl border border-zinc-200">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-zinc-50 p-4 rounded-md border border-zinc-200">
                                         <div className="flex items-start gap-2.5">
                                             <Globe className="w-4 h-4 text-zinc-400 mt-0.5 flex-shrink-0" />
                                             <div>
@@ -309,7 +309,7 @@ export default function InventoryConstituents() {
                                         </p>
                                     </div>
 
-                                    <div className="border border-zinc-200 rounded-xl overflow-hidden bg-zinc-50/50">
+                                    <div className="border border-zinc-200 rounded-md overflow-hidden bg-zinc-50/50">
                                         <div className="bg-zinc-50 px-4 py-2 border-b border-zinc-200 flex items-center gap-1.5">
                                             <Layers className="w-3.5 h-3.5 text-zinc-500" />
                                             <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-700">Linked Collection Artifacts</h3>
@@ -318,8 +318,8 @@ export default function InventoryConstituents() {
                                             {linkedArtifacts.length > 0 ? (
                                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-60 overflow-y-auto">
                                                     {linkedArtifacts.map(art => (
-                                                        <div key={art.id} className="flex items-center gap-3 p-3 bg-white border border-zinc-150 rounded-lg shadow-sm">
-                                                            <div className="w-8 h-8 bg-zinc-50 border border-zinc-250 flex items-center justify-center rounded-lg text-zinc-400 flex-shrink-0">
+                                                        <div key={art.id} className="flex items-center gap-3 p-3 bg-white border border-zinc-150 rounded-md shadow-sm">
+                                                            <div className="w-8 h-8 bg-zinc-50 border border-zinc-250 flex items-center justify-center rounded-md text-zinc-400 flex-shrink-0">
                                                                 <FileText className="w-4 h-4" />
                                                             </div>
                                                             <div className="truncate">
@@ -338,7 +338,7 @@ export default function InventoryConstituents() {
                             )}
                         </div>
                     ) : (
-                        <div className="h-[60vh] bg-zinc-50 border border-zinc-200 border-dashed rounded-xl flex flex-col items-center justify-center gap-3 text-center p-8 animate-in fade-in">
+                        <div className="h-[60vh] bg-zinc-50 border border-zinc-200 border-dashed rounded-md flex flex-col items-center justify-center gap-3 text-center p-8 animate-in fade-in">
                             <User className="w-12 h-12 text-zinc-300" />
                             <div>
                                 <h3 className="text-sm font-bold text-zinc-700 uppercase tracking-wider">No Selection</h3>

@@ -165,7 +165,7 @@ export default function AppointmentDetail() {
       <div className="h-full flex flex-col items-center justify-center gap-3">
         <AlertCircle className="w-8 h-8 text-red-400" />
         <p className="text-sm text-zinc-600">{error || 'Appointment not found.'}</p>
-        <button onClick={() => navigate('/appointments')} className="text-xs text-[#D4AF37] hover:underline">
+        <button onClick={() => navigate('/appointments')} className="text-xs text-zinc-600 hover:text-zinc-950 hover:underline">
           Go back to list
         </button>
       </div>
@@ -328,7 +328,7 @@ export default function AppointmentDetail() {
           {(isPending || isApproved) && (
             <div className="bg-white border border-zinc-200 rounded-sm shadow-sm overflow-hidden flex flex-col">
               <div className="px-5 py-4 bg-zinc-950 text-white border-b border-zinc-900 relative">
-                <div className="absolute left-0 top-0 w-1 h-full bg-[#D4AF37]" />
+                <div className="absolute left-0 top-0 w-1 h-full bg-zinc-800" />
                 <h3 className="text-xs font-bold uppercase tracking-widest">Administrator Actions</h3>
               </div>
 
@@ -371,7 +371,7 @@ export default function AppointmentDetail() {
                             <div className="text-xl font-bold text-zinc-900">{populationCount}</div>
                           </div>
                           <div>
-                            <label className="text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold mb-1 block">
+                            <label className="text-[10px] uppercase tracking-widest text-zinc-700 font-bold mb-1 block">
                               Actually Present *
                             </label>
                             <input
@@ -379,7 +379,7 @@ export default function AppointmentDetail() {
                               min="0"
                               value={presentCount}
                               onChange={e => setPresentCount(e.target.value)}
-                              className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-3 py-2 text-sm font-medium focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/50"
+                              className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-3 py-2 text-sm font-medium focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20"
                               placeholder="Count"
                             />
                           </div>
@@ -401,7 +401,7 @@ export default function AppointmentDetail() {
                         value={message}
                         onChange={e => setMessage(e.target.value)}
                         rows={4}
-                        className="w-full flex-1 min-h-[100px] bg-white border border-zinc-200 rounded-sm p-3 text-sm resize-none focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/50"
+                        className="w-full flex-1 min-h-[100px] bg-white border border-zinc-200 rounded-sm p-3 text-sm resize-none focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20"
                         placeholder="Add a message to be sent via email..."
                       />
                     </div>
@@ -412,7 +412,7 @@ export default function AppointmentDetail() {
                       className={`w-full py-3 text-[11px] font-bold uppercase tracking-widest rounded-sm transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50 ${
                         action === 'decline' || action === 'cancel'
                           ? 'bg-red-500 hover:bg-red-600 text-white'
-                          : 'bg-[#D4AF37] hover:bg-[#b3932f] text-zinc-900'
+                          : 'bg-zinc-900 hover:bg-zinc-800 text-white'
                       }`}
                     >
                       {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
@@ -476,7 +476,7 @@ export default function AppointmentDetail() {
                             href={fileUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="ml-3 text-[10px] font-bold uppercase tracking-widest text-[#D4AF37] hover:text-[#b3932f] flex-shrink-0"
+                            className="ml-3 text-[10px] font-bold uppercase tracking-widest text-zinc-600 hover:text-zinc-900 flex-shrink-0"
                           >
                             View
                           </a>

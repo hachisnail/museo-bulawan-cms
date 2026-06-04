@@ -32,7 +32,7 @@ export default function MovementForm({
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#D4AF37] mb-2">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2">
                 Log Physical Location Transfer
             </h4>
             
@@ -48,7 +48,7 @@ export default function MovementForm({
                     required
                     value={toLocation}
                     onChange={(e) => setToLocation(e.target.value)}
-                    className="w-full bg-white border border-zinc-300 rounded-sm px-3 py-2 text-sm text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-zinc-300 rounded-md px-3 py-2 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20"
                 >
                     <option value="">-- Select Location --</option>
                     {locations.map((loc) => (
@@ -67,7 +67,7 @@ export default function MovementForm({
                     onChange={(e) => setReason(e.target.value)}
                     placeholder="e.g. Moved to Gallery 2 for upcoming Pre-colonial Exhibition..."
                     rows="3"
-                    className="w-full bg-white border border-zinc-300 rounded-sm px-3 py-2 text-sm text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] resize-none"
+                    className="w-full bg-white border border-zinc-300 rounded-md px-3 py-2 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 resize-none"
                 />
             </div>
 
@@ -75,14 +75,14 @@ export default function MovementForm({
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="px-4 py-2 border border-zinc-300 text-black text-xs font-bold uppercase tracking-widest hover:bg-zinc-100 transition-colors rounded-sm"
+                    className="px-4 py-2 border border-zinc-300 text-black text-xs font-bold uppercase tracking-widest hover:bg-zinc-100 transition-colors rounded-md"
                 >
                     Cancel
                 </button>
                 <button
                     type="submit"
                     disabled={actionLoading}
-                    className="px-6 py-2 bg-black text-[#D4AF37] text-xs font-bold uppercase tracking-widest hover:bg-zinc-900 transition-colors rounded-sm disabled:opacity-50"
+                    className="px-6 py-2 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-md disabled:opacity-50"
                 >
                     {actionLoading ? 'Logging...' : 'Confirm Transfer'}
                 </button>

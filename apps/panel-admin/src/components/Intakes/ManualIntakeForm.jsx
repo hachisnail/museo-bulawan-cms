@@ -34,7 +34,7 @@ export default function ManualIntakeForm({
                             required 
                             value={itemName} 
                             onChange={(e) => setItemName(e.target.value)}
-                            className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all font-medium"
+                            className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all font-medium"
                             placeholder="e.g. Pre-colonial Gold Mask"
                         />
                     </div>
@@ -46,7 +46,7 @@ export default function ManualIntakeForm({
                             required 
                             value={sourceInfo} 
                             onChange={(e) => setSourceInfo(e.target.value)}
-                            className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all font-medium"
+                            className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all font-medium"
                             placeholder="e.g. Donated by Jefferson Reyes, Purchased from Sotheby's"
                         />
                     </div>
@@ -58,7 +58,7 @@ export default function ManualIntakeForm({
                             onChange={(e) => setDescription(e.target.value)}
                             rows={3}
                             placeholder="Brief physical description or provenance notes..."
-                            className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all resize-none placeholder:text-zinc-400 font-light"
+                            className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all resize-none placeholder:text-zinc-400 font-light"
                         />
                     </div>
 
@@ -68,7 +68,7 @@ export default function ManualIntakeForm({
                             <select 
                                 value={method} 
                                 onChange={(e) => setMethod(e.target.value)}
-                                className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all font-medium"
+                                className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all font-medium"
                             >
                                 <option value="gift">Gift</option>
                                 <option value="loan">Loan</option>
@@ -86,7 +86,7 @@ export default function ManualIntakeForm({
                                 max="10000" 
                                 value={quantity} 
                                 onChange={(e) => setQuantity(e.target.value)}
-                                className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all font-medium"
+                                className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all font-medium"
                             />
                         </div>
                     </div>
@@ -99,7 +99,7 @@ export default function ManualIntakeForm({
                                 required 
                                 value={loanEndDate} 
                                 onChange={(e) => setLoanEndDate(e.target.value)}
-                                className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all font-medium"
+                                className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all font-medium"
                             />
                         </div>
                     )}
@@ -108,7 +108,7 @@ export default function ManualIntakeForm({
                 <button 
                     type="submit" 
                     disabled={actionLoading} 
-                    className="w-full py-4 bg-black text-[#D4AF37] rounded-sm text-[10px] font-black uppercase tracking-widest hover:bg-zinc-900 transition-all flex items-center justify-center gap-2 mt-auto disabled:opacity-50"
+                    className="w-full py-4 bg-black text-white rounded-sm text-[10px] font-black uppercase tracking-widest hover:bg-zinc-800 transition-all flex items-center justify-center gap-2 mt-auto disabled:opacity-50"
                 >
                     {actionLoading ? 'Saving...' : 'Save Manual Intake Record'}
                 </button>

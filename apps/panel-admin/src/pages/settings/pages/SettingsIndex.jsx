@@ -1,4 +1,3 @@
-// apps/panel-admin/src/pages/settings/pages/SettingsIndex.jsx
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/authContext';
 import Modal from '../../../components/Modal';
@@ -101,7 +100,7 @@ export default function SettingsIndex() {
     }
 
     return (
-        <div className="flex flex-col gap-y-6 bg-white pb-12  mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-y-6 bg-white pb-12 mx-auto px-4 sm:px-6 lg:px-8">
             {/* Header Block */}
             <section className="border-b border-gray-100 pb-4 mb-2">
                 <h1 className="text-3xl font-bold text-black tracking-tight">Configuration</h1>
@@ -127,7 +126,7 @@ export default function SettingsIndex() {
             </div>
 
             {/* Content Panel Area */}
-            <div className="bg-white border border-gray-150 rounded-xl p-8 shadow-sm w-full animate-in fade-in duration-300">
+            <div className="bg-white border border-gray-150 rounded-md p-8 shadow-sm w-full animate-in fade-in duration-300">
                 {activeTab === 'profile' && (
                     <div className="space-y-8">
                         <div className="space-y-1">
@@ -143,7 +142,7 @@ export default function SettingsIndex() {
                                         type="text" 
                                         value={profileData.fname}
                                         onChange={e => setProfileData({...profileData, fname: e.target.value})}
-                                        className="w-full bg-zinc-50 border border-zinc-300 rounded px-5 py-3 text-sm text-black focus:outline-none focus:border-black transition-all"
+                                        className="w-full bg-zinc-50 border border-zinc-300 rounded-md px-5 py-3 text-sm text-black focus:outline-none focus:border-black transition-all"
                                         disabled={loading}
                                         required
                                     />
@@ -154,7 +153,7 @@ export default function SettingsIndex() {
                                         type="text" 
                                         value={profileData.lname}
                                         onChange={e => setProfileData({...profileData, lname: e.target.value})}
-                                        className="w-full bg-zinc-50 border border-zinc-300 rounded px-5 py-3 text-sm text-black focus:outline-none focus:border-black transition-all"
+                                        className="w-full bg-zinc-50 border border-zinc-300 rounded-md px-5 py-3 text-sm text-black focus:outline-none focus:border-black transition-all"
                                         disabled={loading}
                                         required
                                     />
@@ -167,7 +166,7 @@ export default function SettingsIndex() {
                                     disabled 
                                     type="text" 
                                     value={profileData.username}
-                                    className="w-full bg-zinc-100 border border-zinc-300 rounded px-5 py-3 text-sm text-zinc-450 cursor-not-allowed font-mono"
+                                    className="w-full bg-zinc-100 border border-zinc-300 rounded-md px-5 py-3 text-sm text-zinc-450 cursor-not-allowed font-mono"
                                 />
                                 <p className="text-[8px] text-zinc-400 italic">Unique identifiers are locked to ensure archival integrity.</p>
                             </div>
@@ -178,7 +177,7 @@ export default function SettingsIndex() {
                                     disabled
                                     type="email" 
                                     value={profileData.email}
-                                    className="w-full bg-zinc-100 border border-zinc-300 rounded px-5 py-3 text-sm text-zinc-450 cursor-not-allowed font-mono"
+                                    className="w-full bg-zinc-100 border border-zinc-300 rounded-md px-5 py-3 text-sm text-zinc-450 cursor-not-allowed font-mono"
                                 />
                                 <p className="text-[8px] text-zinc-400 italic">Email modifications must be authorized by an Administrator.</p>
                             </div>
@@ -187,7 +186,7 @@ export default function SettingsIndex() {
                                 <button 
                                     type="submit" 
                                     disabled={loading}
-                                    className="bg-black text-[#D4AF37] px-8 py-3 rounded text-[10px] font-black uppercase tracking-widest hover:bg-zinc-900 transition-all shadow-xl shadow-black/10 disabled:opacity-50"
+                                    className="bg-black text-white px-8 py-3 rounded-md text-[10px] font-black uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-xl shadow-black/10 disabled:opacity-50"
                                 >
                                     {loading ? 'Saving...' : 'Apply Changes'}
                                 </button>
@@ -211,7 +210,7 @@ export default function SettingsIndex() {
                                     required
                                     value={passwords.current}
                                     onChange={e => setPasswords({...passwords, current: e.target.value})}
-                                    className="w-full bg-zinc-50 border border-zinc-300 rounded px-5 py-3 text-sm text-black focus:outline-none focus:border-black transition-all"
+                                    className="w-full bg-zinc-50 border border-zinc-300 rounded-md px-5 py-3 text-sm text-black focus:outline-none focus:border-black transition-all"
                                     disabled={loading}
                                 />
                                 <button 
@@ -231,7 +230,7 @@ export default function SettingsIndex() {
                                         required
                                         value={passwords.next}
                                         onChange={e => setPasswords({...passwords, next: e.target.value})}
-                                        className="w-full bg-zinc-50 border border-zinc-300 rounded px-5 py-3 text-sm text-black focus:outline-none focus:border-black transition-all"
+                                        className="w-full bg-zinc-50 border border-zinc-300 rounded-md px-5 py-3 text-sm text-black focus:outline-none focus:border-black transition-all"
                                         disabled={loading}
                                     />
                                 </div>
@@ -242,7 +241,7 @@ export default function SettingsIndex() {
                                         required
                                         value={passwords.confirm}
                                         onChange={e => setPasswords({...passwords, confirm: e.target.value})}
-                                        className="w-full bg-zinc-50 border border-zinc-300 rounded px-5 py-3 text-sm text-black focus:outline-none focus:border-black transition-all"
+                                        className="w-full bg-zinc-50 border border-zinc-300 rounded-md px-5 py-3 text-sm text-black focus:outline-none focus:border-black transition-all"
                                         disabled={loading}
                                     />
                                 </div>
@@ -253,7 +252,7 @@ export default function SettingsIndex() {
                                 <button 
                                     type="submit" 
                                     disabled={loading}
-                                    className="bg-black text-white px-8 py-3 rounded text-[10px] font-black uppercase tracking-widest hover:bg-zinc-900 transition-all shadow-xl shadow-black/10 disabled:opacity-50"
+                                    className="bg-black text-white px-8 py-3 rounded-md text-[10px] font-black uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-xl shadow-black/10 disabled:opacity-50"
                                 >
                                     {loading ? 'Processing...' : 'Update Credentials'}
                                 </button>
@@ -276,12 +275,12 @@ export default function SettingsIndex() {
                                 { label: 'System Health Diagnostics', desc: 'Receive periodic reports on server and database status.', enabled: false },
                                 { label: 'Audit Trail Summaries', desc: 'Weekly email digest of system activities.', enabled: true }
                             ].map((opt, i) => (
-                                <label key={i} className="flex items-center justify-between p-6 border border-zinc-100 rounded hover:bg-zinc-50/50 transition-all cursor-pointer">
+                                <label key={i} className="flex items-center justify-between p-6 border border-zinc-100 rounded-md hover:bg-zinc-50/50 transition-all cursor-pointer">
                                     <div>
                                         <div className="text-[11px] font-black uppercase tracking-widest text-black mb-1">{opt.label}</div>
                                         <p className="text-[10px] text-zinc-400 italic">{opt.desc}</p>
                                     </div>
-                                    <input type="checkbox" defaultChecked={opt.enabled} className="w-4 h-4 accent-[#D4AF37] cursor-pointer" />
+                                    <input type="checkbox" defaultChecked={opt.enabled} className="w-4 h-4 accent-black cursor-pointer" />
                                 </label>
                             ))}
                         </div>
@@ -295,7 +294,7 @@ export default function SettingsIndex() {
                             <p className="text-[10px] text-zinc-400 uppercase font-black tracking-widest">Administrative variables and configurations</p>
                         </div>
 
-                        <div className="p-6 border border-zinc-100 rounded bg-zinc-50/50 flex items-start gap-4">
+                        <div className="p-6 border border-zinc-100 rounded-md bg-zinc-50/50 flex items-start gap-4">
                             <Shield className="w-5 h-5 text-amber-600 mt-0.5 shrink-0" />
                             <div className="space-y-1">
                                 <div className="text-xs font-bold text-black uppercase tracking-wider">Restricted Administration</div>

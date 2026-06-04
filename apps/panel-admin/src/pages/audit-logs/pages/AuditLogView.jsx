@@ -36,7 +36,7 @@ export default function AuditLogView() {
         return (
             <div className="p-8 text-center text-zinc-500">
                 <p>Audit log not found.</p>
-                <button onClick={() => navigate('/audit-logs')} className="mt-4 text-[#D4AF37] underline">Return to Logs</button>
+                <button onClick={() => navigate('/audit-logs')} className="mt-4 text-zinc-650 hover:text-black hover:underline underline">Return to Logs</button>
             </div>
         );
     }
@@ -89,7 +89,7 @@ export default function AuditLogView() {
                         <Activity className="w-4 h-4" /> Action Details
                     </h3>
                     <div className="space-y-2">
-                        <div><span className="text-[10px] text-zinc-400 font-bold">ACTION:</span> <span className="text-sm font-bold bg-black text-[#D4AF37] px-2 py-0.5 rounded ml-2 uppercase text-[10px]">{log.action}</span></div>
+                        <div><span className="text-[10px] text-zinc-400 font-bold">ACTION:</span> <span className="text-sm font-bold bg-black text-white px-2 py-0.5 rounded ml-2 uppercase text-[10px]">{log.action}</span></div>
                         <div><span className="text-[10px] text-zinc-400 font-bold">RESOURCE:</span> <span className="text-sm font-mono ml-2">{log.resource}</span></div>
                         <div><span className="text-[10px] text-zinc-400 font-bold">TIMESTAMP:</span> <span className="text-sm ml-2">{new Date(log.created_at).toLocaleString()}</span></div>
                     </div>
@@ -117,7 +117,7 @@ export default function AuditLogView() {
                     </div>
                     <div>
                         <h4 className="text-xs font-bold text-zinc-500 uppercase mb-2">After</h4>
-                        <pre className="bg-zinc-900 text-[#D4AF37] p-4 rounded-sm text-xs font-mono overflow-auto max-h-96">
+                        <pre className="bg-zinc-900 text-zinc-100 p-4 rounded-sm text-xs font-mono overflow-auto max-h-96">
                             {afterState ? JSON.stringify(afterState, null, 2) : 'No new state'}
                         </pre>
                     </div>

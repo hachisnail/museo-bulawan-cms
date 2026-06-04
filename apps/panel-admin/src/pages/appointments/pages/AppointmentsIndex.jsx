@@ -169,7 +169,7 @@ export default function AppointmentsIndex() {
       { label: 'Rejected', count: by('REJECTED'), bgClass: 'bg-red-50', badgeClass: 'bg-red-100 text-red-800' },
       { label: 'Failed / No-show', count: by('FAILED'), bgClass: 'bg-red-50', badgeClass: 'bg-red-100 text-red-800' },
       { label: 'Expected Visitors', count: expectedVisitors, bgClass: 'bg-gray-50', badgeClass: 'bg-gray-200 text-black' },
-      { label: 'Present Recorded', count: present, bgClass: 'bg-yellow-50', badgeClass: 'bg-[#D4AF37] text-white' },
+      { label: 'Present Recorded', count: present, bgClass: 'bg-zinc-50', badgeClass: 'bg-zinc-800 text-white' },
     ];
   }, [allData]);
 
@@ -261,7 +261,7 @@ export default function AppointmentsIndex() {
       <div className="h-full flex flex-col items-center justify-center gap-2 text-zinc-400">
         <AlertCircle className="w-8 h-8 text-red-300" />
         <p className="text-sm">{error}</p>
-        <button onClick={fetchAppointments} className="text-xs text-[#D4AF37] hover:underline">Retry</button>
+        <button onClick={fetchAppointments} className="text-xs text-zinc-600 hover:text-zinc-900 hover:underline">Retry</button>
       </div>
     );
   }

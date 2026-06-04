@@ -10,7 +10,7 @@ import { DataTable, SidebarDashboard } from '../../../components';
 //  Badge & Theme Styles
 // ─────────────────────────────────────────────────────────────────────────────
 const STATUS_STYLES = {
-    pending_approval: 'text-[#A68A27] bg-[#D4AF37]/10 border-[#D4AF37]/30',
+    pending_approval: 'text-zinc-700 bg-zinc-100 border-zinc-200',
     in_research: 'text-blue-700 bg-blue-50 border-blue-200',
     finalized: 'text-black bg-zinc-200 border-black',
     rejected: 'text-red-700 bg-red-50 border-red-200',
@@ -48,10 +48,10 @@ const archiveColumns = [
         render: (val) => (
             <span className={`px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-wider border ${
                 val === 'Deaccessioned'
-                    ? 'bg-red-50 border-red-200 text-red-600'
-                    : val === 'Accession'
-                        ? 'bg-[#D4AF37]/5 border-[#D4AF37]/20 text-[#A68A27]'
-                        : 'bg-zinc-50 border-zinc-200 text-zinc-500'
+                     ? 'bg-red-50 border-red-200 text-red-600'
+                     : val === 'Accession'
+                         ? 'bg-zinc-100 border-zinc-300 text-zinc-800'
+                         : 'bg-zinc-50 border-zinc-200 text-zinc-500'
             }`}>
                 {val}
             </span>

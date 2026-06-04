@@ -120,7 +120,7 @@ export default function FinalizeModal({
                                 onClick={() => setGenMode('auto')}
                                 className={`p-3 border rounded-sm text-center flex flex-col items-center justify-center transition-all ${
                                     genMode === 'auto'
-                                        ? 'border-black bg-black text-[#D4AF37]'
+                                        ? 'border-black bg-black text-white'
                                         : 'border-zinc-200 bg-zinc-50 text-zinc-500 hover:bg-zinc-100 hover:text-black'
                                 }`}
                             >
@@ -135,7 +135,7 @@ export default function FinalizeModal({
                                     !accessionNumber 
                                         ? 'opacity-40 cursor-not-allowed border-zinc-200 bg-zinc-100 text-zinc-400' 
                                         : genMode === 'derived'
-                                            ? 'border-black bg-black text-[#D4AF37]'
+                                            ? 'border-black bg-black text-white'
                                             : 'border-zinc-200 bg-zinc-50 text-zinc-500 hover:bg-zinc-100 hover:text-black'
                                 }`}
                             >
@@ -147,7 +147,7 @@ export default function FinalizeModal({
                                 onClick={() => setGenMode('custom')}
                                 className={`p-3 border rounded-sm text-center flex flex-col items-center justify-center transition-all ${
                                     genMode === 'custom'
-                                        ? 'border-black bg-black text-[#D4AF37]'
+                                        ? 'border-black bg-black text-white'
                                         : 'border-zinc-200 bg-zinc-50 text-zinc-500 hover:bg-zinc-100 hover:text-black'
                                 }`}
                             >
@@ -206,7 +206,7 @@ export default function FinalizeModal({
                                             const cleaned = e.target.value.toLowerCase().replace(suffixType === 'numeric' ? /[^0-9]/g : /[^a-z]/g, '');
                                             setSuffixValue(cleaned);
                                         }}
-                                        className="w-full bg-white border border-zinc-300 rounded-sm px-3 py-2 text-sm text-black focus:outline-none focus:border-[#D4AF37] font-mono"
+                                        className="w-full bg-white border border-zinc-300 rounded-sm px-3 py-2 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 font-mono"
                                         placeholder={suffixType === 'numeric' ? 'e.g. 1' : 'e.g. a'}
                                     />
                                 </div>
@@ -227,7 +227,7 @@ export default function FinalizeModal({
                                 value={customCatalogNumber}
                                 onChange={(e) => setCustomCatalogNumber(e.target.value)}
                                 placeholder="e.g. CAT-2026-00042 or 2026.001.01.1"
-                                className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-4 py-3 text-sm text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all font-mono"
+                                className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-4 py-3 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all font-mono"
                             />
                             <p className="text-[9px] text-zinc-400">Must match pattern: CAT-YYYY-NNNNN or derived YYYY.SEQ.BATCH.x / YYYY.SEQ.BATCHa</p>
                         </div>
@@ -239,7 +239,7 @@ export default function FinalizeModal({
                             required
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
-                            className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-4 py-3 text-sm text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all"
+                            className="w-full bg-zinc-50 border border-zinc-300 rounded-sm px-4 py-3 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all"
                         >
                             <option value="">-- Select Location --</option>
                             {locations.map((loc) => (
@@ -260,7 +260,7 @@ export default function FinalizeModal({
                                 onChange={(e) => setImageSkipReason(e.target.value)}
                                 placeholder="e.g. Artifact is extremely fragile and cannot undergo flash/studio lighting at this time..."
                                 rows="3"
-                                className="w-full bg-white border border-amber-300 rounded-sm px-3 py-2 text-xs text-black focus:outline-none focus:border-[#D4AF37] transition-all resize-none"
+                                className="w-full bg-white border border-amber-300 rounded-sm px-3 py-2 text-xs text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all resize-none"
                             />
                         </div>
                     )}
@@ -277,7 +277,7 @@ export default function FinalizeModal({
                         <button
                             type="submit"
                             disabled={actionLoading}
-                            className="flex-[2] py-4 bg-black text-[#D4AF37] rounded-sm text-[10px] font-black uppercase tracking-widest hover:bg-zinc-900 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                            className="flex-[2] py-4 bg-black text-white rounded-sm text-[10px] font-black uppercase tracking-widest hover:bg-zinc-800 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                         >
                             {actionLoading ? 'Finalizing...' : 'Finalize & Archive Accession'}
                         </button>

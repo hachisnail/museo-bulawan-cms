@@ -11,7 +11,7 @@ import { getLocalDateString, formatTimeTo12H, normalizeSchedule, normalizeAppoin
 import { validateScheduleCreation, validateDateDisabling } from '../../../utils/scheduleValidation';
 
 // ─── Input class ──────────────────────────────────────────────────────────────
-const INP = 'w-full border border-zinc-200 rounded-sm px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] transition-colors placeholder:text-zinc-400';
+const INP = 'w-full border border-zinc-200 rounded-md px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black transition-colors placeholder:text-zinc-400';
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
 function Toast({ msg, type }) {
@@ -19,9 +19,9 @@ function Toast({ msg, type }) {
   const isErr  = type === 'error';
   const isWarn = type === 'warning';
   return (
-    <div className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2.5 rounded-sm shadow-lg text-xs font-semibold border
+    <div className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2.5 rounded-md shadow-lg text-xs font-semibold border
       ${isErr ? 'bg-red-500 text-white border-red-600' : isWarn ? 'bg-amber-500 text-white border-amber-600' : 'bg-zinc-900 text-white border-zinc-800'}`}>
-      {isErr || isWarn ? <AlertTriangle className="w-3.5 h-3.5" /> : <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" />}
+      {isErr || isWarn ? <AlertTriangle className="w-3.5 h-3.5" /> : <CheckCircle2 className="w-3.5 h-3.5 text-zinc-950" />}
       {msg}
     </div>
   );
@@ -33,7 +33,7 @@ function ConfirmModal({ open, title, children, onConfirm, onCancel, confirmDisab
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm" onClick={onCancel} />
-      <div className="relative bg-white border border-zinc-200 rounded-sm shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+      <div className="relative bg-white border border-zinc-200 rounded-md shadow-2xl w-full max-w-md mx-4 overflow-hidden">
         <div className="px-6 py-4 border-b border-zinc-100">
           <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">{title}</h3>
         </div>
@@ -45,8 +45,8 @@ function ConfirmModal({ open, title, children, onConfirm, onCancel, confirmDisab
           <button
             onClick={onConfirm}
             disabled={confirmDisabled}
-            className={`px-5 py-2 text-[10px] font-bold uppercase tracking-widest rounded-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed
-              ${danger ? 'bg-rose-500 text-white hover:bg-rose-600' : 'bg-zinc-900 text-white hover:bg-[#D4AF37] hover:text-zinc-900'}`}
+            className={`px-5 py-2 text-[10px] font-bold uppercase tracking-widest rounded-md transition-all disabled:opacity-40 disabled:cursor-not-allowed
+              ${danger ? 'bg-rose-500 text-white hover:bg-rose-600' : 'bg-zinc-900 text-white hover:bg-zinc-800'}`}
           >
             {confirmLabel}
           </button>
@@ -62,13 +62,13 @@ function DeleteModal({ open, event, onConfirm, onCancel }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm" onClick={onCancel} />
-      <div className="relative bg-white border border-zinc-200 rounded-sm shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
+      <div className="relative bg-white border border-zinc-200 rounded-md shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
         <div className="px-6 py-4 border-b border-zinc-100">
           <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">Delete Schedule</h3>
         </div>
         <div className="px-6 py-5 space-y-3 text-sm text-zinc-600">
           <p>This action cannot be undone:</p>
-          <div className="p-3 bg-rose-50 rounded-sm border border-rose-100">
+          <div className="p-3 bg-rose-50 rounded-md border border-rose-100">
             <p className="font-bold text-rose-900 text-sm">{event.title}</p>
             <p className="text-xs text-rose-600 mt-1 font-mono">
               {event.isDisabledDay ? 'All Day (Closed)' : `${formatTimeTo12H(event.startTime)} – ${formatTimeTo12H(event.endTime)}`}
@@ -79,7 +79,7 @@ function DeleteModal({ open, event, onConfirm, onCancel }) {
           <button onClick={onCancel} className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900">
             Cancel
           </button>
-          <button onClick={onConfirm} className="px-5 py-2 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-rose-600 transition-all">
+          <button onClick={onConfirm} className="px-5 py-2 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-md hover:bg-rose-600 transition-all">
             Delete
           </button>
         </div>
@@ -298,7 +298,7 @@ export default function ScheduleAdd() {
         <div className="flex items-center gap-4">
           <button 
             onClick={() => navigate('/schedule')}
-            className="p-2 border border-zinc-200 rounded-sm text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 transition-colors"
+            className="p-2 border border-zinc-200 rounded-md text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
@@ -317,7 +317,7 @@ export default function ScheduleAdd() {
           <div className="col-span-5 flex flex-col gap-6 min-h-0">
 
           {/* Mini Calendar */}
-          <div className="bg-white rounded-sm border border-zinc-200 shadow-sm flex-shrink-0">
+          <div className="bg-white rounded-md border border-zinc-200 shadow-sm flex-shrink-0">
             <MiniCal
               value={selectedDate}
               onChange={setSelectedDate}
@@ -326,7 +326,7 @@ export default function ScheduleAdd() {
           </div>
 
           {/* Events for selected date */}
-          <div className="bg-white rounded-sm border border-zinc-200 shadow-sm flex flex-col flex-1 min-h-0 overflow-hidden">
+          <div className="bg-white rounded-md border border-zinc-200 shadow-sm flex flex-col flex-1 min-h-0 overflow-hidden">
             <div className="px-5 py-4 border-b border-zinc-100 flex items-center justify-between flex-shrink-0">
               <div>
                 <div className="text-[9px] uppercase tracking-[0.2em] font-bold text-zinc-400">Events on Date</div>
@@ -350,7 +350,7 @@ export default function ScheduleAdd() {
                   const isAppt    = ev.isAppointment;
                   const isDisabled = ev.isDisabledDay;
                   const isExcl    = ev.availability === 'EXCLUSIVE' && !isDisabled;
-                  const dot = isDisabled ? 'bg-rose-500' : isAppt ? 'bg-indigo-500' : isExcl ? 'bg-rose-400' : 'bg-[#D4AF37]';
+                  const dot = isDisabled ? 'bg-rose-500' : isAppt ? 'bg-indigo-500' : isExcl ? 'bg-rose-400' : 'bg-zinc-950';
 
                   return (
                     <div key={ev.id} className="flex items-start gap-3 px-4 py-3 hover:bg-zinc-50 transition-colors group">
@@ -377,7 +377,7 @@ export default function ScheduleAdd() {
                       {ev.isSchedule && (
                         <button
                           onClick={() => { setDeletingEvent(ev); setShowDeleteModal(true); }}
-                          className="opacity-0 group-hover:opacity-100 p-1 rounded-sm text-zinc-300 hover:text-rose-500 hover:bg-rose-50 transition-all"
+                          className="opacity-0 group-hover:opacity-100 p-1 rounded-md text-zinc-300 hover:text-rose-500 hover:bg-rose-50 transition-all"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -391,7 +391,7 @@ export default function ScheduleAdd() {
         </div>
 
         {/* ── Right: Form ─────────────────────────────────────────────────────── */}
-        <div className="col-span-7 bg-white rounded-sm border border-zinc-200 shadow-sm flex flex-col min-h-0 overflow-hidden">
+        <div className="col-span-7 bg-white rounded-md border border-zinc-200 shadow-sm flex flex-col min-h-0 overflow-hidden">
 
           {/* Mode tabs */}
           <div className="flex border-b border-zinc-200 flex-shrink-0">
@@ -422,11 +422,11 @@ export default function ScheduleAdd() {
             {mode === 'add' && (
               <form onSubmit={handleAddSubmit} className="space-y-5">
                 {/* Guidelines */}
-                <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200/60 rounded-sm">
-                  <FileText className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                <div className="flex items-start gap-3 p-4 bg-zinc-50 border border-zinc-200 rounded-md">
+                  <FileText className="w-4 h-4 text-zinc-500 mt-0.5 flex-shrink-0" />
                   <div className="space-y-0.5">
                     {['6:00 AM – 6:00 PM window', '15 min minimum duration', 'Max 10 concurrent events'].map(r => (
-                      <div key={r} className="text-[11px] text-amber-700">{r}</div>
+                      <div key={r} className="text-[11px] text-zinc-600">{r}</div>
                     ))}
                   </div>
                 </div>
@@ -474,14 +474,14 @@ export default function ScheduleAdd() {
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     {[
-                      { val: 'SHARED', label: 'Shared', sub: 'Appointments allowed during this block', color: 'border-amber-300 bg-amber-50 text-amber-800' },
-                      { val: 'EXCLUSIVE', label: 'Exclusive', sub: 'No new appointments during this block', color: 'border-rose-300 bg-rose-50 text-rose-800' },
+                      { val: 'SHARED', label: 'Shared', sub: 'Appointments allowed during this block', color: 'border-zinc-300 bg-zinc-50 text-zinc-800' },
+                      { val: 'EXCLUSIVE', label: 'Exclusive', sub: 'No new appointments during this block', color: 'border-zinc-400 bg-zinc-100 text-zinc-950 font-semibold' },
                     ].map(({ val, label, sub, color }) => (
                       <button
                         key={val}
                         type="button"
                         onClick={() => setAvailability(val)}
-                        className={`p-3.5 border-2 rounded-sm text-left transition-all
+                        className={`p-3.5 border-2 rounded-md text-left transition-all
                           ${availability === val ? color : 'border-zinc-200 hover:border-zinc-300 bg-white text-zinc-600'}`}
                       >
                         <div className="text-[10px] font-bold uppercase tracking-widest">{label}</div>
@@ -494,7 +494,7 @@ export default function ScheduleAdd() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-[#D4AF37] hover:text-zinc-900 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded-md hover:bg-zinc-800 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isLoading
                     ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving…</>
@@ -507,13 +507,13 @@ export default function ScheduleAdd() {
             {mode === 'close' && (
               <form onSubmit={handleCloseSubmit} className="space-y-5">
                 {/* Day / Time slot toggle */}
-                <div className="flex bg-zinc-100 p-1 rounded-sm">
+                <div className="flex bg-zinc-100 p-1 rounded-md">
                   {['day', 'time'].map(t => (
                     <button
                       key={t}
                       type="button"
                       onClick={() => setCloseType(t)}
-                      className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-widest rounded-sm transition-all
+                      className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-widest rounded-md transition-all
                         ${closeType === t ? 'bg-white text-rose-600 shadow-sm' : 'text-zinc-500 hover:text-zinc-700'}`}
                     >
                       {t === 'day' ? 'Full Day' : 'Time Slot'}
@@ -522,7 +522,7 @@ export default function ScheduleAdd() {
                 </div>
 
                 {/* Warning */}
-                <div className="flex items-start gap-3 p-4 bg-rose-50 border border-rose-200/60 rounded-sm">
+                <div className="flex items-start gap-3 p-4 bg-rose-50 border border-rose-200/60 rounded-md">
                   <AlertTriangle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
                   <div className="space-y-0.5">
                     <div className="text-[11px] text-rose-700 font-semibold">
@@ -573,7 +573,7 @@ export default function ScheduleAdd() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-sm hover:bg-rose-600 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-md hover:bg-rose-600 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isLoading
                     ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Processing…</>
@@ -594,7 +594,7 @@ export default function ScheduleAdd() {
         onCancel={() => setShowAddConfirm(false)}
       >
         <p className="text-zinc-700 font-medium">Adding a new schedule block:</p>
-        <div className="mt-1 p-4 bg-zinc-50 rounded-sm border border-zinc-100 space-y-2">
+        <div className="mt-1 p-4 bg-zinc-50 rounded-md border border-zinc-100 space-y-2">
           <Row k="Title" v={title} />
           <Row k="Date"  v={dateLabel} />
           <Row k="Time"  v={`${formatTimeTo12H(startTime)} – ${formatTimeTo12H(endTime)}`} />
@@ -613,7 +613,7 @@ export default function ScheduleAdd() {
         danger
       >
         <div className="text-rose-600 font-semibold text-sm">⚠ This will prevent new appointment bookings.</div>
-        <div className="p-4 bg-rose-50 rounded-sm border border-rose-100 space-y-2">
+        <div className="p-4 bg-rose-50 rounded-md border border-rose-100 space-y-2">
           <Row k="Date"     v={dateLabel} />
           {closeType === 'time' && (
             <Row k="Time" v={`${formatTimeTo12H(closeStartTime)} – ${formatTimeTo12H(closeEndTime)}`} />
@@ -622,7 +622,7 @@ export default function ScheduleAdd() {
           {reason && <Row k="Reason" v={reason} muted />}
         </div>
         {!canConfirm && (
-          <div className="flex items-center gap-2 text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-sm px-3 py-2">
+          <div className="flex items-center gap-2 text-[10px] font-semibold text-zinc-700 bg-zinc-100 border border-zinc-200 rounded-md px-3 py-2">
             <Clock className="w-3.5 h-3.5 animate-pulse" /> Wait {countdown}s to confirm…
           </div>
         )}
@@ -637,7 +637,7 @@ export default function ScheduleAdd() {
 
       {isDeleting && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-900/20 backdrop-blur-sm">
-          <div className="bg-white rounded-sm px-8 py-6 shadow-2xl flex items-center gap-3 border border-zinc-200">
+          <div className="bg-white rounded-md px-8 py-6 shadow-2xl flex items-center gap-3 border border-zinc-200">
             <Loader2 className="w-5 h-5 animate-spin text-zinc-600" />
             <span className="text-sm font-medium text-zinc-700">Deleting…</span>
           </div>

@@ -212,7 +212,7 @@ export default function MoaDialog({
                                     required 
                                     value={verifyToken} 
                                     onChange={(e) => setVerifyToken(e.target.value)}
-                                    className="flex-1 border border-zinc-300 rounded-sm px-4 py-3 text-lg font-mono text-black focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] uppercase tracking-widest"
+                                    className="flex-1 border border-zinc-300 rounded-sm px-4 py-3 text-lg font-mono text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 uppercase tracking-widest"
                                     placeholder="ENTER CODE"
                                 />
                                 <button type="submit" disabled={isVerifying} className="bg-black hover:bg-zinc-800 text-white px-8 rounded-sm font-bold uppercase tracking-widest text-xs disabled:opacity-50">
@@ -229,7 +229,7 @@ export default function MoaDialog({
                                     <button 
                                         onClick={confirmVerifiedDelivery} 
                                         disabled={actionLoading}
-                                        className="w-full bg-black hover:bg-zinc-800 text-[#D4AF37] font-bold py-4 rounded-sm uppercase tracking-widest text-xs transition-colors disabled:opacity-50"
+                                        className="w-full bg-black hover:bg-zinc-800 text-white font-bold py-4 rounded-sm uppercase tracking-widest text-xs transition-colors disabled:opacity-50"
                                     >
                                         Confirm Physical Receipt
                                     </button>
@@ -276,7 +276,7 @@ export default function MoaDialog({
                                             fetchData();
                                             setSelected(null);
                                         }} 
-                                        className="w-full bg-black hover:bg-zinc-800 text-[#D4AF37] font-bold py-4 rounded-sm uppercase tracking-widest text-xs transition-colors cursor-pointer"
+                                        className="w-full bg-black hover:bg-zinc-800 text-white font-bold py-4 rounded-sm uppercase tracking-widest text-xs transition-colors cursor-pointer"
                                     >
                                         Done
                                     </button>

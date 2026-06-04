@@ -174,7 +174,7 @@ export default function InventoryExhibitions() {
                                 setFormData({ title: '', venue: '', startDate: '', endDate: '', description: '', status: 'planning' });
                                 setIsEditing(true);
                             }}
-                            className="bg-black hover:bg-gray-800 text-white px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap"
+                            className="bg-black hover:bg-gray-800 text-white px-5 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap"
                         >
                             <Plus className="w-4 h-4" /> Plan Exhibition
                         </button>
@@ -200,7 +200,7 @@ export default function InventoryExhibitions() {
                                 <Loader2 className="w-5 h-5 animate-spin text-zinc-600" /> Syncing Event Logs Entry Matrix
                             </div>
                         ) : exhibitions.length === 0 ? (
-                            <div className="py-24 text-center border border-dashed border-zinc-300 rounded-xl bg-zinc-50/50 flex flex-col items-center justify-center p-6">
+                            <div className="py-24 text-center border border-dashed border-zinc-300 rounded-md bg-zinc-50/50 flex flex-col items-center justify-center p-6">
                                 <ImageIcon className="w-10 h-10 text-zinc-300 mb-3" />
                                 <h3 className="text-sm font-bold text-zinc-900 uppercase tracking-wider">No Exhibitions Active</h3>
                                 <p className="text-xs text-zinc-400 mt-1">Adjust active configuration variables or map a new protocol session record.</p>
@@ -213,7 +213,7 @@ export default function InventoryExhibitions() {
                                         <div 
                                             key={e.id}
                                             onClick={() => fetchDetails(e.id)}
-                                            className="bg-white border border-zinc-200 rounded-xl p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 flex flex-col justify-between gap-4 group"
+                                            className="bg-white border border-zinc-200 rounded-md p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 flex flex-col justify-between gap-4 group"
                                         >
                                             <div className="flex justify-between items-center w-full">
                                                 <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${styleClass}`}>
@@ -241,7 +241,7 @@ export default function InventoryExhibitions() {
                 {/* ── Focused Workspace View (Forms / Inspection Panel) ── */}
                 {(selected || isEditing) && (
                     <div className="w-full animate-in fade-in duration-300">
-                        <div className="border border-zinc-200 bg-white rounded-xl shadow-sm overflow-hidden flex flex-col">
+                        <div className="border border-zinc-200 bg-white rounded-md shadow-sm overflow-hidden flex flex-col">
                             
                             {/* Panel Micro Header */}
                             <div className="px-6 py-4 border-b border-zinc-150 bg-zinc-50/50 flex justify-between items-start gap-4">
@@ -258,7 +258,7 @@ export default function InventoryExhibitions() {
                                 {!isEditing && (
                                     <button 
                                         onClick={() => setIsEditing(true)}
-                                        className="px-4 py-2 bg-white hover:bg-zinc-50 border border-zinc-300 rounded-lg text-zinc-800 text-xs font-bold uppercase tracking-wider transition-all shadow-sm flex-shrink-0"
+                                        className="px-4 py-2 bg-white hover:bg-zinc-50 border border-zinc-300 rounded-md text-zinc-800 text-xs font-bold uppercase tracking-wider transition-all shadow-sm flex-shrink-0"
                                     >
                                         Edit Record
                                     </button>
@@ -277,7 +277,7 @@ export default function InventoryExhibitions() {
                                                     type="text" 
                                                     value={formData.title} 
                                                     onChange={e => setFormData({...formData, title: e.target.value})}
-                                                    className="block w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
+                                                    className="block w-full rounded-md border border-zinc-200 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
                                                     placeholder="Official deployment designation title"
                                                 />
                                             </div>
@@ -286,7 +286,7 @@ export default function InventoryExhibitions() {
                                                 <select 
                                                     value={formData.status} 
                                                     onChange={e => setFormData({...formData, status: e.target.value})}
-                                                    className="block w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
+                                                    className="block w-full rounded-md border border-zinc-200 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
                                                 >
                                                     <option value="planning">Planning / Research</option>
                                                     <option value="active">Active / On Display</option>
@@ -304,7 +304,7 @@ export default function InventoryExhibitions() {
                                                     type="text" 
                                                     value={formData.venue} 
                                                     onChange={e => setFormData({...formData, venue: e.target.value})}
-                                                    className="block w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
+                                                    className="block w-full rounded-md border border-zinc-200 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
                                                     placeholder="e.g. West Gallery Vault"
                                                 />
                                             </div>
@@ -314,7 +314,7 @@ export default function InventoryExhibitions() {
                                                     type="date" 
                                                     value={formData.startDate} 
                                                     onChange={e => setFormData({...formData, startDate: e.target.value})}
-                                                    className="block w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
+                                                    className="block w-full rounded-md border border-zinc-200 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
                                                 />
                                             </div>
                                             <div className="space-y-1">
@@ -323,7 +323,7 @@ export default function InventoryExhibitions() {
                                                     type="date" 
                                                     value={formData.endDate} 
                                                     onChange={e => setFormData({...formData, endDate: e.target.value})}
-                                                    className="block w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
+                                                    className="block w-full rounded-md border border-zinc-200 px-3 py-2 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all shadow-sm bg-white"
                                                 />
                                             </div>
                                         </div>
@@ -334,7 +334,7 @@ export default function InventoryExhibitions() {
                                                 rows="4" 
                                                 value={formData.description} 
                                                 onChange={e => setFormData({...formData, description: e.target.value})}
-                                                className="block w-full rounded-lg border border-zinc-200 p-3 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all resize-none shadow-sm bg-white"
+                                                className="block w-full rounded-md border border-zinc-200 p-3 text-sm text-black focus:outline-none focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 transition-all resize-none shadow-sm bg-white"
                                                 placeholder="Provide rigorous session metadata description details..."
                                             />
                                         </div>
@@ -343,14 +343,14 @@ export default function InventoryExhibitions() {
                                             <button 
                                                 type="submit" 
                                                 disabled={actionLoading}
-                                                className="flex-1 py-2.5 bg-black hover:bg-zinc-800 text-white font-bold text-xs uppercase tracking-wider rounded-lg transition-colors shadow-md disabled:opacity-50"
+                                                className="flex-1 py-2.5 bg-black hover:bg-zinc-800 text-white font-bold text-xs uppercase tracking-wider rounded-md transition-colors shadow-md disabled:opacity-50"
                                             >
                                                 {actionLoading ? 'Synchronizing Archive...' : 'Authorize Exhibition Record'}
                                             </button>
                                             <button 
                                                 type="button" 
                                                 onClick={() => { setIsEditing(false); if(!selected) setSelected(null); }} 
-                                                className="px-5 py-2.5 bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-700 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors"
+                                                className="px-5 py-2.5 bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-700 text-xs font-bold uppercase tracking-wider rounded-md transition-colors"
                                             >
                                                 Cancel
                                             </button>
@@ -360,7 +360,7 @@ export default function InventoryExhibitions() {
                                     <div className="flex flex-col gap-6">
                                         {/* Metadata Summary Cards */}
                                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                            <div className="p-3 bg-zinc-50 rounded-lg border border-zinc-200 flex items-start gap-2.5">
+                                            <div className="p-3 bg-zinc-50 rounded-md border border-zinc-200 flex items-start gap-2.5">
                                                 <Calendar className="w-4 h-4 text-zinc-500 mt-0.5 flex-shrink-0" />
                                                 <div>
                                                     <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Event Duration</div>
@@ -369,14 +369,14 @@ export default function InventoryExhibitions() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="p-3 bg-zinc-50 rounded-lg border border-zinc-200 flex items-start gap-2.5">
+                                            <div className="p-3 bg-zinc-50 rounded-md border border-zinc-200 flex items-start gap-2.5">
                                                 <ClipboardList className="w-4 h-4 text-zinc-500 mt-0.5 flex-shrink-0" />
                                                 <div>
                                                     <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Manifest Count</div>
                                                     <div className="text-sm font-bold text-zinc-900 mt-0.5">{selected.artifacts?.length || 0} Artifacts Linked</div>
                                                 </div>
                                             </div>
-                                            <div className="p-3 bg-zinc-50 rounded-lg border border-zinc-200 flex items-start gap-2.5">
+                                            <div className="p-3 bg-zinc-50 rounded-md border border-zinc-200 flex items-start gap-2.5">
                                                 <CheckCircle2 className="w-4 h-4 text-zinc-500 mt-0.5 flex-shrink-0" />
                                                 <div>
                                                     <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Session Status</div>
@@ -396,7 +396,7 @@ export default function InventoryExhibitions() {
                                         </div>
 
                                         {/* Artifact Assignment Terminal */}
-                                        <div className="border border-zinc-200 rounded-xl overflow-hidden bg-zinc-50/50">
+                                        <div className="border border-zinc-200 rounded-md overflow-hidden bg-zinc-50/50">
                                             <div className="flex flex-wrap justify-between items-center bg-zinc-50 px-4 py-2 border-b border-zinc-200 gap-3">
                                                 <div className="flex items-center gap-1.5">
                                                     <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-700">Bound Asset Manifest</h3>
@@ -419,7 +419,7 @@ export default function InventoryExhibitions() {
 
                                                     {/* Results Floating Dialog Container */}
                                                     {searchResults.length > 0 && (
-                                                        <div className="absolute z-50 top-full right-0 mt-1 w-80 bg-white border border-zinc-200 rounded-xl shadow-xl overflow-hidden max-h-60 overflow-y-auto animate-in slide-in-from-top-1 duration-150">
+                                                        <div className="absolute z-50 top-full right-0 mt-1 w-80 bg-white border border-zinc-200 rounded-md shadow-xl overflow-hidden max-h-60 overflow-y-auto animate-in slide-in-from-top-1 duration-150">
                                                             <div className="p-2 bg-zinc-50 border-b border-zinc-100 text-[9px] font-bold uppercase text-zinc-400 tracking-widest flex justify-between items-center px-3">
                                                                 <span>Index Matches</span>
                                                                 <button onClick={() => setSearchResults([])} className="text-zinc-400 hover:text-black"><X className="w-3 h-3" /></button>
@@ -448,9 +448,9 @@ export default function InventoryExhibitions() {
                                                 {selected.artifacts && selected.artifacts.length > 0 ? (
                                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-64 overflow-y-auto pr-1">
                                                         {selected.artifacts.map(art => (
-                                                            <div key={art.id} className="flex items-center justify-between p-3 bg-white border border-zinc-150 rounded-lg hover:border-zinc-300 transition-all shadow-sm group">
+                                                            <div key={art.id} className="flex items-center justify-between p-3 bg-white border border-zinc-150 rounded-md hover:border-zinc-300 transition-all shadow-sm group">
                                                                 <div className="flex items-center gap-3 truncate">
-                                                                    <div className="w-9 h-9 bg-zinc-50 border border-zinc-200 flex items-center justify-center rounded-lg text-zinc-400 flex-shrink-0">
+                                                                    <div className="w-9 h-9 bg-zinc-50 border border-zinc-200 flex items-center justify-center rounded-md text-zinc-400 flex-shrink-0">
                                                                         <ImageIcon className="w-4 h-4" />
                                                                     </div>
                                                                     <div className="truncate">
@@ -469,7 +469,7 @@ export default function InventoryExhibitions() {
                                                         ))}
                                                     </div>
                                                 ) : (
-                                                    <div className="text-center py-8 bg-white border border-dashed border-zinc-200 rounded-lg flex flex-col items-center justify-center p-4">
+                                                    <div className="text-center py-8 bg-white border border-dashed border-zinc-200 rounded-md flex flex-col items-center justify-center p-4">
                                                         <History className="w-7 h-7 mb-2 text-zinc-300" />
                                                         <p className="text-xs text-zinc-450 font-medium uppercase tracking-wider">No artifacts associated to manifest list</p>
                                                     </div>

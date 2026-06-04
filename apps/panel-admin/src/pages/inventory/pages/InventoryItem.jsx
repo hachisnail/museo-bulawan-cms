@@ -554,7 +554,7 @@ Would you like to reload the latest record and try again?`,
                             onClick={() => setDetailTab(tab.id)}
                             className={`px-5 py-4 text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all border-b-2 ${
                                 detailTab === tab.id 
-                                    ? 'border-[#D4AF37] text-black bg-zinc-50' 
+                                    ? 'border-black text-black bg-zinc-50' 
                                     : 'border-transparent text-zinc-400 hover:text-black'
                             }`}
                         >
@@ -744,7 +744,7 @@ Would you like to reload the latest record and try again?`,
                                         </div>
                                         <div className="text-right">
                                             <div className="text-xs font-mono text-zinc-400">{new Date(v.created_at || v.created).toLocaleDateString()}</div>
-                                            <div className="text-[9px] text-[#A68A27] font-bold uppercase tracking-widest mt-1">Appraised</div>
+                                            <div className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mt-1">Appraised</div>
                                         </div>
                                     </div>
                                 ))}
@@ -831,7 +831,7 @@ Would you like to reload the latest record and try again?`,
                                     <div key={i} className="p-4 border border-gray-200 rounded bg-white hover:bg-gray-50/50 transition-colors flex justify-between items-start">
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2 mb-1">
-                                                <Activity className="w-4 h-4 text-[#D4AF37]" />
+                                                <Activity className="w-4 h-4 text-zinc-400" />
                                                 <div className="text-xs font-bold text-gray-900 uppercase">{c.treatment_objective || 'Conservation Log'}</div>
                                             </div>
                                             <p className="text-xs text-zinc-700">{c.treatment}</p>

@@ -35,7 +35,7 @@ export default function InviteModal({ isOpen, onClose, onInvite, actionLoading }
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-6 animate-in fade-in duration-300">
             <div className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm" onClick={() => !actionLoading && onClose()} />
-            <div className="relative bg-white border border-zinc-200 w-full max-w-lg rounded-sm shadow-2xl overflow-hidden">
+            <div className="relative bg-white border border-zinc-200 w-full max-w-lg rounded-md shadow-2xl overflow-hidden">
                 <div className="p-10 space-y-8">
                     <div className="flex justify-between items-start">
                         <div className="space-y-2">
@@ -53,7 +53,7 @@ export default function InviteModal({ isOpen, onClose, onInvite, actionLoading }
                                     type="text" 
                                     value={inviteForm.fname}
                                     onChange={e => setInviteForm({...inviteForm, fname: e.target.value})}
-                                    className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37]"
+                                    className="w-full bg-zinc-50 border border-zinc-200 rounded-md px-5 py-4 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20"
                                     disabled={actionLoading}
                                 />
                             </div>
@@ -64,7 +64,7 @@ export default function InviteModal({ isOpen, onClose, onInvite, actionLoading }
                                     type="text" 
                                     value={inviteForm.lname}
                                     onChange={e => setInviteForm({...inviteForm, lname: e.target.value})}
-                                    className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37]"
+                                    className="w-full bg-zinc-50 border border-zinc-200 rounded-md px-5 py-4 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20"
                                     disabled={actionLoading}
                                 />
                             </div>
@@ -77,7 +77,7 @@ export default function InviteModal({ isOpen, onClose, onInvite, actionLoading }
                                 type="email" 
                                 value={inviteForm.email}
                                 onChange={e => setInviteForm({...inviteForm, email: e.target.value})}
-                                className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37]"
+                                className="w-full bg-zinc-50 border border-zinc-200 rounded-md px-5 py-4 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20"
                                 placeholder="name@museo-bulawan.ph"
                                 disabled={actionLoading}
                             />
@@ -88,7 +88,7 @@ export default function InviteModal({ isOpen, onClose, onInvite, actionLoading }
                             <select 
                                 value={inviteForm.role}
                                 onChange={e => setInviteForm({...inviteForm, role: e.target.value})}
-                                className="w-full bg-zinc-50 border border-zinc-200 rounded-sm px-5 py-4 text-sm text-black focus:outline-none focus:border-[#D4AF37] appearance-none"
+                                className="w-full bg-zinc-50 border border-zinc-200 rounded-md px-5 py-4 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black/20 appearance-none"
                                 disabled={actionLoading}
                             >
                                 {roles.map(r => (
@@ -102,14 +102,14 @@ export default function InviteModal({ isOpen, onClose, onInvite, actionLoading }
                                 type="button"
                                 onClick={onClose}
                                 disabled={actionLoading}
-                                className="flex-1 py-5 bg-zinc-100 text-zinc-500 rounded-sm font-black uppercase tracking-widest text-[10px] hover:bg-zinc-200 transition-all"
+                                className="flex-1 py-5 bg-zinc-100 text-zinc-500 rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-zinc-200 transition-all"
                             >
                                 Cancel
                             </button>
                             <button 
                                 type="submit"
                                 disabled={actionLoading}
-                                className="flex-[2] py-5 bg-black text-[#D4AF37] rounded-sm font-black uppercase tracking-widest text-[10px] hover:bg-zinc-900 shadow-xl shadow-black/10 disabled:opacity-50 flex items-center justify-center gap-3 transition-all"
+                                className="flex-[2] py-5 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-zinc-800 shadow-xl shadow-black/10 disabled:opacity-50 flex items-center justify-center gap-3 transition-all"
                             >
                                 {actionLoading ? 'Provisioning Account...' : <><Mail className="w-4 h-4" /> Send Access Invitation</>}
                             </button>

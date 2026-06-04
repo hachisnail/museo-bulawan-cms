@@ -210,7 +210,7 @@ const InternalForm = (props) => {
                                 {(hasTitleText || isRequired) && (
                                     <label className="text-[9px] font-black uppercase text-zinc-500 tracking-widest flex items-center gap-2">
                                         {titleText}
-                                        {isRequired && <span className="text-[#D4AF37]">•</span>}
+                                        {isRequired && <span className="text-red-500">•</span>}
                                     </label>
                                 )}
                                 {prop.description && (
@@ -221,14 +221,14 @@ const InternalForm = (props) => {
                                 {prop.type === 'boolean' ? (
                                     <label className="relative inline-flex items-center cursor-pointer group py-1.5">
                                         <input type="checkbox" name={key} checked={!!formData[key]} onChange={onInputChange} className="sr-only peer" />
-                                        <div className="w-10 h-5 bg-zinc-100 rounded-sm peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-zinc-400 after:rounded-sm after:h-4 after:w-4 after:transition-all peer-checked:bg-black after:peer-checked:bg-[#D4AF37]"></div>
+                                        <div className="w-10 h-5 bg-zinc-100 rounded-sm peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-zinc-400 after:rounded-sm after:h-4 after:w-4 after:transition-all peer-checked:bg-black after:peer-checked:bg-white"></div>
                                         <span className="ml-3 text-[10px] text-zinc-500 group-hover:text-black transition-colors uppercase font-bold tracking-tighter">{prop.description || 'Enable'}</span>
                                     </label>
                                 ) : prop['ui:widget'] === 'radio' ? (
                                     <div className="flex flex-col gap-2 py-2">
                                         {prop.enum?.map((opt, i) => (
                                             <label key={`${opt}_${i}`} className="flex items-center cursor-pointer group">
-                                                <input type="radio" name={key} required={isRequired} value={opt} checked={formData[key] === opt} onChange={onInputChange} className="w-4 h-4 text-[#D4AF37] border-zinc-300 focus:ring-[#D4AF37]" />
+                                                <input type="radio" name={key} required={isRequired} value={opt} checked={formData[key] === opt} onChange={onInputChange} className="w-4 h-4 text-black border-zinc-300 focus:ring-black" />
                                                 <span className="ml-3 text-[11px] text-zinc-600 font-medium group-hover:text-black transition-colors">{opt}</span>
                                             </label>
                                         ))}
@@ -242,7 +242,7 @@ const InternalForm = (props) => {
                                                     <input type="checkbox" name={key} value={opt} checked={currentVals.includes(opt)} onChange={(e) => {
                                                         const newVals = e.target.checked ? [...currentVals, opt] : currentVals.filter(v => v !== opt);
                                                         onInputChange({ target: { name: key, value: newVals }});
-                                                    }} className="w-4 h-4 text-[#D4AF37] border-zinc-300 rounded-sm focus:ring-[#D4AF37]" />
+                                                    }} className="w-4 h-4 text-black border-zinc-300 rounded-sm focus:ring-black" />
                                                     <span className="ml-3 text-[11px] text-zinc-600 font-medium group-hover:text-black transition-colors">{opt}</span>
                                                 </label>
                                             );
@@ -260,7 +260,7 @@ const InternalForm = (props) => {
                                                 }}
                                                 className={`transition-all hover:scale-110 focus:outline-none`}
                                             >
-                                                <Star className={`w-8 h-8 ${Number(formData[key]) >= star ? 'text-[#D4AF37] fill-[#D4AF37]' : 'text-zinc-300 hover:text-[#D4AF37]/50'}`} />
+                                                <Star className={`w-8 h-8 ${Number(formData[key]) >= star ? 'text-black fill-black' : 'text-zinc-300 hover:text-zinc-400'}`} />
                                             </button>
                                         ))}
                                     </div>
@@ -270,8 +270,8 @@ const InternalForm = (props) => {
                                             <span>1</span>
                                             <span>10</span>
                                         </div>
-                                        <input type="range" name={key} min="1" max="10" value={formData[key] || 1} onChange={onInputChange} className="w-full h-1.5 bg-zinc-200 rounded-lg appearance-none cursor-pointer accent-[#D4AF37]" />
-                                        <div className="text-center font-black text-xs text-[#D4AF37]">{formData[key] || 1}</div>
+                                        <input type="range" name={key} min="1" max="10" value={formData[key] || 1} onChange={onInputChange} className="w-full h-1.5 bg-zinc-200 rounded-lg appearance-none cursor-pointer accent-black" />
+                                        <div className="text-center font-black text-xs text-black">{formData[key] || 1}</div>
                                     </div>
                                 ) : prop['ui:widget'] === 'linear_scale' ? (
                                     <div className="flex flex-col gap-4 py-2">
@@ -283,7 +283,7 @@ const InternalForm = (props) => {
                                             {Array.from({ length: 10 }, (_, i) => i + 1).map(num => (
                                                 <label key={num} className="flex flex-col items-center gap-2 cursor-pointer">
                                                     <span className="text-[10px] font-bold text-zinc-400">{num}</span>
-                                                    <input type="radio" name={key} required={isRequired} value={num} checked={Number(formData[key]) === num} onChange={onInputChange} className="w-4 h-4 text-[#D4AF37] border-zinc-300 focus:ring-[#D4AF37]" />
+                                                    <input type="radio" name={key} required={isRequired} value={num} checked={Number(formData[key]) === num} onChange={onInputChange} className="w-4 h-4 text-black border-zinc-300 focus:ring-black" />
                                                 </label>
                                             ))}
                                         </div>
@@ -322,7 +322,7 @@ const InternalForm = (props) => {
                                                                             newData[row] = e.target.checked ? [...currentVals, col] : currentVals.filter(v => v !== col);
                                                                         }
                                                                         onInputChange({ target: { name: key, value: newData }});
-                                                                    }} className={`w-4 h-4 text-[#D4AF37] border-zinc-300 focus:ring-[#D4AF37] ${!isRadio && 'rounded-sm'}`} />
+                                                                    }} className={`w-4 h-4 text-black border-zinc-300 focus:ring-black ${!isRadio && 'rounded-sm'}`} />
                                                                 </td>
                                                             );
                                                         })}
@@ -337,7 +337,7 @@ const InternalForm = (props) => {
                                         required={isRequired}
                                         value={formData[key] || ''}
                                         onChange={onInputChange}
-                                        className={`w-full bg-zinc-100 border rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none transition-all appearance-none font-medium ${fieldErrors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-300 focus:border-[#D4AF37]'}`}
+                                        className={`w-full bg-zinc-100 border rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none transition-all appearance-none font-medium ${fieldErrors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-300 focus:border-black focus:ring-1 focus:ring-black/20'}`}
                                     >
                                         <option value="" disabled>Select...</option>
                                         {prop.enum.map((opt, i) => <option key={`${opt}_${i}`} value={opt}>{opt}</option>)}
@@ -345,7 +345,7 @@ const InternalForm = (props) => {
 ) : prop['ui:widget'] === 'file' || prop.format === 'file' ? (
     <div className="space-y-4">
         <label 
-            className="w-full border border-dashed border-zinc-300 rounded-sm p-6 flex flex-col items-center justify-center gap-3 hover:border-[#D4AF37] hover:bg-zinc-50 transition-all cursor-pointer"
+            className="w-full border border-dashed border-zinc-300 rounded-sm p-6 flex flex-col items-center justify-center gap-3 hover:border-zinc-500 hover:bg-zinc-50 transition-all cursor-pointer"
             onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
             onDrop={(e) => { 
                 e.preventDefault(); 
@@ -372,7 +372,7 @@ const InternalForm = (props) => {
                 {files.map((f, i) => (
                     <div key={i} className="flex items-center justify-between p-2 border border-zinc-200 rounded-sm bg-white shadow-sm">
                         <div className="flex items-center gap-2 overflow-hidden">
-                            <FileText className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
+                            <FileText className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
                             <span className="text-[10px] font-medium text-black truncate">{f.name}</span>
                         </div>
                         <button type="button" onClick={() => removeFile(i)} className="text-zinc-400 hover:text-red-500 transition-colors ml-2">✕</button>
@@ -389,7 +389,7 @@ const InternalForm = (props) => {
                                         onChange={onInputChange}
                                         rows={3}
                                         placeholder={prop.description}
-                                        className={`w-full bg-zinc-100 border rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none transition-all resize-none placeholder:text-zinc-400 font-light ${fieldErrors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-300 focus:border-[#D4AF37]'}`}
+                                        className={`w-full bg-zinc-100 border rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none transition-all resize-none placeholder:text-zinc-400 font-light ${fieldErrors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-300 focus:border-black focus:ring-1 focus:ring-black/20'}`}
                                     />
                                 ) : (
                                     <input
@@ -399,7 +399,7 @@ const InternalForm = (props) => {
                                         value={formData[key] || ''}
                                         onChange={onInputChange}
                                         placeholder={prop.description}
-                                        className={`w-full bg-zinc-100 border rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none transition-all placeholder:text-zinc-400 font-medium ${fieldErrors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-300 focus:border-[#D4AF37]'}`}
+                                        className={`w-full bg-zinc-100 border rounded-sm px-4 py-3 text-[11px] text-black focus:outline-none transition-all placeholder:text-zinc-400 font-medium ${fieldErrors[key] ? 'border-red-500 focus:border-red-500' : 'border-zinc-300 focus:border-black focus:ring-1 focus:ring-black/20'}`}
                                     />
                                 )}
                                 </div>
@@ -421,7 +421,7 @@ const InternalForm = (props) => {
                         </div>
                         <div className="flex flex-wrap gap-3">
                             <label 
-                                className="w-10 h-10 flex items-center justify-center border border-dashed border-zinc-300 hover:border-[#D4AF37] rounded-sm bg-zinc-100 cursor-pointer transition-all text-zinc-500 hover:text-[#D4AF37]"
+                                className="w-10 h-10 flex items-center justify-center border border-dashed border-zinc-300 hover:border-zinc-500 rounded-sm bg-zinc-100 cursor-pointer transition-all text-zinc-500 hover:text-zinc-700"
                                 onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                                 onDrop={(e) => { 
                                     e.preventDefault(); 
@@ -436,7 +436,7 @@ const InternalForm = (props) => {
                             </label>
                             {files.map((f, i) => (
                                 <div key={i} className="h-10 px-3 flex items-center gap-3 bg-white border border-zinc-300 rounded-sm text-[9px] text-zinc-600 group shadow-sm">
-                                    <FileText className="w-3.5 h-3.5 text-[#D4AF37]" />
+                                    <FileText className="w-3.5 h-3.5 text-zinc-500" />
                                     <span className="truncate max-w-[100px] font-bold">{f.name}</span>
                                     <button type="button" onClick={() => removeFile(i)} className="text-rose-400 hover:text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
                                 </div>
@@ -454,7 +454,7 @@ const InternalForm = (props) => {
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full py-4 bg-black text-[#D4AF37] rounded-sm text-[10px] font-black uppercase tracking-widest hover:bg-zinc-900 transition-all shadow-xl shadow-black/10 disabled:opacity-50 flex items-center justify-center gap-3"
+                    className="w-full py-4 bg-black text-white rounded-sm text-[10px] font-black uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-xl shadow-black/10 disabled:opacity-50 flex items-center justify-center gap-3"
                 >
                     {submitting ? 'Authenticating Submission...' : <><Check className="w-4 h-4" /> Finalize Registry Entry</>}
                 </button>

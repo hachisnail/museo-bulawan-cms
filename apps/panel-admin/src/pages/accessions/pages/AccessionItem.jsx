@@ -11,7 +11,7 @@ import { ArrowLeft } from 'lucide-react';
 //  Badge & Theme Styles
 // ─────────────────────────────────────────────────────────────────────────────
 const STATUS_STYLES = {
-    pending_approval: 'text-[#A68A27] bg-[#D4AF37]/10 border-[#D4AF37]/30',
+    pending_approval: 'text-zinc-700 bg-zinc-100 border-zinc-200',
     in_research: 'text-blue-700 bg-blue-50 border-blue-200',
     finalized: 'text-black bg-zinc-200 border-black',
     rejected: 'text-red-700 bg-red-50 border-red-200',
@@ -473,7 +473,7 @@ Would you like to reload the latest record and try again?`,
                             {fromTab === 'active' && !selected.signed_moa && (
                                 <div className="relative">
                                     <input type="file" onChange={(e) => handleFileUpload(e, 'moa')} className="absolute inset-0 opacity-0 cursor-pointer" />
-                                    <button className="text-[9px] uppercase font-bold tracking-widest text-[#D4AF37] hover:text-black transition-colors flex items-center gap-1">
+                                    <button className="text-[9px] uppercase font-bold tracking-widest text-zinc-600 hover:text-black transition-colors flex items-center gap-1">
                                         <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                                         Upload Signed MOA
                                     </button>
@@ -487,7 +487,7 @@ Would you like to reload the latest record and try again?`,
                                     {fromTab === 'active' ? (selected.contract_type || 'PENDING GENERATION').replace(/_/g, ' ') : (selected.expand?.accession_id?.contract_type || 'N/A').replace(/_/g, ' ')}
                                 </span>
                                 {((fromTab === 'active' ? selected.contract_type : selected.expand?.accession_id?.contract_type)?.toLowerCase() === 'loan') && (
-                                    <div className="text-xs text-amber-600 font-bold mt-1 uppercase tracking-wider">
+                                    <div className="text-xs text-zinc-600 font-bold mt-1 uppercase tracking-wider">
                                         Loan Ends: {fromTab === 'active'
                                             ? (selected.expand?.intake_id?.loan_end_date ? new Date(selected.expand.intake_id.loan_end_date).toLocaleDateString() : 'No Limit')
                                             : (selected.expand?.accession_id?.expand?.intake_id?.loan_end_date ? new Date(selected.expand.accession_id.expand.intake_id.loan_end_date).toLocaleDateString() : 'No Limit')}
@@ -512,7 +512,7 @@ Would you like to reload the latest record and try again?`,
                                         <a 
                                             href={`${import.meta.env.VITE_API_BASE_URL}/api/v1/acquisitions/intakes/${selected.intake_id}/export-moa`}
                                             target="_blank" rel="noreferrer"
-                                            className="px-2 py-1 bg-[#D4AF37]/10 text-[9px] uppercase font-bold tracking-widest text-[#A68A27] border border-[#D4AF37]/30 rounded-sm hover:bg-[#D4AF37]/20 transition-colors"
+                                            className="px-2 py-1 bg-zinc-100 text-[9px] uppercase font-bold tracking-widest text-zinc-800 border border-zinc-200 rounded-sm hover:bg-zinc-200 transition-colors"
                                         >
                                             Export MOA for Printing
                                         </a>
@@ -551,28 +551,28 @@ Would you like to reload the latest record and try again?`,
                                                 required
                                                 value={research.accession_number} 
                                                 onChange={e => setResearch({...research, accession_number: e.target.value})} 
-                                                className="w-full border border-zinc-300 rounded-sm px-3 py-2 text-sm focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none font-mono" 
+                                                className="w-full border border-zinc-300 rounded-sm px-3 py-2 text-sm focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 outline-none font-mono" 
                                                 placeholder="YYYY.SEQ.BATCH (e.g. 2026.001.01)" 
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-[10px] uppercase font-bold text-zinc-600 mb-1">Dimensions</label>
-                                            <input type="text" value={research.dimensions} onChange={e => setResearch({...research, dimensions: e.target.value})} className="w-full border border-zinc-300 rounded-sm px-3 py-2 text-sm focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none" placeholder="e.g. 24cm x 15cm x 10cm" />
+                                            <input type="text" value={research.dimensions} onChange={e => setResearch({...research, dimensions: e.target.value})} className="w-full border border-zinc-300 rounded-sm px-3 py-2 text-sm focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 outline-none" placeholder="e.g. 24cm x 15cm x 10cm" />
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-[10px] uppercase font-bold text-zinc-600 mb-1">Materials</label>
-                                            <input type="text" value={research.materials} onChange={e => setResearch({...research, materials: e.target.value})} className="w-full border border-zinc-300 rounded-sm px-3 py-2 text-sm focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none" placeholder="e.g. Bronze, Gold leaf" />
+                                            <input type="text" value={research.materials} onChange={e => setResearch({...research, materials: e.target.value})} className="w-full border border-zinc-300 rounded-sm px-3 py-2 text-sm focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 outline-none" placeholder="e.g. Bronze, Gold leaf" />
                                         </div>
                                         <div>
                                             <label className="block text-[10px] uppercase font-bold text-zinc-600 mb-1">Curatorial Tags</label>
-                                            <input type="text" value={research.tags} onChange={e => setResearch({...research, tags: e.target.value})} className="w-full border border-zinc-300 rounded-sm px-3 py-2 text-sm focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none" placeholder="Comma separated (e.g. Pre-colonial, Ceramic, Ritual)" />
+                                            <input type="text" value={research.tags} onChange={e => setResearch({...research, tags: e.target.value})} className="w-full border border-zinc-300 rounded-sm px-3 py-2 text-sm focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 outline-none" placeholder="Comma separated (e.g. Pre-colonial, Ceramic, Ritual)" />
                                         </div>
                                     </div>
                                     <div>
                                         <label className="block text-[10px] uppercase font-bold text-zinc-600 mb-1">Historical Significance & Provenance</label>
-                                        <textarea rows="4" value={research.historical_significance} onChange={e => setResearch({...research, historical_significance: e.target.value})} className="w-full border border-zinc-300 rounded-sm px-3 py-2 text-sm font-serif focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none resize-none" placeholder="Provide detailed provenance..." />
+                                        <textarea rows="4" value={research.historical_significance} onChange={e => setResearch({...research, historical_significance: e.target.value})} className="w-full border border-zinc-300 rounded-sm px-3 py-2 text-sm font-serif focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 outline-none resize-none" placeholder="Provide detailed provenance..." />
                                     </div>
                                     
                                     <div className="flex items-center gap-3 bg-zinc-50 p-3 border border-zinc-200 rounded-sm">
@@ -581,7 +581,7 @@ Would you like to reload the latest record and try again?`,
                                             id="research_completed" 
                                             checked={research.research_completed} 
                                             onChange={e => setResearch({...research, research_completed: e.target.checked})}
-                                            className="w-4 h-4 accent-[#D4AF37]"
+                                            className="w-4 h-4 accent-black"
                                         />
                                         <label htmlFor="research_completed" className="text-[10px] uppercase font-bold text-black tracking-widest cursor-pointer">
                                             Mark Research as Completed
@@ -592,13 +592,13 @@ Would you like to reload the latest record and try again?`,
                                     <div>
                                         <div className="flex justify-between items-center mb-2">
                                             <label className="text-[10px] uppercase font-bold text-zinc-600 tracking-widest">Additional Metadata</label>
-                                            <button type="button" onClick={() => setCustomData([...customData, { key: '', value: '' }])} className="text-[9px] font-bold uppercase tracking-widest text-[#D4AF37] hover:text-black transition-colors">+ Add Row</button>
+                                            <button type="button" onClick={() => setCustomData([...customData, { key: '', value: '' }])} className="text-[9px] font-bold uppercase tracking-widest text-zinc-650 hover:text-black transition-colors">+ Add Row</button>
                                         </div>
                                         <div className="space-y-2">
                                             {customData.map((field, idx) => (
                                                 <div key={idx} className="flex gap-2">
-                                                    <input type="text" value={field.key} onChange={e => { const n=[...customData]; n[idx].key=e.target.value; setCustomData(n); }} className="w-1/3 border border-zinc-300 rounded-sm px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-zinc-600 focus:border-[#D4AF37] outline-none" placeholder="PROPERTY" />
-                                                    <input type="text" value={field.value} onChange={e => { const n=[...customData]; n[idx].value=e.target.value; setCustomData(n); }} className="flex-1 border border-zinc-300 rounded-sm px-3 py-1.5 text-sm text-black focus:border-[#D4AF37] outline-none" placeholder="Value" />
+                                                    <input type="text" value={field.key} onChange={e => { const n=[...customData]; n[idx].key=e.target.value; setCustomData(n); }} className="w-1/3 border border-zinc-300 rounded-sm px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-zinc-600 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 outline-none" placeholder="PROPERTY" />
+                                                    <input type="text" value={field.value} onChange={e => { const n=[...customData]; n[idx].value=e.target.value; setCustomData(n); }} className="flex-1 border border-zinc-300 rounded-sm px-3 py-1.5 text-sm text-black focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 outline-none" placeholder="Value" />
                                                     <button type="button" onClick={() => setCustomData(customData.filter((_, i) => i !== idx))} className="px-2 text-zinc-400 hover:text-red-500">✕</button>
                                                 </div>
                                             ))}
@@ -649,7 +649,7 @@ Would you like to reload the latest record and try again?`,
                                 {fromTab === 'active' && (
                                     <button 
                                         onClick={() => setShowHealthForm(true)}
-                                        className="text-[9px] font-bold uppercase tracking-widest text-[#D4AF37] hover:text-black transition-colors"
+                                        className="text-[9px] font-bold uppercase tracking-widest text-zinc-600 hover:text-black transition-colors"
                                     >
                                         + New Report
                                     </button>
@@ -709,7 +709,7 @@ Would you like to reload the latest record and try again?`,
                             {fromTab === 'active' && (
                                 <div className="relative">
                                     <input type="file" multiple onChange={(e) => handleFileUpload(e, 'media')} className="absolute inset-0 opacity-0 cursor-pointer" />
-                                    <button className="text-[9px] uppercase font-bold tracking-widest text-[#D4AF37] hover:text-black transition-colors">+ Add Photos</button>
+                                    <button className="text-[9px] uppercase font-bold tracking-widest text-zinc-655 hover:text-black transition-colors">+ Add Photos</button>
                                 </div>
                             )}
                         </div>
@@ -762,7 +762,7 @@ Would you like to reload the latest record and try again?`,
                         )}
 
                         {selected.status === 'pending_approval' && (
-                            <button onClick={() => handleAction(selected.id, 'approve')} disabled={actionLoading} className="px-6 py-2.5 bg-black text-[#D4AF37] text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-sm disabled:opacity-50">
+                            <button onClick={() => handleAction(selected.id, 'approve')} disabled={actionLoading} className="px-6 py-2.5 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-sm disabled:opacity-50">
                                 Approve Accession
                             </button>
                         )}

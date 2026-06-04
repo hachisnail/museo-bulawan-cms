@@ -12,7 +12,7 @@ import {
     ResponsiveContainer, PieChart, Pie, Cell 
 } from 'recharts';
 
-const CHART_COLORS = ['#d97706', '#b45309', '#78350f', '#f59e0b', '#fbbf24'];
+const CHART_COLORS = ['#18181B', '#3F3F46', '#52525B', '#71717A', '#A1A1AA'];
 
 export default function FormsIndex() {
     const { apiFetch } = useAuth();
@@ -181,7 +181,7 @@ export default function FormsIndex() {
                                 <span className="text-sm">Loading forms...</span>
                             </div>
                         ) : customDefinitions.length === 0 ? (
-                            <div className="border-2 border-dashed border-gray-200 rounded-xl p-16 text-center text-zinc-400 bg-zinc-50/50 flex flex-col items-center justify-center">
+                            <div className="border-2 border-dashed border-gray-200 rounded-md p-16 text-center text-zinc-400 bg-zinc-50/50 flex flex-col items-center justify-center">
                                 <FileText className="w-12 h-12 mb-4 text-zinc-300" />
                                 <h3 className="text-lg font-bold text-gray-900 mb-1">No forms found</h3>
                                 <p className="text-sm font-medium mb-6">You haven't created any custom forms yet.</p>
@@ -195,15 +195,15 @@ export default function FormsIndex() {
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                                 {customDefinitions.map(form => (
-                                    <div key={form.id} className="group relative bg-white border border-gray-200 rounded-2xl p-6 flex flex-col hover:border-black hover:shadow-xl hover:shadow-black/5 transition-all duration-300 min-h-[220px]">
+                                    <div key={form.id} className="group relative bg-white border border-gray-200 rounded-md p-6 flex flex-col hover:border-black hover:shadow-xl hover:shadow-black/5 transition-all duration-300 min-h-[220px]">
                                         
                                         {/* Badges Container */}
                                         <div className="flex items-center gap-2 mb-4">
-                                            <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-gray-100 text-gray-600 rounded-full">
+                                            <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-gray-100 text-gray-600 rounded-md">
                                                 {form.settings?.layout?.replace('_', ' ') || 'SINGLE COLUMN'}
                                             </span>
                                             {form.otp && (
-                                                <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-amber-50 text-amber-700 border border-amber-200 rounded-full">
+                                                <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-zinc-100 text-zinc-800 border border-zinc-200 rounded-md">
                                                     OTP REQ
                                                 </span>
                                             )}
@@ -265,7 +265,7 @@ export default function FormsIndex() {
             {/* Create Form Modal */}
             {createModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden flex flex-col scale-100 animate-in zoom-in-95 duration-200">
+                    <div className="bg-white rounded-md shadow-xl w-full max-w-md overflow-hidden flex flex-col scale-100 animate-in zoom-in-95 duration-200">
                         <div className="px-6 py-4 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/50">
                             <h3 className="text-lg font-bold text-zinc-900">Create New Form</h3>
                         </div>
@@ -399,7 +399,7 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
 
     if (!feedbackDefinition) {
         return (
-            <div className="border border-gray-200 rounded-xl bg-white p-16 text-center text-zinc-400 shadow-sm animate-in fade-in">
+            <div className="border border-gray-200 rounded-md bg-white p-16 text-center text-zinc-400 shadow-sm animate-in fade-in">
                 <AlertCircle className="w-12 h-12 mx-auto mb-4 text-zinc-300" />
                 <p className="text-sm font-medium">No Feedback form definition found.</p>
                 <p className="text-xs mt-1">Make sure you have a form with type "feedback" or ID "01KQEFB1FEEDBACKFORMSEED00".</p>
@@ -414,7 +414,7 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
                 {/* Skeleton Top Metrics Row */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     {[1, 2, 3].map(i => (
-                        <div key={i} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-center items-center h-[140px]">
+                        <div key={i} className="bg-white p-6 rounded-md border border-gray-100 shadow-sm flex flex-col justify-center items-center h-[140px]">
                             <div className="w-28 h-3 bg-gray-200 rounded-full animate-pulse mb-4"></div>
                             <div className="w-16 h-10 bg-gray-200 rounded-lg animate-pulse"></div>
                         </div>
@@ -423,11 +423,11 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
 
                 {/* Skeleton Charts Row */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-[350px]">
+                    <div className="lg:col-span-2 bg-white p-6 rounded-md border border-gray-100 shadow-sm h-[350px]">
                         <div className="w-40 h-4 bg-gray-200 rounded-full animate-pulse mb-8"></div>
-                        <div className="w-full h-48 bg-gray-100/50 rounded-xl animate-pulse"></div>
+                        <div className="w-full h-48 bg-gray-100/50 rounded-md animate-pulse"></div>
                     </div>
-                    <div className="lg:col-span-1 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-[350px]">
+                    <div className="lg:col-span-1 bg-white p-6 rounded-md border border-gray-100 shadow-sm h-[350px]">
                         <div className="w-32 h-4 bg-gray-200 rounded-full animate-pulse mb-8"></div>
                         <div className="w-32 h-32 bg-gray-100/50 rounded-full animate-pulse mx-auto mt-4"></div>
                         <div className="w-48 h-3 bg-gray-200 rounded-full animate-pulse mx-auto mt-8"></div>
@@ -435,11 +435,11 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
                 </div>
 
                 {/* Skeleton Comments List */}
-                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                <div className="bg-white p-6 rounded-md border border-gray-100 shadow-sm">
                     <div className="w-40 h-4 bg-gray-200 rounded-full animate-pulse mb-8"></div>
                     <div className="space-y-4">
                         {[1, 2].map(i => (
-                            <div key={i} className="p-4 rounded-xl border border-gray-50 flex flex-col sm:flex-row gap-4 h-[120px]">
+                            <div key={i} className="p-4 rounded-md border border-gray-50 flex flex-col sm:flex-row gap-4 h-[120px]">
                                 <div className="sm:w-1/4">
                                     <div className="w-24 h-4 bg-gray-200 rounded-full animate-pulse mb-2"></div>
                                     <div className="w-32 h-3 bg-gray-100 rounded-full animate-pulse"></div>
@@ -461,18 +461,18 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
         <div className="space-y-6 animate-in fade-in duration-500">
             {/* Top Metrics Row */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center h-[140px]">
+                <div className="bg-white p-6 rounded-md border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center h-[140px]">
                     <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Total Feedback</p>
                     <p className="text-5xl font-black text-gray-900">{submissions.length}</p>
                 </div>
-                <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center h-[140px]">
+                <div className="bg-white p-6 rounded-md border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center h-[140px]">
                     <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Average Rating</p>
                     <div className="flex items-baseline gap-2">
-                        <p className="text-5xl font-black text-amber-500">{analyticsData.averageRating}</p>
+                        <p className="text-5xl font-black text-gray-900">{analyticsData.averageRating}</p>
                         <span className="text-xl font-bold text-gray-400">/ 5</span>
                     </div>
                 </div>
-                <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center h-[140px]">
+                <div className="bg-white p-6 rounded-md border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center h-[140px]">
                     <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Feedback Types</p>
                     <p className="text-5xl font-black text-gray-900">{analyticsData.categoryDistribution.length}</p>
                 </div>
@@ -480,7 +480,7 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
 
             {/* Charts Row */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm h-[350px]">
+                <div className="lg:col-span-2 bg-white p-6 rounded-md border border-gray-200 shadow-sm h-[350px]">
                     <h3 className="text-sm font-bold text-gray-800 mb-6 uppercase tracking-widest">Rating Distribution</h3>
                     <div className="h-[250px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
@@ -488,14 +488,14 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
                                 <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0f0f0" />
                                 <XAxis type="number" hide />
                                 <YAxis dataKey="star" type="category" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12, fontWeight: 600 }} />
-                                <Tooltip cursor={{ fill: '#f9fafb' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                                <Bar dataKey="count" fill="#fbbf24" radius={[0, 4, 4, 0]} barSize={24} />
+                                <Tooltip cursor={{ fill: '#f9fafb' }} contentStyle={{ borderRadius: '6px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                                <Bar dataKey="count" fill="#18181B" radius={[0, 4, 4, 0]} barSize={24} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
 
-                <div className="lg:col-span-1 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm h-[350px]">
+                <div className="lg:col-span-1 bg-white p-6 rounded-md border border-gray-200 shadow-sm h-[350px]">
                     <h3 className="text-sm font-bold text-gray-800 mb-6 uppercase tracking-widest">Feedback Types</h3>
                     {analyticsData.categoryDistribution.length === 0 ? (
                         <div className="h-[250px] flex items-center justify-center text-sm text-gray-400 italic">No type data available</div>
@@ -508,7 +508,7 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
                                             <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
                                         ))}
                                     </Pie>
-                                    <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                                    <Tooltip contentStyle={{ borderRadius: '6px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
                                 </PieChart>
                             </ResponsiveContainer>
                             <div className="mt-auto flex flex-wrap gap-3 justify-center pt-4">
@@ -525,7 +525,7 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
             </div>
 
             {/* Recent Feedback Comments List */}
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            <div className="bg-white p-6 rounded-md border border-gray-200 shadow-sm">
                 <div className="flex items-center gap-2 mb-6">
                     <MessageSquare className="w-5 h-5 text-gray-400" />
                     <h3 className="text-sm font-bold text-gray-800 uppercase tracking-widest">Recent Comments</h3>
@@ -538,7 +538,7 @@ function FeedbackAnalyticsTab({ feedbackDefinition, apiFetch }) {
                 ) : (
                     <div className="space-y-4">
                         {analyticsData.recentComments.map(comment => (
-                            <div key={comment.id} className="p-4 rounded-xl bg-gray-50/50 border border-gray-100 flex flex-col sm:flex-row gap-4">
+                            <div key={comment.id} className="p-4 rounded-md bg-gray-50/50 border border-gray-100 flex flex-col sm:flex-row gap-4">
                                 <div className="sm:w-1/4 flex flex-col shrink-0 border-b sm:border-b-0 sm:border-r border-gray-200 pb-3 sm:pb-0 sm:pr-4">
                                     <span className="font-bold text-sm text-gray-900 truncate">{comment.author}</span>
                                     {comment.email && <span className="text-xs text-gray-500 truncate mb-2">{comment.email}</span>}

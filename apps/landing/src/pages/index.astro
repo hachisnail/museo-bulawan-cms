@@ -18,13 +18,77 @@ const na2 =
   "https://images.unsplash.com/photo-1572953109213-3be62398eb95?q=80&w=1000&auto=format&fit=crop";
 
 const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
+const CMS_URL = import.meta.env.PUBLIC_CMS_URL || "http://127.0.0.1:3001";
 
-// Mock Data for initial render
-const displayEvents = [
-  { title: "Opening Exhibition", upload_date: "2026-05-10", images: block1 },
-  { title: "Cultural Workshop", upload_date: "2026-05-15", images: block2 },
-];
-const articles = [...displayEvents, ...displayEvents];
+// Fetch ALL published articles (for News & Events section)
+let articles: any[] = [];
+try {
+  const res = await fetch(
+    `${CMS_URL}/api/articles?where[_status][equals]=published&depth=1&sort=-publishedAt&limit=8`
+  );
+  if (res.ok) {
+    const data = await res.json();
+    articles = data.docs || [];
+  }
+} catch (e) {
+  console.warn('Could not fetch articles from CMS:', e);
+}
+
+// Fetch EVENT-category articles only (for What's On calendar)
+let eventArticles: any[] = [];
+try {
+  const res = await fetch(
+    `${CMS_URL}/api/articles?where[_status][equals]=published&where[category.slug][equals]=event&depth=1&sort=-publishedAt&limit=20`
+  );
+  if (res.ok) {
+    const data = await res.json();
+    eventArticles = data.docs || [];
+  }
+} catch (e) {
+  console.warn('Could not fetch event articles from CMS:', e);
+}
+
+// Fallback to mock data if CMS is empty or down
+if (articles.length === 0) {
+  const mockArticles = [
+    { title: "Opening Exhibition", publishedAt: "2026-05-10", coverImage: { url: block1 }, slug: "", category: { name: "Event" } },
+    { title: "Cultural Workshop", publishedAt: "2026-05-15", coverImage: { url: block2 }, slug: "", category: { name: "News" } },
+  ];
+  articles = [...mockArticles, ...mockArticles];
+}
+
+// Use event articles for the "What's On" section, fallback to first 2 articles
+const displayEvents = eventArticles.length > 0 ? eventArticles.slice(0, 2) : articles.slice(0, 2);
+
+// Generate calendar data for the current month
+const now = new Date();
+const currentMonth = now.toLocaleString('en-US', { month: 'long' });
+const currentYear = now.getFullYear();
+const currentMonthIndex = now.getMonth();
+const daysInMonth = new Date(currentYear, currentMonthIndex + 1, 0).getDate();
+const firstDayOfWeek = new Date(currentYear, currentMonthIndex, 1).getDay(); // 0=Sun
+const today = now.getDate();
+
+// Extract event dates for the current month
+const eventDatesThisMonth = eventArticles
+  .filter((a: any) => {
+    if (!a.publishedAt) return false;
+    const d = new Date(a.publishedAt);
+    return d.getMonth() === currentMonthIndex && d.getFullYear() === currentYear;
+  })
+  .map((a: any) => new Date(a.publishedAt).getDate());
+
+function getCoverUrl(article: any): string {
+  if (article.coverImage?.sizes?.card?.url) {
+    return `${CMS_URL}${article.coverImage.sizes.card.url}`;
+  }
+  if (article.coverImage?.url) {
+    // If it's a mock article with an absolute URL, return it directly
+    if (article.coverImage.url.startsWith('http')) return article.coverImage.url;
+    return `${CMS_URL}${article.coverImage.url}`;
+  }
+  return block1; // placeholder
+}
 ---
 
 <BaseLayout title="Home | Museo Bulawan" theme="dark">
@@ -337,21 +401,58 @@ const articles = [...displayEvents, ...displayEvents];
       <div
         class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row gap-6 lg:gap-10 items-center justify-center flex-1 w-full min-h-0 my-4"
       >
-        <!-- Left: Calendar Background Setup -->
-        <div class="relative w-full lg:w-[48%] h-[35vh] lg:h-full max-h-[450px] lg:max-h-[60vh] flex-shrink-0">
-          
-          <div class="absolute top-0 left-0 w-[55%] h-[80%] bg-[#FDF8EA] z-0"></div>
-          
-          <div class="absolute bottom-[5%] right-[5%] w-[70%] h-[70%] bg-[#A89C83] z-0"></div>
-
-          <h3 class="absolute top-[8%] left-[8%] text-5xl md:text-6xl lg:text-[4.5rem] font-serif text-[#2B2B2B] z-20 leading-none">
-            April
-          </h3>
-
-          <div class="absolute top-[25%] left-[10%] w-[85%] h-[65%] bg-white shadow-[0_15px_40px_-10px_rgba(0,0,0,0.15)] z-10 border border-gray-50 flex items-center justify-center">
-            <!-- Calendar component will render here -->
+        <!-- Left: Event Calendar -->
+        <div class="w-full lg:w-[48%] h-[35vh] lg:h-full max-h-[450px] lg:max-h-[60vh] flex-shrink-0">
+          <div class="w-full h-full bg-white border border-gray-100 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.10)] flex flex-col">
+            <!-- Calendar Header -->
+            <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-100">
+              <h3 class="text-3xl md:text-4xl font-serif text-[#2B2B2B] leading-none tracking-wide">
+                {currentMonth}
+              </h3>
+              <span class="text-sm text-gray-400 font-medium tracking-wider">{currentYear}</span>
+            </div>
+            <!-- Calendar Grid -->
+            <div class="flex-1 px-6 py-4 flex flex-col">
+              <!-- Day Headers -->
+              <div class="grid grid-cols-7 gap-1 mb-2">
+                {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((day) => (
+                  <div class="text-center text-[10px] font-bold text-gray-400 uppercase tracking-wider py-1">{day}</div>
+                ))}
+              </div>
+              <!-- Day Numbers -->
+              <div class="grid grid-cols-7 gap-1 flex-1 content-start" id="calendarGrid">
+                {/* Empty cells for offset */}
+                {Array.from({ length: firstDayOfWeek }).map((_, i) => (
+                  <div key={`empty-${i}`} class="aspect-square"></div>
+                ))}
+                {/* Day cells */}
+                {Array.from({ length: daysInMonth }).map((_, i) => {
+                  const day = i + 1;
+                  const isToday = day === today;
+                  const hasEvent = eventDatesThisMonth.includes(day);
+                  return (
+                    <div
+                      class={`aspect-square flex flex-col items-center justify-center text-sm relative transition-colors
+                        ${isToday ? 'bg-[#1C1B19] text-white font-bold' : 'text-gray-700 hover:bg-gray-50'}
+                      `}
+                    >
+                      <span>{day}</span>
+                      {hasEvent && (
+                        <span class={`absolute bottom-[3px] w-1.5 h-1.5 rounded-full ${isToday ? 'bg-[#D4AF37]' : 'bg-[#D4AF37]'}`}></span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              {/* Event Legend */}
+              {eventDatesThisMonth.length > 0 && (
+                <div class="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100">
+                  <span class="w-2 h-2 rounded-full bg-[#D4AF37]"></span>
+                  <span class="text-xs text-gray-400">{eventDatesThisMonth.length} event{eventDatesThisMonth.length !== 1 ? 's' : ''} this month</span>
+                </div>
+              )}
+            </div>
           </div>
-          
         </div>
 
         <!-- Right: Events Setup -->
@@ -370,13 +471,22 @@ const articles = [...displayEvents, ...displayEvents];
           <!-- Using flex-1 to auto-fill space without aspect-ratio blowout -->
           <div class="flex flex-col gap-3 w-full flex-1 min-h-0">
             {
-              displayEvents.slice(0, 2).map((article) => (
+              displayEvents.map((article) => (
                 <a
-                  href={`/articles`}
-                  class="block w-full flex-1 relative shadow-md group overflow-hidden bg-gray-100 border border-black/5"
+                  href={`/articles/${article.slug || article.id || ''}`}
+                  class="group relative h-48 md:h-auto md:row-span-1 rounded-sm overflow-hidden flex items-end p-6 border border-white/5 bg-gray-900"
                 >
+                  <div class="relative z-20 flex flex-col items-start gap-1">
+                    <span class="bg-[#1C1B19] text-[#d8ad69] px-2 py-0.5 text-xs font-semibold tracking-wider">
+                      {article.category?.name || "Event"}
+                    </span>
+                    <h3 class="text-white font-serif text-xl group-hover:text-[#d8ad69] transition-colors leading-tight">
+                      {article.title}
+                    </h3>
+                  </div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-opacity duration-300 group-hover:opacity-80" />
                   <img
-                    src={article.images}
+                    src={getCoverUrl(article)}
                     alt={article.title || "Event Highlight"}
                     class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-[1.03] transition-transform duration-700 ease-out"
                   />
@@ -494,12 +604,12 @@ const articles = [...displayEvents, ...displayEvents];
           {
             articles.slice(0, 4).map((article) => (
               <a
-                href={`/articles`}
+                href={`/articles/${article.slug || article.id || ''}`}
                 class="flex flex-col sm:flex-row gap-5 md:gap-6 group"
               >
                 <div
                   class="w-full sm:w-[140px] md:w-[180px] lg:w-[200px] shrink-0 aspect-square bg-cover bg-center object-cover border border-white/5"
-                  style={`background-image: url('${article.images}')`}
+                  style={`background-image: url('${getCoverUrl(article)}')`}
                 />
 
                 <div class="flex flex-col py-1 justify-center">
@@ -507,11 +617,10 @@ const articles = [...displayEvents, ...displayEvents];
                     {article.title}
                   </h3>
                   <span class="text-gray-500 text-xs md:text-sm mb-3">
-                    {article.upload_date}
+                    {article.publishedAt ? new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}
                   </span>
                   <p class="text-gray-200 text-xs md:text-sm leading-relaxed max-w-sm line-clamp-3 md:line-clamp-4">
-                    Brief description of the event will be placed here. Brief
-                    description of the event will be placed here.
+                    {article.excerpt || 'Read the full article to learn more.'}
                   </p>
                 </div>
               </a>

@@ -89,4 +89,28 @@ export default buildConfig({
       fileSize: 20 * 1024 * 1024, // 20MB
     },
   },
+
+  // ─── Seed default categories on first boot ────
+  onInit: async (payload) => {
+    const defaultCategories = [
+      { name: 'Article', slug: 'article', description: 'General articles and publications' },
+      { name: 'News', slug: 'news', description: 'Museum news and announcements' },
+      { name: 'Event', slug: 'event', description: 'Upcoming and past museum events' },
+    ]
+
+    for (const cat of defaultCategories) {
+      const existing = await payload.find({
+        collection: 'categories',
+        where: { slug: { equals: cat.slug } },
+        limit: 1,
+      })
+      if (existing.docs.length === 0) {
+        await payload.create({
+          collection: 'categories',
+          data: cat,
+        })
+        payload.logger.info(`Seeded default category: ${cat.name}`)
+      }
+    }
+  },
 })

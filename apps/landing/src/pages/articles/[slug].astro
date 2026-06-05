@@ -5,7 +5,7 @@ export const prerender = false;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 // CMS base URL — change for production
-const CMS_URL = 'http://127.0.0.1:3001';
+const CMS_URL = import.meta.env.PUBLIC_CMS_URL || 'http://127.0.0.1:3001';
 
 const { slug } = Astro.params;
 
@@ -245,7 +245,7 @@ const metaDescription = article.seo?.metaDescription || article.excerpt || '';
 
 <BaseLayout title={`${metaTitle} | Museo Bulawan`} theme="dark">
 
-  <article class="w-full max-w-4xl mx-auto px-4 md:px-0 pb-16 pt-8 md:pt-12">
+  <article class="w-full max-w-4xl mx-auto px-6 md:px-8 pb-16 pt-32 md:pt-40 lg:pt-44">
     <!-- Back link -->
     <a href="/articles" class="inline-flex items-center gap-2 text-gray-400 hover:text-[#E5D2AC] transition-colors mb-8 text-lg">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>

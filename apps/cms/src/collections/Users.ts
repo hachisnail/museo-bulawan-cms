@@ -13,23 +13,19 @@ export const Users: CollectionConfig = {
           }
           
           try {
-            console.log('--- api-auth strategy called ---');
             const response = await fetch('http://localhost:3000/api/v1/auth/check', {
               headers: { cookie: cookieHeader },
             });
             
             if (!response.ok) {
-              console.log('api-auth: check failed', response.status);
               return { user: null };
             }
             
             const data = await response.json();
             if (!data.valid || !data.user) {
-              console.log('api-auth: invalid session');
               return { user: null };
             }
 
-            console.log('api-auth: user found in API', data.user.email);
             // Find existing user in Payload
             const { docs } = await payload.find({
               collection: 'users',

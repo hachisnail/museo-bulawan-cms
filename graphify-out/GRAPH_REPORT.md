@@ -1,16 +1,16 @@
 # Graph Report - museo-bulawan-cms  (2026-06-05)
 
 ## Corpus Check
-- 290 files · ~543,415 words
+- 293 files · ~548,319 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2012 nodes · 4082 edges · 143 communities (119 shown, 24 thin omitted)
+- 2434 nodes · 4516 edges · 209 communities (181 shown, 28 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `02bdbd25`
+- Built from commit: `ff687746`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -122,12 +122,78 @@
 - [[_COMMUNITY_Community 128|Community 128]]
 - [[_COMMUNITY_Community 129|Community 129]]
 - [[_COMMUNITY_Community 131|Community 131]]
+- [[_COMMUNITY_Community 132|Community 132]]
+- [[_COMMUNITY_Community 133|Community 133]]
+- [[_COMMUNITY_Community 134|Community 134]]
+- [[_COMMUNITY_Community 135|Community 135]]
+- [[_COMMUNITY_Community 136|Community 136]]
 - [[_COMMUNITY_Community 137|Community 137]]
+- [[_COMMUNITY_Community 138|Community 138]]
+- [[_COMMUNITY_Community 139|Community 139]]
 - [[_COMMUNITY_Community 140|Community 140]]
+- [[_COMMUNITY_Community 145|Community 145]]
 - [[_COMMUNITY_Community 146|Community 146]]
 - [[_COMMUNITY_Community 147|Community 147]]
+- [[_COMMUNITY_Community 148|Community 148]]
 - [[_COMMUNITY_Community 149|Community 149]]
 - [[_COMMUNITY_Community 150|Community 150]]
+- [[_COMMUNITY_Community 151|Community 151]]
+- [[_COMMUNITY_Community 152|Community 152]]
+- [[_COMMUNITY_Community 153|Community 153]]
+- [[_COMMUNITY_Community 154|Community 154]]
+- [[_COMMUNITY_Community 155|Community 155]]
+- [[_COMMUNITY_Community 156|Community 156]]
+- [[_COMMUNITY_Community 158|Community 158]]
+- [[_COMMUNITY_Community 159|Community 159]]
+- [[_COMMUNITY_Community 160|Community 160]]
+- [[_COMMUNITY_Community 161|Community 161]]
+- [[_COMMUNITY_Community 162|Community 162]]
+- [[_COMMUNITY_Community 163|Community 163]]
+- [[_COMMUNITY_Community 164|Community 164]]
+- [[_COMMUNITY_Community 165|Community 165]]
+- [[_COMMUNITY_Community 166|Community 166]]
+- [[_COMMUNITY_Community 167|Community 167]]
+- [[_COMMUNITY_Community 168|Community 168]]
+- [[_COMMUNITY_Community 169|Community 169]]
+- [[_COMMUNITY_Community 170|Community 170]]
+- [[_COMMUNITY_Community 171|Community 171]]
+- [[_COMMUNITY_Community 172|Community 172]]
+- [[_COMMUNITY_Community 173|Community 173]]
+- [[_COMMUNITY_Community 174|Community 174]]
+- [[_COMMUNITY_Community 175|Community 175]]
+- [[_COMMUNITY_Community 176|Community 176]]
+- [[_COMMUNITY_Community 177|Community 177]]
+- [[_COMMUNITY_Community 178|Community 178]]
+- [[_COMMUNITY_Community 179|Community 179]]
+- [[_COMMUNITY_Community 180|Community 180]]
+- [[_COMMUNITY_Community 181|Community 181]]
+- [[_COMMUNITY_Community 182|Community 182]]
+- [[_COMMUNITY_Community 183|Community 183]]
+- [[_COMMUNITY_Community 184|Community 184]]
+- [[_COMMUNITY_Community 185|Community 185]]
+- [[_COMMUNITY_Community 186|Community 186]]
+- [[_COMMUNITY_Community 187|Community 187]]
+- [[_COMMUNITY_Community 188|Community 188]]
+- [[_COMMUNITY_Community 189|Community 189]]
+- [[_COMMUNITY_Community 190|Community 190]]
+- [[_COMMUNITY_Community 191|Community 191]]
+- [[_COMMUNITY_Community 192|Community 192]]
+- [[_COMMUNITY_Community 193|Community 193]]
+- [[_COMMUNITY_Community 194|Community 194]]
+- [[_COMMUNITY_Community 195|Community 195]]
+- [[_COMMUNITY_Community 196|Community 196]]
+- [[_COMMUNITY_Community 197|Community 197]]
+- [[_COMMUNITY_Community 198|Community 198]]
+- [[_COMMUNITY_Community 199|Community 199]]
+- [[_COMMUNITY_Community 200|Community 200]]
+- [[_COMMUNITY_Community 201|Community 201]]
+- [[_COMMUNITY_Community 202|Community 202]]
+- [[_COMMUNITY_Community 203|Community 203]]
+- [[_COMMUNITY_Community 204|Community 204]]
+- [[_COMMUNITY_Community 205|Community 205]]
+- [[_COMMUNITY_Community 206|Community 206]]
+- [[_COMMUNITY_Community 207|Community 207]]
+- [[_COMMUNITY_Community 208|Community 208]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `useAuth()` - 97 edges
@@ -142,33 +208,33 @@
 10. `acquisitionService` - 22 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `createAppointment()` --calls--> `validate()`  [INFERRED]
-  apps/api/src/controllers/appointmentController.js → apps/api/src/middlewares/validateRequest.js
 - `createSchedule()` --calls--> `validate()`  [INFERRED]
   apps/api/src/controllers/scheduleController.js → apps/api/src/middlewares/validateRequest.js
-- `InventoryItem()` --calls--> `getStatusStyles()`  [INFERRED]
-  apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx → apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx
+- `createAppointment()` --calls--> `validate()`  [INFERRED]
+  apps/api/src/controllers/appointmentController.js → apps/api/src/middlewares/validateRequest.js
 - `Page()` --calls--> `RootPage()`  [INFERRED]
   apps/cms/src/app/(payload)/admin/[[...segments]]/page.tsx → apps/cms/src/app/(payload)/page.tsx
 - `App()` --calls--> `useAuth()`  [EXTRACTED]
   apps/panel-admin/src/App.jsx → apps/panel-admin/src/context/authContext.jsx
+- `App()` --calls--> `useSSE()`  [EXTRACTED]
+  apps/panel-admin/src/App.jsx → apps/panel-admin/src/hooks/useSSE.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (143 total, 24 thin omitted)
+## Communities (209 total, 28 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.14
 Nodes (10): ExternalForm(), InternalForm(), useFormLogic(), ExternalForm(), InternalForm(), useFormLogic(), ExternalForm(), STEP_ICONS (+2 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.08
-Nodes (22): ProtectedRoute(), AuthContext, AuthProvider(), useAuth(), SSEContext, SSEProvider(), Analytics(), COLORS (+14 more)
+Cohesion: 0.10
+Nodes (16): ProtectedRoute(), AuthContext, AuthProvider(), useAuth(), SSEContext, SSEProvider(), Analytics(), COLORS (+8 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.06
-Nodes (46): router, upload, defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES, analyticsController, exportAuditLogs() (+38 more)
+Nodes (52): router, upload, defineAbilityFor(), getEffectiveRoles(), HIERARCHY, ROLE_RULES, ajv, createAppointment() (+44 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.06
@@ -207,8 +273,8 @@ Cohesion: 0.07
 Nodes (27): 1. Architecture Overview, 2. State Machines, 3. Lifecycle Stages — Step by Step, 4. API Filter Reference, 5. Data Flow & Traceability, 6. Security Matrix, 7. Auto-Number Formats, Accession States (Formal Registration) (+19 more)
 
 ### Community 12 - "Community 12"
-Cohesion: 0.08
-Nodes (28): dependencies, cross-env, graphql, next, payload, @payloadcms/db-sqlite, @payloadcms/next, @payloadcms/richtext-lexical (+20 more)
+Cohesion: 0.07
+Nodes (30): dependencies, cross-env, graphql, next, payload, @payloadcms/db-sqlite, @payloadcms/next, @payloadcms/richtext-lexical (+22 more)
 
 ### Community 13 - "Community 13"
 Cohesion: 0.15
@@ -274,13 +340,9 @@ Nodes (10): 1. Acquisition Lifecycle (Intake → Accession → Inventory), 2. Dy
 Cohesion: 0.18
 Nodes (10): 1. What the doc gets right (keep these), 4. Production-readiness concerns the doc should mention, 5. Specific doc edits I'd suggest, 7. Risk register (sorted by severity), 8. Suggested next actions (concrete TODOs), 9. Final verdict on the existing doc, Review of `payload_cms_astro_integration.md`, Status of recommendations (updated 2026-05-05) (+2 more)
 
-### Community 31 - "Community 31"
-Cohesion: 0.18
-Nodes (4): MemoryQueueAdapter, NativeRedisQueueAdapter, processTask(), RedisQueueAdapter
-
 ### Community 32 - "Community 32"
-Cohesion: 0.08
-Nodes (18): EditModal(), InviteModal(), Modal(), SidebarDashboard(), EmbedTab(), FormBuilderTab(), FormDetail(), SubmissionsTab() (+10 more)
+Cohesion: 0.15
+Nodes (11): EditModal(), InviteModal(), getManagementSidebarCount(), getManagementSidebarStats(), getManagementSidebarTitle(), ManagementIndex(), ROLE_STYLES, STATUS_STYLES (+3 more)
 
 ### Community 33 - "Community 33"
 Cohesion: 0.22
@@ -331,8 +393,8 @@ Cohesion: 0.53
 Nodes (4): batchTransfer(), mockBaseService, mockDb, mockNotificationService
 
 ### Community 45 - "Community 45"
-Cohesion: 0.25
-Nodes (7): pool, mediaService, customFormat, logger, generateAccessionNumber(), generateCatalogNumber(), nextSequenceValue()
+Cohesion: 0.80
+Nodes (3): generateAccessionNumber(), generateCatalogNumber(), nextSequenceValue()
 
 ### Community 46 - "Community 46"
 Cohesion: 0.60
@@ -371,28 +433,32 @@ Cohesion: 0.10
 Nodes (26): DataTable(), DocxPreview(), archiveColumns, intakesColumns, offersColumns, getSidebarCount(), getSidebarStats(), getSidebarTitle() (+18 more)
 
 ### Community 76 - "Community 76"
-Cohesion: 0.11
-Nodes (13): startServer(), db, initMariaDB(), checkMedia(), serialize(), fix(), run(), run() (+5 more)
+Cohesion: 0.10
+Nodes (20): startServer(), db, pool, initMariaDB(), loginSchema, compliancePipeline, donationPipeline, fix() (+12 more)
 
 ### Community 77 - "Community 77"
-Cohesion: 0.26
-Nodes (12): accessionService, baseService, constituentService, exhibitionService, toDateString(), validateDateFormat(), intakeService, inventoryService (+4 more)
+Cohesion: 0.14
+Nodes (23): accessionService, baseService, constituentService, exhibitionService, toDateString(), validateDateFormat(), intakeService, inventoryService (+15 more)
 
 ### Community 78 - "Community 78"
 Cohesion: 0.30
 Nodes (8): definitionService, parseJsonFields(), escapeLikePattern(), queryService, ajv, submissionService, verificationService, otpStore
 
 ### Community 79 - "Community 79"
-Cohesion: 0.14
-Nodes (12): Icons, MainLayout(), useSSEGlobal(), useSSE(), Dashboard(), CHART_COLORS, FeedbackAnalyticsTab(), FormsIndex() (+4 more)
+Cohesion: 0.15
+Nodes (16): Icons, MainLayout(), MovementForm(), useSSEGlobal(), useSSE(), Dashboard(), getStatusStyles(), INVENTORY_DATA (+8 more)
 
 ### Community 81 - "Community 81"
 Cohesion: 0.17
-Nodes (13): loginSchema, check(), login(), loginVisitor(), logout(), auditService, identityService, generateToken() (+5 more)
+Nodes (13): check(), login(), loginVisitor(), logout(), auditService, identityService, lifecycleService, managementService (+5 more)
 
 ### Community 82 - "Community 82"
-Cohesion: 0.20
-Nodes (11): compliancePipeline, donationPipeline, __dirname, documentService, __filename, NotificationService, userService, sendEmail() (+3 more)
+Cohesion: 0.12
+Nodes (10): SidebarDashboard(), EmbedTab(), FormBuilderTab(), FormDetail(), SubmissionsTab(), CHART_COLORS, FeedbackAnalyticsTab(), FormsIndex() (+2 more)
+
+### Community 83 - "Community 83"
+Cohesion: 0.13
+Nodes (8): Modal(), ManualIntakeForm(), IntakeManualNew(), InventoryExhibitions(), STATUS_STYLES, ArrowRight(), InventoryLocations(), TYPE_STYLES
 
 ### Community 84 - "Community 84"
 Cohesion: 0.14
@@ -403,12 +469,12 @@ Cohesion: 0.12
 Nodes (15): ../assets/06-AfternoonMealOfTheWorker 1.svg, ../assets/440832115_947772303495782_6010038099693171993_n.svg, ../../../assets/amorsolo-igorot-hills-baguio-1928_orig.jpeg, ../../../assets/Fernando-Amorsolo-Women-Bathing-and-Washing Clothes-7463.svg, ../../../assets/FERNANDO CUETO AMORSOLO, Girl with Jar.svg, ../assets/support_us.svg, ../../../assets/tropical-lagoon-1923-1923_orig.jpeg, ../assets/visit_us.svg (+7 more)
 
 ### Community 88 - "Community 88"
-Cohesion: 0.18
-Nodes (17): ajv, createAppointment(), deleteAppointment(), formatTime(), getAppointmentById(), getAppointments(), serializeAppointment(), updateAppointmentStatus() (+9 more)
+Cohesion: 0.40
+Nodes (8): ajv, createSchedule(), deleteSchedule(), formatTime(), getScheduleById(), getSchedules(), serializeSchedule(), updateScheduleStatus()
 
 ### Community 89 - "Community 89"
-Cohesion: 0.48
-Nodes (5): ALLOWED_TABLES, CONTRACT_TYPE_MAP, getContractType(), getLegalStatus(), LEGAL_STATUS_MAP
+Cohesion: 0.30
+Nodes (11): FormRenderer(), countOverlappingEvents(), timeStringToMinutes(), baseTimeValidation(), isFullDayDisabled(), overlapsRange(), SIX_AM, SIX_PM (+3 more)
 
 ### Community 90 - "Community 90"
 Cohesion: 0.40
@@ -419,12 +485,12 @@ Cohesion: 0.40
 Nodes (4): compilerOptions, jsx, jsxImportSource, extends
 
 ### Community 106 - "Community 106"
-Cohesion: 0.34
-Nodes (5): definitionController, queryController, schemas, submissionController, formService
+Cohesion: 0.32
+Nodes (6): formController, definitionController, queryController, schemas, submissionController, formService
 
 ### Community 107 - "Community 107"
-Cohesion: 0.13
-Nodes (31): FormRenderer(), MiniCal(), ConfirmModal(), DeleteModal(), Row(), ScheduleAdd(), Toast(), ConfirmModal() (+23 more)
+Cohesion: 0.15
+Nodes (27): MiniCal(), ActionBtn(), AppointmentDetail(), getApptStatus(), getVisitorName(), InfoRow(), StatusBadge(), ConfirmModal() (+19 more)
 
 ### Community 109 - "Community 109"
 Cohesion: 0.06
@@ -459,8 +525,8 @@ Cohesion: 0.14
 Nodes (12): 1. Directory Structure and Architectural Roles, 2. API Routing Reference, 3. Step-by-Step Donation Submission Guide, 4. Processing Submissions into Intakes, 5. Under-the-Hood: The Donation Pipeline Workflow, A. Public Forms Endpoints, API Routing Guide: Forms Service & Donation Form Lifecycle, B. Staff Administration Endpoints (+4 more)
 
 ### Community 118 - "Community 118"
-Cohesion: 0.17
-Nodes (15): ActionBtn(), AppointmentDetail(), getApptStatus(), getVisitorName(), InfoRow(), StatusBadge(), AppointmentsIndex(), columns (+7 more)
+Cohesion: 0.22
+Nodes (8): AppointmentsIndex(), columns, getApptStatus(), getPreferredTime(), getVisitorName(), STATUS_STYLE, StatusBadge(), WalkInAdd()
 
 ### Community 119 - "Community 119"
 Cohesion: 0.17
@@ -491,12 +557,44 @@ Cohesion: 0.40
 Nodes (5): 3. Things in the doc that are slightly misleading, A. §1 calls Payload a "microservice", B. §2.C "delete `apps/cms/data/payload.db`", C. §2.A "Payload automatically saves an empty draft when the create page opens", D. §3.B "slug || id"
 
 ### Community 131 - "Community 131"
-Cohesion: 0.31
-Nodes (7): MovementForm(), Field(), getStatusStyles(), InventoryItem(), InventoryItemSkeleton(), Section(), TextBlock()
+Cohesion: 0.15
+Nodes (13): users_created_at_idx, users_email_idx, users_updated_at_idx, columns, isUnique, name, columns, isUnique (+5 more)
+
+### Community 132 - "Community 132"
+Cohesion: 0.20
+Nodes (9): dialect, tables, users, checkConstraints, compositePrimaryKeys, foreignKeys, name, uniqueConstraints (+1 more)
+
+### Community 133 - "Community 133"
+Cohesion: 0.22
+Nodes (9): columns, isUnique, name, indexes, columns, isUnique, name, articles_category_idx (+1 more)
+
+### Community 134 - "Community 134"
+Cohesion: 0.22
+Nodes (9): indexes, columns, isUnique, name, columns, isUnique, name, articles_tags_order_idx (+1 more)
+
+### Community 135 - "Community 135"
+Cohesion: 0.22
+Nodes (9): columns, name, version_address, _articles_v, autoincrement, name, notNull, primaryKey (+1 more)
+
+### Community 136 - "Community 136"
+Cohesion: 0.22
+Nodes (9): indexes, columns, isUnique, name, columns, isUnique, name, _articles_v_version_tags_order_idx (+1 more)
+
+### Community 138 - "Community 138"
+Cohesion: 0.22
+Nodes (9): users_sessions_order_idx, users_sessions_parent_id_idx, indexes, columns, isUnique, name, columns, isUnique (+1 more)
+
+### Community 139 - "Community 139"
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, articles_author_id_users_id_fk
 
 ### Community 140 - "Community 140"
 Cohesion: 0.11
 Nodes (9): App(), useUmami(), ArticlesCMS(), Home(), NotFound(), Onboard(), PublicFormViewer(), ResetPassword() (+1 more)
+
+### Community 145 - "Community 145"
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, articles_category_id_categories_id_fk
 
 ### Community 146 - "Community 146"
 Cohesion: 0.36
@@ -506,33 +604,249 @@ Nodes (8): author, description, keywords, license, main, name, type, version
 Cohesion: 0.40
 Nodes (5): devDependencies, cross-env, daisyui, jest, nodemon
 
+### Community 148 - "Community 148"
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, articles_cover_image_id_media_id_fk
+
 ### Community 149 - "Community 149"
-Cohesion: 0.14
-Nodes (14): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), resourceMap (+6 more)
+Cohesion: 0.13
+Nodes (17): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, analyticsController, getCaslResource() (+9 more)
 
 ### Community 150 - "Community 150"
 Cohesion: 0.50
 Nodes (4): scripts, dev, start, test
 
+### Community 151 - "Community 151"
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, articles_seo_og_image_id_media_id_fk
+
+### Community 152 - "Community 152"
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, articles_tags_parent_id_fk
+
+### Community 153 - "Community 153"
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, _articles_v_version_tags_parent_id_fk
+
+### Community 154 - "Community 154"
+Cohesion: 0.25
+Nodes (8): users_sessions_parent_id_fk, columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo
+
+### Community 155 - "Community 155"
+Cohesion: 0.29
+Nodes (7): columns, published_at, autoincrement, name, notNull, primaryKey, type
+
+### Community 156 - "Community 156"
+Cohesion: 0.29
+Nodes (7): columns, tag, autoincrement, name, notNull, primaryKey, type
+
+### Community 158 - "Community 158"
+Cohesion: 0.29
+Nodes (7): columns, _uuid, autoincrement, name, notNull, primaryKey, type
+
+### Community 159 - "Community 159"
+Cohesion: 0.29
+Nodes (7): created_at, autoincrement, default, name, notNull, primaryKey, type
+
+### Community 160 - "Community 160"
+Cohesion: 0.29
+Nodes (7): expires_at, autoincrement, name, notNull, primaryKey, type, columns
+
+### Community 161 - "Community 161"
+Cohesion: 0.29
+Nodes (7): featured, autoincrement, default, name, notNull, primaryKey, type
+
+### Community 162 - "Community 162"
+Cohesion: 0.29
+Nodes (7): hash, autoincrement, name, notNull, primaryKey, type, columns
+
+### Community 163 - "Community 163"
+Cohesion: 0.29
+Nodes (7): login_attempts, autoincrement, default, name, notNull, primaryKey, type
+
+### Community 164 - "Community 164"
+Cohesion: 0.29
+Nodes (7): role, autoincrement, default, name, notNull, primaryKey, type
+
+### Community 165 - "Community 165"
+Cohesion: 0.29
+Nodes (7): _status, autoincrement, default, name, notNull, primaryKey, type
+
+### Community 166 - "Community 166"
+Cohesion: 0.29
+Nodes (7): updated_at, autoincrement, default, name, notNull, primaryKey, type
+
+### Community 167 - "Community 167"
+Cohesion: 0.33
+Nodes (6): autoincrement, name, notNull, primaryKey, type, address
+
+### Community 168 - "Community 168"
+Cohesion: 0.33
+Nodes (6): checkConstraints, compositePrimaryKeys, foreignKeys, name, uniqueConstraints, articles
+
+### Community 169 - "Community 169"
+Cohesion: 0.33
+Nodes (6): checkConstraints, compositePrimaryKeys, foreignKeys, name, uniqueConstraints, articles_tags
+
+### Community 170 - "Community 170"
+Cohesion: 0.33
+Nodes (6): checkConstraints, compositePrimaryKeys, foreignKeys, name, uniqueConstraints, _articles_v_version_tags
+
+### Community 171 - "Community 171"
+Cohesion: 0.33
+Nodes (6): autoincrement, name, notNull, primaryKey, type, author_id
+
+### Community 172 - "Community 172"
+Cohesion: 0.33
+Nodes (6): autoincrement, name, notNull, primaryKey, type, category_id
+
+### Community 173 - "Community 173"
+Cohesion: 0.33
+Nodes (6): content, autoincrement, name, notNull, primaryKey, type
+
+### Community 174 - "Community 174"
+Cohesion: 0.33
+Nodes (6): cover_image_id, autoincrement, name, notNull, primaryKey, type
+
+### Community 175 - "Community 175"
+Cohesion: 0.33
+Nodes (6): email, autoincrement, name, notNull, primaryKey, type
+
+### Community 176 - "Community 176"
+Cohesion: 0.33
+Nodes (6): excerpt, autoincrement, name, notNull, primaryKey, type
+
+### Community 177 - "Community 177"
+Cohesion: 0.33
+Nodes (6): id, autoincrement, name, notNull, primaryKey, type
+
+### Community 178 - "Community 178"
+Cohesion: 0.33
+Nodes (6): lock_until, autoincrement, name, notNull, primaryKey, type
+
+### Community 179 - "Community 179"
+Cohesion: 0.33
+Nodes (6): name, autoincrement, name, notNull, primaryKey, type
+
+### Community 180 - "Community 180"
+Cohesion: 0.33
+Nodes (6): _order, autoincrement, name, notNull, primaryKey, type
+
+### Community 181 - "Community 181"
+Cohesion: 0.33
+Nodes (6): _parent_id, autoincrement, name, notNull, primaryKey, type
+
+### Community 182 - "Community 182"
+Cohesion: 0.33
+Nodes (6): reset_password_expiration, autoincrement, name, notNull, primaryKey, type
+
+### Community 183 - "Community 183"
+Cohesion: 0.33
+Nodes (6): reset_password_token, autoincrement, name, notNull, primaryKey, type
+
+### Community 184 - "Community 184"
+Cohesion: 0.33
+Nodes (6): salt, autoincrement, name, notNull, primaryKey, type
+
+### Community 185 - "Community 185"
+Cohesion: 0.33
+Nodes (6): seo_meta_description, autoincrement, name, notNull, primaryKey, type
+
+### Community 186 - "Community 186"
+Cohesion: 0.33
+Nodes (6): seo_meta_title, autoincrement, name, notNull, primaryKey, type
+
+### Community 187 - "Community 187"
+Cohesion: 0.33
+Nodes (6): seo_og_image_id, autoincrement, name, notNull, primaryKey, type
+
+### Community 188 - "Community 188"
+Cohesion: 0.33
+Nodes (6): slug, autoincrement, name, notNull, primaryKey, type
+
+### Community 189 - "Community 189"
+Cohesion: 0.33
+Nodes (6): title, autoincrement, name, notNull, primaryKey, type
+
+### Community 190 - "Community 190"
+Cohesion: 0.33
+Nodes (6): version_author_id, autoincrement, name, notNull, primaryKey, type
+
+### Community 191 - "Community 191"
+Cohesion: 0.33
+Nodes (6): version_category_id, autoincrement, name, notNull, primaryKey, type
+
+### Community 192 - "Community 192"
+Cohesion: 0.33
+Nodes (6): version_content, autoincrement, name, notNull, primaryKey, type
+
+### Community 193 - "Community 193"
+Cohesion: 0.33
+Nodes (6): version_cover_image_id, autoincrement, name, notNull, primaryKey, type
+
+### Community 194 - "Community 194"
+Cohesion: 0.33
+Nodes (6): version_published_at, autoincrement, name, notNull, primaryKey, type
+
+### Community 195 - "Community 195"
+Cohesion: 0.33
+Nodes (6): version_slug, autoincrement, name, notNull, primaryKey, type
+
+### Community 196 - "Community 196"
+Cohesion: 0.33
+Nodes (6): version_title, autoincrement, name, notNull, primaryKey, type
+
+### Community 197 - "Community 197"
+Cohesion: 0.33
+Nodes (6): users_sessions, checkConstraints, compositePrimaryKeys, foreignKeys, name, uniqueConstraints
+
+### Community 202 - "Community 202"
+Cohesion: 0.50
+Nodes (4): columns, isUnique, name, articles_author_idx
+
+### Community 203 - "Community 203"
+Cohesion: 0.50
+Nodes (4): columns, isUnique, name, articles_cover_image_idx
+
+### Community 204 - "Community 204"
+Cohesion: 0.50
+Nodes (4): columns, isUnique, name, articles_created_at_idx
+
+### Community 205 - "Community 205"
+Cohesion: 0.50
+Nodes (4): columns, isUnique, name, articles_published_at_idx
+
+### Community 206 - "Community 206"
+Cohesion: 0.50
+Nodes (4): columns, isUnique, name, articles_seo_seo_og_image_idx
+
+### Community 207 - "Community 207"
+Cohesion: 0.50
+Nodes (4): columns, isUnique, name, articles_slug_idx
+
+### Community 208 - "Community 208"
+Cohesion: 0.50
+Nodes (4): columns, isUnique, name, articles_updated_at_idx
+
 ## Knowledge Gaps
-- **682 isolated node(s):** `fired`, `falsePositive`, `precision`, `fired`, `falsePositive` (+677 more)
+- **1013 isolated node(s):** `fired`, `falsePositive`, `precision`, `fired`, `falsePositive` (+1008 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **24 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **28 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `db` connect `Community 76` to `Community 2`, `Community 10`, `Community 106`, `Community 77`, `Community 45`, `Community 78`, `Community 81`, `Community 82`, `Community 149`, `Community 88`?**
-  _High betweenness centrality (0.013) - this node is a cross-community bridge._
-- **Why does `logger` connect `Community 45` to `Community 10`, `Community 76`, `Community 77`, `Community 78`, `Community 81`, `Community 82`, `Community 149`?**
-  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+- **Why does `columns` connect `Community 155` to `Community 161`, `Community 165`, `Community 166`, `Community 167`, `Community 168`, `Community 171`, `Community 172`, `Community 173`, `Community 174`, `Community 176`, `Community 177`, `Community 185`, `Community 186`, `Community 187`, `Community 188`, `Community 189`, `Community 159`?**
+  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+- **Why does `articles` connect `Community 168` to `Community 155`, `Community 132`, `Community 133`?**
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
+- **Why does `id` connect `Community 177` to `Community 160`, `Community 162`, `Community 135`, `Community 155`, `Community 156`, `Community 158`?**
+  _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **What connects `fired`, `falsePositive`, `precision` to the rest of the system?**
-  _682 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1013 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.13852813852813853 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.08148148148148149 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09595959595959595 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.06321839080459771 - nodes in this community are weakly interconnected._
-- **Should `Community 3` be split into smaller, more focused modules?**
-  _Cohesion score 0.0625 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05679824561403509 - nodes in this community are weakly interconnected._

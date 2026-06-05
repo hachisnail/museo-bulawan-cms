@@ -610,8 +610,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\package.json": {
-    "mtime": 1780645453.1800292,
-    "ast_hash": "04952c41ab6edf6f40cb65b2f3df0747",
+    "mtime": 1780654795.8969295,
+    "ast_hash": "cccf5335a070a8812cd05e33f1153008",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\tsconfig.json": {
@@ -1577,6 +1577,21 @@
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\panel-visitor\\public\\favicon.svg": {
     "mtime": 1776877995.0,
     "ast_hash": "8c13f40658976ea1dfb8ba37a8be0e8d",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\src\\migrations\\20260605_101947_init.json": {
+    "mtime": 1780654787.2025146,
+    "ast_hash": "73b357025f5702393bfd62c4d3e5c55f",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\src\\migrations\\20260605_101947_init.ts": {
+    "mtime": 1780654787.2066655,
+    "ast_hash": "93d3aa6562bcd719a7be73a82547d2ef",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\src\\migrations\\index.ts": {
+    "mtime": 1780654787.2086782,
+    "ast_hash": "84d7c27521edf61dbafc174cfebc5a9f",
     "semantic_hash": ""
   }
 }

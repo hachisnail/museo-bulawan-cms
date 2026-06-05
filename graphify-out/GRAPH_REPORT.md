@@ -1,7 +1,7 @@
 # Graph Report - museo-bulawan-cms  (2026-06-05)
 
 ## Corpus Check
-- 290 files · ~543,181 words
+- 290 files · ~543,234 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c19a8f28`
+- Built from commit: `84ccec47`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -121,6 +121,7 @@
 - [[_COMMUNITY_Community 127|Community 127]]
 - [[_COMMUNITY_Community 128|Community 128]]
 - [[_COMMUNITY_Community 129|Community 129]]
+- [[_COMMUNITY_Community 131|Community 131]]
 - [[_COMMUNITY_Community 132|Community 132]]
 - [[_COMMUNITY_Community 137|Community 137]]
 - [[_COMMUNITY_Community 140|Community 140]]
@@ -128,7 +129,6 @@
 - [[_COMMUNITY_Community 147|Community 147]]
 - [[_COMMUNITY_Community 149|Community 149]]
 - [[_COMMUNITY_Community 150|Community 150]]
-- [[_COMMUNITY_Community 156|Community 156]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `useAuth()` - 97 edges
@@ -147,12 +147,12 @@
   apps/api/src/controllers/appointmentController.js → apps/api/src/middlewares/validateRequest.js
 - `createSchedule()` --calls--> `validate()`  [INFERRED]
   apps/api/src/controllers/scheduleController.js → apps/api/src/middlewares/validateRequest.js
+- `InventoryItem()` --calls--> `getStatusStyles()`  [INFERRED]
+  apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx → apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx
 - `Page()` --calls--> `RootPage()`  [INFERRED]
   apps/cms/src/app/(payload)/admin/[[...segments]]/page.tsx → apps/cms/src/app/(payload)/page.tsx
 - `App()` --calls--> `useAuth()`  [EXTRACTED]
   apps/panel-admin/src/App.jsx → apps/panel-admin/src/context/authContext.jsx
-- `App()` --calls--> `useSSE()`  [EXTRACTED]
-  apps/panel-admin/src/App.jsx → apps/panel-admin/src/hooks/useSSE.js
 
 ## Import Cycles
 - None detected.
@@ -372,32 +372,32 @@ Cohesion: 0.10
 Nodes (19): DocxPreview(), getIntakeDonorEmail(), getIntakeDonorPhone(), IntakeDetail(), STATUS_STYLES, IntakeList(), ManualIntakeForm(), MoaDialog() (+11 more)
 
 ### Community 76 - "Community 76"
-Cohesion: 0.17
-Nodes (12): pool, check(), login(), loginVisitor(), logout(), mediaService, appEvents, customFormat (+4 more)
+Cohesion: 0.12
+Nodes (15): db, pool, check(), login(), loginVisitor(), logout(), parseJsonFields(), escapeLikePattern() (+7 more)
 
 ### Community 77 - "Community 77"
-Cohesion: 0.14
-Nodes (22): accessionService, baseService, constituentService, exhibitionService, toDateString(), validateDateFormat(), intakeService, inventoryService (+14 more)
+Cohesion: 0.13
+Nodes (25): accessionService, baseService, constituentService, exhibitionService, toDateString(), validateDateFormat(), intakeService, inventoryService (+17 more)
 
 ### Community 78 - "Community 78"
-Cohesion: 0.27
-Nodes (8): definitionService, parseJsonFields(), escapeLikePattern(), queryService, ajv, submissionService, verificationService, otpStore
+Cohesion: 0.19
+Nodes (8): definitionService, queryService, verificationService, appEvents, customFormat, logger, otpStore, sseManager
 
 ### Community 79 - "Community 79"
-Cohesion: 0.14
-Nodes (15): Icons, MainLayout(), useSSEGlobal(), useSSE(), AppointmentsIndex(), columns, getApptStatus(), getPreferredTime() (+7 more)
+Cohesion: 0.15
+Nodes (12): Icons, MainLayout(), useSSEGlobal(), useSSE(), Dashboard(), CHART_COLORS, FeedbackAnalyticsTab(), FormsIndex() (+4 more)
 
 ### Community 81 - "Community 81"
-Cohesion: 0.25
-Nodes (7): loginSchema, compliancePipeline, donationPipeline, acquisitionService, formPipelineService, userService, assertTransition()
+Cohesion: 0.16
+Nodes (16): loginSchema, submissionService, compliancePipeline, donationPipeline, acquisitionService, formPipelineService, userService, identityService (+8 more)
 
 ### Community 82 - "Community 82"
-Cohesion: 0.21
-Nodes (5): Modal(), ArrowRight(), InventoryLocations(), TYPE_STYLES, SettingsIndex()
+Cohesion: 0.13
+Nodes (9): Modal(), InventoryConstituents(), TYPE_STYLES, InventoryExhibitions(), STATUS_STYLES, ArrowRight(), InventoryLocations(), TYPE_STYLES (+1 more)
 
 ### Community 83 - "Community 83"
-Cohesion: 0.11
-Nodes (15): MovementForm(), InventoryConstituents(), TYPE_STYLES, InventoryExhibitions(), STATUS_STYLES, getStatusStyles(), INVENTORY_DATA, InventoryIndex() (+7 more)
+Cohesion: 0.43
+Nodes (4): EmbedTab(), FormBuilderTab(), FormDetail(), SubmissionsTab()
 
 ### Community 84 - "Community 84"
 Cohesion: 0.14
@@ -412,8 +412,8 @@ Cohesion: 0.40
 Nodes (8): ajv, createSchedule(), deleteSchedule(), formatTime(), getScheduleById(), getSchedules(), serializeSchedule(), updateScheduleStatus()
 
 ### Community 89 - "Community 89"
-Cohesion: 0.14
-Nodes (10): startServer(), db, initMariaDB(), fix(), run(), run(), fullMaintenance(), seedForms() (+2 more)
+Cohesion: 0.29
+Nodes (5): startServer(), initMariaDB(), run(), fullMaintenance(), maintenanceService
 
 ### Community 90 - "Community 90"
 Cohesion: 0.40
@@ -465,7 +465,7 @@ Nodes (12): 1. Directory Structure and Architectural Roles, 2. API Routing Refer
 
 ### Community 118 - "Community 118"
 Cohesion: 0.12
-Nodes (7): DataTable(), ErrorBoundary, SidebarDashboard(), EmbedTab(), FormBuilderTab(), FormDetail(), SubmissionsTab()
+Nodes (10): DataTable(), ErrorBoundary, SidebarDashboard(), AppointmentsIndex(), columns, getApptStatus(), getPreferredTime(), getVisitorName() (+2 more)
 
 ### Community 119 - "Community 119"
 Cohesion: 0.17
@@ -495,6 +495,10 @@ Nodes (7): 6. Multi-stack compatibility analysis (your specific worry), A. Will 
 Cohesion: 0.40
 Nodes (5): 3. Things in the doc that are slightly misleading, A. §1 calls Payload a "microservice", B. §2.C "delete `apps/cms/data/payload.db`", C. §2.A "Payload automatically saves an empty draft when the create page opens", D. §3.B "slug || id"
 
+### Community 131 - "Community 131"
+Cohesion: 0.31
+Nodes (7): MovementForm(), Field(), getStatusStyles(), InventoryItem(), InventoryItemSkeleton(), Section(), TextBlock()
+
 ### Community 132 - "Community 132"
 Cohesion: 0.40
 Nodes (8): ajv, createAppointment(), deleteAppointment(), formatTime(), getAppointmentById(), getAppointments(), serializeAppointment(), updateAppointmentStatus()
@@ -512,16 +516,12 @@ Cohesion: 0.40
 Nodes (5): devDependencies, cross-env, daisyui, jest, nodemon
 
 ### Community 149 - "Community 149"
-Cohesion: 0.16
-Nodes (14): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), resourceMap (+6 more)
+Cohesion: 0.15
+Nodes (13): app, corsOptions, env, envSchema, { error, value: envVars }, minioRequiredStr, getCaslResource(), resourceMap (+5 more)
 
 ### Community 150 - "Community 150"
 Cohesion: 0.50
 Nodes (4): scripts, dev, start, test
-
-### Community 156 - "Community 156"
-Cohesion: 0.24
-Nodes (9): auditService, identityService, generateToken(), lifecycleService, managementService, generateToken(), securityService, sendEmail() (+1 more)
 
 ## Knowledge Gaps
 - **681 isolated node(s):** `fired`, `falsePositive`, `precision`, `fired`, `falsePositive` (+676 more)
@@ -531,9 +531,9 @@ Nodes (9): auditService, identityService, generateToken(), lifecycleService, man
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `db` connect `Community 89` to `Community 129`, `Community 2`, `Community 132`, `Community 106`, `Community 76`, `Community 77`, `Community 78`, `Community 81`, `Community 149`, `Community 88`, `Community 156`?**
+- **Why does `db` connect `Community 76` to `Community 129`, `Community 2`, `Community 132`, `Community 106`, `Community 77`, `Community 78`, `Community 81`, `Community 149`, `Community 88`, `Community 89`?**
   _High betweenness centrality (0.015) - this node is a cross-community bridge._
-- **Why does `logger` connect `Community 149` to `Community 76`, `Community 77`, `Community 78`, `Community 81`, `Community 89`, `Community 156`?**
+- **Why does `logger` connect `Community 78` to `Community 76`, `Community 77`, `Community 81`, `Community 149`, `Community 89`?**
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **What connects `fired`, `falsePositive`, `precision` to the rest of the system?**
   _681 weakly-connected nodes found - possible documentation gaps or missing edges._

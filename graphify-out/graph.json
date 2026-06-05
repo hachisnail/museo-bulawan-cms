@@ -1152,7 +1152,7 @@
       "source_file": "apps/api/scratch/fix_migration.js",
       "source_location": "L1",
       "id": "apps_api_scratch_fix_migration_js",
-      "community": 89,
+      "community": 76,
       "norm_label": "fix_migration.js"
     },
     {
@@ -1161,7 +1161,7 @@
       "source_file": "apps/api/scratch/fix_migration.js",
       "source_location": "L3",
       "id": "scratch_fix_migration_fix",
-      "community": 89,
+      "community": 76,
       "norm_label": "fix()"
     },
     {
@@ -1188,7 +1188,7 @@
       "source_file": "apps/api/scratch/list_forms.js",
       "source_location": "L1",
       "id": "apps_api_scratch_list_forms_js",
-      "community": 89,
+      "community": 76,
       "norm_label": "list_forms.js"
     },
     {
@@ -1197,7 +1197,7 @@
       "source_file": "apps/api/scratch/list_forms.js",
       "source_location": "L3",
       "id": "scratch_list_forms_run",
-      "community": 89,
+      "community": 76,
       "norm_label": "run()"
     },
     {
@@ -1224,7 +1224,7 @@
       "source_file": "apps/api/scratch/seed_forms.js",
       "source_location": "L1",
       "id": "apps_api_scratch_seed_forms_js",
-      "community": 89,
+      "community": 76,
       "norm_label": "seed_forms.js"
     },
     {
@@ -1233,7 +1233,7 @@
       "source_file": "apps/api/scratch/seed_forms.js",
       "source_location": "L4",
       "id": "scratch_seed_forms_seedforms",
-      "community": 89,
+      "community": 76,
       "norm_label": "seedforms()"
     },
     {
@@ -1242,7 +1242,7 @@
       "source_file": "apps/api/scratch/update_feedback_form.js",
       "source_location": "L1",
       "id": "apps_api_scratch_update_feedback_form_js",
-      "community": 89,
+      "community": 76,
       "norm_label": "update_feedback_form.js"
     },
     {
@@ -1251,7 +1251,7 @@
       "source_file": "apps/api/scratch/update_feedback_form.js",
       "source_location": "L3",
       "id": "scratch_update_feedback_form_run",
-      "community": 89,
+      "community": 76,
       "norm_label": "run()"
     },
     {
@@ -1350,7 +1350,7 @@
       "source_file": "apps/api/src/config/db.js",
       "source_location": "L1",
       "id": "apps_api_src_config_db_js",
-      "community": 77,
+      "community": 78,
       "norm_label": "db.js"
     },
     {
@@ -1368,7 +1368,7 @@
       "source_file": "apps/api/src/config/db.js",
       "source_location": "L13",
       "id": "config_db_db",
-      "community": 89,
+      "community": 76,
       "norm_label": "db"
     },
     {
@@ -1467,7 +1467,7 @@
       "source_file": "apps/api/src/controllers/analyticsController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_analyticscontroller_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "analyticscontroller.js"
     },
     {
@@ -1701,7 +1701,7 @@
       "source_file": "apps/api/src/controllers/loansController.js",
       "source_location": "L1",
       "id": "apps_api_src_controllers_loanscontroller_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "loanscontroller.js"
     },
     {
@@ -2682,7 +2682,7 @@
       "source_file": "apps/api/src/services/auditService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_auditservice_js",
-      "community": 156,
+      "community": 78,
       "norm_label": "auditservice.js"
     },
     {
@@ -2691,7 +2691,7 @@
       "source_file": "apps/api/src/services/auditService.js",
       "source_location": "L5",
       "id": "services_auditservice_auditservice",
-      "community": 156,
+      "community": 76,
       "norm_label": "auditservice"
     },
     {
@@ -2790,7 +2790,7 @@
       "source_file": "apps/api/src/services/mediaService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_mediaservice_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "mediaservice.js"
     },
     {
@@ -2808,7 +2808,7 @@
       "source_file": "apps/api/src/services/notificationService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_notificationservice_js",
-      "community": 77,
+      "community": 78,
       "norm_label": "notificationservice.js"
     },
     {
@@ -2862,7 +2862,7 @@
       "source_file": "apps/api/src/services/umamiService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_umamiservice_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "umamiservice.js"
     },
     {
@@ -2925,7 +2925,7 @@
       "source_file": "apps/api/src/services/userService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_userservice_js",
-      "community": 156,
+      "community": 81,
       "norm_label": "userservice.js"
     },
     {
@@ -3132,7 +3132,7 @@
       "source_file": "apps/api/src/services/form/definitionService.js",
       "source_location": "L5",
       "id": "form_definitionservice_parsejsonfields",
-      "community": 78,
+      "community": 76,
       "norm_label": "parsejsonfields()"
     },
     {
@@ -3159,7 +3159,7 @@
       "source_file": "apps/api/src/services/form/queryService.js",
       "source_location": "L6",
       "id": "form_queryservice_escapelikepattern",
-      "community": 78,
+      "community": 76,
       "norm_label": "escapelikepattern()"
     },
     {
@@ -3186,7 +3186,7 @@
       "source_file": "apps/api/src/services/form/submissionService.js",
       "source_location": "L12",
       "id": "form_submissionservice_ajv",
-      "community": 78,
+      "community": 76,
       "norm_label": "ajv"
     },
     {
@@ -3195,7 +3195,7 @@
       "source_file": "apps/api/src/services/form/submissionService.js",
       "source_location": "L19",
       "id": "form_submissionservice_submissionservice",
-      "community": 78,
+      "community": 81,
       "norm_label": "submissionservice"
     },
     {
@@ -3222,7 +3222,7 @@
       "source_file": "apps/api/src/services/form/pipeline/compliancePipeline.js",
       "source_location": "L1",
       "id": "apps_api_src_services_form_pipeline_compliancepipeline_js",
-      "community": 81,
+      "community": 78,
       "norm_label": "compliancepipeline.js"
     },
     {
@@ -3258,7 +3258,7 @@
       "source_file": "apps/api/src/services/user/identityService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_identityservice_js",
-      "community": 156,
+      "community": 78,
       "norm_label": "identityservice.js"
     },
     {
@@ -3267,7 +3267,7 @@
       "source_file": "apps/api/src/services/user/identityService.js",
       "source_location": "L11",
       "id": "user_identityservice_identityservice",
-      "community": 156,
+      "community": 81,
       "norm_label": "identityservice"
     },
     {
@@ -3276,7 +3276,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_lifecycleservice_js",
-      "community": 156,
+      "community": 81,
       "norm_label": "lifecycleservice.js"
     },
     {
@@ -3285,7 +3285,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L12",
       "id": "user_lifecycleservice_generatetoken",
-      "community": 156,
+      "community": 81,
       "norm_label": "generatetoken()"
     },
     {
@@ -3294,7 +3294,7 @@
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L19",
       "id": "user_lifecycleservice_lifecycleservice",
-      "community": 156,
+      "community": 81,
       "norm_label": "lifecycleservice"
     },
     {
@@ -3303,7 +3303,7 @@
       "source_file": "apps/api/src/services/user/managementService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_managementservice_js",
-      "community": 156,
+      "community": 78,
       "norm_label": "managementservice.js"
     },
     {
@@ -3312,7 +3312,7 @@
       "source_file": "apps/api/src/services/user/managementService.js",
       "source_location": "L12",
       "id": "user_managementservice_managementservice",
-      "community": 156,
+      "community": 81,
       "norm_label": "managementservice"
     },
     {
@@ -3321,7 +3321,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L1",
       "id": "apps_api_src_services_user_securityservice_js",
-      "community": 156,
+      "community": 81,
       "norm_label": "securityservice.js"
     },
     {
@@ -3330,7 +3330,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L9",
       "id": "user_securityservice_generatetoken",
-      "community": 156,
+      "community": 81,
       "norm_label": "generatetoken()"
     },
     {
@@ -3339,7 +3339,7 @@
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L17",
       "id": "user_securityservice_securityservice",
-      "community": 156,
+      "community": 81,
       "norm_label": "securityservice"
     },
     {
@@ -3447,7 +3447,7 @@
       "source_file": "apps/api/src/utils/eventBus.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_eventbus_js",
-      "community": 76,
+      "community": 78,
       "norm_label": "eventbus.js"
     },
     {
@@ -3456,7 +3456,7 @@
       "source_file": "apps/api/src/utils/eventBus.js",
       "source_location": "L2",
       "id": "utils_eventbus_appevents",
-      "community": 76,
+      "community": 78,
       "norm_label": "appevents"
     },
     {
@@ -3465,7 +3465,7 @@
       "source_file": "apps/api/src/utils/logger.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_logger_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "logger.js"
     },
     {
@@ -3474,7 +3474,7 @@
       "source_file": "apps/api/src/utils/logger.js",
       "source_location": "L6",
       "id": "utils_logger_customformat",
-      "community": 76,
+      "community": 78,
       "norm_label": "customformat"
     },
     {
@@ -3483,7 +3483,7 @@
       "source_file": "apps/api/src/utils/logger.js",
       "source_location": "L18",
       "id": "utils_logger_logger",
-      "community": 149,
+      "community": 78,
       "norm_label": "logger"
     },
     {
@@ -3492,7 +3492,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_mailer_js",
-      "community": 156,
+      "community": 81,
       "norm_label": "mailer.js"
     },
     {
@@ -3501,7 +3501,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L18",
       "id": "utils_mailer_sendemail",
-      "community": 156,
+      "community": 81,
       "norm_label": "sendemail()"
     },
     {
@@ -3510,7 +3510,7 @@
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L54",
       "id": "utils_mailer_sendemailwithretry",
-      "community": 156,
+      "community": 81,
       "norm_label": "sendemailwithretry()"
     },
     {
@@ -3798,7 +3798,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_sequencegenerator_js",
-      "community": 76,
+      "community": 77,
       "norm_label": "sequencegenerator.js"
     },
     {
@@ -3807,7 +3807,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L28",
       "id": "utils_sequencegenerator_nextsequencevalue",
-      "community": 76,
+      "community": 77,
       "norm_label": "nextsequencevalue()"
     },
     {
@@ -3816,7 +3816,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L59",
       "id": "utils_sequencegenerator_generateaccessionnumber",
-      "community": 76,
+      "community": 77,
       "norm_label": "generateaccessionnumber()"
     },
     {
@@ -3825,7 +3825,7 @@
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L72",
       "id": "utils_sequencegenerator_generatecatalognumber",
-      "community": 76,
+      "community": 77,
       "norm_label": "generatecatalognumber()"
     },
     {
@@ -3834,7 +3834,7 @@
       "source_file": "apps/api/src/utils/sseFactory.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_ssefactory_js",
-      "community": 76,
+      "community": 78,
       "norm_label": "ssefactory.js"
     },
     {
@@ -3888,7 +3888,7 @@
       "source_file": "apps/api/src/utils/sseFactory.js",
       "source_location": "L90",
       "id": "utils_ssefactory_ssemanager",
-      "community": 76,
+      "community": 78,
       "norm_label": "ssemanager"
     },
     {
@@ -3996,7 +3996,7 @@
       "source_file": "apps/api/src/utils/uploadQueue.js",
       "source_location": "L1",
       "id": "apps_api_src_utils_uploadqueue_js",
-      "community": 149,
+      "community": 78,
       "norm_label": "uploadqueue.js"
     },
     {
@@ -4221,7 +4221,7 @@
       "source_file": "apps/api/tests/form_constraints.test.js",
       "source_location": "L1",
       "id": "apps_api_tests_form_constraints_test_js",
-      "community": 89,
+      "community": 78,
       "norm_label": "form_constraints.test.js"
     },
     {
@@ -4293,7 +4293,7 @@
       "source_file": "apps/api/tests/system.test.js",
       "source_location": "L1",
       "id": "apps_api_tests_system_test_js",
-      "community": 89,
+      "community": 81,
       "norm_label": "system.test.js"
     },
     {
@@ -4819,19 +4819,10 @@
       "norm_label": "middleware.ts"
     },
     {
-      "label": "ALLOWED_ORIGINS",
-      "file_type": "code",
-      "source_file": "apps/cms/src/middleware.ts",
-      "source_location": "L5",
-      "id": "src_middleware_allowed_origins",
-      "community": 49,
-      "norm_label": "allowed_origins"
-    },
-    {
       "label": "middleware()",
       "file_type": "code",
       "source_file": "apps/cms/src/middleware.ts",
-      "source_location": "L8",
+      "source_location": "L4",
       "id": "src_middleware_middleware",
       "community": 49,
       "norm_label": "middleware()"
@@ -4840,7 +4831,7 @@
       "label": "config",
       "file_type": "code",
       "source_file": "apps/cms/src/middleware.ts",
-      "source_location": "L93",
+      "source_location": "L103",
       "id": "src_middleware_config",
       "community": 49,
       "norm_label": "config"
@@ -7906,7 +7897,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_appointments_pages_appointmentsindex_jsx",
-      "community": 79,
+      "community": 118,
       "norm_label": "appointmentsindex.jsx"
     },
     {
@@ -7915,7 +7906,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L10",
       "id": "pages_appointmentsindex_getvisitorname",
-      "community": 79,
+      "community": 118,
       "norm_label": "getvisitorname()"
     },
     {
@@ -7924,7 +7915,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L17",
       "id": "pages_appointmentsindex_getapptstatus",
-      "community": 79,
+      "community": 118,
       "norm_label": "getapptstatus()"
     },
     {
@@ -7933,7 +7924,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L21",
       "id": "pages_appointmentsindex_getpreferredtime",
-      "community": 79,
+      "community": 118,
       "norm_label": "getpreferredtime()"
     },
     {
@@ -7942,7 +7933,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L34",
       "id": "pages_appointmentsindex_status_style",
-      "community": 79,
+      "community": 118,
       "norm_label": "status_style"
     },
     {
@@ -7951,7 +7942,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L43",
       "id": "pages_appointmentsindex_statusbadge",
-      "community": 79,
+      "community": 118,
       "norm_label": "statusbadge()"
     },
     {
@@ -7960,7 +7951,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L54",
       "id": "pages_appointmentsindex_columns",
-      "community": 79,
+      "community": 118,
       "norm_label": "columns"
     },
     {
@@ -7969,7 +7960,7 @@
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L97",
       "id": "pages_appointmentsindex_appointmentsindex",
-      "community": 79,
+      "community": 118,
       "norm_label": "appointmentsindex()"
     },
     {
@@ -8050,7 +8041,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_forms_index_js",
-      "community": 118,
+      "community": 83,
       "norm_label": "index.js"
     },
     {
@@ -8059,7 +8050,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormDetail.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_forms_pages_formdetail_jsx",
-      "community": 118,
+      "community": 83,
       "norm_label": "formdetail.jsx"
     },
     {
@@ -8068,7 +8059,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormDetail.jsx",
       "source_location": "L11",
       "id": "pages_formdetail_formdetail",
-      "community": 118,
+      "community": 83,
       "norm_label": "formdetail()"
     },
     {
@@ -8077,7 +8068,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormDetail.jsx",
       "source_location": "L116",
       "id": "pages_formdetail_embedtab",
-      "community": 118,
+      "community": 83,
       "norm_label": "embedtab()"
     },
     {
@@ -8086,7 +8077,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormDetail.jsx",
       "source_location": "L191",
       "id": "pages_formdetail_submissionstab",
-      "community": 118,
+      "community": 83,
       "norm_label": "submissionstab()"
     },
     {
@@ -8095,7 +8086,7 @@
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormDetail.jsx",
       "source_location": "L427",
       "id": "pages_formdetail_formbuildertab",
-      "community": 118,
+      "community": 83,
       "norm_label": "formbuildertab()"
     },
     {
@@ -8374,7 +8365,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/index.js",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_index_js",
-      "community": 83,
+      "community": 82,
       "norm_label": "index.js"
     },
     {
@@ -8383,7 +8374,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/components/MovementForm.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_components_movementform_jsx",
-      "community": 83,
+      "community": 131,
       "norm_label": "movementform.jsx"
     },
     {
@@ -8392,7 +8383,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/components/MovementForm.jsx",
       "source_location": "L3",
       "id": "components_movementform_movementform",
-      "community": 83,
+      "community": 131,
       "norm_label": "movementform()"
     },
     {
@@ -8401,7 +8392,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_pages_inventoryconstituents_jsx",
-      "community": 83,
+      "community": 82,
       "norm_label": "inventoryconstituents.jsx"
     },
     {
@@ -8410,7 +8401,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L7",
       "id": "pages_inventoryconstituents_type_styles",
-      "community": 83,
+      "community": 82,
       "norm_label": "type_styles"
     },
     {
@@ -8419,7 +8410,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L15",
       "id": "pages_inventoryconstituents_inventoryconstituents",
-      "community": 83,
+      "community": 82,
       "norm_label": "inventoryconstituents()"
     },
     {
@@ -8428,7 +8419,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryExhibitions.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_pages_inventoryexhibitions_jsx",
-      "community": 83,
+      "community": 82,
       "norm_label": "inventoryexhibitions.jsx"
     },
     {
@@ -8437,7 +8428,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryExhibitions.jsx",
       "source_location": "L7",
       "id": "pages_inventoryexhibitions_status_styles",
-      "community": 83,
+      "community": 82,
       "norm_label": "status_styles"
     },
     {
@@ -8446,7 +8437,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryExhibitions.jsx",
       "source_location": "L15",
       "id": "pages_inventoryexhibitions_inventoryexhibitions",
-      "community": 83,
+      "community": 82,
       "norm_label": "inventoryexhibitions()"
     },
     {
@@ -8455,7 +8446,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_pages_inventoryindex_jsx",
-      "community": 83,
+      "community": 79,
       "norm_label": "inventoryindex.jsx"
     },
     {
@@ -8464,7 +8455,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
       "source_location": "L10",
       "id": "pages_inventoryindex_getstatusstyles",
-      "community": 83,
+      "community": 79,
       "norm_label": "getstatusstyles()"
     },
     {
@@ -8473,7 +8464,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
       "source_location": "L26",
       "id": "pages_inventoryindex_inventoryindex",
-      "community": 83,
+      "community": 79,
       "norm_label": "inventoryindex()"
     },
     {
@@ -8482,7 +8473,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L1",
       "id": "apps_panel_admin_src_pages_inventory_pages_inventoryitem_jsx",
-      "community": 83,
+      "community": 131,
       "norm_label": "inventoryitem.jsx"
     },
     {
@@ -8491,7 +8482,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L24",
       "id": "pages_inventoryitem_getstatusstyles",
-      "community": 83,
+      "community": 131,
       "norm_label": "getstatusstyles()"
     },
     {
@@ -8500,7 +8491,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L43",
       "id": "pages_inventoryitem_inventoryitemskeleton",
-      "community": 83,
+      "community": 131,
       "norm_label": "inventoryitemskeleton()"
     },
     {
@@ -8509,7 +8500,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L73",
       "id": "pages_inventoryitem_field",
-      "community": 83,
+      "community": 131,
       "norm_label": "field()"
     },
     {
@@ -8518,7 +8509,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L85",
       "id": "pages_inventoryitem_section",
-      "community": 83,
+      "community": 131,
       "norm_label": "section()"
     },
     {
@@ -8527,7 +8518,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L98",
       "id": "pages_inventoryitem_textblock",
-      "community": 83,
+      "community": 131,
       "norm_label": "textblock()"
     },
     {
@@ -8536,7 +8527,7 @@
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L113",
       "id": "pages_inventoryitem_inventoryitem",
-      "community": 83,
+      "community": 131,
       "norm_label": "inventoryitem()"
     },
     {
@@ -12267,6 +12258,15 @@
       "norm_label": "done (recent)"
     },
     {
+      "label": "ALLOWED_ORIGINS",
+      "file_type": "code",
+      "source_file": "apps/cms/src/middleware.ts",
+      "source_location": "L5",
+      "community": 49,
+      "norm_label": "allowed_origins",
+      "id": "src_middleware_allowed_origins"
+    },
+    {
       "label": "settings.local.json",
       "file_type": "code",
       "source_file": ".claude/settings.local.json",
@@ -12325,7 +12325,7 @@
       "file_type": "code",
       "source_file": "apps/api/scratch/fix_migration.js",
       "source_location": "L1",
-      "community": 89,
+      "community": 76,
       "norm_label": "fix_migration.js",
       "id": "scratch_fix_migration"
     },
@@ -12343,7 +12343,7 @@
       "file_type": "code",
       "source_file": "apps/api/scratch/list_forms.js",
       "source_location": "L1",
-      "community": 89,
+      "community": 76,
       "norm_label": "list_forms.js",
       "id": "scratch_list_forms"
     },
@@ -12352,7 +12352,7 @@
       "file_type": "code",
       "source_file": "apps/api/scratch/manual_cleanup.js",
       "source_location": "L1",
-      "community": 89,
+      "community": 76,
       "norm_label": "manual_cleanup.js",
       "id": "scratch_manual_cleanup"
     },
@@ -12361,7 +12361,7 @@
       "file_type": "code",
       "source_file": "apps/api/scratch/seed_forms.js",
       "source_location": "L1",
-      "community": 89,
+      "community": 76,
       "norm_label": "seed_forms.js",
       "id": "scratch_seed_forms"
     },
@@ -12370,7 +12370,7 @@
       "file_type": "code",
       "source_file": "apps/api/scratch/update_feedback_form.js",
       "source_location": "L1",
-      "community": 89,
+      "community": 76,
       "norm_label": "update_feedback_form.js",
       "id": "scratch_update_feedback_form"
     },
@@ -12883,7 +12883,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/acquisition/accessionService.js",
       "source_location": "L1",
-      "community": 76,
+      "community": 77,
       "norm_label": "accessionservice.js",
       "id": "acquisition_accessionservice"
     },
@@ -12919,7 +12919,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/acquisition/intakeService.js",
       "source_location": "L1",
-      "community": 156,
+      "community": 81,
       "norm_label": "intakeservice.js",
       "id": "acquisition_intakeservice"
     },
@@ -12964,7 +12964,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/auditService.js",
       "source_location": "L1",
-      "community": 156,
+      "community": 76,
       "norm_label": "auditservice.js",
       "id": "services_auditservice"
     },
@@ -12991,7 +12991,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/formService.js",
       "source_location": "L1",
-      "community": 78,
+      "community": 76,
       "norm_label": "formservice.js",
       "id": "services_formservice"
     },
@@ -13000,7 +13000,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/form/definitionService.js",
       "source_location": "L1",
-      "community": 78,
+      "community": 76,
       "norm_label": "definitionservice.js",
       "id": "form_definitionservice"
     },
@@ -13027,7 +13027,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/form/queryService.js",
       "source_location": "L1",
-      "community": 78,
+      "community": 76,
       "norm_label": "queryservice.js",
       "id": "form_queryservice"
     },
@@ -13036,7 +13036,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/form/submissionService.js",
       "source_location": "L1",
-      "community": 78,
+      "community": 76,
       "norm_label": "submissionservice.js",
       "id": "form_submissionservice"
     },
@@ -13054,7 +13054,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/maintenanceService.js",
       "source_location": "L1",
-      "community": 89,
+      "community": 76,
       "norm_label": "maintenanceservice.js",
       "id": "services_maintenanceservice"
     },
@@ -13090,7 +13090,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/userService.js",
       "source_location": "L1",
-      "community": 156,
+      "community": 81,
       "norm_label": "userservice.js",
       "id": "services_userservice"
     },
@@ -13099,7 +13099,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/user/identityService.js",
       "source_location": "L1",
-      "community": 156,
+      "community": 76,
       "norm_label": "identityservice.js",
       "id": "user_identityservice"
     },
@@ -13108,7 +13108,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/user/lifecycleService.js",
       "source_location": "L1",
-      "community": 156,
+      "community": 76,
       "norm_label": "lifecycleservice.js",
       "id": "user_lifecycleservice"
     },
@@ -13117,7 +13117,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/user/managementService.js",
       "source_location": "L1",
-      "community": 156,
+      "community": 76,
       "norm_label": "managementservice.js",
       "id": "user_managementservice"
     },
@@ -13126,7 +13126,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/services/user/securityService.js",
       "source_location": "L1",
-      "community": 156,
+      "community": 76,
       "norm_label": "securityservice.js",
       "id": "user_securityservice"
     },
@@ -13171,7 +13171,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/utils/mailer.js",
       "source_location": "L1",
-      "community": 156,
+      "community": 81,
       "norm_label": "mailer.js",
       "id": "utils_mailer"
     },
@@ -13207,7 +13207,7 @@
       "file_type": "code",
       "source_file": "apps/api/src/utils/sequenceGenerator.js",
       "source_location": "L1",
-      "community": 76,
+      "community": 77,
       "norm_label": "sequencegenerator.js",
       "id": "utils_sequencegenerator"
     },
@@ -13288,7 +13288,7 @@
       "file_type": "code",
       "source_file": "apps/api/tests/form_constraints.test.js",
       "source_location": "L1",
-      "community": 89,
+      "community": 76,
       "norm_label": "form_constraints.test.js",
       "id": "tests_form_constraints_test"
     },
@@ -13315,7 +13315,7 @@
       "file_type": "code",
       "source_file": "apps/api/tests/system.test.js",
       "source_location": "L1",
-      "community": 89,
+      "community": 81,
       "norm_label": "system.test.js",
       "id": "tests_system_test"
     },
@@ -14561,7 +14561,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/appointments/pages/AppointmentsIndex.jsx",
       "source_location": "L1",
-      "community": 79,
+      "community": 118,
       "norm_label": "appointmentsindex.jsx",
       "id": "pages_appointmentsindex"
     },
@@ -14615,7 +14615,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/forms/pages/FormDetail.jsx",
       "source_location": "L1",
-      "community": 118,
+      "community": 83,
       "norm_label": "formdetail.jsx",
       "id": "pages_formdetail"
     },
@@ -14696,7 +14696,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/inventory/components/MovementForm.jsx",
       "source_location": "L1",
-      "community": 83,
+      "community": 131,
       "norm_label": "movementform.jsx",
       "id": "components_movementform"
     },
@@ -14705,7 +14705,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/inventory/index.js",
       "source_location": "L1",
-      "community": 83,
+      "community": 82,
       "norm_label": "index.js",
       "id": "inventory_index"
     },
@@ -14714,7 +14714,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryConstituents.jsx",
       "source_location": "L1",
-      "community": 83,
+      "community": 82,
       "norm_label": "inventoryconstituents.jsx",
       "id": "pages_inventoryconstituents"
     },
@@ -14723,7 +14723,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryExhibitions.jsx",
       "source_location": "L1",
-      "community": 83,
+      "community": 82,
       "norm_label": "inventoryexhibitions.jsx",
       "id": "pages_inventoryexhibitions"
     },
@@ -14732,7 +14732,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
       "source_location": "L1",
-      "community": 83,
+      "community": 79,
       "norm_label": "inventoryindex.jsx",
       "id": "pages_inventoryindex"
     },
@@ -14741,7 +14741,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryItem.jsx",
       "source_location": "L1",
-      "community": 83,
+      "community": 131,
       "norm_label": "inventoryitem.jsx",
       "id": "pages_inventoryitem"
     },
@@ -18054,7 +18054,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
       "source_location": "L7",
-      "community": 83,
+      "community": 79,
       "norm_label": "stats",
       "id": "pages_inventoryindex_stats"
     },
@@ -18063,7 +18063,7 @@
       "file_type": "code",
       "source_file": "apps/panel-admin/src/pages/inventory/pages/InventoryIndex.jsx",
       "source_location": "L16",
-      "community": 83,
+      "community": 79,
       "norm_label": "inventory_data",
       "id": "pages_inventoryindex_inventory_data"
     },
@@ -25793,9 +25793,9 @@
       "source_file": "apps/api/src/routes/analyticsRoutes.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_routes_analyticsroutes_js",
-      "target": "middlewares_authorizationhandler_buildability",
-      "confidence_score": 1.0
+      "target": "middlewares_authorizationhandler_buildability"
     },
     {
       "relation": "imports",
@@ -26001,9 +26001,9 @@
       "source_file": "apps/api/src/routes/analyticsRoutes.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_api_src_routes_analyticsroutes_js",
-      "target": "middlewares_authorizationhandler_checkpermission",
-      "confidence_score": 1.0
+      "target": "middlewares_authorizationhandler_checkpermission"
     },
     {
       "relation": "imports",
@@ -36362,16 +36362,6 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/cms/src/middleware.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "src_middleware",
-      "target": "src_middleware_allowed_origins"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/cms/src/middleware.ts",
       "source_location": "L10",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -39218,9 +39208,9 @@
       "source_file": "apps/landing/src/pages/index.astro",
       "source_location": "L81",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_landing_src_pages_index_astro",
-      "target": "pages_index_getcoverurl",
-      "confidence_score": 1.0
+      "target": "pages_index_getcoverurl"
     },
     {
       "relation": "contains",
@@ -47998,9 +47988,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_allvaluesof",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_allvaluesof"
     },
     {
       "relation": "contains",
@@ -48008,9 +47998,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_collectionentry",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_collectionentry"
     },
     {
       "relation": "contains",
@@ -48018,9 +48008,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_collectionkey",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_collectionkey"
     },
     {
       "relation": "contains",
@@ -48028,9 +48018,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L153",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_contentconfig",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_contentconfig"
     },
     {
       "relation": "contains",
@@ -48038,9 +48028,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_dataentrymap",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_dataentrymap"
     },
     {
       "relation": "contains",
@@ -48048,9 +48038,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L135",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractcollectionfiltertype",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractcollectionfiltertype"
     },
     {
       "relation": "contains",
@@ -48058,9 +48048,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L137",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractdatatype",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractdatatype"
     },
     {
       "relation": "contains",
@@ -48068,9 +48058,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L134",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractentryfiltertype",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractentryfiltertype"
     },
     {
       "relation": "contains",
@@ -48078,9 +48068,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L136",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extracterrortype",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extracterrortype"
     },
     {
       "relation": "contains",
@@ -48088,9 +48078,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L114",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractloaderconfig",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractloaderconfig"
     },
     {
       "relation": "contains",
@@ -48098,9 +48088,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L126",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractloadertypes",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_extractloadertypes"
     },
     {
       "relation": "contains",
@@ -48108,9 +48098,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_flatten",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_flatten"
     },
     {
       "relation": "contains",
@@ -48118,9 +48108,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L111",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_inferentryschema",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_inferentryschema"
     },
     {
       "relation": "contains",
@@ -48128,9 +48118,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L115",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_inferloaderschema",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_inferloaderschema"
     },
     {
       "relation": "contains",
@@ -48138,9 +48128,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L154",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_livecontentconfig",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_livecontentconfig"
     },
     {
       "relation": "contains",
@@ -48148,9 +48138,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L147",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_liveloadercollectionfiltertype",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_liveloadercollectionfiltertype"
     },
     {
       "relation": "contains",
@@ -48158,9 +48148,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L139",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_liveloaderdatatype",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_liveloaderdatatype"
     },
     {
       "relation": "contains",
@@ -48168,9 +48158,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L145",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_liveloaderentryfiltertype",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_liveloaderentryfiltertype"
     },
     {
       "relation": "contains",
@@ -48178,9 +48168,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L149",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_liveloadererrortype",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_liveloadererrortype"
     },
     {
       "relation": "contains",
@@ -48188,9 +48178,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_referencedataentry",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_referencedataentry"
     },
     {
       "relation": "contains",
@@ -48198,9 +48188,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_referenceliveentry",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_referenceliveentry"
     },
     {
       "relation": "contains",
@@ -48208,9 +48198,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_render",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_render"
     },
     {
       "relation": "contains",
@@ -48218,9 +48208,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_renderedcontent",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_renderedcontent"
     },
     {
       "relation": "contains",
@@ -48228,9 +48218,9 @@
       "source_file": "apps/panel-visitor/.astro/content.d.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_panel_visitor_astro_content_d_ts",
-      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_renderresult",
-      "confidence_score": 1.0
+      "target": "apps_panel_visitor_astro_content_d_ts_astro_content_d_renderresult"
     },
     {
       "relation": "contains",
@@ -51678,6 +51668,16 @@
       "confidence_score": 1.0,
       "source": "misc_to_do_todo_museo_bulawan_cms",
       "target": "misc_to_do_p5_open_architectural_decisions"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/cms/src/middleware.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_middleware",
+      "target": "src_middleware_allowed_origins"
     },
     {
       "relation": "imports_from",
@@ -60947,5 +60947,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "c19a8f2849efc34f014164d8ee96fc09c1a58d18"
+  "built_at_commit": "84ccec473a479c62fa1d8d6225a78e1a8e7051b8"
 }

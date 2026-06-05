@@ -1,27 +1,28 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Parse allowed origins from environment variable (supports comma-separated list)
-const ALLOWED_ORIGINS = (process.env.PUBLIC_ADMIN_URL || '')
-  .split(',')
-  .map(o => o.trim())
-  .filter(Boolean);
-
-// Fallback to local dev ports if no origins are configured via env
-if (ALLOWED_ORIGINS.length === 0) {
-  ALLOWED_ORIGINS.push('http://localhost:5173', 'http://localhost:5174');
-}
-
 export function middleware(request: NextRequest) {
   const url = request.nextUrl
 
   if (url.pathname.startsWith('/admin')) {
+    // Parse allowed origins from environment variable dynamically on each request
+    const adminUrlEnv = typeof process.env.PUBLIC_ADMIN_URL === 'string' ? process.env.PUBLIC_ADMIN_URL : '';
+    const allowedOrigins = adminUrlEnv
+      .split(',')
+      .map(o => o.trim())
+      .filter(Boolean);
+
+    // Fallback to local dev ports if no origins are configured via env
+    if (allowedOrigins.length === 0) {
+      allowedOrigins.push('http://localhost:5173', 'http://localhost:5174');
+    }
+
     const origin = request.headers.get('origin')
     const referer = request.headers.get('referer')
     const secFetchDest = request.headers.get('sec-fetch-dest')
 
-    const isAllowedOrigin = origin && ALLOWED_ORIGINS.some(o => origin.startsWith(o))
-    const isAllowedReferer = referer && ALLOWED_ORIGINS.some(o => referer.startsWith(o))
+    const isAllowedOrigin = typeof origin === 'string' && allowedOrigins.some(o => typeof o === 'string' && origin.startsWith(o))
+    const isAllowedReferer = typeof referer === 'string' && allowedOrigins.some(o => typeof o === 'string' && referer.startsWith(o))
 
     // Allow if the request comes from a trusted admin panel origin.
     // This covers: initial iframe load, navigation within the iframe,
@@ -31,7 +32,7 @@ export function middleware(request: NextRequest) {
       const response = NextResponse.next()
       response.headers.set(
         'Content-Security-Policy',
-        `frame-ancestors 'self' ${ALLOWED_ORIGINS.join(' ')}`
+        `frame-ancestors 'self' ${allowedOrigins.join(' ')}`
       )
       response.headers.delete('X-Powered-By')
       return response
@@ -41,13 +42,13 @@ export function middleware(request: NextRequest) {
     // inside the Payload admin UI). These are same-origin requests where the
     // Referer points to the CMS itself.
     const cmsOrigin = `${url.protocol}//${url.host}`
-    const isCmsInternalNav = referer && referer.startsWith(cmsOrigin)
+    const isCmsInternalNav = typeof referer === 'string' && referer.startsWith(cmsOrigin)
 
     if (isCmsInternalNav) {
       const response = NextResponse.next()
       response.headers.set(
         'Content-Security-Policy',
-        `frame-ancestors 'self' ${ALLOWED_ORIGINS.join(' ')}`
+        `frame-ancestors 'self' ${allowedOrigins.join(' ')}`
       )
       response.headers.delete('X-Powered-By')
       return response
@@ -60,13 +61,13 @@ export function middleware(request: NextRequest) {
       const response = NextResponse.next()
       response.headers.set(
         'Content-Security-Policy',
-        `frame-ancestors 'self' ${ALLOWED_ORIGINS.join(' ')}`
+        `frame-ancestors 'self' ${allowedOrigins.join(' ')}`
       )
       response.headers.delete('X-Powered-By')
       return response
     }
 
-    const primaryAdminUrl = ALLOWED_ORIGINS[0] || 'http://localhost:5173';
+    const primaryAdminUrl = allowedOrigins[0] || 'http://localhost:5173';
 
     // Everything else (direct browser access) is blocked.
     return new NextResponse(`

@@ -1,11 +1,16 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// ─── Allowed origins that may embed the CMS in an iframe ─────────
-const ALLOWED_ORIGINS = [
-  'http://localhost:5173',  // panel-admin (Vite dev)
-  'http://localhost:5174',  // panel-admin (Vite dev fallback port)
-]
+// Parse allowed origins from environment variable (supports comma-separated list)
+const ALLOWED_ORIGINS = (process.env.PUBLIC_ADMIN_URL || '')
+  .split(',')
+  .map(o => o.trim())
+  .filter(Boolean);
+
+// Fallback to local dev ports if no origins are configured via env
+if (ALLOWED_ORIGINS.length === 0) {
+  ALLOWED_ORIGINS.push('http://localhost:5173', 'http://localhost:5174');
+}
 
 export function middleware(request: NextRequest) {
   const url = request.nextUrl
@@ -61,6 +66,8 @@ export function middleware(request: NextRequest) {
       return response
     }
 
+    const primaryAdminUrl = ALLOWED_ORIGINS[0] || 'http://localhost:5173';
+
     // Everything else (direct browser access) is blocked.
     return new NextResponse(`
       <!DOCTYPE html>
@@ -79,7 +86,7 @@ export function middleware(request: NextRequest) {
           <div class="container">
             <h1>Access Denied</h1>
             <p>The CMS Payload interface cannot be accessed directly.</p>
-            <p>Please access it through the <a href="http://localhost:5173/articles">Admin Panel</a>.</p>
+            <p>Please access it through the <a href="${primaryAdminUrl}/articles">Admin Panel</a>.</p>
           </div>
         </body>
       </html>

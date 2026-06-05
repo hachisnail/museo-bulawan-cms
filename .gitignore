@@ -116,3 +116,4 @@ graphify-out/graph.html
 graphify-out/graph.json
 graphify-out/manifest.json
 graphify-out/cache/stat-index.json
+logs/combined.log

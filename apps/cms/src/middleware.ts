@@ -10,7 +10,16 @@ export function middleware(request: NextRequest) {
     const allowedOrigins = adminUrlEnv
       .split(',')
       .map(o => o.trim())
-      .filter(Boolean);
+      .filter(Boolean)
+      .map(url => {
+        if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+          if (url.startsWith('localhost') || url.startsWith('127.0.0.1')) {
+            return `http://${url}`;
+          }
+          return `https://${url}`;
+        }
+        return url;
+      });
 
     // Fallback to local dev ports if no origins are configured via env
     if (allowedOrigins.length === 0) {

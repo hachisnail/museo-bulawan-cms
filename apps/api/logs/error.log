@@ -2058,3 +2058,4 @@ sql:
     at Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/services/form/definitionService.js:23:19)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
     at async Object.getFormDefinition (file:///C:/Users/jeffe/Development/prod-dev/museo-bulawan-cms/apps/api/src/controllers/form/submissionController.js:12:32) | Meta: {"method":"GET","url":"/api/v1/forms/01KT0Z0XB3CE28BHFZQETVPC7K","ip":"::1","user":"Guest"}
+2026-06-04 17:11:24 [error]: Form definition not found: sample-form

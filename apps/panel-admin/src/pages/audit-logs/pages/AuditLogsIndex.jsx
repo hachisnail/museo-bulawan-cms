@@ -21,7 +21,7 @@ const getActionColor = (action) => {
         return 'text-blue-600 bg-blue-50 border-blue-100';
     }
     if (act.includes('login') || act.includes('logout') || act.includes('force_logout') || act.includes('change_password')) {
-        return 'text-[#A68A27] bg-[#D4AF37]/10 border-[#D4AF37]/30';
+        return 'text-zinc-700 bg-zinc-100 border-zinc-200';
     }
     return 'text-zinc-600 bg-zinc-50 border-zinc-200';
 };
@@ -198,7 +198,7 @@ export default function AuditLogsIndex() {
                 </div>
                 <button 
                     onClick={handleExport}
-                    className="bg-black hover:bg-zinc-900 text-[#D4AF37] px-6 py-2.5 rounded-sm text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all shadow-md"
+                    className="bg-black hover:bg-zinc-800 text-white px-6 py-2.5 rounded-md text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all shadow-md"
                 >
                     <Download className="w-4 h-4" /> Export Report
                 </button>

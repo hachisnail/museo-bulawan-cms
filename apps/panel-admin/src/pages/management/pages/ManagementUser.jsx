@@ -23,7 +23,7 @@ const ROLE_STYLES = {
 const STATUS_STYLES = {
     active: 'text-green-700 bg-green-50 border-green-200',
     deactivated: 'text-rose-700 bg-rose-50 border-rose-200',
-    invited: 'text-[#A68A27] bg-[#D4AF37]/10 border-[#D4AF37]/30',
+    invited: 'text-zinc-700 bg-zinc-100 border-zinc-200',
     pending: 'text-blue-700 bg-blue-50 border-blue-200'
 };
 
@@ -263,7 +263,7 @@ export default function ManagementUser() {
         return (
             <div className="max-w-4xl mx-auto py-20 text-center space-y-6">
                 <h1 className="text-2xl font-serif text-black uppercase">User Not Found</h1>
-                <button onClick={() => navigate('/management')} className="text-sm text-[#D4AF37] hover:underline flex items-center justify-center gap-2 mx-auto">
+                <button onClick={() => navigate('/management')} className="text-sm text-zinc-600 hover:text-black hover:underline flex items-center justify-center gap-2 mx-auto">
                     <ArrowLeft className="w-4 h-4" /> Return to Directory
                 </button>
             </div>
@@ -297,8 +297,8 @@ export default function ManagementUser() {
             </section>
 
             {/* Overrides Card */}
-            <div className="bg-white border border-gray-150 rounded-xl p-8 shadow-sm space-y-6">
-                <div className="flex items-center gap-2 text-[#D4AF37] border-b border-gray-100 pb-3">
+            <div className="bg-white border border-gray-150 rounded-md p-8 shadow-sm space-y-6">
+                <div className="flex items-center gap-2 text-zinc-800 border-b border-gray-100 pb-3">
                     <Shield className="w-5 h-5" />
                     <h2 className="text-lg font-serif uppercase tracking-widest text-black">Security Overrides</h2>
                 </div>
@@ -317,16 +317,16 @@ export default function ManagementUser() {
                             disabled={actionLoading}
                             className="px-5 py-3 border border-zinc-300 text-black rounded-sm text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-zinc-50 transition-colors shadow-sm disabled:opacity-50"
                         >
-                            <Mail className="w-4 h-4 text-[#D4AF37]" /> Resend access invite
+                            <Mail className="w-4 h-4 text-zinc-500" /> Resend access invite
                         </button>
                     )}
 
                     {!isSelf && targetUser.status === 'active' && (
                         <button 
                             onClick={handleForceLogout}
-                            className="px-5 py-3 border border-zinc-300 text-black rounded-sm text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-amber-50 hover:border-amber-200 hover:text-amber-700 transition-colors shadow-sm"
+                            className="px-5 py-3 border border-zinc-300 text-black rounded-sm text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-zinc-50 hover:border-zinc-400 hover:text-black transition-colors shadow-sm"
                         >
-                            <LogOut className="w-4 h-4 text-amber-500" /> Force terminate sessions
+                            <LogOut className="w-4 h-4 text-zinc-500" /> Force terminate sessions
                         </button>
                     )}
 

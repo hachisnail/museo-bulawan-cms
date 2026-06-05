@@ -33,8 +33,8 @@ const FC_STYLES = `
     font-family: ui-monospace, monospace; padding-right: 10px; font-weight: 500;
   }
   .sch-cal .fc-timegrid-slot-minor { border-top-style: dashed !important; border-color: #f9f9f9 !important; }
-  .sch-cal .fc-timegrid-now-indicator-line { border-color: #D4AF37 !important; border-width: 2px !important; }
-  .sch-cal .fc-timegrid-now-indicator-arrow { border-top-color: #D4AF37 !important; border-bottom-color: #D4AF37 !important; }
+  .sch-cal .fc-timegrid-now-indicator-line { border-color: #18181b !important; border-width: 2px !important; }
+  .sch-cal .fc-timegrid-now-indicator-arrow { border-top-color: #18181b !important; border-bottom-color: #18181b !important; }
   .sch-cal .fc-timegrid-event {
     border-radius: 4px !important; border-left-width: 3px !important;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
@@ -43,8 +43,8 @@ const FC_STYLES = `
   .sch-cal .fc-timegrid-event .fc-event-main { padding: 0; }
   .sch-cal .fc-event-title { display: none; }
   .sch-cal .fc-v-event { border: 1px solid; }
-  .sch-cal .fc-day-today { background: rgba(212,175,55,0.025) !important; }
-  .sch-cal .fc-day-today .fc-col-header-cell-cushion { color: #D4AF37 !important; }
+  .sch-cal .fc-day-today { background: rgba(24,24,27,0.025) !important; }
+  .sch-cal .fc-day-today .fc-col-header-cell-cushion { color: #18181b !important; }
 `;
 
 
@@ -54,7 +54,7 @@ function EventCard({ ev, isSelected, onClick }) {
   const isDisabled = ev.isDisabledDay;
   const isExcl    = ev.availability === 'EXCLUSIVE' && !isDisabled;
 
-  const dot = isDisabled ? 'bg-rose-500' : isAppt ? 'bg-indigo-500' : isExcl ? 'bg-rose-400' : 'bg-[#D4AF37]';
+  const dot = isDisabled ? 'bg-rose-500' : isAppt ? 'bg-indigo-500' : isExcl ? 'bg-rose-400' : 'bg-zinc-800';
   const bg  = isSelected ? 'bg-zinc-50 shadow-sm border border-zinc-200' : 'hover:bg-zinc-50 border border-transparent';
 
   const timeStr = isDisabled
@@ -101,7 +101,7 @@ function EventDetail({ ev, onClose, onMarkDone, isSubmitting }) {
   const tag = isAppt ? 'Appointment' : isDisabled ? 'Date Closed' : isExcl ? 'Exclusive Block' : 'Shared Schedule';
   const tagColor = isAppt ? 'text-indigo-600 bg-indigo-50 border-indigo-200'
     : (isExcl || isDisabled) ? 'text-rose-600 bg-rose-50 border-rose-200'
-      : 'text-amber-700 bg-amber-50 border-amber-200';
+      : 'text-zinc-700 bg-zinc-100 border-zinc-200';
 
   const timeStr = isDisabled
     ? 'All Day — Closed for Appointments'
@@ -149,7 +149,7 @@ function EventDetail({ ev, onClose, onMarkDone, isSubmitting }) {
             <button
               onClick={onMarkDone}
               disabled={isSubmitting}
-              className="w-full flex items-center justify-center gap-2 py-2.5 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded hover:bg-[#D4AF37] hover:text-zinc-900 transition-all duration-200 disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 py-2.5 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded hover:bg-zinc-800 transition-all duration-200 disabled:opacity-50"
             >
               {isSubmitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <ArrowRight className="w-3.5 h-3.5" />}
               {isAppt ? 'Go to Appointment' : 'Mark Completed'}
@@ -192,7 +192,7 @@ function ConfirmModal({ open, title, message, onConfirm, onCancel }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm" onClick={onCancel} />
-      <div className="relative bg-white border border-zinc-200 rounded-lg shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+      <div className="relative bg-white border border-zinc-200 rounded-md shadow-2xl w-full max-w-md mx-4 overflow-hidden">
         <div className="px-6 py-4 border-b border-zinc-100">
           <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">{title}</h3>
         </div>
@@ -201,7 +201,7 @@ function ConfirmModal({ open, title, message, onConfirm, onCancel }) {
           <button onClick={onCancel} className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900">
             Cancel
           </button>
-          <button onClick={onConfirm} className="px-5 py-2 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded hover:bg-[#D4AF37] hover:text-zinc-900 transition-all">
+          <button onClick={onConfirm} className="px-5 py-2 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded hover:bg-zinc-800 transition-all">
             Confirm
           </button>
         </div>
@@ -407,9 +407,9 @@ export default function Schedule() {
 
       {/* Toast */}
       {toast.text && (
-        <div className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2.5 rounded-lg shadow-lg text-xs font-semibold border
+        <div className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2.5 rounded-md shadow-lg text-xs font-semibold border
           ${toast.type === 'error' ? 'bg-red-500 text-white border-red-600' : 'bg-zinc-900 text-white border-zinc-800'}`}>
-          <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" /> {toast.text}
+          <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400" /> {toast.text}
         </div>
       )}
 
@@ -420,7 +420,7 @@ export default function Schedule() {
       {/* ── Header ─────────────────────────────────────────────────────────────── */}
       <div className="flex-shrink-0 flex items-center gap-3">
         {/* Date nav */}
-        <div className="flex items-center gap-1 bg-zinc-100 rounded-lg p-0.5">
+        <div className="flex items-center gap-1 bg-zinc-100 rounded-md p-0.5">
           <button onClick={() => goDir('prev')} className="p-1.5 rounded-md hover:bg-white text-zinc-500 hover:text-zinc-900 hover:shadow-sm transition-all">
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -451,7 +451,7 @@ export default function Schedule() {
         {isLoading && <Loader2 className="w-4 h-4 text-zinc-400 animate-spin" />}
 
         {/* View switch */}
-        <div className="flex bg-zinc-100 rounded-lg p-0.5 gap-0.5">
+        <div className="flex bg-zinc-100 rounded-md p-0.5 gap-0.5">
           {[
             { key: 'timeGridDay', label: 'Day' },
             { key: 'timeGridWeek', label: 'Week' },
@@ -470,7 +470,7 @@ export default function Schedule() {
         {/* Add button */}
         <button
           onClick={() => navigate('/schedule/add')}
-          className="flex items-center gap-1.5 px-4 py-2 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-[#D4AF37] hover:text-zinc-900 transition-all shadow-sm"
+          className="flex items-center gap-1.5 px-4 py-2 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded-md hover:bg-zinc-800 transition-all shadow-sm"
         >
           <Plus className="w-3.5 h-3.5" strokeWidth={2.5} /> Add Schedule
         </button>
@@ -553,7 +553,7 @@ export default function Schedule() {
         </div>
 
         {/* ── Calendar ─────────────────────────────────────────────────────────── */}
-        <div className={`sch-cal flex-1 min-w-0 bg-white rounded-xl border border-zinc-100 overflow-hidden relative shadow-sm
+        <div className={`sch-cal flex-1 min-w-0 bg-white rounded-md border border-zinc-100 overflow-hidden relative shadow-sm
           ${isDateDisabled && currentView === 'timeGridDay' ? 'ring-1 ring-rose-200' : ''}`}>
           {isDateDisabled && currentView === 'timeGridDay' && (
             <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5 bg-rose-500 text-white text-[9px] font-bold uppercase tracking-widest px-2.5 py-1.5 rounded-full shadow pointer-events-none">

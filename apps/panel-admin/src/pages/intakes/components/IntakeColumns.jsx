@@ -46,7 +46,7 @@ export const archiveColumns = [
             <span className={`px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-wider border ${
                 val === 'Offer'
                     ? 'bg-zinc-50 border-zinc-200 text-zinc-500'
-                    : 'bg-[#D4AF37]/5 border-[#D4AF37]/20 text-[#A68A27]'
+                    : 'bg-zinc-100 border-zinc-300 text-zinc-800'
             }`}>
                 {val}
             </span>

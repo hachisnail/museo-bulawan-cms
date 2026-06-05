@@ -50,7 +50,7 @@ export default function MiniCal({
       <div className={`flex items-center justify-between ${compact ? 'mb-3' : 'mb-4'}`}>
         <button
           onClick={prev}
-          className={`rounded hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors ${compact ? 'p-1' : 'p-1.5 rounded-lg'}`}
+          className={`rounded hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors ${compact ? 'p-1' : 'p-1.5 rounded-md'}`}
         >
           <ChevronLeft className={compact ? 'w-3.5 h-3.5' : 'w-4 h-4'} />
         </button>
@@ -61,7 +61,7 @@ export default function MiniCal({
 
         <button
           onClick={next}
-          className={`rounded hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors ${compact ? 'p-1' : 'p-1.5 rounded-lg'}`}
+          className={`rounded hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors ${compact ? 'p-1' : 'p-1.5 rounded-md'}`}
         >
           <ChevronRight className={compact ? 'w-3.5 h-3.5' : 'w-4 h-4'} />
         </button>
@@ -89,18 +89,18 @@ export default function MiniCal({
               onClick={() => onChange(new Date(cursor.y, cursor.m, day))}
               style={{ color: 'inherit' }}
               className={`relative w-full flex flex-col items-center justify-center font-medium transition-all
-                ${compact ? 'h-7 rounded text-xs' : 'h-8 rounded-lg text-xs'}
+                ${compact ? 'h-7 rounded text-xs' : 'h-8 rounded-md text-xs'}
                 ${isSel
-                  ? 'bg-[#D4AF37] !text-zinc-900 font-bold shadow-sm'
+                  ? 'bg-black !text-white font-bold shadow-sm'
                   : isToday
-                    ? 'bg-zinc-900 !text-white font-bold'
+                    ? 'border border-zinc-900 !text-zinc-900 font-bold'
                     : isDisabled
                       ? '!text-rose-500 hover:bg-rose-50'
                       : '!text-zinc-800 hover:bg-zinc-100'}`}
             >
               <span className="leading-none">{day}</span>
               {(hasEvent || isDisabled) && !isSel && (
-                <span className={`absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${isDisabled ? 'bg-rose-500' : 'bg-[#D4AF37]'}`} />
+                <span className={`absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${isDisabled ? 'bg-rose-500' : 'bg-zinc-400'}`} />
               )}
             </button>
           );
@@ -110,13 +110,13 @@ export default function MiniCal({
       {showLegend && (
         <div className="flex items-center gap-4 mt-4 pt-3 border-t border-zinc-100">
           <div className="flex items-center gap-1.5 text-[9px] text-zinc-400 font-medium">
-            <span className="w-2 h-2 rounded-full bg-[#D4AF37] inline-block" /> Has schedule
+            <span className="w-2 h-2 rounded-full bg-zinc-400 inline-block" /> Has schedule
           </div>
           <div className="flex items-center gap-1.5 text-[9px] text-zinc-400 font-medium">
             <span className="w-2 h-2 rounded-full bg-rose-400 inline-block opacity-60" /> Closed
           </div>
           <div className="flex items-center gap-1.5 text-[9px] text-zinc-400 font-medium">
-            <span className="w-2 h-2 rounded-full bg-[#D4AF37]/60 border border-[#D4AF37] inline-block" /> Selected
+            <span className="w-2 h-2 rounded-full bg-black inline-block" /> Selected
           </div>
         </div>
       )}

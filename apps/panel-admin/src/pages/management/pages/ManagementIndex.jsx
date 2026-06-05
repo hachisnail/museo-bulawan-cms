@@ -27,7 +27,7 @@ const ROLE_STYLES = {
 const STATUS_STYLES = {
     active: 'text-green-700 bg-green-50 border-green-200',
     deactivated: 'text-rose-700 bg-rose-50 border-rose-200',
-    invited: 'text-[#A68A27] bg-[#D4AF37]/10 border-[#D4AF37]/30',
+    invited: 'text-zinc-700 bg-zinc-100 border-zinc-200',
     pending: 'text-blue-700 bg-blue-50 border-blue-200'
 };
 
@@ -233,7 +233,7 @@ export default function ManagementIndex() {
                 {user?.role === 'admin' && (
                     <button 
                         onClick={() => setShowInviteModal(true)}
-                        className="bg-black hover:bg-zinc-900 text-[#D4AF37] px-6 py-2.5 rounded-sm text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all shadow-md"
+                        className="bg-black hover:bg-zinc-800 text-white px-6 py-2.5 rounded-md text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all shadow-md"
                     >
                         <UserPlus className="w-4 h-4" /> Invite User
                     </button>

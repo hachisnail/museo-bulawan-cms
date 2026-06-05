@@ -106,7 +106,7 @@ export default function InventoryLocations() {
                     </div>
                     <button
                         onClick={() => setIsAdding(true)}
-                        className="bg-black hover:bg-gray-800 text-white px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap"
+                        className="bg-black hover:bg-gray-800 text-white px-5 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap"
                     >
                         <Plus className="w-4 h-4" />
                         Register Zone
@@ -118,7 +118,7 @@ export default function InventoryLocations() {
             <div className="flex-1 w-full min-w-0 flex flex-col gap-6">
                 
                 {/* Filter Bar */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-50/50 p-3 rounded-lg border border-gray-200">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-50/50 p-3 rounded-md border border-gray-200">
                     <div className="flex items-center gap-2">
                         {['all', 'storage', 'exhibit', 'lab'].map(type => (
                             <button
@@ -150,11 +150,11 @@ export default function InventoryLocations() {
                 {loading ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                         {[1,2,3,4,5,6].map(i => (
-                            <div key={i} className="h-36 bg-gray-50 border border-gray-100 rounded-xl animate-pulse" />
+                            <div key={i} className="h-36 bg-gray-50 border border-gray-100 rounded-md animate-pulse" />
                         ))}
                     </div>
                 ) : filteredLocations.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center p-16 text-center border border-dashed border-gray-300 rounded-xl bg-gray-50/50 mt-4">
+                    <div className="flex flex-col items-center justify-center p-16 text-center border border-dashed border-gray-300 rounded-md bg-gray-50/50 mt-4">
                         <Boxes className="w-12 h-12 text-gray-300 mb-4" />
                         <h3 className="text-sm font-bold text-gray-900">No curatorial zones found</h3>
                         <p className="text-xs text-gray-500 mt-1">Adjust your filters or register a new physical space.</p>
@@ -168,10 +168,10 @@ export default function InventoryLocations() {
                                 <div 
                                     key={loc.id}
                                     onClick={() => setViewingLocation(loc)}
-                                    className={`group relative flex flex-col p-5 rounded-xl border cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${style.wrapper}`}
+                                    className={`group relative flex flex-col p-5 rounded-md border cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${style.wrapper}`}
                                 >
                                     <div className="flex justify-between items-start mb-4">
-                                        <div className={`p-2 rounded-lg bg-white shadow-sm border border-black/5 ${style.text}`}>
+                                        <div className={`p-2 rounded-md bg-white shadow-sm border border-black/5 ${style.text}`}>
                                             <Icon className="w-5 h-5" />
                                         </div>
                                         <span className={`px-2.5 py-1 rounded text-[9px] font-bold uppercase tracking-wider border ${style.badge}`}>
@@ -203,7 +203,7 @@ export default function InventoryLocations() {
             {viewingLocation && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
                     <div className="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm" onClick={() => setViewingLocation(null)} />
-                    <div className="relative bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+                    <div className="relative bg-white w-full max-w-2xl rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
                         
                         {/* Header */}
                         <div className="p-6 sm:p-8 border-b border-gray-100 flex justify-between items-start bg-gray-50/50">
@@ -227,20 +227,20 @@ export default function InventoryLocations() {
                                 <h4 className="text-xs uppercase font-bold text-gray-400 tracking-wider mb-3 flex items-center gap-2">
                                     <MapPin className="w-4 h-4" /> Physical Specifications
                                 </h4>
-                                <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-md border border-gray-100">
                                     {viewingLocation.description || 'No specialized description provided for this curatorial zone.'}
                                 </p>
                             </section>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="p-4 border border-gray-200 rounded-xl flex items-start gap-3 bg-white">
+                                <div className="p-4 border border-gray-200 rounded-md flex items-start gap-3 bg-white">
                                     <div className="mt-0.5"><ShieldAlert className="w-4 h-4 text-amber-600" /></div>
                                     <div>
                                         <div className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Security Perimeter</div>
                                         <div className="text-xs font-semibold text-black">Authorized Access Only</div>
                                     </div>
                                 </div>
-                                <div className="p-4 border border-gray-200 rounded-xl flex items-start gap-3 bg-white">
+                                <div className="p-4 border border-gray-200 rounded-md flex items-start gap-3 bg-white">
                                     <div className="mt-0.5"><Activity className="w-4 h-4 text-blue-600" /></div>
                                     <div>
                                         <div className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Archival Context</div>
@@ -252,10 +252,10 @@ export default function InventoryLocations() {
 
                         {/* Footer */}
                         <div className="p-5 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
-                            <button className="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 text-xs font-bold rounded-lg hover:bg-gray-50 transition-colors">
+                            <button className="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 text-xs font-bold rounded-md hover:bg-gray-50 transition-colors">
                                 Edit Geometry
                             </button>
-                            <button className="px-5 py-2.5 bg-black text-white text-xs font-bold rounded-lg hover:bg-gray-800 transition-colors shadow-sm">
+                            <button className="px-5 py-2.5 bg-black text-white text-xs font-bold rounded-md hover:bg-gray-800 transition-colors shadow-sm">
                                 View Zonal Inventory
                             </button>
                         </div>
@@ -267,7 +267,7 @@ export default function InventoryLocations() {
             {isAdding && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-6 animate-in fade-in duration-300">
                     <div className="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm" onClick={() => setIsAdding(false)} />
-                    <div className="relative bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
+                    <div className="relative bg-white w-full max-w-lg rounded-lg shadow-2xl overflow-hidden">
                         <form onSubmit={handleSubmit} className="p-8 space-y-6">
                             <div className="flex justify-between items-start border-b border-gray-100 pb-4">
                                 <div className="space-y-1">
@@ -287,7 +287,7 @@ export default function InventoryLocations() {
                                         type="text" 
                                         value={form.name} 
                                         onChange={e => setForm({...form, name: e.target.value})}
-                                        className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all shadow-sm"
+                                        className="w-full bg-white border border-gray-300 rounded-md px-4 py-2.5 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all shadow-sm"
                                         placeholder="e.g. Vault A, Shelf 3"
                                     />
                                 </div>
@@ -300,7 +300,7 @@ export default function InventoryLocations() {
                                                 key={t}
                                                 type="button"
                                                 onClick={() => setForm({...form, type: t})}
-                                                className={`py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all border ${
+                                                className={`py-3 rounded-md text-xs font-bold uppercase tracking-wider transition-all border ${
                                                     form.type === t 
                                                     ? 'bg-black text-white border-black shadow-md' 
                                                     : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
@@ -317,7 +317,7 @@ export default function InventoryLocations() {
                                     <textarea 
                                         value={form.description} 
                                         onChange={e => setForm({...form, description: e.target.value})}
-                                        className="w-full bg-white border border-gray-300 rounded-lg p-4 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all min-h-[120px] resize-none shadow-sm"
+                                        className="w-full bg-white border border-gray-300 rounded-md p-4 text-sm text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all min-h-[120px] resize-none shadow-sm"
                                         placeholder="Physical characteristics, environment controls, or security levels..."
                                     />
                                 </div>
@@ -327,13 +327,13 @@ export default function InventoryLocations() {
                                 <button 
                                     type="button"
                                     onClick={() => setIsAdding(false)}
-                                    className="px-6 py-3 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 text-sm font-bold rounded-lg transition-all"
+                                    className="px-6 py-3 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 text-sm font-bold rounded-md transition-all"
                                 >
                                     Cancel
                                 </button>
                                 <button 
                                     type="submit"
-                                    className="flex-1 py-3 bg-black hover:bg-gray-800 text-white font-bold text-sm rounded-lg transition-all shadow-md"
+                                    className="flex-1 py-3 bg-black hover:bg-gray-800 text-white font-bold text-sm rounded-md transition-all shadow-md"
                                 >
                                     Save Location
                                 </button>

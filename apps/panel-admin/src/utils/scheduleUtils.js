@@ -141,7 +141,7 @@ export function normalizeAppointment(a) {
 
 const FC_COLORS = {
   appointment: { bg: 'rgba(99,102,241,0.12)', border: '#6366f1', text: '#3730a3' },
-  shared:      { bg: 'rgba(212,175,55,0.15)',  border: '#D4AF37',  text: '#78600a' },
+  shared:      { bg: 'rgba(39,39,42,0.08)',  border: '#27272a',  text: '#18181b' },
   exclusive:   { bg: 'rgba(244,63,94,0.12)',   border: '#f43f5e',  text: '#9f1239' },
   disabled:    { bg: 'rgba(239,68,68,0.08)',   border: '#ef4444',  text: '#7f1d1d' },
 };

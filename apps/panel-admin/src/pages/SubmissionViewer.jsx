@@ -51,11 +51,11 @@ export default function SubmissionViewer() {
 
     if (!submission) return (
         <div className="flex flex-col gap-y-8 bg-white min-h-screen pb-12 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-            <div className="flex flex-col items-center justify-center py-32 text-gray-500 border border-dashed border-gray-300 rounded-2xl bg-gray-50/50">
+            <div className="flex flex-col items-center justify-center py-32 text-gray-500 border border-dashed border-gray-300 rounded-md bg-gray-50/50">
                 <div className="text-4xl mb-4">🚫</div>
                 <h2 className="text-xl font-bold text-gray-900">Record Not Found</h2>
                 <p className="mt-2 text-sm">The requested submission ID does not exist.</p>
-                <button onClick={() => navigate('/forms')} className="mt-8 px-6 py-2.5 bg-black text-white rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-gray-800 transition-all">Back to Forms Manager</button>
+                <button onClick={() => navigate('/forms')} className="mt-8 px-6 py-2.5 bg-black text-white rounded-md text-xs font-bold uppercase tracking-wider hover:bg-gray-800 transition-all">Back to Forms Manager</button>
             </div>
         </div>
     );
@@ -74,7 +74,7 @@ export default function SubmissionViewer() {
                             <ArrowLeft className="w-3.5 h-3.5" /> Forms Manager
                         </Link>
                         <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
-                        <span className="text-amber-600 truncate max-w-[150px] sm:max-w-none">{formTitle}</span>
+                        <span className="text-zinc-650 truncate max-w-[150px] sm:max-w-none">{formTitle}</span>
                         <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
                         <span className="text-gray-900">Submission View</span>
                     </div>
@@ -85,7 +85,7 @@ export default function SubmissionViewer() {
                 <div className="flex items-center gap-3">
                     <button 
                         onClick={() => window.print()}
-                        className="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-50 transition-colors flex items-center gap-2 shadow-sm"
+                        className="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-md text-sm font-semibold hover:bg-gray-50 transition-colors flex items-center gap-2 shadow-sm"
                     >
                         <Download className="w-4 h-4" /> Print / Export
                     </button>
@@ -94,19 +94,19 @@ export default function SubmissionViewer() {
 
             {/* Info Cards Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 flex flex-col justify-center shadow-sm">
+                <div className="bg-gray-50 border border-gray-200 rounded-md p-5 flex flex-col justify-center shadow-sm">
                     <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Submitter Email</span>
                     <span className="text-sm font-bold text-gray-900 flex items-center gap-2 truncate">
                         <User className="w-4 h-4 text-gray-400 shrink-0" /> {submission.submitted_email || 'Anonymous'}
                     </span>
                 </div>
-                <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 flex flex-col justify-center shadow-sm">
+                <div className="bg-gray-50 border border-gray-200 rounded-md p-5 flex flex-col justify-center shadow-sm">
                     <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Date Submitted</span>
                     <span className="text-sm font-bold text-gray-900 flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-gray-400 shrink-0" /> {new Date(submission.created_at || submission.created).toLocaleString()}
                     </span>
                 </div>
-                <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 flex flex-col justify-center shadow-sm">
+                <div className="bg-gray-50 border border-gray-200 rounded-md p-5 flex flex-col justify-center shadow-sm">
                     <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">System Ref ID</span>
                     <span className="text-sm font-bold text-gray-900 flex items-center gap-2 font-mono truncate">
                         <Database className="w-4 h-4 text-gray-400 shrink-0" /> {submission.id}
@@ -115,7 +115,7 @@ export default function SubmissionViewer() {
             </div>
 
             {/* Data Grid */}
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+            <div className="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
                 <div className="bg-gray-50/50 border-b border-gray-100 px-8 py-5">
                     <h3 className="text-sm font-bold text-gray-800 uppercase tracking-widest">Form Responses</h3>
                 </div>
@@ -129,10 +129,10 @@ export default function SubmissionViewer() {
                                 <div className="text-sm font-medium text-gray-900 mt-1">
                                     {Array.isArray(value) ? (
                                         <div className="space-y-1 mt-1">
-                                            {value.map((v, i) => <div key={i} className="p-2 bg-gray-50 rounded-lg text-xs border border-gray-100">{v}</div>)}
+                                            {value.map((v, i) => <div key={i} className="p-2 bg-gray-50 rounded-md text-xs border border-gray-100">{v}</div>)}
                                         </div>
                                     ) : typeof value === 'object' && value !== null ? (
-                                        <pre className="text-[10px] font-mono bg-gray-50 p-3 rounded-lg border border-gray-100 mt-1 overflow-auto max-h-40">{JSON.stringify(value, null, 2)}</pre>
+                                        <pre className="text-[10px] font-mono bg-gray-50 p-3 rounded-md border border-gray-100 mt-1 overflow-auto max-h-40">{JSON.stringify(value, null, 2)}</pre>
                                     ) : (
                                         String(value) || <span className="text-gray-400 italic font-normal">No entry provided</span>
                                     )}
@@ -144,9 +144,8 @@ export default function SubmissionViewer() {
             </div>
 
             {/* Attachments Section */}
-{/* Attachments Section */}
             {media.length > 0 && (
-                <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                <div className="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
                     <div className="bg-gray-50/50 border-b border-gray-100 px-8 py-5 flex items-center justify-between">
                         <h3 className="text-sm font-bold text-gray-800 uppercase tracking-widest flex items-center gap-2">
                             <FileText className="w-4 h-4 text-gray-500" /> Uploaded Attachments ({media.length})
@@ -160,7 +159,7 @@ export default function SubmissionViewer() {
                                 const fileUrl = `${import.meta.env.VITE_API_BASE_URL}/api/v1/files/form_submissions/${id}/${filename}`;
 
                                 return (
-                                    <div key={m.id} className="group relative aspect-square rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shadow-sm flex items-center justify-center">
+                                    <div key={m.id} className="group relative aspect-square rounded-md overflow-hidden border border-gray-200 bg-gray-50 shadow-sm flex items-center justify-center">
                                         {isImage ? (
                                             <img 
                                                 src={fileUrl}
@@ -169,7 +168,7 @@ export default function SubmissionViewer() {
                                             />
                                         ) : (
                                             <div className="flex flex-col items-center justify-center text-gray-400 p-4 w-full h-full">
-                                                <FileText className="w-12 h-12 mb-3 text-amber-600" />
+                                                <FileText className="w-12 h-12 mb-3 text-zinc-650" />
                                                 <span className="text-[10px] font-bold text-center truncate w-full" title={filename}>
                                                     {filename || 'Document'}
                                                 </span>

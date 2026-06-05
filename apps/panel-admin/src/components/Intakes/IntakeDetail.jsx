@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 // --- Theme Status Colors ---
 export const STATUS_STYLES = {
-    pending: 'text-[#A68A27] bg-[#D4AF37]/10 border-[#D4AF37]/30',
-    under_review: 'text-[#A68A27] bg-[#D4AF37]/10 border-[#D4AF37]/30',
+    pending: 'text-zinc-700 bg-zinc-100 border-zinc-200',
+    under_review: 'text-zinc-700 bg-zinc-100 border-zinc-200',
     awaiting_delivery: 'text-zinc-600 bg-zinc-100 border-zinc-300',
     in_custody: 'text-zinc-600 bg-zinc-100 border-zinc-300',
     approved: 'text-green-700 bg-green-50 border-green-200',
@@ -119,7 +119,7 @@ export default function IntakeDetail({
                             {selected.type === 'submission' ? selected.data.data?.acquisition_type || 'Gift' : selected.data.acquisition_method}
                         </div>
                         {((selected.type === 'submission' ? selected.data.data?.acquisition_type : selected.data.acquisition_method)?.toLowerCase() === 'loan') && (
-                            <div className="text-xs text-amber-600 font-bold mt-1 uppercase tracking-wider">
+                            <div className="text-xs text-zinc-600 font-bold mt-1 uppercase tracking-wider">
                                 Loan Return: {selected.type === 'submission'
                                     ? (selected.data.data?.loan_end_date ? new Date(selected.data.data.loan_end_date).toLocaleDateString() : 'No Limit')
                                     : (selected.data.loan_end_date ? new Date(selected.data.loan_end_date).toLocaleDateString() : 'No Limit')}
@@ -134,14 +134,14 @@ export default function IntakeDetail({
                             <label className="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-1">Current Physical Location</label>
                             {isDeliveryPending ? (
                                 <div className="flex items-center gap-2">
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-amber-50 border border-amber-200 rounded-sm">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                                        <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700">Awaiting Delivery — Not Yet Received</span>
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-50 border border-zinc-200 rounded-sm">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-pulse"></span>
+                                        <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-700">Awaiting Delivery — Not Yet Received</span>
                                     </span>
                                 </div>
                             ) : (
                                 <div className="text-sm text-black font-bold flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-[#D4AF37]"></span>
+                                    <span className="w-2 h-2 rounded-full bg-zinc-800"></span>
                                     {selected.data.current_location || 'Not Specified (Check Receiving)'}
                                 </div>
                             )}
@@ -151,7 +151,7 @@ export default function IntakeDetail({
                             <div className="relative">
                                 <button 
                                     onClick={() => setShowLocationSelect(!showLocationSelect)}
-                                    className="text-[9px] font-black uppercase tracking-[0.2em] text-[#A68A27] bg-[#D4AF37]/10 px-3 py-1.5 rounded-sm hover:bg-[#D4AF37]/20 transition-all border border-[#D4AF37]/30"
+                                    className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-700 bg-zinc-100 px-3 py-1.5 rounded-sm hover:bg-zinc-200 transition-all border border-zinc-300"
                                 >
                                     Set Location
                                 </button>
@@ -258,7 +258,7 @@ export default function IntakeDetail({
                                     onConfirm: () => handleAction(selected.data.id, 'accept_and_issue')
                                 });
                             }}
-                            className="px-6 py-3 bg-black text-[#D4AF37] text-xs font-bold uppercase tracking-widest hover:bg-zinc-900 transition-colors rounded-sm flex items-center gap-2"
+                            className="px-6 py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-sm flex items-center gap-2"
                         >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             Accept &amp; Issue Documents
@@ -288,7 +288,7 @@ export default function IntakeDetail({
                                 const donor = selected.type === 'submission' ? `${selected.data.data?.donor_first_name || ''} ${selected.data.data?.donor_last_name || ''}`.trim() : selected.data.donor_info;
                                 setModal({ isOpen: true, title: 'Approve Acquisition', message: `Approve and generate legal documents for ${donor}?`, type: 'confirm', onConfirm: () => handleAction(selected.data.id, 'approve_and_generate', { donorName: donor }) });
                             }} 
-                            className="px-6 py-3 bg-black text-[#D4AF37] text-xs font-bold uppercase tracking-widest hover:bg-zinc-900 transition-colors rounded-sm"
+                            className="px-6 py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors rounded-sm"
                         >
                             Approve & Generate MOA
                         </button>

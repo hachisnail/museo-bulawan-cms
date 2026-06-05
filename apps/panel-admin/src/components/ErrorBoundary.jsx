@@ -28,7 +28,7 @@ class ErrorBoundary extends React.Component {
           <div className="flex gap-3">
              <button
                onClick={() => window.location.reload()}
-               className="flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-[#D4AF37] hover:text-zinc-900 transition-colors"
+               className="flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest rounded-md hover:bg-zinc-800 transition-colors"
              >
                <RefreshCw className="w-3.5 h-3.5" /> Reload Page
              </button>
@@ -37,7 +37,7 @@ class ErrorBoundary extends React.Component {
                  this.setState({ hasError: false, error: null, errorInfo: null });
                  window.history.back();
                }}
-               className="flex items-center gap-2 px-4 py-2 bg-white text-zinc-700 text-xs font-bold uppercase tracking-widest rounded-lg border border-zinc-200 hover:bg-zinc-50 transition-colors"
+               className="flex items-center gap-2 px-4 py-2 bg-white text-zinc-700 text-xs font-bold uppercase tracking-widest rounded-md border border-zinc-200 hover:bg-zinc-50 transition-colors"
              >
                Go Back
              </button>

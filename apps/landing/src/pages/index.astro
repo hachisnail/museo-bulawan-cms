@@ -395,47 +395,41 @@ function getCoverUrl(article: any): string {
 
       <!-- Main Layout -->
       <div
-        class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row gap-6 lg:gap-10 items-center justify-center flex-1 w-full min-h-0 my-4"
+        class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row gap-8 lg:gap-16 items-center justify-center flex-1 w-full min-h-0 py-8 lg:py-12"
       >
         <!-- Left: Event Calendar -->
-        <div class="w-full lg:w-[48%] h-[35vh] lg:h-full max-h-[450px] lg:max-h-[60vh] flex-shrink-0">
+        <div class="w-full lg:w-[55%] h-full min-h-[400px] flex items-center justify-center relative">
           <WhatsOnCalendar client:idle cmsEvents={eventArticles} publicHolidays={publicHolidays} />
         </div>
 
         <!-- Right: Events Setup -->
-        <div class="w-full lg:w-[48%] h-[40vh] lg:h-full max-h-[450px] lg:max-h-[60vh] flex flex-col gap-3 justify-center shrink-0">
+        <div class="w-full lg:w-[45%] flex flex-col justify-center items-end gap-8 lg:gap-10">
           
-          <div class="flex items-center gap-4 shrink-0">
-            <div class="flex flex-col gap-1.5 md:gap-2 w-16 md:w-20 pt-1">
-              <div class="h-[2px] md:h-[2px] w-full bg-[#1C1B19]"></div>
-              <div class="h-[2px] md:h-[2px] w-[80%] bg-[#1C1B19] ml-auto"></div>
+          <!-- Title & Lines -->
+          <div class="flex items-start gap-4 self-end shrink-0 w-full max-w-[550px] justify-end">
+            <!-- Lines -->
+            <div class="flex flex-col gap-2.5 md:gap-3 flex-1 items-end mt-3 md:mt-5">
+              <div class="h-[5px] md:h-[6px] bg-black w-full max-w-[320px]"></div>
+              <div class="h-[5px] md:h-[6px] bg-black w-full max-w-[240px] mr-8 md:mr-16"></div>
             </div>
-            <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif text-[#1C1B19] whitespace-nowrap tracking-wide">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif text-[#1C1B19] whitespace-nowrap tracking-wide leading-none">
               Whats On?
             </h2>
           </div>
 
-          <!-- Using flex-1 to auto-fill space without aspect-ratio blowout -->
-          <div class="flex flex-col gap-3 w-full flex-1 min-h-0">
+          <!-- Photo Cards -->
+          <div class="flex flex-col gap-6 w-full max-w-[480px] self-end items-end pb-8 lg:pb-0">
             {
               displayEvents.map((article) => (
                 <a
                   href={`/articles/${article.slug || article.id || ''}`}
-                  class="group relative h-48 md:h-auto md:row-span-1 rounded-sm overflow-hidden flex items-end p-6 border border-white/5 bg-gray-900"
+                  class="group relative w-[90%] md:w-full aspect-[4/3] md:aspect-[3/2] lg:aspect-[16/10] bg-white p-2.5 md:p-3 shadow-[0_10px_30px_-5px_rgba(0,0,0,0.15)] hover:shadow-[0_15px_40px_-5px_rgba(0,0,0,0.2)] transition-shadow duration-300 transform hover:-translate-y-1"
                 >
-                  <div class="relative z-20 flex flex-col items-start gap-1">
-                    <span class="bg-[#1C1B19] text-[#d8ad69] px-2 py-0.5 text-xs font-semibold tracking-wider">
-                      {article.category?.name || "Event"}
-                    </span>
-                    <h3 class="text-white font-serif text-xl group-hover:text-[#d8ad69] transition-colors leading-tight">
-                      {article.title}
-                    </h3>
-                  </div>
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-opacity duration-300 group-hover:opacity-80" />
                   <img
                     src={getCoverUrl(article)}
                     alt={article.title || "Event Highlight"}
-                    class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                    class="w-full h-full object-cover border border-gray-100/50 group-hover:opacity-95 transition-opacity"
                   />
                 </a>
               ))

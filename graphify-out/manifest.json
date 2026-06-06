@@ -770,7 +770,7 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\.astro\\content.d.ts": {
-    "mtime": 1780569800.502944,
+    "mtime": 1780658213.9378316,
     "ast_hash": "171cca75fb38067465ccb132701fdf95",
     "semantic_hash": ""
   },
@@ -780,8 +780,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\.astro\\types.d.ts": {
-    "mtime": 1780645648.2409148,
-    "ast_hash": "72c584e3bd8b5f007b2beb870517b437",
+    "mtime": 1780658213.9388356,
+    "ast_hash": "f3d48b2aa569815a445d3509aa161559",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\.vscode\\extensions.json": {
@@ -850,8 +850,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\src\\pages\\index.astro": {
-    "mtime": 1780645239.1205,
-    "ast_hash": "fc3303f3a06c3a09bf9bfa2ab94e7221",
+    "mtime": 1780658196.5635478,
+    "ast_hash": "4d0e32f46f989254ddb215e1d5352f16",
     "semantic_hash": ""
   },
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\src\\pages\\visit-us.astro": {
@@ -1592,6 +1592,11 @@
   "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\cms\\src\\migrations\\index.ts": {
     "mtime": 1780654787.2086782,
     "ast_hash": "84d7c27521edf61dbafc174cfebc5a9f",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\jeffe\\Development\\prod-dev\\museo-bulawan-cms\\apps\\landing\\src\\components\\ui\\NewsEventsGrid.jsx": {
+    "mtime": 1780658182.1483195,
+    "ast_hash": "174efea7d40b5057e52f4f141202cb1b",
     "semantic_hash": ""
   }
 }

@@ -108,7 +108,7 @@ apps/service-collections/pb_data/
 apps/minio/minio.windows-amd64.RELEASE.2025-09-07T16-13-09Z.exe
 package-lock.json
 
-graphify-out/
+graphify-out
 
 graphify-out/.graphify_labels.json
 graphify-out/GRAPH_REPORT.md
@@ -116,4 +116,3 @@ graphify-out/graph.html
 graphify-out/graph.json
 graphify-out/manifest.json
 graphify-out/cache/stat-index.json
-logs/combined.log

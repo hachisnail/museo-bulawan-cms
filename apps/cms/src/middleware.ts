@@ -2,10 +2,23 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 // ─── Allowed origins that may embed the CMS in an iframe ─────────
-const ALLOWED_ORIGINS = [
-  'http://localhost:5173',  // panel-admin (Vite dev)
-  'http://localhost:5174',  // panel-admin (Vite dev fallback port)
-]
+// Read from environment variable, fallback to localhost for development
+const ALLOWED_ORIGINS = (process.env.ADMIN_PANEL_ORIGINS || 'http://localhost:5173,http://localhost:5174')
+  .split(',')
+  .map(o => o.trim())
+  .filter(Boolean)
+
+/**
+ * Adds Content-Security-Policy frame-ancestors header and removes X-Powered-By.
+ */
+function withCspHeaders(response: NextResponse): NextResponse {
+  response.headers.set(
+    'Content-Security-Policy',
+    `frame-ancestors 'self' ${ALLOWED_ORIGINS.join(' ')}`
+  )
+  response.headers.delete('X-Powered-By')
+  return response
+}
 
 export function middleware(request: NextRequest) {
   const url = request.nextUrl
@@ -23,13 +36,7 @@ export function middleware(request: NextRequest) {
     // and sub-resource fetches (scripts, styles, images, XHR/fetch).
     // Browsers may send Origin, Referer, or both — checking either is enough.
     if (isAllowedOrigin || isAllowedReferer) {
-      const response = NextResponse.next()
-      response.headers.set(
-        'Content-Security-Policy',
-        `frame-ancestors 'self' ${ALLOWED_ORIGINS.join(' ')}`
-      )
-      response.headers.delete('X-Powered-By')
-      return response
+      return withCspHeaders(NextResponse.next())
     }
 
     // Allow internal navigation within the CMS iframe (e.g., clicking links
@@ -39,29 +46,18 @@ export function middleware(request: NextRequest) {
     const isCmsInternalNav = referer && referer.startsWith(cmsOrigin)
 
     if (isCmsInternalNav) {
-      const response = NextResponse.next()
-      response.headers.set(
-        'Content-Security-Policy',
-        `frame-ancestors 'self' ${ALLOWED_ORIGINS.join(' ')}`
-      )
-      response.headers.delete('X-Powered-By')
-      return response
+      return withCspHeaders(NextResponse.next())
     }
 
     // Allow sub-resource requests (scripts, styles, images, fonts, etc.)
     // These are needed for the CMS UI to render inside the iframe and often
     // don't carry Origin or Referer headers.
     if (secFetchDest && secFetchDest !== 'document' && secFetchDest !== 'iframe') {
-      const response = NextResponse.next()
-      response.headers.set(
-        'Content-Security-Policy',
-        `frame-ancestors 'self' ${ALLOWED_ORIGINS.join(' ')}`
-      )
-      response.headers.delete('X-Powered-By')
-      return response
+      return withCspHeaders(NextResponse.next())
     }
 
     // Everything else (direct browser access) is blocked.
+    const adminPanelUrl = ALLOWED_ORIGINS[0] || 'http://localhost:5173'
     return new NextResponse(`
       <!DOCTYPE html>
       <html>
@@ -79,7 +75,7 @@ export function middleware(request: NextRequest) {
           <div class="container">
             <h1>Access Denied</h1>
             <p>The CMS Payload interface cannot be accessed directly.</p>
-            <p>Please access it through the <a href="http://localhost:5173/articles">Admin Panel</a>.</p>
+            <p>Please access it through the <a href="${adminPanelUrl}/articles">Admin Panel</a>.</p>
           </div>
         </body>
       </html>

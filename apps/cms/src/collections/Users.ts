@@ -1,4 +1,7 @@
 import type { CollectionConfig } from 'payload'
+import crypto from 'crypto'
+
+const API_URL = process.env.API_URL || 'http://localhost:3000'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -13,7 +16,7 @@ export const Users: CollectionConfig = {
           }
           
           try {
-            const response = await fetch('http://localhost:3000/api/v1/auth/check', {
+            const response = await fetch(`${API_URL}/api/v1/auth/check`, {
               headers: { cookie: cookieHeader },
             });
             
@@ -38,6 +41,8 @@ export const Users: CollectionConfig = {
             }
 
             // Auto-create user if not found
+            // Use cryptographically secure random password (Payload requires one but it's never used for login)
+            const dummyPassword = crypto.randomBytes(32).toString('base64url')
             const newUser = await payload.create({
               collection: 'users',
               overrideAccess: true,
@@ -45,7 +50,7 @@ export const Users: CollectionConfig = {
                 email: data.user.email,
                 name: `${data.user.fname} ${data.user.lname}`.trim(),
                 role: data.user.role === 'admin' ? 'admin' : 'writer', 
-                password: Math.random().toString(36).slice(-8) + 'Aa1!', // Dummy password required by Payload
+                password: dummyPassword,
               },
             });
             return { user: newUser, collection: 'users' };

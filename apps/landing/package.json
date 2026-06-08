@@ -13,6 +13,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.9",
     "@astrojs/node": "^10.1.1",
     "@astrojs/react": "^5.0.4",
     "@tailwindcss/postcss": "^4.3.0",
@@ -23,6 +24,7 @@
     "lucide-react": "^1.16.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "tailwindcss": "^4.2.4"
+    "tailwindcss": "^4.2.4",
+    "typescript": "^5.9.3"
   }
 }

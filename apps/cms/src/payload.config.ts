@@ -71,12 +71,10 @@ export default buildConfig({
   sharp: sharp as any,
 
   // ─── CORS (allow admin panel and existing frontend) ─
-  cors: [
-    'http://localhost:5173',   // panel-admin (Vite)
-    'http://localhost:3000',   // api (Express)
-    'http://localhost:4321',   // landing (Astro)
-    'http://localhost:4322',   // panel-visitor (Astro)
-  ],
+  cors: (process.env.CORS_ORIGINS || 'http://localhost:5173,http://localhost:3000,http://localhost:4321,http://localhost:4322')
+    .split(',')
+    .map(o => o.trim())
+    .filter(Boolean),
 
   // ─── GraphQL (disabled — REST API is used exclusively) ─
   graphQL: {

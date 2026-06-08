@@ -6,13 +6,21 @@ interface Props {
   navTheme?: 'light' | 'dark';
   isMinimalLayout?: boolean;
   title?: string;
+  ogMeta?: {
+    title?: string;
+    description?: string;
+    image?: string;
+    url?: string;
+    type?: string;
+  };
 }
 
 const { 
   theme = 'dark', 
   navTheme = 'dark', 
   isMinimalLayout = false,
-  title = 'Museo Bulawan CMS'
+  title = 'Museo Bulawan CMS',
+  ogMeta,
 } = Astro.props;
 
 const containerBg = theme === 'dark' ? 'bg-[#1C1B19]' : 'bg-white';
@@ -35,6 +43,19 @@ import Nav from '../components/ui/Nav.astro';
   <link rel="icon" type="image/png" href="/LOGO.png" />
   <link rel="icon" href="/favicon.ico" />
   <title>{title}</title>
+  {ogMeta && (
+    <>
+      <meta property="og:title" content={ogMeta.title || title} />
+      {ogMeta.description && <meta property="og:description" content={ogMeta.description} />}
+      {ogMeta.image && <meta property="og:image" content={ogMeta.image} />}
+      {ogMeta.url && <meta property="og:url" content={ogMeta.url} />}
+      <meta property="og:type" content={ogMeta.type || 'website'} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={ogMeta.title || title} />
+      {ogMeta.description && <meta name="twitter:description" content={ogMeta.description} />}
+      {ogMeta.image && <meta name="twitter:image" content={ogMeta.image} />}
+    </>
+  )}
   <!-- Umami Analytics: /umami-loader.js reads config from the data-attrs above -->
   <script defer src="/umami-loader.js"></script>
 </head>

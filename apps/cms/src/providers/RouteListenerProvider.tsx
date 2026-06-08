@@ -3,13 +3,16 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
+// Target origin for postMessage — restrict to the trusted admin panel only
+const ADMIN_ORIGIN = process.env.NEXT_PUBLIC_ADMIN_ORIGIN || 'http://localhost:5173'
+
 export const RouteListenerProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname()
   const router = useRouter()
 
   useEffect(() => {
     if (window.parent && window.parent !== window) {
-      window.parent.postMessage({ type: 'PAYLOAD_ROUTE_CHANGE', pathname }, '*')
+      window.parent.postMessage({ type: 'PAYLOAD_ROUTE_CHANGE', pathname }, ADMIN_ORIGIN)
     }
   }, [pathname])
 

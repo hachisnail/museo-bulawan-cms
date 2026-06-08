@@ -1,29 +1,39 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
+function withCspHeaders(response: NextResponse, allowedOrigins: string[]): NextResponse {
+  response.headers.set(
+    'Content-Security-Policy',
+    `frame-ancestors 'self' ${allowedOrigins.join(' ')}`
+  )
+  response.headers.delete('X-Powered-By')
+  return response
+}
+
 export function middleware(request: NextRequest) {
   const url = request.nextUrl
 
   if (url.pathname.startsWith('/admin')) {
-    // Parse allowed origins from environment variable dynamically on each request
-    const adminUrlEnv = typeof process.env.PUBLIC_ADMIN_URL === 'string' ? process.env.PUBLIC_ADMIN_URL : '';
-    const allowedOrigins = adminUrlEnv
+    // Parse allowed origins from environment variables dynamically on each request
+    const adminUrlEnv = typeof process.env.PUBLIC_ADMIN_URL === 'string' ? process.env.PUBLIC_ADMIN_URL : ''
+    const adminPanelOriginsEnv = typeof process.env.ADMIN_PANEL_ORIGINS === 'string' ? process.env.ADMIN_PANEL_ORIGINS : ''
+    const allowedOrigins = `${adminUrlEnv},${adminPanelOriginsEnv}`
       .split(',')
       .map(o => o.trim())
       .filter(Boolean)
       .map(url => {
         if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
           if (url.startsWith('localhost') || url.startsWith('127.0.0.1')) {
-            return `http://${url}`;
+            return `http://${url}`
           }
-          return `https://${url}`;
+          return `https://${url}`
         }
-        return url;
-      });
+        return url
+      })
 
     // Fallback to local dev ports if no origins are configured via env
     if (allowedOrigins.length === 0) {
-      allowedOrigins.push('http://localhost:5173', 'http://localhost:5174');
+      allowedOrigins.push('http://localhost:5173', 'http://localhost:5174')
     }
 
     const origin = request.headers.get('origin')
@@ -38,13 +48,7 @@ export function middleware(request: NextRequest) {
     // and sub-resource fetches (scripts, styles, images, XHR/fetch).
     // Browsers may send Origin, Referer, or both — checking either is enough.
     if (isAllowedOrigin || isAllowedReferer) {
-      const response = NextResponse.next()
-      response.headers.set(
-        'Content-Security-Policy',
-        `frame-ancestors 'self' ${allowedOrigins.join(' ')}`
-      )
-      response.headers.delete('X-Powered-By')
-      return response
+      return withCspHeaders(NextResponse.next(), allowedOrigins)
     }
 
     // Allow internal navigation within the CMS iframe (e.g., clicking links
@@ -54,29 +58,17 @@ export function middleware(request: NextRequest) {
     const isCmsInternalNav = typeof referer === 'string' && referer.startsWith(cmsOrigin)
 
     if (isCmsInternalNav) {
-      const response = NextResponse.next()
-      response.headers.set(
-        'Content-Security-Policy',
-        `frame-ancestors 'self' ${allowedOrigins.join(' ')}`
-      )
-      response.headers.delete('X-Powered-By')
-      return response
+      return withCspHeaders(NextResponse.next(), allowedOrigins)
     }
 
     // Allow sub-resource requests (scripts, styles, images, fonts, etc.)
     // These are needed for the CMS UI to render inside the iframe and often
     // don't carry Origin or Referer headers.
     if (secFetchDest && secFetchDest !== 'document' && secFetchDest !== 'iframe') {
-      const response = NextResponse.next()
-      response.headers.set(
-        'Content-Security-Policy',
-        `frame-ancestors 'self' ${allowedOrigins.join(' ')}`
-      )
-      response.headers.delete('X-Powered-By')
-      return response
+      return withCspHeaders(NextResponse.next(), allowedOrigins)
     }
 
-    const primaryAdminUrl = allowedOrigins[0] || 'http://localhost:5173';
+    const primaryAdminUrl = allowedOrigins[0] || 'http://localhost:5173'
 
     // Everything else (direct browser access) is blocked.
     return new NextResponse(`

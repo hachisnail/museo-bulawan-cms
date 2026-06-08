@@ -1,11 +1,91 @@
-/* Museum brand overrides for Payload admin */
-:root {
-  --theme-elevation-0: #09090b;
-  --theme-elevation-50: #18181b;
-  --theme-elevation-100: #27272a;
-  --theme-elevation-150: #3f3f46;
-  --theme-elevation-200: #52525b;
-  --theme-text: #fafafa;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Museum brand overrides for Payload admin - Premium Light Mode */
+:root,
+html,
+html[data-theme="dark"],
+html[data-theme="light"] {
+  /* Base colors */
+  --theme-elevation-0: #f8fafc;   /* slate-50: page background */
+  --theme-elevation-50: #ffffff;  /* white: card, inputs, editor background */
+  --theme-elevation-100: #f1f5f9; /* slate-100: table headers, input background */
+  --theme-elevation-150: #e2e8f0; /* slate-200: borders, dividers */
+  --theme-elevation-200: #cbd5e1; /* slate-300: hover / selected border */
+  --theme-text: #0f172a;           /* slate-900: main text */
+  
+  /* Brand colors */
+  --theme-primary: #D4AF37;       /* premium gold matching the main website */
+  --theme-primary-hover: #A68A27;
+  
+  /* Font families */
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Apply premium Inter font to all admin interface elements */
+body, 
+html, 
+button, 
+input, 
+select, 
+textarea,
+.payload-admin-theme,
+[class*="editor"],
+.ContentEditable__root,
+.lexical-editor {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+}
+
+/* Force light mode background for the Lexical rich text editor area with gutter for block handles */
+.lexical-editor,
+.ContentEditable__root {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  font-size: 1rem !important;
+  line-height: 1.75 !important;
+  border-radius: 8px !important;
+  border: 1px solid #cbd5e1 !important;
+  padding: 1.25rem 1.25rem 1.25rem 4.5rem !important; /* Left padding of 4.5rem (72px) for the block handles gutter */
+}
+
+/* Adjust position of the floating block tools (drag handle and plus button) to sit neatly in the gutter without overlapping text */
+.draggable-block-menu,
+.add-block-menu {
+  margin-left: -40px !important; /* Shift left into the gutter */
+}
+
+
+/* Form single-line inputs styling */
+.editor-input {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  padding: 0.625rem 0.875rem !important;
+  border-radius: 8px !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+/* Ensure focus states look premium */
+.ContentEditable__root:focus,
+.ContentEditable__root:focus-within {
+  outline: none !important;
+  border-color: #D4AF37 !important;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2) !important;
+}
+
+/* Adjust paragraph spacing and lists in the editor */
+.lexical-editor p,
+.ContentEditable__root p {
+  margin-bottom: 1rem !important;
+  color: #0f172a !important;
+}
+
+/* Format heading tags inside the editor */
+.lexical-editor h1,
+.lexical-editor h2,
+.lexical-editor h3,
+.lexical-editor h4 {
+  color: #0f172a !important;
+  font-weight: 700 !important;
 }
 
 /* Hide Payload's navigation menu since we only use it via iframe in Admin Panel */
@@ -25,4 +105,225 @@ aside[class*="nav"] {
 .step-nav,
 .hamburger {
   display: none !important;
-}
+}
+
+/* Add custom scrollbar style that matches the main app */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 116, 139, 0.25);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background-color 0.2s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 116, 139, 0.5);
+}
+
+/* Style default/secondary/transparent buttons (Create New, Columns, Filters, Edit, etc.) to have clear dark text */
+.btn,
+button,
+a.btn,
+.btn--style-secondary,
+.btn--style-transparent,
+.pill,
+.collection-actions .btn,
+.search-filter .btn,
+.pill-button,
+.collection-actions a.btn,
+.collection-actions button {
+  background-color: #f1f5f9 !important; /* slate-100 */
+  color: #0f172a !important;            /* dark slate text */
+  border: 1px solid #cbd5e1 !important; /* slate-300 border */
+  transition: all 0.15s ease !important;
+}
+
+.btn:hover,
+button:hover,
+a.btn:hover,
+.btn--style-secondary:hover,
+.btn--style-transparent:hover,
+.pill:hover,
+.collection-actions .btn:hover,
+.search-filter .btn:hover,
+.collection-actions a.btn:hover,
+.collection-actions button:hover {
+  background-color: #e2e8f0 !important;   /* slate-200 */
+  color: #0f172a !important;              /* dark slate text */
+  border-color: #cbd5e1 !important;
+}
+
+/* Re-override and protect primary buttons cleanly (e.g. Save Draft, Publish, etc.) */
+.btn[class*="primary"],
+.btn--style-primary,
+button[class*="primary"],
+input[type="submit"],
+.btn--style-primary:hover,
+.btn[class*="primary"]:hover,
+button[class*="primary"]:hover {
+  color: #ffffff !important;
+}
+
+.btn--style-primary,
+.btn[class*="primary"],
+button[class*="primary"],
+input[type="submit"] {
+  background-color: #D4AF37 !important;
+  border-color: #D4AF37 !important;
+}
+
+.btn--style-primary:hover,
+.btn[class*="primary"]:hover,
+button[class*="primary"]:hover {
+  background-color: #A68A27 !important;
+  border-color: #A68A27 !important;
+}
+
+/* Hide Payload's top right account avatar link in the header since we embed in the Admin Panel */
+.current-user,
+.avatar,
+.current-user__avatar,
+.app-header__current-user,
+.app-header__user,
+.nav__user,
+a[href*="/admin/account"],
+a[href$="/account"],
+a[aria-label*="account"],
+a[aria-label*="profile"] {
+  display: none !important;
+}
+
+/* Ensure all form inputs, textareas, and select elements have dark text on white backgrounds */
+input,
+textarea,
+select,
+.input,
+[class*="input"],
+.text-input,
+.textarea-input,
+.field-type input,
+.field-type textarea,
+.field-type select,
+.react-select__control,
+.react-select__single-value,
+.react-select__input-container input,
+.react-select__input {
+  color: #0f172a !important; /* dark slate-900 text */
+  background-color: #ffffff !important; /* white background */
+}
+
+/* Ensure premium gold focus states for all standard inputs, textareas, and select elements */
+input:focus,
+textarea:focus,
+select:focus,
+.react-select__control--is-focused {
+  border-color: #D4AF37 !important;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2) !important;
+  outline: none !important;
+}
+
+/* Style input and textarea placeholders for legibility */
+input::placeholder,
+textarea::placeholder,
+.react-select__placeholder,
+[class*="placeholder"] {
+  color: #94a3b8 !important; /* slate-400 */
+}
+
+/* Style react-select dropdown options and menu containers */
+.react-select__menu,
+.react-select__menu-list {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.react-select__option {
+  color: #0f172a !important;
+  background-color: #ffffff !important;
+}
+
+.react-select__option--is-focused {
+  background-color: #f1f5f9 !important; /* slate-100 hover state */
+  color: #0f172a !important;
+}
+
+.react-select__option--is-selected {
+  background-color: #D4AF37 !important; /* premium gold selection state */
+  color: #ffffff !important;
+}
+
+/* Force dark text on all labels, headings, descriptions, and metadata across Payload CMS */
+label,
+.field-label,
+.checkbox__label,
+.radio__label,
+.relationship__label,
+.select__label,
+.upload__label,
+.text__label,
+.textarea__label,
+.rich-text__label,
+.title-label,
+.field-type__label,
+[class*="label"],
+[class*="field-label"] {
+  color: #0f172a !important; /* dark slate-900 for labels */
+  font-weight: 600 !important;
+}
+
+/* Style field descriptions and helper text clearly */
+.field-description,
+.view-description,
+[class*="description"],
+[class*="helper-text"] {
+  color: #475569 !important; /* slate-700 for descriptions and helper text */
+  font-size: 0.8125rem !important;
+}
+
+/* Style headers, page titles, and sidebar section titles */
+h1, h2, h3, h4, h5, h6,
+.form-header,
+.collection-header,
+.sidebar-section__header,
+.sidebar-section__title,
+.sidebar-section__header-title,
+.app-header__title,
+[class*="title"] {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+/* Target table headers, rows, cells, and metadata */
+table th,
+.table th,
+thead th,
+[class*="table"] th {
+  color: #475569 !important; /* slate-700 for table column headers */
+  font-weight: 600 !important;
+}
+
+table td,
+.table td,
+tbody td,
+[class*="table"] td {
+  color: #0f172a !important; /* dark slate-900 for cell content */
+}
+
+/* General status indicators and versions info */
+.status,
+.version-metadata,
+[class*="status"],
+[class*="metadata"] {
+  color: #475569 !important;
+}
+
+
+
+

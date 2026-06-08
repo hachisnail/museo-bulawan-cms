@@ -3,44 +3,81 @@ export const prerender = false;
 // src/pages/articles/[slug].astro
 // SSR mode: fetch the article on every request so new articles work immediately.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ShareButtons from '../../components/ui/ShareButtons.astro';
+import { buildTransitionMatrix, getRelatedArticles } from '../../utils/markov';
+import type { ArticleInput } from '../../utils/markov';
 
 // CMS base URL — change for production
 const CMS_URL = import.meta.env.PUBLIC_CMS_URL || 'http://127.0.0.1:3001';
+const SITE_URL = import.meta.env.PUBLIC_SITE_URL || 'http://localhost:4321';
 
 const { slug } = Astro.params;
 
 // Try slug first, then fall back to numeric ID lookup
 let article: any = null;
 
-// 1. Try fetching by slug
-const bySlug = await fetch(
-  `${CMS_URL}/api/articles?where[slug][equals]=${encodeURIComponent(slug!)}&where[_status][equals]=published&depth=1&limit=1`
-);
-if (bySlug.ok) {
-  const data = await bySlug.json();
-  if (data.docs?.length > 0) article = data.docs[0];
-}
-
-// 2. If not found by slug, try fetching by numeric ID
-if (!article && slug && /^\d+$/.test(slug)) {
-  const byId = await fetch(
-    `${CMS_URL}/api/articles/${slug}?depth=1`
+try {
+  // 1. Try fetching by slug
+  const bySlug = await fetch(
+    `${CMS_URL}/api/articles?where[slug][equals]=${encodeURIComponent(slug!)}&where[_status][equals]=published&depth=1&limit=1`
   );
-  if (byId.ok) {
-    const data = await byId.json();
-    // Ensure it is published (non-authenticated visitors should only see published)
-    if (data?.id && data?._status === 'published') {
-      article = data;
+  if (bySlug.ok) {
+    const data = await bySlug.json();
+    if (data.docs?.length > 0) article = data.docs[0];
+  }
+
+  // 2. If not found by slug, try fetching by numeric ID
+  if (!article && slug && /^\d+$/.test(slug)) {
+    const byId = await fetch(
+      `${CMS_URL}/api/articles/${slug}?depth=1`
+    );
+    if (byId.ok) {
+      const data = await byId.json();
+      // Ensure it is published (non-authenticated visitors should only see published)
+      if (data?.id && data?._status === 'published') {
+        article = data;
+      }
     }
   }
+} catch (e) {
+  console.error('CMS fetch failed for article:', e);
+  // Fall through — article remains null, handled below
 }
 
 if (!article) {
-  return new Response(null, {
+  return new Response(`
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Article Not Found | Museo Bulawan</title>
+        <style>
+          body { font-family: 'Georgia', serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #1C1B19; color: #fafafa; margin: 0; }
+          .container { text-align: center; padding: 3rem 2rem; max-width: 480px; }
+          h1 { font-size: 6rem; color: #D4AF37; margin: 0; line-height: 1; }
+          h2 { font-size: 1.5rem; color: #E5D2AC; margin: 0.5rem 0 1rem; }
+          p { color: #a1a1aa; line-height: 1.6; margin-bottom: 2rem; }
+          a { display: inline-block; padding: 0.75rem 2rem; border: 1px solid #D4AF37; color: #D4AF37; text-decoration: none; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s; }
+          a:hover { background: #D4AF37; color: #1C1B19; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>404</h1>
+          <h2>Article Not Found</h2>
+          <p>The article you're looking for doesn't exist or hasn't been published yet.</p>
+          <a href="/articles">Browse All Articles</a>
+        </div>
+      </body>
+    </html>
+  `, {
     status: 404,
-    statusText: 'Not found',
+    headers: { 'Content-Type': 'text/html' }
   });
 }
+
+// ─── XSS Protection ──────────────────────────────────────────────
 
 // Escape HTML special characters to prevent XSS when using set:html
 function escapeHtml(str: string): string {
@@ -50,6 +87,39 @@ function escapeHtml(str: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// Blocked URL schemes for link sanitization
+const BLOCKED_SCHEMES = ['javascript:', 'data:', 'vbscript:'];
+
+function sanitizeUrl(url: string): string {
+  const trimmed = url.trim().toLowerCase();
+  if (BLOCKED_SCHEMES.some(s => trimmed.startsWith(s))) return '#';
+  return escapeHtml(url);
+}
+
+// Allowed heading tags — prevent arbitrary tag injection
+const ALLOWED_HEADING_TAGS = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']);
+
+// ─── Lexical AST → HTML Renderer ──────────────────────────────────
+
+/**
+ * Map Lexical's format code to CSS text-align value.
+ * Handles both string names and numeric codes from the Lexical editor.
+ */
+function getAlignment(format: number | string): string {
+  if (typeof format === 'string') {
+    const map: Record<string, string> = {
+      left: 'left', start: 'left',
+      center: 'center',
+      right: 'right', end: 'right',
+      justify: 'justify',
+    };
+    return map[format] || 'left';
+  }
+  // Lexical numeric format codes
+  const numMap: Record<number, string> = { 1: 'left', 2: 'center', 3: 'right', 4: 'justify' };
+  return numMap[format] || 'left';
 }
 
 /**
@@ -90,10 +160,10 @@ function renderLexicalNode(node: any): string {
     return `<p${align}>${children}</p>`;
   }
 
-  // ── Heading ────────────────────────────────────
+  // ── Heading (whitelisted tags only) ────────────
   if (node.type === 'heading') {
     const children = node.children?.map(renderLexicalNode).join('') || '';
-    const tag = node.tag || 'h2';
+    const tag = ALLOWED_HEADING_TAGS.has(node.tag) ? node.tag : 'h2';
     return `<${tag}>${children}</${tag}>`;
   }
 
@@ -120,12 +190,13 @@ function renderLexicalNode(node: any): string {
     return `<blockquote>${children}</blockquote>`;
   }
 
-  // ── Link ───────────────────────────────────────
+  // ── Link (with URL sanitization) ───────────────
   if (node.type === 'link' || node.type === 'autolink') {
     const children = node.children?.map(renderLexicalNode).join('') || '';
     const url = node.fields?.url || node.url || '#';
+    const safeUrl = sanitizeUrl(url);
     const target = node.fields?.newTab ? ' target="_blank" rel="noopener noreferrer"' : '';
-    return `<a href="${escapeHtml(url)}"${target}>${children}</a>`;
+    return `<a href="${safeUrl}"${target}>${children}</a>`;
   }
 
   // ── Horizontal Rule ────────────────────────────
@@ -186,7 +257,7 @@ function renderLexicalNode(node: any): string {
       return `<div class="article-cta article-cta--${style}">
         <h3>${escapeHtml(f.heading || '')}</h3>
         ${f.text ? `<p>${escapeHtml(f.text)}</p>` : ''}
-        ${f.linkUrl ? `<a href="${escapeHtml(f.linkUrl)}" class="article-cta-button">${escapeHtml(f.linkLabel || 'Learn More')}</a>` : ''}
+        ${f.linkUrl ? `<a href="${sanitizeUrl(f.linkUrl)}" class="article-cta-button">${escapeHtml(f.linkLabel || 'Learn More')}</a>` : ''}
       </div>`;
     }
 
@@ -215,20 +286,6 @@ function renderLexicalNode(node: any): string {
   return '';
 }
 
-/**
- * Map Lexical's numeric format code to CSS text-align value.
- */
-function getAlignment(format: number | string): string {
-  const map: Record<string, string> = {
-    left: 'left', start: 'left',
-    center: 'center',
-    right: 'right', end: 'right',
-    justify: 'justify',
-  };
-  if (typeof format === 'string') return map[format] || 'left';
-  return 'left';
-}
-
 const htmlContent = renderLexicalNode(article.content?.root);
 
 // Build cover image URL
@@ -241,9 +298,50 @@ const coverUrl = article.coverImage?.sizes?.hero?.url
 // SEO values
 const metaTitle = article.seo?.metaTitle || article.title;
 const metaDescription = article.seo?.metaDescription || article.excerpt || '';
+const articleUrl = `${SITE_URL}/articles/${article.slug || article.id}`;
+const ogImage = article.seo?.ogImage?.url
+  ? `${CMS_URL}${article.seo.ogImage.url}`
+  : coverUrl;
+
+// ─── Related Articles (Markov Chain) ─────────────────────────────
+let relatedArticles: any[] = [];
+try {
+  const allRes = await fetch(
+    `${CMS_URL}/api/articles?where[_status][equals]=published&depth=1&sort=-publishedAt&limit=100`
+  );
+  if (allRes.ok) {
+    const allData = await allRes.json();
+    const allArticles: ArticleInput[] = allData.docs || [];
+    if (allArticles.length > 1) {
+      const matrix = buildTransitionMatrix(allArticles);
+      relatedArticles = getRelatedArticles(article as ArticleInput, allArticles, matrix, 3);
+    }
+  }
+} catch (e) {
+  console.warn('Could not fetch related articles:', e);
+}
+
+function getRelatedCoverUrl(a: any): string {
+  if (a.coverImage?.sizes?.card?.url) return `${CMS_URL}${a.coverImage.sizes.card.url}`;
+  if (a.coverImage?.url) {
+    if (a.coverImage.url.startsWith('http')) return a.coverImage.url;
+    return `${CMS_URL}${a.coverImage.url}`;
+  }
+  return 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=1000&auto=format&fit=crop';
+}
 ---
 
-<BaseLayout title={`${metaTitle} | Museo Bulawan`} theme="dark">
+<BaseLayout
+  title={`${metaTitle} | Museo Bulawan`}
+  theme="dark"
+  ogMeta={{
+    title: metaTitle,
+    description: metaDescription,
+    image: ogImage || undefined,
+    url: articleUrl,
+    type: 'article',
+  }}
+>
 
   <article class="w-full max-w-4xl mx-auto px-6 md:px-8 pb-16 pt-32 md:pt-40 lg:pt-44">
     <!-- Back link -->
@@ -259,6 +357,8 @@ const metaDescription = article.seo?.metaDescription || article.excerpt || '';
           class="w-full h-[20rem] md:h-[28rem] object-cover rounded-xl"
           src={coverUrl}
           alt={article.coverImage?.alt || article.title}
+          width="1920"
+          height="1080"
         />
       </div>
     )}
@@ -267,17 +367,23 @@ const metaDescription = article.seo?.metaDescription || article.excerpt || '';
     <h1 class="text-4xl md:text-6xl font-serif font-bold text-[#E5D2AC] leading-tight mb-6">{article.title}</h1>
 
     <!-- Meta row -->
-    <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-gray-400 text-lg border-b border-white/10 pb-6 mb-10">
-      {article.category?.name && (
-        <span class="text-[#F05454] font-bold tracking-widest uppercase text-sm">{article.category.name}</span>
-      )}
-      {article.author?.name && (
-        <span>By <strong class="text-gray-200">{article.author.name}</strong></span>
-      )}
-      <span>{new Date(article.publishedAt || article.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-      {article.address && (
-        <span>📍 {article.address}</span>
-      )}
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-3 text-gray-400 text-lg border-b border-white/10 pb-6 mb-10">
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+        {article.category?.name && (
+          <span class="text-[#F05454] font-bold tracking-widest uppercase text-sm">{article.category.name}</span>
+        )}
+        {article.author?.name && (
+          <span>By <strong class="text-gray-200">{article.author.name}</strong></span>
+        )}
+        <span>{new Date(article.publishedAt || article.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+        {article.address && (
+          <span>📍 {article.address}</span>
+        )}
+      </div>
+      <!-- Share Buttons -->
+      <div class="ml-auto">
+        <ShareButtons url={articleUrl} title={article.title} />
+      </div>
     </div>
 
     <!-- Article body -->
@@ -290,6 +396,48 @@ const metaDescription = article.seo?.metaDescription || article.excerpt || '';
           <span class="px-4 py-1.5 rounded-full bg-white/5 text-gray-300 text-sm border border-white/10">#{t.tag}</span>
         ))}
       </div>
+    )}
+
+    <!-- Related Articles (Markov Chain Recommendations) -->
+    {relatedArticles.length > 0 && (
+      <section class="mt-16 pt-10 border-t border-white/10">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="flex flex-col gap-1.5 w-12">
+            <div class="h-[2px] w-full bg-[#D4AF37]"></div>
+            <div class="h-[2px] w-[60%] bg-[#D4AF37] ml-auto"></div>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-serif text-[#E5D2AC] tracking-wide">You May Also Like</h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {relatedArticles.map((related: any) => (
+            <a
+              href={`/articles/${related.slug || related.id}`}
+              class="group flex flex-col overflow-hidden rounded-lg border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-all duration-300"
+            >
+              <div class="aspect-[16/10] overflow-hidden bg-gray-900">
+                <img
+                  src={getRelatedCoverUrl(related)}
+                  alt={related.coverImage?.alt || related.title}
+                  class="w-full h-full object-cover transform group-hover:scale-[1.04] transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100"
+                  loading="lazy"
+                />
+              </div>
+              <div class="flex flex-col p-5 flex-1">
+                {related.category?.name && (
+                  <span class="text-[10px] font-bold text-[#D4AF37] uppercase tracking-widest mb-2">{related.category.name}</span>
+                )}
+                <h3 class="text-base font-bold text-white leading-snug mb-2 group-hover:text-[#E5D2AC] transition-colors line-clamp-2">
+                  {related.title}
+                </h3>
+                <span class="text-xs text-gray-500 mt-auto">
+                  {related.publishedAt ? new Date(related.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : ''}
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
     )}
   </article>
 

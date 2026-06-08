@@ -41,6 +41,10 @@ const CORS_ORIGINS = [
     .split(',')
     .map(o => o.trim())
     .filter(Boolean),
+  ...(process.env.CORS_ORIGINS || '')
+    .split(',')
+    .map(o => o.trim())
+    .filter(Boolean),
   ...(process.env.PUBLIC_CORS_ORIGINS || '')
     .split(',')
     .map(o => o.trim())

@@ -127,7 +127,15 @@ export default function MainLayout() {
   }, [location.pathname, shouldLoadCms]);
 
   useEffect(() => {
+    const CMS_ORIGIN = (() => {
+      try { return new URL(import.meta.env.VITE_CMS_URL || 'http://localhost:3001').origin; }
+      catch { return 'http://localhost:3001'; }
+    })();
+
     const handleMessage = (event) => {
+        // Only accept messages from the trusted CMS origin
+        if (event.origin !== CMS_ORIGIN) return;
+
         if (event.data?.type === 'PAYLOAD_ROUTE_CHANGE') {
             const { pathname } = event.data;
             if (pathname && pathname.startsWith('/admin/collections/articles/')) {

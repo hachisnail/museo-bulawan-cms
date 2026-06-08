@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FormRenderer from "../components/FormRenderer";
+import { NewsEventsGrid } from "../components/ui/NewsEventsGrid";
+import { WhatsOnCalendar } from "../components/ui/WhatsOnCalendar";
 import heroImage from "../assets/06-AfternoonMealOfTheWorker 1.svg";
 import supportUs from "../assets/support_us.svg";
 import visitUs from "../assets/visit_us.svg";
@@ -18,13 +20,71 @@ const na2 =
   "https://images.unsplash.com/photo-1572953109213-3be62398eb95?q=80&w=1000&auto=format&fit=crop";
 
 const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:3000";
+const CMS_URL = import.meta.env.PUBLIC_CMS_URL || "http://127.0.0.1:3001";
 
-// Mock Data for initial render
-const displayEvents = [
-  { title: "Opening Exhibition", upload_date: "2026-05-10", images: block1 },
-  { title: "Cultural Workshop", upload_date: "2026-05-15", images: block2 },
-];
-const articles = [...displayEvents, ...displayEvents];
+// Fetch ALL published articles (for News & Events section)
+let articles: any[] = [];
+try {
+  const res = await fetch(
+    `${CMS_URL}/api/articles?where[_status][equals]=published&depth=1&sort=-publishedAt&limit=8`
+  );
+  if (res.ok) {
+    const data = await res.json();
+    articles = data.docs || [];
+  }
+} catch (e) {
+  console.warn('Could not fetch articles from CMS:', e);
+}
+
+// Fetch EVENT-category articles only (for What's On calendar)
+let eventArticles: any[] = [];
+try {
+  const res = await fetch(
+    `${CMS_URL}/api/articles?where[_status][equals]=published&where[category.slug][equals]=event&depth=1&sort=-publishedAt&limit=20`
+  );
+  if (res.ok) {
+    const data = await res.json();
+    eventArticles = data.docs || [];
+  }
+} catch (e) {
+  console.warn('Could not fetch event articles from CMS:', e);
+}
+
+// Fallback to mock data if CMS is empty or down
+if (articles.length === 0) {
+  const mockArticles = [
+    { title: "Opening Exhibition", publishedAt: "2026-05-10", coverImage: { url: block1 }, slug: "", category: { name: "Event" } },
+    { title: "Cultural Workshop", publishedAt: "2026-05-15", coverImage: { url: block2 }, slug: "", category: { name: "News" } },
+  ];
+  articles = [...mockArticles, ...mockArticles];
+}
+
+// Use event articles for the "What's On" section, fallback to first 2 articles
+const displayEvents = eventArticles.length > 0 ? eventArticles.slice(0, 2) : articles.slice(0, 2);
+
+// Fetch Philippine public holidays for the calendar component
+let publicHolidays: any[] = [];
+try {
+  const currentYear = new Date().getFullYear();
+  const res = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${currentYear}/PH`);
+  if (res.ok) {
+    publicHolidays = await res.json();
+  }
+} catch (e) {
+  console.warn('Could not fetch public holidays:', e);
+}
+
+function getCoverUrl(article: any): string {
+  if (article.coverImage?.sizes?.card?.url) {
+    return `${CMS_URL}${article.coverImage.sizes.card.url}`;
+  }
+  if (article.coverImage?.url) {
+    // If it's a mock article with an absolute URL, return it directly
+    if (article.coverImage.url.startsWith('http')) return article.coverImage.url;
+    return `${CMS_URL}${article.coverImage.url}`;
+  }
+  return block1; // placeholder
+}
 ---
 
 <BaseLayout title="Home | Museo Bulawan" theme="dark">
@@ -335,50 +395,41 @@ const articles = [...displayEvents, ...displayEvents];
 
       <!-- Main Layout -->
       <div
-        class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row gap-6 lg:gap-10 items-center justify-center flex-1 w-full min-h-0 my-4"
+        class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row gap-8 lg:gap-16 items-center justify-center flex-1 w-full min-h-0 py-8 lg:py-12"
       >
-        <!-- Left: Calendar Background Setup -->
-        <div class="relative w-full lg:w-[48%] h-[35vh] lg:h-full max-h-[450px] lg:max-h-[60vh] flex-shrink-0">
-          
-          <div class="absolute top-0 left-0 w-[55%] h-[80%] bg-[#FDF8EA] z-0"></div>
-          
-          <div class="absolute bottom-[5%] right-[5%] w-[70%] h-[70%] bg-[#A89C83] z-0"></div>
-
-          <h3 class="absolute top-[8%] left-[8%] text-5xl md:text-6xl lg:text-[4.5rem] font-serif text-[#2B2B2B] z-20 leading-none">
-            April
-          </h3>
-
-          <div class="absolute top-[25%] left-[10%] w-[85%] h-[65%] bg-white shadow-[0_15px_40px_-10px_rgba(0,0,0,0.15)] z-10 border border-gray-50 flex items-center justify-center">
-            <!-- Calendar component will render here -->
-          </div>
-          
+        <!-- Left: Event Calendar -->
+        <div class="w-full lg:w-[55%] h-full min-h-[400px] flex items-center justify-center relative">
+          <WhatsOnCalendar client:idle cmsEvents={eventArticles} publicHolidays={publicHolidays} />
         </div>
 
         <!-- Right: Events Setup -->
-        <div class="w-full lg:w-[48%] h-[40vh] lg:h-full max-h-[450px] lg:max-h-[60vh] flex flex-col gap-3 justify-center shrink-0">
+        <div class="w-full lg:w-[45%] flex flex-col justify-center items-end gap-8 lg:gap-10">
           
-          <div class="flex items-center gap-4 shrink-0">
-            <div class="flex flex-col gap-1.5 md:gap-2 w-16 md:w-20 pt-1">
-              <div class="h-[2px] md:h-[2px] w-full bg-[#1C1B19]"></div>
-              <div class="h-[2px] md:h-[2px] w-[80%] bg-[#1C1B19] ml-auto"></div>
+          <!-- Title & Lines -->
+          <div class="flex items-start gap-4 self-end shrink-0 w-full max-w-[550px] justify-end">
+            <!-- Lines -->
+            <div class="flex flex-col gap-2.5 md:gap-3 flex-1 items-end mt-3 md:mt-5">
+              <div class="h-[5px] md:h-[6px] bg-black w-full max-w-[320px]"></div>
+              <div class="h-[5px] md:h-[6px] bg-black w-full max-w-[240px] mr-8 md:mr-16"></div>
             </div>
-            <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif text-[#1C1B19] whitespace-nowrap tracking-wide">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif text-[#1C1B19] whitespace-nowrap tracking-wide leading-none">
               Whats On?
             </h2>
           </div>
 
-          <!-- Using flex-1 to auto-fill space without aspect-ratio blowout -->
-          <div class="flex flex-col gap-3 w-full flex-1 min-h-0">
+          <!-- Photo Cards -->
+          <div class="flex flex-col gap-6 w-full max-w-[480px] self-end items-end pb-8 lg:pb-0">
             {
-              displayEvents.slice(0, 2).map((article) => (
+              displayEvents.map((article) => (
                 <a
-                  href={`/articles`}
-                  class="block w-full flex-1 relative shadow-md group overflow-hidden bg-gray-100 border border-black/5"
+                  href={`/articles/${article.slug || article.id || ''}`}
+                  class="group relative w-[90%] md:w-full aspect-[4/3] md:aspect-[3/2] lg:aspect-[16/10] bg-white p-2.5 md:p-3 shadow-[0_10px_30px_-5px_rgba(0,0,0,0.15)] hover:shadow-[0_15px_40px_-5px_rgba(0,0,0,0.2)] transition-shadow duration-300 transform hover:-translate-y-1"
                 >
                   <img
-                    src={article.images}
+                    src={getCoverUrl(article)}
                     alt={article.title || "Event Highlight"}
-                    class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                    class="w-full h-full object-cover border border-gray-100/50 group-hover:opacity-95 transition-opacity"
                   />
                 </a>
               ))
@@ -488,36 +539,7 @@ const articles = [...displayEvents, ...displayEvents];
           </a>
         </div>
 
-        <div
-          class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-6 md:gap-y-10 min-h-0 overflow-y-auto pr-2 lg:pr-0"
-        >
-          {
-            articles.slice(0, 4).map((article) => (
-              <a
-                href={`/articles`}
-                class="flex flex-col sm:flex-row gap-5 md:gap-6 group"
-              >
-                <div
-                  class="w-full sm:w-[140px] md:w-[180px] lg:w-[200px] shrink-0 aspect-square bg-cover bg-center object-cover border border-white/5"
-                  style={`background-image: url('${article.images}')`}
-                />
-
-                <div class="flex flex-col py-1 justify-center">
-                  <h3 class="text-lg md:text-xl font-bold text-white uppercase leading-snug mb-2 group-hover:text-gray-300 transition-colors line-clamp-2">
-                    {article.title}
-                  </h3>
-                  <span class="text-gray-500 text-xs md:text-sm mb-3">
-                    {article.upload_date}
-                  </span>
-                  <p class="text-gray-200 text-xs md:text-sm leading-relaxed max-w-sm line-clamp-3 md:line-clamp-4">
-                    Brief description of the event will be placed here. Brief
-                    description of the event will be placed here.
-                  </p>
-                </div>
-              </a>
-            ))
-          }
-        </div>
+        <NewsEventsGrid articles={articles} cmsUrl={CMS_URL} />
       </div>
 
       <!-- Bottom Navigation Anchor -->

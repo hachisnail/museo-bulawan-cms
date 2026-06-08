@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "cross-env NEXT_IGNORE_INCORRECT_LOCKFILE=1 NODE_OPTIONS=--no-deprecation next dev -p 3001",
     "build": "cross-env NEXT_IGNORE_INCORRECT_LOCKFILE=1 NODE_OPTIONS=--no-deprecation next build",
-    "start": "cross-env NEXT_IGNORE_INCORRECT_LOCKFILE=1 NODE_OPTIONS=--no-deprecation next start -p 3001",
+    "start": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload migrate && cross-env NEXT_IGNORE_INCORRECT_LOCKFILE=1 NODE_OPTIONS=--no-deprecation next start -p 3001",
+    "migrate": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload migrate",
+    "migrate:create": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload migrate:create",
     "generate:types": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types",
     "generate:importmap": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:importmap"
   },

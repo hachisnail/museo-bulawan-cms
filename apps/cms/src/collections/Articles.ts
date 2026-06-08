@@ -197,7 +197,7 @@ export const Articles: CollectionConfig = {
   versions: {
     drafts: {
       autosave: {
-        interval: 1500, // Save draft every 1.5 seconds while editing
+        interval: 3000, // Save draft every 3 seconds (reduced from 1.5s for performance)
       },
     },
     maxPerDoc: 25, // Keep up to 25 versions per article
@@ -306,6 +306,8 @@ export const Articles: CollectionConfig = {
         {
           name: 'publishedAt',
           type: 'date',
+          required: true,
+          index: true,
           label: 'Date',
           admin: {
             date: {
@@ -318,6 +320,7 @@ export const Articles: CollectionConfig = {
           name: 'coverImage',
           type: 'upload',
           relationTo: 'media',
+          required: true,
           label: 'Cover Image',
           admin: {
             width: '33%',

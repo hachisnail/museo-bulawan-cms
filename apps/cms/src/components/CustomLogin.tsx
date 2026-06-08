@@ -1,6 +1,24 @@
 import React from 'react'
 
 export const CustomLogin: React.FC = () => {
+  const adminUrlEnv = typeof process.env.NEXT_PUBLIC_ADMIN_URL === 'string' 
+    ? process.env.NEXT_PUBLIC_ADMIN_URL 
+    : (typeof process.env.PUBLIC_ADMIN_URL === 'string' ? process.env.PUBLIC_ADMIN_URL : '');
+  
+  let adminUrl = adminUrlEnv.split(',')[0]?.trim() || 'http://localhost:5173/';
+  
+  if (adminUrl && !adminUrl.startsWith('http://') && !adminUrl.startsWith('https://')) {
+    if (adminUrl.startsWith('localhost') || adminUrl.startsWith('127.0.0.1')) {
+      adminUrl = `http://${adminUrl}`;
+    } else {
+      adminUrl = `https://${adminUrl}`;
+    }
+  }
+
+  if (!adminUrl.endsWith('/')) {
+    adminUrl = `${adminUrl}/`;
+  }
+
   return (
     <div style={{
       display: 'flex',
@@ -27,7 +45,7 @@ export const CustomLogin: React.FC = () => {
           This CMS uses centralized authentication. Please log in through the main administrative portal to access the content management system.
         </p>
         <a 
-          href="http://localhost:5173/" 
+          href={adminUrl} 
           style={{
             display: 'inline-block',
             backgroundColor: '#2563eb',

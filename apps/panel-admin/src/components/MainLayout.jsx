@@ -394,7 +394,11 @@ export default function MainLayout() {
         </header>
 
         {/* Page Content */}
-        <section className={`flex-1 overflow-y-auto bg-gray-50 relative ${location.pathname === '/articles' ? '!p-0' : ''}`}>
+        <section className={`flex-1 bg-gray-50 relative ${
+          location.pathname === '/articles' || location.pathname.startsWith('/schedule') || location.pathname.startsWith('/appointments')
+            ? '!p-0 overflow-hidden'
+            : 'overflow-y-auto'
+        }`}>
           <div className={`h-full flex flex-col relative ${location.pathname === '/articles' ? 'block' : 'hidden'}`}>
             {isCmsLoading && (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-50 z-10">
@@ -412,7 +416,11 @@ export default function MainLayout() {
               />
             )}
           </div>
-          <div className={location.pathname === '/articles' ? 'hidden' : 'block h-full pt-5'}>
+          <div className={
+            location.pathname === '/articles' ? 'hidden' :
+            location.pathname.startsWith('/schedule') || location.pathname.startsWith('/appointments') ? 'block h-full' :
+            'block h-full pt-5'
+          }>
             <ErrorBoundary>
               <Outlet />
             </ErrorBoundary>

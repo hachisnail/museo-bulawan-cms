@@ -60,20 +60,23 @@ export const submissionService = {
         }
 
         // 2. OTP Validation
+        // Skip OTP for authenticated staff submissions — actingStaffId is set when
+        // a logged-in staff member submits via the admin panel (e.g. walk-in registration).
+        // Public/visitor submissions have no session so actingStaffId is null and OTP is enforced.
         const mapping = definition.settings?.field_mapping || {};
         const emailField = mapping.donorEmail || 'email';
         const userEmail = payload[emailField];
-        const isOtpRequired = !!definition.otp;
-        
+        const isOtpRequired = !!definition.otp && !actingStaffId;
+
         if (userEmail && isOtpRequired) {
             if (!otp) throw new Error('OTP is required for email verification.');
-            
+
             const cached = await otpStore.get(userEmail);
             if (!cached) throw new Error('OTP not found or expired. Please request a new one.');
 
             const hash = crypto.createHash('sha256').update(otp).digest('hex');
             if (hash !== cached.otpHash) throw new Error('Invalid OTP.');
-            
+
             await otpStore.delete(userEmail);
         }
 

@@ -1,20 +1,10 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// ─── Allowed origins that may embed the CMS in an iframe ─────────
-// Read from environment variable, fallback to localhost for development
-const ALLOWED_ORIGINS = (process.env.ADMIN_PANEL_ORIGINS || 'http://localhost:5173,http://localhost:5174')
-  .split(',')
-  .map(o => o.trim())
-  .filter(Boolean)
-
-/**
- * Adds Content-Security-Policy frame-ancestors header and removes X-Powered-By.
- */
-function withCspHeaders(response: NextResponse): NextResponse {
+function withCspHeaders(response: NextResponse, allowedOrigins: string[]): NextResponse {
   response.headers.set(
     'Content-Security-Policy',
-    `frame-ancestors 'self' ${ALLOWED_ORIGINS.join(' ')}`
+    `frame-ancestors 'self' ${allowedOrigins.join(' ')}`
   )
   response.headers.delete('X-Powered-By')
   return response
@@ -24,40 +14,63 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl
 
   if (url.pathname.startsWith('/admin')) {
+    // Parse allowed origins from environment variables dynamically on each request
+    const adminUrlEnv = typeof process.env.PUBLIC_ADMIN_URL === 'string' ? process.env.PUBLIC_ADMIN_URL : ''
+    const adminPanelOriginsEnv = typeof process.env.ADMIN_PANEL_ORIGINS === 'string' ? process.env.ADMIN_PANEL_ORIGINS : ''
+    const allowedOrigins = `${adminUrlEnv},${adminPanelOriginsEnv}`
+      .split(',')
+      .map(o => o.trim())
+      .filter(Boolean)
+      .map(url => {
+        if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+          if (url.startsWith('localhost') || url.startsWith('127.0.0.1')) {
+            return `http://${url}`
+          }
+          return `https://${url}`
+        }
+        return url
+      })
+
+    // Fallback to local dev ports if no origins are configured via env
+    if (allowedOrigins.length === 0) {
+      allowedOrigins.push('http://localhost:5173', 'http://localhost:5174')
+    }
+
     const origin = request.headers.get('origin')
     const referer = request.headers.get('referer')
     const secFetchDest = request.headers.get('sec-fetch-dest')
 
-    const isAllowedOrigin = origin && ALLOWED_ORIGINS.some(o => origin.startsWith(o))
-    const isAllowedReferer = referer && ALLOWED_ORIGINS.some(o => referer.startsWith(o))
+    const isAllowedOrigin = typeof origin === 'string' && allowedOrigins.some(o => typeof o === 'string' && origin.startsWith(o))
+    const isAllowedReferer = typeof referer === 'string' && allowedOrigins.some(o => typeof o === 'string' && referer.startsWith(o))
 
     // Allow if the request comes from a trusted admin panel origin.
     // This covers: initial iframe load, navigation within the iframe,
     // and sub-resource fetches (scripts, styles, images, XHR/fetch).
     // Browsers may send Origin, Referer, or both — checking either is enough.
     if (isAllowedOrigin || isAllowedReferer) {
-      return withCspHeaders(NextResponse.next())
+      return withCspHeaders(NextResponse.next(), allowedOrigins)
     }
 
     // Allow internal navigation within the CMS iframe (e.g., clicking links
     // inside the Payload admin UI). These are same-origin requests where the
     // Referer points to the CMS itself.
     const cmsOrigin = `${url.protocol}//${url.host}`
-    const isCmsInternalNav = referer && referer.startsWith(cmsOrigin)
+    const isCmsInternalNav = typeof referer === 'string' && referer.startsWith(cmsOrigin)
 
     if (isCmsInternalNav) {
-      return withCspHeaders(NextResponse.next())
+      return withCspHeaders(NextResponse.next(), allowedOrigins)
     }
 
     // Allow sub-resource requests (scripts, styles, images, fonts, etc.)
     // These are needed for the CMS UI to render inside the iframe and often
     // don't carry Origin or Referer headers.
     if (secFetchDest && secFetchDest !== 'document' && secFetchDest !== 'iframe') {
-      return withCspHeaders(NextResponse.next())
+      return withCspHeaders(NextResponse.next(), allowedOrigins)
     }
 
+    const primaryAdminUrl = allowedOrigins[0] || 'http://localhost:5173'
+
     // Everything else (direct browser access) is blocked.
-    const adminPanelUrl = ALLOWED_ORIGINS[0] || 'http://localhost:5173'
     return new NextResponse(`
       <!DOCTYPE html>
       <html>
@@ -75,7 +88,7 @@ export function middleware(request: NextRequest) {
           <div class="container">
             <h1>Access Denied</h1>
             <p>The CMS Payload interface cannot be accessed directly.</p>
-            <p>Please access it through the <a href="${adminPanelUrl}/articles">Admin Panel</a>.</p>
+            <p>Please access it through the <a href="${primaryAdminUrl}/articles">Admin Panel</a>.</p>
           </div>
         </body>
       </html>

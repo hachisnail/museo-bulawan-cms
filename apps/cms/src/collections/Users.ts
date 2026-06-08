@@ -16,7 +16,8 @@ export const Users: CollectionConfig = {
           }
           
           try {
-            const response = await fetch(`${API_URL}/api/v1/auth/check`, {
+            const apiBaseUrl = process.env.INTERNAL_API_URL || process.env.API_URL || process.env.PUBLIC_API_URL || 'http://localhost:3000';
+            const response = await fetch(`${apiBaseUrl}/api/v1/auth/check`, {
               headers: { cookie: cookieHeader },
             });
             

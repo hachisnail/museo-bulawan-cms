@@ -6,6 +6,8 @@ interface Props {
   navTheme?: 'light' | 'dark';
   isMinimalLayout?: boolean;
   title?: string;
+  description?: string;
+  image?: string;
   ogMeta?: {
     title?: string;
     description?: string;
@@ -19,9 +21,17 @@ const {
   theme = 'dark', 
   navTheme = 'dark', 
   isMinimalLayout = false,
-  title = 'Museo Bulawan CMS',
-  ogMeta,
+  title = 'Museo Bulawan',
+  description = 'Welcome to Museo Bulawan, the leading community museum celebrating the rich cultural, artistic, and natural heritage of Camarines Norte.',
+  image = '/LOGO.png',
+  ogMeta
 } = Astro.props;
+
+const metaTitle = ogMeta?.title || title;
+const metaDescription = ogMeta?.description || description;
+const metaImage = ogMeta?.image || image;
+const metaUrl = ogMeta?.url || Astro.url.toString();
+const metaType = ogMeta?.type || 'website';
 
 const containerBg = theme === 'dark' ? 'bg-[#1C1B19]' : 'bg-white';
 
@@ -41,21 +51,26 @@ import Nav from '../components/ui/Nav.astro';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="/LOGO.png" />
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  
+  <!-- Primary Meta Tags -->
   <title>{title}</title>
-  {ogMeta && (
-    <>
-      <meta property="og:title" content={ogMeta.title || title} />
-      {ogMeta.description && <meta property="og:description" content={ogMeta.description} />}
-      {ogMeta.image && <meta property="og:image" content={ogMeta.image} />}
-      {ogMeta.url && <meta property="og:url" content={ogMeta.url} />}
-      <meta property="og:type" content={ogMeta.type || 'website'} />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={ogMeta.title || title} />
-      {ogMeta.description && <meta name="twitter:description" content={ogMeta.description} />}
-      {ogMeta.image && <meta name="twitter:image" content={ogMeta.image} />}
-    </>
-  )}
+  <meta name="title" content={metaTitle} />
+  {metaDescription && <meta name="description" content={metaDescription} />}
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content={metaType} />
+  <meta property="og:url" content={metaUrl} />
+  <meta property="og:title" content={metaTitle} />
+  {metaDescription && <meta property="og:description" content={metaDescription} />}
+  <meta property="og:image" content={new URL(metaImage, Astro.url).toString()} />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content={metaUrl} />
+  <meta name="twitter:title" content={metaTitle} />
+  {metaDescription && <meta name="twitter:description" content={metaDescription} />}
+  <meta name="twitter:image" content={new URL(metaImage, Astro.url).toString()} />
   <!-- Umami Analytics: /umami-loader.js reads config from the data-attrs above -->
   <script defer src="/umami-loader.js"></script>
 </head>

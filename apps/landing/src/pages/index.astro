@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FormRenderer from "../components/FormRenderer";
+import { NewsEventsGrid } from "../components/ui/NewsEventsGrid";
+import { WhatsOnCalendar } from "../components/ui/WhatsOnCalendar";
 import heroImage from "../assets/06-AfternoonMealOfTheWorker 1.svg";
 import supportUs from "../assets/support_us.svg";
 import visitUs from "../assets/visit_us.svg";
@@ -60,23 +62,17 @@ if (articles.length === 0) {
 // Use event articles for the "What's On" section, fallback to first 2 articles
 const displayEvents = eventArticles.length > 0 ? eventArticles.slice(0, 2) : articles.slice(0, 2);
 
-// Generate calendar data for the current month
-const now = new Date();
-const currentMonth = now.toLocaleString('en-US', { month: 'long' });
-const currentYear = now.getFullYear();
-const currentMonthIndex = now.getMonth();
-const daysInMonth = new Date(currentYear, currentMonthIndex + 1, 0).getDate();
-const firstDayOfWeek = new Date(currentYear, currentMonthIndex, 1).getDay(); // 0=Sun
-const today = now.getDate();
-
-// Extract event dates for the current month
-const eventDatesThisMonth = eventArticles
-  .filter((a: any) => {
-    if (!a.publishedAt) return false;
-    const d = new Date(a.publishedAt);
-    return d.getMonth() === currentMonthIndex && d.getFullYear() === currentYear;
-  })
-  .map((a: any) => new Date(a.publishedAt).getDate());
+// Fetch Philippine public holidays for the calendar component
+let publicHolidays: any[] = [];
+try {
+  const currentYear = new Date().getFullYear();
+  const res = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${currentYear}/PH`);
+  if (res.ok) {
+    publicHolidays = await res.json();
+  }
+} catch (e) {
+  console.warn('Could not fetch public holidays:', e);
+}
 
 function getCoverUrl(article: any): string {
   if (article.coverImage?.sizes?.card?.url) {
@@ -399,96 +395,41 @@ function getCoverUrl(article: any): string {
 
       <!-- Main Layout -->
       <div
-        class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row gap-6 lg:gap-10 items-center justify-center flex-1 w-full min-h-0 my-4"
+        class="w-full max-w-[140rem] mx-auto px-8 md:px-16 lg:px-32 flex flex-col lg:flex-row gap-8 lg:gap-16 items-center justify-center flex-1 w-full min-h-0 py-8 lg:py-12"
       >
         <!-- Left: Event Calendar -->
-        <div class="w-full lg:w-[48%] h-[35vh] lg:h-full max-h-[450px] lg:max-h-[60vh] flex-shrink-0">
-          <div class="w-full h-full bg-white border border-gray-100 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.10)] flex flex-col">
-            <!-- Calendar Header -->
-            <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-100">
-              <h3 class="text-3xl md:text-4xl font-serif text-[#2B2B2B] leading-none tracking-wide">
-                {currentMonth}
-              </h3>
-              <span class="text-sm text-gray-400 font-medium tracking-wider">{currentYear}</span>
-            </div>
-            <!-- Calendar Grid -->
-            <div class="flex-1 px-6 py-4 flex flex-col">
-              <!-- Day Headers -->
-              <div class="grid grid-cols-7 gap-1 mb-2">
-                {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((day) => (
-                  <div class="text-center text-[10px] font-bold text-gray-400 uppercase tracking-wider py-1">{day}</div>
-                ))}
-              </div>
-              <!-- Day Numbers -->
-              <div class="grid grid-cols-7 gap-1 flex-1 content-start" id="calendarGrid">
-                {/* Empty cells for offset */}
-                {Array.from({ length: firstDayOfWeek }).map((_, i) => (
-                  <div key={`empty-${i}`} class="aspect-square"></div>
-                ))}
-                {/* Day cells */}
-                {Array.from({ length: daysInMonth }).map((_, i) => {
-                  const day = i + 1;
-                  const isToday = day === today;
-                  const hasEvent = eventDatesThisMonth.includes(day);
-                  return (
-                    <div
-                      class={`aspect-square flex flex-col items-center justify-center text-sm relative transition-colors
-                        ${isToday ? 'bg-[#1C1B19] text-white font-bold' : 'text-gray-700 hover:bg-gray-50'}
-                      `}
-                    >
-                      <span>{day}</span>
-                      {hasEvent && (
-                        <span class={`absolute bottom-[3px] w-1.5 h-1.5 rounded-full bg-[#D4AF37]`}></span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              {/* Event Legend */}
-              {eventDatesThisMonth.length > 0 && (
-                <div class="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100">
-                  <span class="w-2 h-2 rounded-full bg-[#D4AF37]"></span>
-                  <span class="text-xs text-gray-400">{eventDatesThisMonth.length} event{eventDatesThisMonth.length !== 1 ? 's' : ''} this month</span>
-                </div>
-              )}
-            </div>
-          </div>
+        <div class="w-full lg:w-[55%] h-full min-h-[400px] flex items-center justify-center relative">
+          <WhatsOnCalendar client:idle cmsEvents={eventArticles} publicHolidays={publicHolidays} />
         </div>
 
         <!-- Right: Events Setup -->
-        <div class="w-full lg:w-[48%] h-[40vh] lg:h-full max-h-[450px] lg:max-h-[60vh] flex flex-col gap-3 justify-center shrink-0">
+        <div class="w-full lg:w-[45%] flex flex-col justify-center items-end gap-8 lg:gap-10">
           
-          <div class="flex items-center gap-4 shrink-0">
-            <div class="flex flex-col gap-1.5 md:gap-2 w-16 md:w-20 pt-1">
-              <div class="h-[2px] md:h-[2px] w-full bg-[#1C1B19]"></div>
-              <div class="h-[2px] md:h-[2px] w-[80%] bg-[#1C1B19] ml-auto"></div>
+          <!-- Title & Lines -->
+          <div class="flex items-start gap-4 self-end shrink-0 w-full max-w-[550px] justify-end">
+            <!-- Lines -->
+            <div class="flex flex-col gap-2.5 md:gap-3 flex-1 items-end mt-3 md:mt-5">
+              <div class="h-[5px] md:h-[6px] bg-black w-full max-w-[320px]"></div>
+              <div class="h-[5px] md:h-[6px] bg-black w-full max-w-[240px] mr-8 md:mr-16"></div>
             </div>
-            <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif text-[#1C1B19] whitespace-nowrap tracking-wide">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif text-[#1C1B19] whitespace-nowrap tracking-wide leading-none">
               What's On?
             </h2>
           </div>
 
-          <!-- Using flex-1 to auto-fill space without aspect-ratio blowout -->
-          <div class="flex flex-col gap-3 w-full flex-1 min-h-0">
+          <!-- Photo Cards -->
+          <div class="flex flex-col gap-6 w-full max-w-[480px] self-end items-end pb-8 lg:pb-0">
             {
               displayEvents.map((article) => (
                 <a
                   href={`/articles/${article.slug || article.id || ''}`}
-                  class="group relative h-48 md:h-auto md:row-span-1 rounded-sm overflow-hidden flex items-end p-6 border border-white/5 bg-gray-900"
+                  class="group relative w-[90%] md:w-full aspect-[4/3] md:aspect-[3/2] lg:aspect-[16/10] bg-white p-2.5 md:p-3 shadow-[0_10px_30px_-5px_rgba(0,0,0,0.15)] hover:shadow-[0_15px_40px_-5px_rgba(0,0,0,0.2)] transition-shadow duration-300 transform hover:-translate-y-1"
                 >
-                  <div class="relative z-20 flex flex-col items-start gap-1">
-                    <span class="bg-[#1C1B19] text-[#d8ad69] px-2 py-0.5 text-xs font-semibold tracking-wider">
-                      {article.category?.name || "Event"}
-                    </span>
-                    <h3 class="text-white font-serif text-xl group-hover:text-[#d8ad69] transition-colors leading-tight">
-                      {article.title}
-                    </h3>
-                  </div>
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-opacity duration-300 group-hover:opacity-80" />
                   <img
                     src={getCoverUrl(article)}
                     alt={article.title || "Event Highlight"}
-                    class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                    class="w-full h-full object-cover border border-gray-100/50 group-hover:opacity-95 transition-opacity"
                   />
                 </a>
               ))
@@ -598,35 +539,7 @@ function getCoverUrl(article: any): string {
           </a>
         </div>
 
-        <div
-          class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-6 md:gap-y-10 min-h-0 overflow-y-auto pr-2 lg:pr-0"
-        >
-          {
-            articles.slice(0, 4).map((article) => (
-              <a
-                href={`/articles/${article.slug || article.id || ''}`}
-                class="flex flex-col sm:flex-row gap-5 md:gap-6 group"
-              >
-                <div
-                  class="w-full sm:w-[140px] md:w-[180px] lg:w-[200px] shrink-0 aspect-square bg-cover bg-center object-cover border border-white/5"
-                  style={`background-image: url('${getCoverUrl(article)}')`}
-                />
-
-                <div class="flex flex-col py-1 justify-center">
-                  <h3 class="text-lg md:text-xl font-bold text-white uppercase leading-snug mb-2 group-hover:text-gray-300 transition-colors line-clamp-2">
-                    {article.title}
-                  </h3>
-                  <span class="text-gray-500 text-xs md:text-sm mb-3">
-                    {article.publishedAt ? new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}
-                  </span>
-                  <p class="text-gray-200 text-xs md:text-sm leading-relaxed max-w-sm line-clamp-3 md:line-clamp-4">
-                    {article.excerpt || 'Read the full article to learn more.'}
-                  </p>
-                </div>
-              </a>
-            ))
-          }
-        </div>
+        <NewsEventsGrid articles={articles} cmsUrl={CMS_URL} />
       </div>
 
       <!-- Bottom Navigation Anchor -->

@@ -3,6 +3,8 @@ import Ajv from 'ajv';
 import { db } from '../config/db.js';
 import { appEvents } from '../utils/eventBus.js';
 import { definitionService } from '../services/form/definitionService.js';
+import { sendEmail } from '../utils/mailer.js';
+import { buildAppointmentEmail } from '../services/emailTemplates.js';
 
 // ─── AJV setup for schema validation ──────────────────────────────────────────
 const ajv = new Ajv({ strict: false });
@@ -224,6 +226,135 @@ export const deleteAppointment = async (req, res, next) => {
 
         return res.json({ message: 'Appointment deleted.' });
     } catch (err) {
+        next(err);
+    }
+};
+
+// ─── GET /api/v1/appointments/stats ──────────────────────────────────────────
+export const getAppointmentStats = async (req, res, next) => {
+    try {
+        const { date } = req.query;
+        const params = [];
+        let where = '';
+
+        if (date) {
+            where = 'WHERE preferred_date = ?';
+            params.push(date);
+        }
+
+        const [stats] = await db.query(
+            `SELECT
+                COUNT(*)                                                                     AS total,
+                SUM(status = 'APPROVED')                                                     AS approved,
+                SUM(status = 'REJECTED')                                                     AS rejected,
+                SUM(status = 'COMPLETED')                                                    AS completed,
+                SUM(status = 'FAILED')                                                       AS failed,
+                SUM(status = 'PENDING')                                                      AS pending,
+                SUM(CASE WHEN status IN ('APPROVED','COMPLETED') THEN population_count ELSE 0 END) AS expectedVisitors,
+                SUM(CASE WHEN status = 'COMPLETED' AND present_count IS NOT NULL THEN present_count ELSE 0 END) AS present
+             FROM appointments ${where}`,
+            params
+        );
+
+        // Convert BigInt values to numbers (mariadb driver returns BigInt for COUNT/SUM)
+        return res.json({
+            total:           Number(stats.total)           || 0,
+            approved:        Number(stats.approved)        || 0,
+            rejected:        Number(stats.rejected)        || 0,
+            completed:       Number(stats.completed)       || 0,
+            failed:          Number(stats.failed)          || 0,
+            pending:         Number(stats.pending)         || 0,
+            expectedVisitors: Number(stats.expectedVisitors) || 0,
+            present:         Number(stats.present)         || 0,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// ─── GET /api/v1/appointments/visitor-records ─────────────────────────────────
+export const getVisitorRecords = async (req, res, next) => {
+    try {
+        const rows = await db.query(
+            `SELECT id, visitor_name, visitor_email, visitor_phone, organization,
+                    purpose_of_visit, preferred_date, status, population_count, present_count, created_at
+             FROM appointments
+             ORDER BY preferred_date DESC`
+        );
+
+        // Group by visitor_email (deduplicate visitors)
+        const map = new Map();
+        for (const row of rows) {
+            const key = (row.visitor_email || '').toLowerCase().trim() || row.visitor_name;
+            if (!map.has(key)) {
+                map.set(key, {
+                    visitor_name:  row.visitor_name,
+                    visitor_email: row.visitor_email,
+                    visitor_phone: row.visitor_phone,
+                    organization:  row.organization,
+                    visit_count:   0,
+                    last_visit_date: null,
+                    appointments:  [],
+                });
+            }
+            const record = map.get(key);
+            record.visit_count++;
+            const dateStr = row.preferred_date instanceof Date
+                ? row.preferred_date.toISOString().split('T')[0]
+                : String(row.preferred_date);
+            if (!record.last_visit_date || dateStr > record.last_visit_date) {
+                record.last_visit_date = dateStr;
+            }
+            record.appointments.push({
+                appointment_id:  row.id,
+                purpose:         row.purpose_of_visit,
+                date:            dateStr,
+                status:          row.status,
+                population_count: row.population_count,
+                present_count:   row.present_count,
+            });
+        }
+
+        return res.json(Array.from(map.values()));
+    } catch (err) {
+        next(err);
+    }
+};
+
+// ─── POST /api/v1/appointments/:id/email ─────────────────────────────────────
+export const sendAppointmentEmail = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { status, message } = req.body;
+
+        if (!status) return res.status(400).json({ message: 'status is required.' });
+
+        const [appt] = await db.query('SELECT * FROM appointments WHERE id = ?', [id]);
+        if (!appt) return res.status(404).json({ message: 'Appointment not found.' });
+        if (!appt.visitor_email) return res.status(400).json({ message: 'Appointment has no visitor email on record.' });
+
+        const { subject, html } = buildAppointmentEmail({
+            appointmentId:   appt.id,
+            visitorName:     appt.visitor_name,
+            status,
+            preferredDate:   appt.preferred_date instanceof Date
+                                 ? appt.preferred_date.toISOString().split('T')[0]
+                                 : String(appt.preferred_date),
+            startTime:       formatTime(appt.start_time),
+            endTime:         formatTime(appt.end_time),
+            purpose:         appt.purpose_of_visit,
+            populationCount: appt.population_count ?? 1,
+            presentCount:    appt.present_count ?? null,
+            message:         message || appt.message_to_visitor || null,
+        });
+
+        await sendEmail({ to: appt.visitor_email, subject, html });
+
+        return res.json({ message: 'Email sent successfully.' });
+    } catch (err) {
+        if (err.message === 'EMAIL_SEND_FAILED') {
+            return res.status(502).json({ message: 'Email delivery failed. Please try again.' });
+        }
         next(err);
     }
 };

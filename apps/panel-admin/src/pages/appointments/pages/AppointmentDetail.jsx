@@ -127,17 +127,74 @@ export default function AppointmentDetail() {
     window.history.replaceState({}, document.title);
   }, [rawData, location.state]);
 
+  // ── Schedule conflict check (used before Approve) ────────────────────────────
+
+  const checkScheduleConflict = async () => {
+    const apptDate  = rawData.preferred_date?.split('T')[0];
+    const apptStart = rawData.start_time ? String(rawData.start_time).substring(0, 5) : null;
+    const apptEnd   = rawData.end_time   ? String(rawData.end_time).substring(0, 5)   : null;
+    if (!apptDate) return null; // no date — skip check
+
+    try {
+      const schRes = await apiFetch(`/api/v1/schedules?date=${apptDate}`);
+      if (!schRes.ok) return null; // schedule API unreachable — proceed
+      const schedules = await schRes.json();
+
+      const toMin = (t) => {
+        if (!t) return 0;
+        const [h, m] = t.split(':').map(Number);
+        return h * 60 + (m || 0);
+      };
+
+      for (const s of schedules) {
+        const avail  = s.availability;
+        const sTitle = s.title;
+        const sStart = s.start_time ? String(s.start_time).substring(0, 5) : '00:00';
+        const sEnd   = s.end_time   ? String(s.end_time).substring(0, 5)   : '23:59';
+
+        // Full-day disabled block
+        if (avail === 'EXCLUSIVE' && (sTitle === 'DATE_DISABLED' || (sStart === '00:00' && sEnd === '23:59'))) {
+          return 'This date has been fully closed. Please decline and ask the visitor to reschedule.';
+        }
+
+        // EXCLUSIVE schedule overlapping with a fixed appointment time
+        if (apptStart && apptEnd && avail === 'EXCLUSIVE') {
+          const ns = toMin(apptStart), ne = toMin(apptEnd);
+          const es = toMin(sStart),   ee = toMin(sEnd);
+          if (ns < ee && es < ne) {
+            return `Conflict: "${sTitle}" is exclusively reserved during this time. Please decline or adjust.`;
+          }
+        }
+      }
+    } catch {
+      // Network error — fail open (let server decide)
+    }
+    return null; // no conflict
+  };
+
   // ── Submit Action ───────────────────────────────────────────────────────────
 
   const handleAction = async () => {
     if (!action) return;
     const statusMap = { approve: 'APPROVED', decline: 'REJECTED', arrive: 'COMPLETED', cancel: 'FAILED' };
-    const body = { status: statusMap[action] };
+    const newStatus = statusMap[action];
+    const body = { status: newStatus };
     if (message) body.message_to_visitor = message;
     if (action === 'arrive') body.present_count = parseInt(presentCount, 10);
 
     setIsSubmitting(true);
     setActionError(null);
+
+    // ── Pre-approve: check for schedule conflicts ──────────────────────────
+    if (action === 'approve') {
+      const conflict = await checkScheduleConflict();
+      if (conflict) {
+        setActionError(conflict);
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
     try {
       const res = await apiFetch(`/api/v1/appointments/${id}/status`, {
         method: 'PATCH',
@@ -148,6 +205,14 @@ export default function AppointmentDetail() {
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.message || errData.error || `Request failed (${res.status})`);
       }
+
+      // ── Post-action: send email notification (fire-and-forget) ─────────
+      apiFetch(`/api/v1/appointments/${id}/email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus, message }),
+      }).catch(() => { /* email errors don't affect the main flow */ });
+
       setAction(null);
       setMessage('');
       setPresentCount('');

@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  ArrowLeft, Clock, Users, FileText, Ban,
-  CheckCircle2, AlertTriangle, Loader2, Trash2, CalendarDays, Plus,
+  ArrowLeft, Clock, Users, Ban,
+  CheckCircle2, AlertTriangle, Loader2, Trash2, CalendarDays,
+  Plus, Shield, Share2, Info,
 } from 'lucide-react';
 import MiniCal from '../../../components/MiniCal';
 import { useAuth } from '../../../context/authContext';
@@ -10,8 +11,9 @@ import { useSSE } from '../../../hooks/useSSE';
 import { getLocalDateString, formatTimeTo12H, normalizeSchedule, normalizeAppointment } from '../../../utils/scheduleUtils';
 import { validateScheduleCreation, validateDateDisabling } from '../../../utils/scheduleValidation';
 
-// ─── Input class ──────────────────────────────────────────────────────────────
-const INP = 'w-full border border-zinc-200 rounded-md px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black transition-colors placeholder:text-zinc-400';
+const GOLD = '#D4AF37';
+
+const INP = 'w-full border border-zinc-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:border-zinc-400 transition-colors placeholder:text-zinc-400';
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
 function Toast({ msg, type }) {
@@ -19,9 +21,9 @@ function Toast({ msg, type }) {
   const isErr  = type === 'error';
   const isWarn = type === 'warning';
   return (
-    <div className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2.5 rounded-md shadow-lg text-xs font-semibold border
-      ${isErr ? 'bg-red-500 text-white border-red-600' : isWarn ? 'bg-amber-500 text-white border-amber-600' : 'bg-zinc-900 text-white border-zinc-800'}`}>
-      {isErr || isWarn ? <AlertTriangle className="w-3.5 h-3.5" /> : <CheckCircle2 className="w-3.5 h-3.5 text-zinc-950" />}
+    <div className={`fixed top-4 right-4 z-50 flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-lg text-xs font-semibold border backdrop-blur-sm
+      ${isErr ? 'bg-red-500 text-white border-red-600' : isWarn ? 'bg-amber-500 text-white border-amber-600' : 'bg-zinc-900 text-white border-zinc-700'}`}>
+      {isErr || isWarn ? <AlertTriangle className="w-3.5 h-3.5" /> : <CheckCircle2 className="w-3.5 h-3.5 opacity-70" />}
       {msg}
     </div>
   );
@@ -33,19 +35,19 @@ function ConfirmModal({ open, title, children, onConfirm, onCancel, confirmDisab
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm" onClick={onCancel} />
-      <div className="relative bg-white border border-zinc-200 rounded-md shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+      <div className="relative bg-white border border-zinc-200 rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
         <div className="px-6 py-4 border-b border-zinc-100">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">{title}</h3>
+          <h3 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-900">{title}</h3>
         </div>
         <div className="px-6 py-5 text-sm text-zinc-600 leading-relaxed space-y-3">{children}</div>
-        <div className="px-6 py-4 bg-zinc-50 flex gap-3 justify-end">
-          <button onClick={onCancel} className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900">
+        <div className="px-6 py-4 bg-zinc-50 flex gap-3 justify-end border-t border-zinc-100">
+          <button onClick={onCancel} className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900 transition-colors">
             Cancel
           </button>
           <button
             onClick={onConfirm}
             disabled={confirmDisabled}
-            className={`px-5 py-2 text-[10px] font-bold uppercase tracking-widest rounded-md transition-all disabled:opacity-40 disabled:cursor-not-allowed
+            className={`px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-sm
               ${danger ? 'bg-rose-500 text-white hover:bg-rose-600' : 'bg-zinc-900 text-white hover:bg-zinc-800'}`}
           >
             {confirmLabel}
@@ -62,24 +64,24 @@ function DeleteModal({ open, event, onConfirm, onCancel }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm" onClick={onCancel} />
-      <div className="relative bg-white border border-zinc-200 rounded-md shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
+      <div className="relative bg-white border border-zinc-200 rounded-xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
         <div className="px-6 py-4 border-b border-zinc-100">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">Delete Schedule</h3>
+          <h3 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-900">Delete Schedule</h3>
         </div>
         <div className="px-6 py-5 space-y-3 text-sm text-zinc-600">
-          <p>This action cannot be undone:</p>
-          <div className="p-3 bg-rose-50 rounded-md border border-rose-100">
+          <p className="text-zinc-500">This action cannot be undone.</p>
+          <div className="p-3.5 bg-rose-50 rounded-xl border border-rose-100">
             <p className="font-bold text-rose-900 text-sm">{event.title}</p>
             <p className="text-xs text-rose-600 mt-1 font-mono">
               {event.isDisabledDay ? 'All Day (Closed)' : `${formatTimeTo12H(event.startTime)} – ${formatTimeTo12H(event.endTime)}`}
             </p>
           </div>
         </div>
-        <div className="px-6 py-4 bg-zinc-50 flex gap-3 justify-end">
-          <button onClick={onCancel} className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900">
+        <div className="px-6 py-4 bg-zinc-50 flex gap-3 justify-end border-t border-zinc-100">
+          <button onClick={onCancel} className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900 transition-colors">
             Cancel
           </button>
-          <button onClick={onConfirm} className="px-5 py-2 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-md hover:bg-rose-600 transition-all">
+          <button onClick={onConfirm} className="px-5 py-2.5 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-rose-600 transition-all shadow-sm">
             Delete
           </button>
         </div>
@@ -88,41 +90,80 @@ function DeleteModal({ open, event, onConfirm, onCancel }) {
   );
 }
 
-
-// ─── Row helper (for confirm modals) ─────────────────────────────────────────
+// ─── Row helper ───────────────────────────────────────────────────────────────
 function Row({ k, v, muted }) {
   return (
     <div className="flex items-start gap-2 text-xs">
       <span className="text-zinc-400 font-bold uppercase tracking-widest w-16 flex-shrink-0">{k}</span>
-      <span className={muted ? 'text-zinc-500' : 'text-zinc-800 font-medium'}>{v}</span>
+      <span className={muted ? 'text-zinc-500' : 'text-zinc-800 font-semibold'}>{v}</span>
+    </div>
+  );
+}
+
+// ─── Day timeline event row ───────────────────────────────────────────────────
+function DayEventRow({ ev, onDelete }) {
+  const isAppt    = ev.isAppointment;
+  const isDisabled = ev.isDisabledDay;
+  const isExcl    = ev.availability === 'EXCLUSIVE' && !isDisabled;
+
+  const dotColor = isDisabled ? '#f43f5e' : isAppt ? '#6366f1' : isExcl ? '#fb923c' : '#3f3f46';
+  const timeStr  = isDisabled ? 'All Day' : ev.hasFlexibleTime
+    ? 'Flexible'
+    : `${formatTimeTo12H(ev.startTime)} – ${formatTimeTo12H(ev.endTime)}`;
+
+  return (
+    <div className="flex items-start gap-2.5 px-4 py-2.5 group hover:bg-zinc-50/80 transition-colors">
+      <div className="flex flex-col items-center gap-1 flex-shrink-0 mt-1">
+        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: dotColor }} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="text-[11px] font-semibold text-zinc-800 truncate leading-tight">
+          {isAppt ? ev.organizer : ev.title}
+        </div>
+        <div className="flex items-center gap-2 mt-0.5">
+          <span className="text-[9px] font-mono text-zinc-400 flex items-center gap-1">
+            <Clock className="w-2.5 h-2.5 flex-shrink-0" />
+            {timeStr}
+          </span>
+          {isAppt && ev.numPeople != null && (
+            <span className="text-[9px] text-zinc-400 flex items-center gap-0.5">
+              <Users className="w-2.5 h-2.5" />{ev.numPeople}
+            </span>
+          )}
+        </div>
+      </div>
+      {ev.isSchedule && onDelete && (
+        <button
+          onClick={() => onDelete(ev)}
+          className="opacity-0 group-hover:opacity-100 p-1 rounded-md text-zinc-300 hover:text-rose-500 hover:bg-rose-50 transition-all flex-shrink-0"
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+        </button>
+      )}
     </div>
   );
 }
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function ScheduleAdd() {
-  const navigate = useNavigate();
+  const navigate     = useNavigate();
   const { apiFetch } = useAuth();
 
-  // ── Form state ────────────────────────────────────────────────────────────────
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [mode, setMode] = useState('add'); // 'add' | 'close'
-  const [closeType, setCloseType] = useState('day');
+  const [mode, setMode]                 = useState('add');
+  const [closeType, setCloseType]       = useState('day');
   const [availability, setAvailability] = useState('SHARED');
 
-  // Add schedule fields
   const [title, setTitle]         = useState('');
   const [desc, setDesc]           = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime]     = useState('');
 
-  // Close date fields
-  const [reason, setReason]               = useState('');
-  const [closeTitle, setCloseTitle]       = useState('');
+  const [reason, setReason]                 = useState('');
+  const [closeTitle, setCloseTitle]         = useState('');
   const [closeStartTime, setCloseStartTime] = useState('');
-  const [closeEndTime, setCloseEndTime]   = useState('');
+  const [closeEndTime, setCloseEndTime]     = useState('');
 
-  // UI state
   const [showAddConfirm, setShowAddConfirm]     = useState(false);
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   const [showDeleteModal, setShowDeleteModal]   = useState(false);
@@ -133,10 +174,10 @@ export default function ScheduleAdd() {
   const [isDeleting, setIsDeleting]             = useState(false);
   const [toast, setToast]                       = useState({ msg: '', type: 'success' });
 
-  // Data
-  const [daySchedules, setDaySchedules]     = useState([]);
+  const [daySchedules, setDaySchedules]       = useState([]);
   const [dayAppointments, setDayAppointments] = useState([]);
-  const [allSchedules, setAllSchedules]     = useState([]);
+  const [allSchedules, setAllSchedules]       = useState([]);
+  const [allAppointments, setAllAppointments] = useState([]);
 
   const showToast = useCallback((msg, type = 'success') => {
     setToast({ msg, type });
@@ -172,9 +213,9 @@ export default function ScheduleAdd() {
       }
       if (aRes.ok) {
         const raw = await aRes.json();
-        setDayAppointments(
-          (Array.isArray(raw) ? raw : []).map(normalizeAppointment).filter(a => a.date === ds)
-        );
+        const normalized = (Array.isArray(raw) ? raw : []).map(normalizeAppointment);
+        setAllAppointments(normalized);
+        setDayAppointments(normalized.filter(a => a.date === ds));
       }
     } catch (err) {
       console.error('fetchDayEvents:', err);
@@ -197,6 +238,11 @@ export default function ScheduleAdd() {
   useEffect(() => { fetchAllSchedules(); }, []);
 
   const dayEvents = useMemo(() => [...daySchedules, ...dayAppointments], [daySchedules, dayAppointments]);
+
+  const isDateDisabledDay = useMemo(
+    () => daySchedules.some(s => s.isDisabledDay),
+    [daySchedules]
+  );
 
   // ── Mode switch ───────────────────────────────────────────────────────────────
   const switchMode = (m) => {
@@ -240,7 +286,7 @@ export default function ScheduleAdd() {
         body: JSON.stringify({ title: title.trim(), description: desc.trim() || null, date: dateStr, start_time: startTime, end_time: endTime, availability }),
       });
       if (res.ok) {
-        showToast('Schedule added!');
+        showToast('Schedule added successfully!');
         setTitle(''); setDesc(''); setStartTime(''); setEndTime(''); setAvailability('SHARED');
         await Promise.all([fetchDayEvents(selectedDate), fetchAllSchedules()]);
       } else {
@@ -261,7 +307,7 @@ export default function ScheduleAdd() {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
       });
       if (res.ok) {
-        showToast(closeType === 'day' ? 'Date blocked!' : 'Time slot blocked!');
+        showToast(closeType === 'day' ? 'Date blocked successfully!' : 'Time slot blocked!');
         setReason(''); setCloseTitle(''); setCloseStartTime(''); setCloseEndTime('');
         await Promise.all([fetchDayEvents(selectedDate), fetchAllSchedules()]);
       } else {
@@ -290,313 +336,373 @@ export default function ScheduleAdd() {
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
-    <div className="h-full flex flex-col px-4 sm:px-6 lg:px-8 pt-8" style={{ height: 'calc(100vh - 4rem)' }}>
+    <div
+      className="flex flex-col bg-white"
+      style={{ height: 'calc(100vh - 4rem)', overflow: 'hidden' }}
+    >
       <Toast msg={toast.msg} type={toast.type} />
 
-      {/* Page Header */}
-      <div className="flex-shrink-0 flex items-center justify-between pb-5 border-b border-zinc-200">
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={() => navigate('/schedule')}
-            className="p-2 border border-zinc-200 rounded-md text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </button>
-          <div>
-            <h1 className="text-2xl font-serif text-black uppercase tracking-widest">Configure Schedule</h1>
-            <p className="text-xs text-zinc-500 mt-1 font-light tracking-wide">Add schedule blocks or set date closures</p>
-          </div>
+      {/* ── Page Header ──────────────────────────────────────────────────────────── */}
+      <div className="flex-shrink-0 flex items-center gap-4 px-6 pt-6 pb-4 border-b border-zinc-100">
+        <button
+          onClick={() => navigate('/schedule')}
+          className="p-2 rounded-lg border border-zinc-200 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 hover:border-zinc-300 transition-all flex-shrink-0"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </button>
+        <div>
+          <h1 className="text-2xl font-serif font-bold tracking-tight text-zinc-900">Configure Schedule</h1>
+          <p className="text-[10px] text-zinc-400 uppercase tracking-[0.2em] mt-0.5">Add slots · Block dates · Manage availability</p>
         </div>
+        <div className="flex-1" />
+        {isLoading && (
+          <div className="flex items-center gap-2 text-xs text-zinc-400">
+            <Loader2 className="w-4 h-4 animate-spin" /> Saving…
+          </div>
+        )}
       </div>
 
-      {/* Body */}
-      <div className="flex-1 overflow-auto pt-6 flex justify-center min-h-0">
-        <div className="w-full max-w-5xl grid grid-cols-12 gap-6">
+      {/* ── Body ─────────────────────────────────────────────────────────────────── */}
+      <div className="flex flex-1 min-h-0 overflow-hidden">
 
-          {/* ── Left: Calendar + Events ────────────────────────────────────────── */}
-          <div className="col-span-5 flex flex-col gap-6 min-h-0">
+        {/* ── Left: Calendar + Day Events ──────────────────────────────────────── */}
+        <div className="w-80 flex-shrink-0 border-r border-zinc-100 flex flex-col overflow-hidden">
 
           {/* Mini Calendar */}
-          <div className="bg-white rounded-md border border-zinc-200 shadow-sm flex-shrink-0">
+          <div className="px-4 pt-4 pb-3 flex-shrink-0">
             <MiniCal
               value={selectedDate}
               onChange={setSelectedDate}
               allSchedules={allSchedules}
-              className="p-4"
+              allAppointments={allAppointments}
               showLegend
+              compact
             />
           </div>
 
-          {/* Events for selected date */}
-          <div className="bg-white rounded-md border border-zinc-200 shadow-sm flex flex-col flex-1 min-h-0 overflow-hidden">
-            <div className="px-5 py-4 border-b border-zinc-100 flex items-center justify-between flex-shrink-0">
-              <div>
-                <div className="text-[9px] uppercase tracking-[0.2em] font-bold text-zinc-400">Events on Date</div>
-                <div className="text-sm font-semibold text-zinc-800 mt-0.5">
-                  {selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                </div>
+          {/* Selected date status */}
+          <div className="mx-4 mb-3 flex-shrink-0">
+            {isDateDisabledDay ? (
+              <div className="flex items-center gap-2 px-3 py-2 bg-rose-50 border border-rose-100 rounded-lg">
+                <Ban className="w-3.5 h-3.5 text-rose-500 flex-shrink-0" />
+                <span className="text-[10px] font-bold text-rose-700 uppercase tracking-wider">Day Closed — No Appointments</span>
               </div>
-              <span className="text-[10px] font-bold bg-zinc-100 text-zinc-500 px-2 py-1 rounded-full">
-                {dayEvents.length}
-              </span>
-            </div>
+            ) : (
+              <div className="flex items-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-100 rounded-lg">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Available for Bookings</span>
+              </div>
+            )}
+          </div>
 
-            <div className="flex-1 overflow-y-auto divide-y divide-zinc-50">
-              {dayEvents.length === 0 ? (
-                <div className="p-10 text-center flex flex-col items-center gap-2 text-zinc-400">
-                  <CalendarDays className="w-6 h-6 opacity-30" />
-                  <span className="text-[10px] uppercase tracking-widest">No events on this date</span>
-                </div>
-              ) : (
-                dayEvents.map(ev => {
-                  const isAppt    = ev.isAppointment;
-                  const isDisabled = ev.isDisabledDay;
-                  const isExcl    = ev.availability === 'EXCLUSIVE' && !isDisabled;
-                  const dot = isDisabled ? 'bg-rose-500' : isAppt ? 'bg-indigo-500' : isExcl ? 'bg-rose-400' : 'bg-zinc-950';
+          {/* Day events */}
+          <div className="flex items-center justify-between px-4 mb-2 flex-shrink-0">
+            <span className="text-[9px] font-black uppercase tracking-[0.22em] text-zinc-400">
+              {selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </span>
+            <span className="text-[9px] font-bold bg-zinc-100 text-zinc-500 px-1.5 py-0.5 rounded-full">
+              {dayEvents.length}
+            </span>
+          </div>
 
-                  return (
-                    <div key={ev.id} className="flex items-start gap-3 px-4 py-3 hover:bg-zinc-50 transition-colors group">
-                      <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${dot}`} />
-                      <div className="flex-1 min-w-0">
-                        <div className="text-[11px] font-semibold text-zinc-800 truncate">
-                          {isAppt ? ev.organizer : ev.title}
-                        </div>
-                        {isAppt && ev.title && (
-                          <div className="text-[10px] text-zinc-400 truncate">{ev.title}</div>
-                        )}
-                        <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-[10px] font-mono text-zinc-400 flex items-center gap-1">
-                            <Clock className="w-2.5 h-2.5" />
-                            {isDisabled ? 'All Day' : ev.hasFlexibleTime ? 'Flexible' : `${formatTimeTo12H(ev.startTime)} – ${formatTimeTo12H(ev.endTime)}`}
-                          </span>
-                          {isAppt && ev.numPeople != null && (
-                            <span className="text-[10px] text-zinc-400 flex items-center gap-0.5">
-                              <Users className="w-2.5 h-2.5" />{ev.numPeople}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      {ev.isSchedule && (
-                        <button
-                          onClick={() => { setDeletingEvent(ev); setShowDeleteModal(true); }}
-                          className="opacity-0 group-hover:opacity-100 p-1 rounded-md text-zinc-300 hover:text-rose-500 hover:bg-rose-50 transition-all"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      )}
+          <div className="flex-1 overflow-y-auto border-t border-zinc-100">
+            {dayEvents.length === 0 ? (
+              <div className="p-8 text-center flex flex-col items-center gap-3 text-zinc-300">
+                <CalendarDays className="w-8 h-8 opacity-40" />
+                <span className="text-[10px] uppercase tracking-widest text-zinc-400">No events on this date</span>
+              </div>
+            ) : (
+              <div className="divide-y divide-zinc-50 py-1">
+                {dayEvents.map(ev => (
+                  <DayEventRow
+                    key={ev.id}
+                    ev={ev}
+                    onDelete={ev.isSchedule ? (e) => { setDeletingEvent(e); setShowDeleteModal(true); } : null}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ── Right: Form Panel ──────────────────────────────────────────────────── */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+
+          {/* Mode tabs */}
+          <div className="flex border-b border-zinc-200 flex-shrink-0 bg-zinc-50/50">
+            <button
+              onClick={() => switchMode('add')}
+              className={`flex-1 py-3.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 border-b-2
+                ${mode === 'add'
+                  ? 'border-zinc-900 text-zinc-900 bg-white'
+                  : 'border-transparent text-zinc-400 hover:text-zinc-700 hover:bg-zinc-50'}`}
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Schedule Slot
+            </button>
+            <button
+              onClick={() => switchMode('close')}
+              className={`flex-1 py-3.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 border-b-2
+                ${mode === 'close'
+                  ? 'border-rose-500 text-rose-600 bg-white'
+                  : 'border-transparent text-zinc-400 hover:text-zinc-700 hover:bg-zinc-50'}`}
+            >
+              <Ban className="w-3.5 h-3.5" /> Close Date / Block
+            </button>
+          </div>
+
+          {/* Form content */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="max-w-lg mx-auto px-6 py-6">
+
+              {/* Selected date */}
+              <div className="mb-6 pb-5 border-b border-zinc-100">
+                <div className="text-[9px] font-black uppercase tracking-[0.22em] text-zinc-400 mb-1">Working on date</div>
+                <div className="text-xl font-bold text-zinc-900 leading-tight">{dateLabel}</div>
+                <div className="text-[10px] text-zinc-400 mt-0.5 font-mono">{dateStr}</div>
+              </div>
+
+              {/* ── ADD SCHEDULE FORM ──────────────────────────────────────────── */}
+              {mode === 'add' && (
+                <form onSubmit={handleAddSubmit} className="space-y-5">
+
+                  {/* Guidelines */}
+                  <div className="flex items-start gap-3 p-3.5 bg-zinc-50 border border-zinc-200 rounded-xl">
+                    <Info className="w-4 h-4 text-zinc-400 mt-0.5 flex-shrink-0" />
+                    <div className="space-y-1">
+                      {[
+                        'Operating window: 6:00 AM – 6:00 PM',
+                        'Minimum duration: 15 minutes',
+                        'Max 10 concurrent events per slot',
+                      ].map(r => (
+                        <div key={r} className="text-[11px] text-zinc-500 leading-snug">{r}</div>
+                      ))}
                     </div>
-                  );
-                })
+                  </div>
+
+                  {/* Title */}
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2">
+                      Schedule Title <span className="text-rose-400">*</span>
+                    </label>
+                    <input
+                      value={title}
+                      onChange={e => setTitle(e.target.value)}
+                      placeholder="e.g. Morning Heritage Tour"
+                      className={INP}
+                    />
+                  </div>
+
+                  {/* Description */}
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2">
+                      Description <span className="text-zinc-300">Optional</span>
+                    </label>
+                    <textarea
+                      value={desc}
+                      onChange={e => setDesc(e.target.value)}
+                      placeholder="Describe this schedule block…"
+                      rows={2}
+                      className={`${INP} resize-none`}
+                    />
+                  </div>
+
+                  {/* Time range */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2">
+                        Start Time <span className="text-rose-400">*</span>
+                      </label>
+                      <input
+                        type="time" value={startTime} min="06:00" max="18:00"
+                        onChange={e => setStartTime(e.target.value)}
+                        className={`${INP} font-mono`}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2">
+                        End Time <span className="text-rose-400">*</span>
+                      </label>
+                      <input
+                        type="time" value={endTime} min="06:00" max="18:00"
+                        onChange={e => setEndTime(e.target.value)}
+                        className={`${INP} font-mono`}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Availability */}
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2">
+                      Availability Type <span className="text-rose-400">*</span>
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setAvailability('SHARED')}
+                        className={`p-4 border-2 rounded-xl text-left transition-all group
+                          ${availability === 'SHARED'
+                            ? 'border-zinc-900 bg-zinc-50'
+                            : 'border-zinc-200 hover:border-zinc-300 bg-white'}`}
+                      >
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <Share2 className={`w-4 h-4 ${availability === 'SHARED' ? 'text-zinc-900' : 'text-zinc-400'}`} />
+                          <div className={`text-[10px] font-black uppercase tracking-widest ${availability === 'SHARED' ? 'text-zinc-900' : 'text-zinc-500'}`}>
+                            Shared
+                          </div>
+                        </div>
+                        <div className="text-[9px] text-zinc-400 leading-snug">
+                          Appointments are allowed during this block
+                        </div>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAvailability('EXCLUSIVE')}
+                        className={`p-4 border-2 rounded-xl text-left transition-all
+                          ${availability === 'EXCLUSIVE'
+                            ? 'border-orange-400 bg-orange-50'
+                            : 'border-zinc-200 hover:border-zinc-300 bg-white'}`}
+                      >
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <Shield className={`w-4 h-4 ${availability === 'EXCLUSIVE' ? 'text-orange-500' : 'text-zinc-400'}`} />
+                          <div className={`text-[10px] font-black uppercase tracking-widest ${availability === 'EXCLUSIVE' ? 'text-orange-700' : 'text-zinc-500'}`}>
+                            Exclusive
+                          </div>
+                        </div>
+                        <div className="text-[9px] text-zinc-400 leading-snug">
+                          No new appointments during this block
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    style={{ backgroundColor: GOLD }}
+                    className="w-full py-3 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm mt-2"
+                  >
+                    {isLoading
+                      ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving…</>
+                      : <><Plus className="w-3.5 h-3.5" /> Add Schedule Slot</>}
+                  </button>
+                </form>
+              )}
+
+              {/* ── CLOSE DATE FORM ────────────────────────────────────────────── */}
+              {mode === 'close' && (
+                <form onSubmit={handleCloseSubmit} className="space-y-5">
+
+                  {/* Day / Time slot toggle */}
+                  <div className="flex bg-zinc-100 p-1 rounded-xl gap-1">
+                    {[
+                      { val: 'day',  label: 'Block Full Day', icon: CalendarDays },
+                      { val: 'time', label: 'Block Time Slot', icon: Clock },
+                    ].map(({ val, label, icon: Icon }) => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => setCloseType(val)}
+                        className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-1.5
+                          ${closeType === val ? 'bg-white text-rose-600 shadow-sm' : 'text-zinc-400 hover:text-zinc-600'}`}
+                      >
+                        <Icon className="w-3.5 h-3.5" /> {label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Warning */}
+                  <div className="flex items-start gap-3 p-4 bg-rose-50 border border-rose-100 rounded-xl">
+                    <AlertTriangle className="w-4 h-4 text-rose-400 mt-0.5 flex-shrink-0" />
+                    <div className="space-y-1">
+                      <div className="text-[11px] text-rose-700 font-bold leading-snug">
+                        {closeType === 'day'
+                          ? 'Blocks the entire day — no new appointments can be booked'
+                          : 'Blocks a specific time range — appointments outside it are unaffected'}
+                      </div>
+                      <div className="text-[10px] text-rose-500">Existing approved appointments are NOT cancelled.</div>
+                    </div>
+                  </div>
+
+                  {/* Block title (time slot only) */}
+                  {closeType === 'time' && (
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2">
+                        Block Title <span className="text-rose-400">*</span>
+                      </label>
+                      <input
+                        value={closeTitle}
+                        onChange={e => setCloseTitle(e.target.value)}
+                        placeholder="e.g. Facility Maintenance"
+                        className={INP}
+                      />
+                    </div>
+                  )}
+
+                  {/* Reason */}
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2">
+                      {closeType === 'day' ? 'Reason' : 'Description'} <span className="text-zinc-300">Optional</span>
+                    </label>
+                    <textarea
+                      value={reason}
+                      onChange={e => setReason(e.target.value)}
+                      placeholder={closeType === 'day' ? 'Why is this date unavailable?' : 'Optional notes…'}
+                      rows={2}
+                      className={`${INP} resize-none`}
+                    />
+                  </div>
+
+                  {/* Time range (time slot only) */}
+                  {closeType === 'time' && (
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2">
+                          Block Start <span className="text-rose-400">*</span>
+                        </label>
+                        <input
+                          type="time" value={closeStartTime} min="06:00" max="18:00"
+                          onChange={e => setCloseStartTime(e.target.value)}
+                          className={`${INP} font-mono`}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2">
+                          Block End <span className="text-rose-400">*</span>
+                        </label>
+                        <input
+                          type="time" value={closeEndTime} min="06:00" max="18:00"
+                          onChange={e => setCloseEndTime(e.target.value)}
+                          className={`${INP} font-mono`}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full py-3 bg-rose-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-rose-600 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm mt-2"
+                  >
+                    {isLoading
+                      ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Processing…</>
+                      : <><Ban className="w-3.5 h-3.5" /> {closeType === 'day' ? 'Block Entire Day' : 'Block Time Slot'}</>}
+                  </button>
+                </form>
               )}
             </div>
           </div>
         </div>
-
-        {/* ── Right: Form ─────────────────────────────────────────────────────── */}
-        <div className="col-span-7 bg-white rounded-md border border-zinc-200 shadow-sm flex flex-col min-h-0 overflow-hidden">
-
-          {/* Mode tabs */}
-          <div className="flex border-b border-zinc-200 flex-shrink-0">
-            <button
-              onClick={() => switchMode('add')}
-              className={`flex-1 py-4 text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-1.5
-                ${mode === 'add' ? 'bg-zinc-900 text-white' : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50'}`}
-            >
-              <Plus className="w-3.5 h-3.5" /> Add Schedule
-            </button>
-            <button
-              onClick={() => switchMode('close')}
-              className={`flex-1 py-4 text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-1.5
-                ${mode === 'close' ? 'bg-rose-500 text-white' : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50'}`}
-            >
-              <Ban className="w-3.5 h-3.5" /> Close Date
-            </button>
-          </div>
-
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
-            {/* Selected date label */}
-            <div>
-              <div className="text-[9px] uppercase tracking-[0.2em] text-zinc-400 font-bold">Selected Date</div>
-              <div className="text-lg font-bold text-zinc-900 mt-1">{dateLabel}</div>
-            </div>
-
-            {/* ── ADD SCHEDULE FORM ──────────────────────────────────────────── */}
-            {mode === 'add' && (
-              <form onSubmit={handleAddSubmit} className="space-y-5">
-                {/* Guidelines */}
-                <div className="flex items-start gap-3 p-4 bg-zinc-50 border border-zinc-200 rounded-md">
-                  <FileText className="w-4 h-4 text-zinc-500 mt-0.5 flex-shrink-0" />
-                  <div className="space-y-0.5">
-                    {['6:00 AM – 6:00 PM window', '15 min minimum duration', 'Max 10 concurrent events'].map(r => (
-                      <div key={r} className="text-[11px] text-zinc-600">{r}</div>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">
-                    Title *
-                  </label>
-                  <input
-                    value={title}
-                    onChange={e => setTitle(e.target.value)}
-                    placeholder="e.g. Morning Heritage Tour"
-                    className={INP}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">
-                    Description
-                  </label>
-                  <textarea
-                    value={desc}
-                    onChange={e => setDesc(e.target.value)}
-                    placeholder="Optional description…"
-                    rows={3}
-                    className={`${INP} resize-none`}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">Start Time</label>
-                    <input type="time" value={startTime} min="06:00" max="18:00" onChange={e => setStartTime(e.target.value)} className={`${INP} font-mono`} />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">End Time</label>
-                    <input type="time" value={endTime} min="06:00" max="18:00" onChange={e => setEndTime(e.target.value)} className={`${INP} font-mono`} />
-                  </div>
-                </div>
-
-                {/* Availability */}
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2">
-                    Availability *
-                  </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    {[
-                      { val: 'SHARED', label: 'Shared', sub: 'Appointments allowed during this block', color: 'border-zinc-300 bg-zinc-50 text-zinc-800' },
-                      { val: 'EXCLUSIVE', label: 'Exclusive', sub: 'No new appointments during this block', color: 'border-zinc-400 bg-zinc-100 text-zinc-950 font-semibold' },
-                    ].map(({ val, label, sub, color }) => (
-                      <button
-                        key={val}
-                        type="button"
-                        onClick={() => setAvailability(val)}
-                        className={`p-3.5 border-2 rounded-md text-left transition-all
-                          ${availability === val ? color : 'border-zinc-200 hover:border-zinc-300 bg-white text-zinc-600'}`}
-                      >
-                        <div className="text-[10px] font-bold uppercase tracking-widest">{label}</div>
-                        <div className="text-[9px] mt-1 opacity-70 leading-relaxed">{sub}</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full py-3 bg-zinc-900 text-white text-[10px] font-bold uppercase tracking-widest rounded-md hover:bg-zinc-800 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  {isLoading
-                    ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving…</>
-                    : <><Plus className="w-3.5 h-3.5" /> Add Schedule</>}
-                </button>
-              </form>
-            )}
-
-            {/* ── CLOSE DATE FORM ────────────────────────────────────────────── */}
-            {mode === 'close' && (
-              <form onSubmit={handleCloseSubmit} className="space-y-5">
-                {/* Day / Time slot toggle */}
-                <div className="flex bg-zinc-100 p-1 rounded-md">
-                  {['day', 'time'].map(t => (
-                    <button
-                      key={t}
-                      type="button"
-                      onClick={() => setCloseType(t)}
-                      className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-widest rounded-md transition-all
-                        ${closeType === t ? 'bg-white text-rose-600 shadow-sm' : 'text-zinc-500 hover:text-zinc-700'}`}
-                    >
-                      {t === 'day' ? 'Full Day' : 'Time Slot'}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Warning */}
-                <div className="flex items-start gap-3 p-4 bg-rose-50 border border-rose-200/60 rounded-md">
-                  <AlertTriangle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-                  <div className="space-y-0.5">
-                    <div className="text-[11px] text-rose-700 font-semibold">
-                      {closeType === 'day' ? 'Blocks the entire day — no new appointments' : 'Blocks a specific time range'}
-                    </div>
-                    <div className="text-[11px] text-rose-600">Existing approved appointments are NOT affected.</div>
-                  </div>
-                </div>
-
-                {closeType === 'time' && (
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">Block Title *</label>
-                    <input
-                      value={closeTitle}
-                      onChange={e => setCloseTitle(e.target.value)}
-                      placeholder="e.g. Facility Maintenance"
-                      className={INP}
-                    />
-                  </div>
-                )}
-
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">
-                    {closeType === 'day' ? 'Reason (Optional)' : 'Description (Optional)'}
-                  </label>
-                  <textarea
-                    value={reason}
-                    onChange={e => setReason(e.target.value)}
-                    placeholder={closeType === 'day' ? 'Why is this date unavailable?' : 'Optional notes…'}
-                    rows={3}
-                    className={`${INP} resize-none`}
-                  />
-                </div>
-
-                {closeType === 'time' && (
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">Start</label>
-                      <input type="time" value={closeStartTime} min="06:00" max="18:00" onChange={e => setCloseStartTime(e.target.value)} className={`${INP} font-mono`} />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5">End</label>
-                      <input type="time" value={closeEndTime} min="06:00" max="18:00" onChange={e => setCloseEndTime(e.target.value)} className={`${INP} font-mono`} />
-                    </div>
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full py-3 bg-rose-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-md hover:bg-rose-600 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  {isLoading
-                    ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Processing…</>
-                    : <><Ban className="w-3.5 h-3.5" /> {closeType === 'day' ? 'Block Entire Day' : 'Block Time Slot'}</>}
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
       </div>
-    </div>
 
       {/* ── Modals ──────────────────────────────────────────────────────────────── */}
       <ConfirmModal
         open={showAddConfirm}
-        title="Confirm Schedule"
+        title="Confirm New Schedule Slot"
         onConfirm={confirmAdd}
         onCancel={() => setShowAddConfirm(false)}
       >
-        <p className="text-zinc-700 font-medium">Adding a new schedule block:</p>
-        <div className="mt-1 p-4 bg-zinc-50 rounded-md border border-zinc-100 space-y-2">
+        <p className="text-zinc-600">You are adding the following schedule:</p>
+        <div className="p-4 bg-zinc-50 rounded-xl border border-zinc-100 space-y-2">
           <Row k="Title" v={title} />
           <Row k="Date"  v={dateLabel} />
           <Row k="Time"  v={`${formatTimeTo12H(startTime)} – ${formatTimeTo12H(endTime)}`} />
@@ -614,8 +720,11 @@ export default function ScheduleAdd() {
         confirmLabel={canConfirm ? 'Confirm Block' : `Wait ${countdown}s`}
         danger
       >
-        <div className="text-rose-600 font-semibold text-sm">⚠ This will prevent new appointment bookings.</div>
-        <div className="p-4 bg-rose-50 rounded-md border border-rose-100 space-y-2">
+        <div className="flex items-center gap-2 text-rose-600 font-bold text-sm">
+          <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+          This will prevent new appointment bookings.
+        </div>
+        <div className="p-4 bg-rose-50 rounded-xl border border-rose-100 space-y-2">
           <Row k="Date"     v={dateLabel} />
           {closeType === 'time' && (
             <Row k="Time" v={`${formatTimeTo12H(closeStartTime)} – ${formatTimeTo12H(closeEndTime)}`} />
@@ -624,8 +733,9 @@ export default function ScheduleAdd() {
           {reason && <Row k="Reason" v={reason} muted />}
         </div>
         {!canConfirm && (
-          <div className="flex items-center gap-2 text-[10px] font-semibold text-zinc-700 bg-zinc-100 border border-zinc-200 rounded-md px-3 py-2">
-            <Clock className="w-3.5 h-3.5 animate-pulse" /> Wait {countdown}s to confirm…
+          <div className="flex items-center gap-2.5 text-[10px] font-bold text-zinc-600 bg-zinc-100 border border-zinc-200 rounded-lg px-3.5 py-2.5">
+            <Clock className="w-3.5 h-3.5 animate-pulse text-zinc-400" />
+            Please wait {countdown}s before confirming…
           </div>
         )}
       </ConfirmModal>
@@ -639,9 +749,9 @@ export default function ScheduleAdd() {
 
       {isDeleting && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-900/20 backdrop-blur-sm">
-          <div className="bg-white rounded-md px-8 py-6 shadow-2xl flex items-center gap-3 border border-zinc-200">
+          <div className="bg-white rounded-2xl px-8 py-6 shadow-2xl flex items-center gap-3 border border-zinc-100">
             <Loader2 className="w-5 h-5 animate-spin text-zinc-600" />
-            <span className="text-sm font-medium text-zinc-700">Deleting…</span>
+            <span className="text-sm font-semibold text-zinc-700">Deleting…</span>
           </div>
         </div>
       )}

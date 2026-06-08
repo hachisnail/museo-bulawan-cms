@@ -7,12 +7,23 @@ import PHAddressSelect from '../../../components/PHAddressSelect';
 import { validateAppointmentBooking } from '../../../utils/scheduleValidation';
 
 const FORM_ID = '01KQEAAX7RAE9CEYNBV2VF512Q';
-const PURPOSES = ['Walk-in Visit', 'School Field Trip', 'Heritage Research', 'Tourism'];
-const REQUIRED_FIELDS = [
+
+const PURPOSES = [
+  'School Field Trip',
+  'Museum Group Tour',
+  'Interviews',
+  'Conservation Consultation',
+  'Photography or Media Projects',
+  'Collaboration Meetings',
+  'Research Paper',
+];
+
+const BASE_REQUIRED_FIELDS = [
   'firstName', 'lastName', 'email', 'phone',
   'province', 'city',
-  'purpose', 'populationCount', 'visitDate', 'startTime', 'endTime',
+  'purpose', 'populationCount', 'visitDate',
 ];
+const TIME_REQUIRED_FIELDS = ['startTime', 'endTime'];
 
 const today = new Date().toISOString().split('T')[0];
 
@@ -22,6 +33,7 @@ export default function WalkInAdd() {
   const [submitted, setSubmitted] = useState(false);
   const [address, setAddress] = useState({ province: null, city: null, barangay: null });
   const [fieldErrors, setFieldErrors] = useState({});
+  const [isFlexibleTime, setIsFlexibleTime] = useState(false);
 
   // ── Schedule-aware fetch interceptor ──────────────────────────────────────────
   // Validates the chosen visitDate against existing schedules before submitting.
@@ -113,12 +125,30 @@ export default function WalkInAdd() {
     handleInputChange({ target: { name: 'barangay', value: newAddr.barangay?.name ?? '' } });
   };
 
+  // ── Flexible time toggle ───────────────────────────────────────────────────
+
+  const handleFlexibleToggle = () => {
+    setIsFlexibleTime((prev) => {
+      const next = !prev;
+      if (next) {
+        // Clear time fields so they submit as null (flexible)
+        handleInputChange({ target: { name: 'startTime', value: '' } });
+        handleInputChange({ target: { name: 'endTime',   value: '' } });
+        setFieldErrors((e) => ({ ...e, startTime: null, endTime: null }));
+      }
+      return next;
+    });
+  };
+
   // ── Client-side validation before submit ──────────────────────────────────────
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    const activeFields = isFlexibleTime
+      ? BASE_REQUIRED_FIELDS
+      : [...BASE_REQUIRED_FIELDS, ...TIME_REQUIRED_FIELDS];
     const errors = {};
-    REQUIRED_FIELDS.forEach((key) => {
+    activeFields.forEach((key) => {
       const val = formData[key];
       if (val === undefined || val === null || String(val).trim() === '') {
         errors[key] = 'This field is required';
@@ -357,29 +387,52 @@ export default function WalkInAdd() {
                 <FieldError name="visitDate" />
               </div>
 
-              {/* spacer to push start/end time to their own row on md+ */}
-              <div className="hidden md:block" />
+              {/* ── Time — with Flexible toggle ────────────────────────── */}
 
-              <div className="space-y-2">
-                <Label required>Start Time</Label>
-                <input
-                  type="time" name="startTime"
-                  value={formData.startTime || ''}
-                  onChange={onInputChange}
-                  className={inputCls('startTime')}
-                />
-                <FieldError name="startTime" />
-              </div>
+              <div className="md:col-span-2 space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label required={!isFlexibleTime}>Visit Time</Label>
+                  <button
+                    type="button"
+                    onClick={handleFlexibleToggle}
+                    className={`text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-sm border transition-all ${
+                      isFlexibleTime
+                        ? 'bg-zinc-900 text-white border-zinc-900'
+                        : 'bg-white text-zinc-500 border-zinc-300 hover:border-zinc-500 hover:text-zinc-900'
+                    }`}
+                  >
+                    {isFlexibleTime ? '✓ Flexible Time' : 'Mark as Flexible'}
+                  </button>
+                </div>
 
-              <div className="space-y-2">
-                <Label required>End Time</Label>
-                <input
-                  type="time" name="endTime"
-                  value={formData.endTime || ''}
-                  onChange={onInputChange}
-                  className={inputCls('endTime')}
-                />
-                <FieldError name="endTime" />
+                {isFlexibleTime ? (
+                  <div className="flex items-center gap-2 px-4 py-3 bg-zinc-100 border border-zinc-300 rounded-sm">
+                    <span className="text-[11px] font-medium text-zinc-500">No specific time — visitor will arrive flexibly</span>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-black uppercase text-zinc-400 tracking-widest">Start Time</span>
+                      <input
+                        type="time" name="startTime"
+                        value={formData.startTime || ''}
+                        onChange={onInputChange}
+                        className={inputCls('startTime')}
+                      />
+                      <FieldError name="startTime" />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-black uppercase text-zinc-400 tracking-widest">End Time</span>
+                      <input
+                        type="time" name="endTime"
+                        value={formData.endTime || ''}
+                        onChange={onInputChange}
+                        className={inputCls('endTime')}
+                      />
+                      <FieldError name="endTime" />
+                    </div>
+                  </div>
+                )}
               </div>
 
             </div>

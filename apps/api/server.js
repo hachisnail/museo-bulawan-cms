@@ -4,6 +4,7 @@ import app from './src/app.js';
 import { env } from './src/config/env.js';
 import { initMariaDB } from './src/config/dbInit.js';
 import { maintenanceService } from './src/services/maintenanceService.js';
+import { startNoShowScheduler } from './src/jobs/noShowScheduler.js';
 import fs from 'fs';
 import path from 'path';
 
@@ -21,6 +22,9 @@ const startServer = async () => {
 
     // 3. Start maintenance cron jobs
     maintenanceService.init();
+
+    // 4. Start appointment no-show auto-fail scheduler (daily midnight PST)
+    startNoShowScheduler();
 
     const httpServer = createServer(app);
 
